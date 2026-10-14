@@ -1,0 +1,555 @@
+{%- comment -%}
+  Review widget: real customer reviews, a rating summary, and a "Write a
+  review" form whose reviews wait for the merchant's approval.
+
+  How a review gets here:
+    1. A shopper sends the form. assets/review-widget.js posts it as a comment
+       on the blog post named in "Reviews blog post" (customer-reviews/reviews),
+       whose blog holds comments for moderation, and emails the merchant a copy
+       through the contact form. Both go through Shopify's own spam check.
+    2. The merchant approves, marks as spam, or deletes it in Shopify admin >
+       Content > Blog posts > Manage comments.
+    3. Approved reviews show here. On a product page, that product's reviews
+       come first, then (if chosen) reviews of other cases, labelled with the
+       case they're about.
+
+  The comment text carries the review's details, separated by "§":
+  "5/5 § product-handle § Title § Review text". The script builds it; the
+  shopper never sees it. Reviews typed in as blocks still work, for reviews
+  collected elsewhere.
+
+  Styles: assets/review-widget.css. Script: assets/review-widget.js.
+  Motion (GSAP + three.js sweets behind the heading and summary): assets/review-motion.js.
+{%- endcomment -%}
+{{ 'review-widget.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'review-widget.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'review-motion.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+
+  assign rw_article = nil
+  assign article_key = st.reviews_article | strip | remove_first: '/blogs/' | remove_first: 'blogs/'
+  if article_key contains '/'
+    assign rw_article = articles[article_key]
+  endif
+  assign has_article = false
+  if rw_article.id != blank
+    assign has_article = true
+  endif
+
+  comment
+    On a product page, "here" is that product. Anywhere else every review shows.
+  endcomment
+  assign here = ''
+  if product.handle != blank
+    assign here = product.handle
+  endif
+  assign include_others = true
+  if here != blank and st.scope == 'product'
+    assign include_others = false
+  endif
+
+  assign n_shown = 0
+  assign n_other_shown = 0
+  assign n_rated = 0
+  assign rating_sum = 0
+  assign c5 = 0
+  assign c4 = 0
+  assign c3 = 0
+  assign c2 = 0
+  assign c1 = 0
+
+  comment
+    Pass 1: count what will be shown, for the summary.
+  endcomment
+  if has_article
+    for c in rw_article.comments
+      assign raw = c.content | strip_html | strip
+      assign parts = raw | split: '§'
+      assign r = 0
+      assign h = ''
+      if parts.size >= 4
+        assign r = parts[0] | split: '/' | first | strip | plus: 0
+        assign h = parts[1] | strip
+      endif
+      assign is_here = true
+      if here != blank and h != here
+        assign is_here = false
+      endif
+      if is_here == false and include_others == false
+        continue
+      endif
+      assign n_shown = n_shown | plus: 1
+      unless is_here
+        assign n_other_shown = n_other_shown | plus: 1
+      endunless
+      if r >= 1 and r <= 5
+        assign n_rated = n_rated | plus: 1
+        assign rating_sum = rating_sum | plus: r
+        case r
+          when 5
+            assign c5 = c5 | plus: 1
+          when 4
+            assign c4 = c4 | plus: 1
+          when 3
+            assign c3 = c3 | plus: 1
+          when 2
+            assign c2 = c2 | plus: 1
+          else
+            assign c1 = c1 | plus: 1
+        endcase
+      endif
+    endfor
+  endif
+
+  for block in section.blocks
+    if block.settings.author == blank or block.settings.text == blank
+      continue
+    endif
+    assign bp = block.settings.product
+    if here != blank and bp != blank and bp.handle != here
+      continue
+    endif
+    assign n_shown = n_shown | plus: 1
+    assign r = block.settings.rating
+    assign n_rated = n_rated | plus: 1
+    assign rating_sum = rating_sum | plus: r
+    case r
+      when 5
+        assign c5 = c5 | plus: 1
+      when 4
+        assign c4 = c4 | plus: 1
+      when 3
+        assign c3 = c3 | plus: 1
+      when 2
+        assign c2 = c2 | plus: 1
+      else
+        assign c1 = c1 | plus: 1
+    endcase
+  endfor
+
+  assign avg = 0
+  if n_rated > 0
+    assign avg = rating_sum | times: 1.0 | divided_by: n_rated | round: 1
+  endif
+  assign override_avg = st.override_avg | strip | replace: ',', '.'
+  if override_avg != blank
+    assign avg = override_avg | plus: 0 | at_most: 5
+  endif
+  assign display_count = n_rated
+  if st.override_count != blank
+    assign display_count = st.override_count | strip
+  endif
+  assign avg_fill = avg | times: 20
+
+  assign show_form = false
+  if st.show_form and has_article and rw_article.comments_enabled?
+    assign show_form = true
+  endif
+
+  assign product_line = 'Store review (no product)'
+  if product != blank
+    assign product_line = product.title | append: ' — ' | append: shop.url | append: product.url
+  endif
+
+  assign words = st.rating_words | default: 'Poor|Fair|Good|Great|Excellent'
+  assign compose_id = 'rw-compose-' | append: sid
+  assign review_form_id = 'rw-review-' | append: sid
+  assign alert_form_id = 'rw-alert-' | append: sid
+-%}
+
+{%- if st.style == 'custom' -%}
+  <style>
+    #rw-{{ sid }} {
+      --rw-bg: {{ st.bg }};
+      --rw-card: {{ st.card_bg }};
+      --rw-text: {{ st.text }};
+      --rw-muted: {{ st.text | color_modify: 'alpha', 0.7 }};
+      --rw-line: {{ st.text | color_modify: 'alpha', 0.16 }};
+      --rw-accent: {{ st.accent }};
+      --rw-accent-hover: {{ st.accent | color_darken: 8 }};
+      --rw-accent-text: {{ st.accent_text }};
+    }
+  </style>
+{%- endif -%}
+
+<section
+  id="rw-{{ sid }}"
+  class="rw rw--{{ st.style | default: 'shop' }}"
+  style="--rw-pad-top: {{ st.pad_top }}px; --rw-pad-bottom: {{ st.pad_bottom }}px; --rw-cols: {{ st.columns }};"
+  data-rw
+  data-per-page="{{ st.per_page }}"
+  {% if st.heading != blank %}aria-labelledby="rw-title-{{ sid }}"{% else %}aria-label="Reviews"{% endif %}
+>
+  <div class="rw__wrap">
+    <div class="rw__stage" data-rw-stage>
+    <div class="rw__three" data-rw-three aria-hidden="true"></div>
+    {%- if st.heading != blank or st.subheading != blank -%}
+      <header class="rw__head">
+        {%- if st.heading != blank -%}<h2 class="rw__title" id="rw-title-{{ sid }}">{{ st.heading | escape }}</h2>{%- endif -%}
+        {%- if st.subheading != blank -%}<p class="rw__lede">{{ st.subheading | escape }}</p>{%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- capture write_button -%}
+      {%- if show_form -%}
+        <button type="button" class="rw-btn" data-rw-open aria-expanded="false" aria-controls="{{ compose_id }}">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          {{ st.cta_label | default: 'Write a review' | escape }}
+        </button>
+      {%- elsif st.cta_link != blank and st.cta_label != blank -%}
+        <a class="rw-btn" href="{{ st.cta_link }}">{{ st.cta_label | escape }}</a>
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- if n_shown == 0 and override_avg == blank -%}
+      <div class="rw-empty">
+        <span class="rw-empty__stars" aria-hidden="true">{%- render 'cv-stars', fill: 0 -%}</span>
+        <p class="rw-empty__title">{{ st.empty_heading | default: 'No reviews yet' | escape }}</p>
+        {%- if write_button != blank -%}
+          <p class="rw-empty__text">{{ st.empty_text | default: 'Be the first to tell other shoppers what you think.' | escape }}</p>
+          <div class="rw-empty__cta">{{ write_button }}</div>
+        {%- endif -%}
+      </div>
+    {%- elsif st.show_summary -%}
+      <div class="rw-summary">
+        <div class="rw-summary__score">
+          <b class="rw-summary__avg">{{ avg }}</b>
+          <span class="rw-summary__stars" role="img" aria-label="{{ avg }} out of 5 stars">{%- render 'cv-stars', fill: avg_fill -%}</span>
+          <small class="rw-summary__count">
+            {%- if n_other_shown > 0 -%}
+              {{ st.count_others_text | default: 'Based on [count] reviews of our cases' | replace: '[count]', display_count | escape }}
+            {%- else -%}
+              {{ st.count_text | default: 'Based on [count] reviews' | replace: '[count]', display_count | escape }}
+            {%- endif -%}
+          </small>
+        </div>
+
+        {%- if n_rated > 0 -%}
+          <ul class="rw-bars" role="list">
+            {%- assign counts = c5 | append: ',' | append: c4 | append: ',' | append: c3 | append: ',' | append: c2 | append: ',' | append: c1 | split: ',' -%}
+            {%- for n in counts -%}
+              {%- assign stars = 6 | minus: forloop.index -%}
+              {%- assign n_int = n | plus: 0 -%}
+              {%- assign pct = n_int | times: 100.0 | divided_by: n_rated | round -%}
+              <li class="rw-bar">
+                <span class="rw-bar__label" aria-hidden="true">{{ stars }}<svg viewBox="0 0 24 24" width="12" height="12" focusable="false"><path d="m12 3.6 2.5 5.3 5.8.7-4.3 4 1.1 5.8L12 16.6l-5.1 2.8 1.1-5.8-4.3-4 5.8-.7z"/></svg></span>
+                <span class="rw-bar__track" aria-hidden="true"><span style="width: {{ pct }}%"></span></span>
+                <span class="rw-bar__n"><span class="rw-sr">{{ stars }} stars: </span>{{ n_int }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if write_button != blank -%}<div class="rw-summary__cta">{{ write_button }}</div>{%- endif -%}
+      </div>
+    {%- elsif write_button != blank -%}
+      <div class="rw-summary rw-summary--cta-only"><div class="rw-summary__cta">{{ write_button }}</div></div>
+    {%- endif -%}
+    </div>
+
+    {%- if show_form -%}
+      <div class="rw-compose" id="{{ compose_id }}" data-rw-compose hidden>
+        {%- form 'new_comment', rw_article, id: review_form_id, class: 'rw-form', data-rw-form: '', data-rw-handle: here -%}
+          {%- if form.posted_successfully? -%}
+            <div class="rw-done" data-rw-result="posted" tabindex="-1">
+              <p class="rw-done__title" data-rw-done-title data-template="{{ st.success_heading | default: 'Thank you, [name]!' | escape }}">{{ st.success_heading | default: 'Thank you!' | remove: '[name]' | remove: ', ' | escape }}</p>
+              <p class="rw-done__text">{{ st.success_text | escape }}</p>
+              <a class="rw-btn rw-btn--ghost" href="{{ routes.all_products_collection_url }}" data-rw-back hidden>{{ st.back_label | default: 'Back to the case' | escape }}</a>
+            </div>
+          {%- elsif form.errors -%}
+            <div class="rw-alert-box" data-rw-result="error" role="alert">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+
+          <div class="rw-form__fields" data-rw-fields{% if form.posted_successfully? %} hidden{% endif %}>
+            <div class="rw-form__head">
+              <p class="rw-form__title">{{ st.form_heading | default: 'Write a review' | escape }}</p>
+              {%- if st.form_intro != blank -%}<p class="rw-form__intro">{{ st.form_intro | escape }}</p>{%- endif -%}
+            </div>
+
+            <fieldset class="rw-rate" data-rw-rate data-words="{{ words | escape }}">
+              <legend class="rw-label">{{ st.rating_label | default: 'Your rating' | escape }}</legend>
+              <div class="rw-rate__row">
+                <div class="rw-rate__stars">
+                  {%- for i in (1..5) -%}
+                    <label class="rw-rate__star">
+                      <input type="radio" name="rw-rating" value="{{ i }}" required>
+                      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="m12 3.6 2.5 5.3 5.8.7-4.3 4 1.1 5.8L12 16.6l-5.1 2.8 1.1-5.8-4.3-4 5.8-.7z"/></svg>
+                      <span class="rw-sr">{{ i }} {% if i == 1 %}star{% else %}stars{% endif %}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+                <span class="rw-rate__word" data-rw-rate-word aria-hidden="true"></span>
+              </div>
+            </fieldset>
+
+            <div class="rw-field">
+              <label class="rw-label" for="rw-title-input-{{ sid }}">{{ st.title_label | default: 'Title' | escape }} <span class="rw-optional">{{ st.optional_label | default: 'optional' | escape }}</span></label>
+              <input class="rw-input" type="text" id="rw-title-input-{{ sid }}" name="rw-title" maxlength="80" autocomplete="off">
+            </div>
+
+            <div class="rw-field">
+              <label class="rw-label" for="rw-text-{{ sid }}">{{ st.text_label | default: 'Your review' | escape }}</label>
+              <textarea class="rw-input rw-input--area" id="rw-text-{{ sid }}" name="rw-text" rows="5" minlength="10" maxlength="1500" required></textarea>
+            </div>
+
+            <div class="rw-form__pair">
+              <div class="rw-field">
+                <label class="rw-label" for="rw-name-{{ sid }}">{{ st.name_label | default: 'Your name' | escape }}</label>
+                <input class="rw-input" type="text" id="rw-name-{{ sid }}" name="comment[author]" maxlength="60" autocomplete="name" required aria-describedby="rw-name-hint-{{ sid }}" value="{{ form.author | escape }}">
+                <small class="rw-hint" id="rw-name-hint-{{ sid }}">{{ st.name_hint | default: 'Shown with your review' | escape }}</small>
+              </div>
+              <div class="rw-field">
+                <label class="rw-label" for="rw-email-{{ sid }}">{{ st.email_label | default: 'Email' | escape }}</label>
+                <input class="rw-input" type="email" id="rw-email-{{ sid }}" name="comment[email]" autocomplete="email" required aria-describedby="rw-email-hint-{{ sid }}" value="{{ form.email | escape }}">
+                <small class="rw-hint" id="rw-email-hint-{{ sid }}">{{ st.email_hint | default: 'Never shown' | escape }}</small>
+              </div>
+            </div>
+
+            <textarea name="comment[body]" hidden aria-hidden="true" tabindex="-1"></textarea>
+
+            {%- if st.form_note != blank -%}<p class="rw-form__note">{{ st.form_note | escape }}</p>{%- endif -%}
+
+            <p class="rw-status" data-rw-status role="status" aria-live="polite"></p>
+
+            <div class="rw-form__actions">
+              <button type="submit" class="rw-btn" data-rw-submit data-sending-label="{{ st.sending_label | default: 'Sending…' | escape }}">{{ st.submit_label | default: 'Send review' | escape }}</button>
+              <button type="button" class="rw-btn rw-btn--ghost" data-rw-cancel>{{ st.cancel_label | default: 'Cancel' | escape }}</button>
+            </div>
+          </div>
+
+          <div class="rw-done" data-rw-done tabindex="-1" hidden>
+            <p class="rw-done__title" data-rw-done-title data-template="{{ st.success_heading | default: 'Thank you, [name]!' | escape }}"></p>
+            <p class="rw-done__text">{{ st.success_text | escape }}</p>
+          </div>
+
+          <p hidden data-rw-wait-text>{{ st.wait_text | default: 'Still sending. If a tick box or picture check appeared, finish it to send your review.' | escape }}</p>
+          <p hidden data-rw-error-text>{{ st.error_text | default: "Your review couldn't be sent. Check your connection and try again." | escape }}</p>
+        {%- endform -%}
+
+        {%- if st.email_alert -%}
+          {%- comment -%} The merchant's copy. Filled and sent by the script; never shown. {%- endcomment -%}
+          <div class="rw-offscreen" aria-hidden="true">
+            {%- form 'contact', id: alert_form_id, data-rw-alert: '' -%}
+              <input type="hidden" name="contact[name]" value="">
+              <input type="hidden" name="contact[email]" value="">
+              <input type="hidden" name="contact[Rating]" value="">
+              <input type="hidden" name="contact[Review title]" value="">
+              <input type="hidden" name="contact[Product]" value="{{ product_line | escape }}">
+              <input type="hidden" name="contact[Approve or reject]" value="Shopify admin > Content > Blog posts > Manage comments">
+              <input type="hidden" name="contact[body]" value="">
+            {%- endform -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- elsif request.design_mode and st.show_form -%}
+      <p class="rw-editor-hint">
+        {%- if has_article -%}
+          The review form is hidden because comments are turned off for this post's blog. In Shopify admin, open Content &gt; Blog posts &gt; Manage blogs, choose the blog, and set comments to "allowed, pending moderation".
+        {%- else -%}
+          The review form needs the blog post "{{ st.reviews_article | escape }}". Create a blog with comments set to "allowed, pending moderation", add one published post to it, and enter blog-handle/post-handle here.
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if n_shown > 0 -%}
+      <div class="rw-grid" data-rw-grid>
+        {%- comment -%} 1. Approved reviews of this product (all reviews off product pages) {%- endcomment -%}
+        {%- if has_article -%}
+          {%- for c in rw_article.comments -%}
+            {%- liquid
+              assign raw = c.content | strip_html | strip
+              assign parts = raw | split: '§'
+              assign r = 0
+              assign h = ''
+              assign t = ''
+              assign body = raw
+              if parts.size >= 4
+                assign r = parts[0] | split: '/' | first | strip | plus: 0
+                assign h = parts[1] | strip
+                assign t = parts[2] | strip
+                assign prefix = parts[0] | append: '§' | append: parts[1] | append: '§' | append: parts[2] | append: '§'
+                assign body = raw | remove_first: prefix
+              endif
+              if here != blank and h != here
+                continue
+              endif
+              comment
+                Shopify stores the text as HTML: decode its entities once; the card escapes it again.
+              endcomment
+              assign t = t | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&#x27;', "'" | replace: '&amp;', '&'
+              assign body = body | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&#x27;', "'" | replace: '&amp;', '&'
+              assign p_title = ''
+              assign p_url = ''
+              if here == blank and h != blank
+                assign p_title = all_products[h].title
+                assign p_url = all_products[h].url
+              endif
+              assign c_date = c.created_at | date: '%B %Y'
+            -%}
+            {%- render 'rw-review-card', rating: r, title: t, text: body, author: c.author, date: c_date, product_title: p_title, product_url: p_url, product_label: st.other_label -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- comment -%} 2. Reviews typed in as blocks {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            if block.settings.author == blank or block.settings.text == blank
+              continue
+            endif
+            assign bp = block.settings.product
+            if here != blank and bp != blank and bp.handle != here
+              continue
+            endif
+          -%}
+          {%- render 'rw-review-card', rating: block.settings.rating, title: block.settings.title, text: block.settings.text, author: block.settings.author, date: block.settings.date, verified: block.settings.verified, verified_label: st.verified_label, image: block.settings.image, attrs: block.shopify_attributes -%}
+        {%- endfor -%}
+
+        {%- comment -%} 3. On a product page: approved reviews of other cases, labelled {%- endcomment -%}
+        {%- if has_article and here != blank and include_others -%}
+          {%- for c in rw_article.comments -%}
+            {%- liquid
+              assign raw = c.content | strip_html | strip
+              assign parts = raw | split: '§'
+              assign r = 0
+              assign h = ''
+              assign t = ''
+              assign body = raw
+              if parts.size >= 4
+                assign r = parts[0] | split: '/' | first | strip | plus: 0
+                assign h = parts[1] | strip
+                assign t = parts[2] | strip
+                assign prefix = parts[0] | append: '§' | append: parts[1] | append: '§' | append: parts[2] | append: '§'
+                assign body = raw | remove_first: prefix
+              endif
+              if h == here
+                continue
+              endif
+              assign t = t | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&#x27;', "'" | replace: '&amp;', '&'
+              assign body = body | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&#x27;', "'" | replace: '&amp;', '&'
+              assign p_title = ''
+              assign p_url = ''
+              if h != blank
+                assign p_title = all_products[h].title
+                assign p_url = all_products[h].url
+              endif
+              assign c_date = c.created_at | date: '%B %Y'
+            -%}
+            {%- render 'rw-review-card', rating: r, title: t, text: body, author: c.author, date: c_date, product_title: p_title, product_url: p_url, product_label: st.other_label -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- if n_shown > st.per_page -%}
+        <div class="rw-more">
+          <button type="button" class="rw-btn rw-btn--ghost" data-rw-more>{{ st.more_label | default: 'Load more reviews' | escape }}</button>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Review widget",
+  "tag": "div",
+  "class": "section-review-widget",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What our customers say" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Real reviews from real people" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true },
+    { "type": "text", "id": "override_avg", "label": "Override average rating", "info": "Leave empty to calculate it from the reviews shown. Only enter a number you can back up." },
+    { "type": "text", "id": "override_count", "label": "Override review count", "info": "Leave empty to count the reviews shown." },
+    { "type": "text", "id": "count_text", "label": "Review count line", "default": "Based on [count] reviews" },
+    { "type": "text", "id": "count_others_text", "label": "Review count line with other cases", "default": "Based on [count] reviews of our cases", "info": "Used when reviews of other cases are shown too." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Write a review" },
+    { "type": "url", "id": "cta_link", "label": "Button link when the form is off", "info": "Only used when \"Let customers write a review\" is off." },
+    { "type": "header", "content": "Customer reviews" },
+    { "type": "paragraph", "content": "Reviews customers send wait in Shopify admin > Content > Blog posts > Manage comments. Approve one and it shows here; mark it as spam or delete it to turn it down." },
+    { "type": "checkbox", "id": "show_form", "label": "Let customers write a review", "default": true },
+    { "type": "text", "id": "reviews_article", "label": "Reviews blog post", "default": "customer-reviews/reviews", "info": "blog-handle/post-handle. The blog's comments must be set to \"allowed, pending moderation\"." },
+    { "type": "checkbox", "id": "email_alert", "label": "Email me a copy of each new review", "default": true, "info": "Sent to your store's contact email, so you know a review is waiting." },
+    {
+      "type": "select",
+      "id": "scope",
+      "label": "On a product page, show",
+      "default": "product_and_others",
+      "options": [
+        { "value": "product_and_others", "label": "Its reviews first, then other cases" },
+        { "value": "product", "label": "Only its own reviews" }
+      ]
+    },
+    { "type": "text", "id": "other_label", "label": "Label on other cases' reviews", "default": "Review of" },
+    { "type": "text", "id": "verified_label", "label": "Verified badge", "default": "Verified buyer" },
+    { "type": "text", "id": "empty_heading", "label": "Heading with no reviews yet", "default": "No reviews yet" },
+    { "type": "text", "id": "empty_text", "label": "Text with no reviews yet", "default": "Be the first to tell other shoppers what you think." },
+    { "type": "header", "content": "Review form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Write a review" },
+    { "type": "text", "id": "form_intro", "label": "Form intro", "default": "Tell other shoppers how your case fits, feels and holds up." },
+    { "type": "text", "id": "rating_label", "label": "Rating label", "default": "Your rating" },
+    { "type": "text", "id": "rating_words", "label": "Words for 1 to 5 stars", "default": "Poor|Fair|Good|Great|Excellent", "info": "Five words separated by |" },
+    { "type": "text", "id": "title_label", "label": "Title label", "default": "Title" },
+    { "type": "text", "id": "optional_label", "label": "Optional tag", "default": "optional" },
+    { "type": "text", "id": "text_label", "label": "Review label", "default": "Your review" },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Your name" },
+    { "type": "text", "id": "name_hint", "label": "Name hint", "default": "Shown with your review" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "email_hint", "label": "Email hint", "default": "Never shown" },
+    { "type": "text", "id": "form_note", "label": "Note above the button", "default": "We read every review before it's published." },
+    { "type": "text", "id": "submit_label", "label": "Send button", "default": "Send review" },
+    { "type": "text", "id": "sending_label", "label": "Send button while sending", "default": "Sending…" },
+    { "type": "text", "id": "cancel_label", "label": "Cancel button", "default": "Cancel" },
+    { "type": "text", "id": "success_heading", "label": "Thank-you heading", "default": "Thank you, [name]!", "info": "[name] is the reviewer's name." },
+    { "type": "text", "id": "success_text", "label": "Thank-you text", "default": "Your review is with us. We read every one and publish it here once it's approved." },
+    { "type": "text", "id": "wait_text", "label": "Text while Shopify's spam check is open", "default": "Still sending. If a tick box or picture check appeared, finish it to send your review." },
+    { "type": "text", "id": "error_text", "label": "Error text", "default": "Your review couldn't be sent. Check your connection and try again." },
+    { "type": "text", "id": "back_label", "label": "Back link on the reviews page", "default": "Back to the case" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "per_page", "label": "Reviews shown before \"Load more\"", "min": 3, "max": 24, "step": 1, "default": 6 },
+    { "type": "text", "id": "more_label", "label": "Load more label", "default": "Load more reviews" },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Look",
+      "default": "shop",
+      "options": [
+        { "value": "shop", "label": "Casify shop colours" },
+        { "value": "custom", "label": "Custom colours below" }
+      ]
+    },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f7f7f5" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "star", "label": "Stars", "default": "#f5a623", "info": "Not used: stars match the rest of the shop." },
+    { "type": "color", "id": "accent", "label": "Accent / button", "default": "#111111" },
+    { "type": "color", "id": "accent_text", "label": "Accent text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "paragraph", "content": "For a review a customer sent you some other way. Type it exactly as they wrote it. Reviews sent through the form appear by themselves once you approve them." },
+        { "type": "text", "id": "author", "label": "Name" },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Review" },
+        { "type": "text", "id": "date", "label": "Date", "info": "For example \"September 2026\"." },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": false, "info": "Tick only after finding their order." },
+        { "type": "image_picker", "id": "image", "label": "Photo (optional)" },
+        { "type": "product", "id": "product", "label": "Only show on", "info": "Leave empty to show it on every product." }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Review widget" }
+  ]
+}
+{% endschema %}

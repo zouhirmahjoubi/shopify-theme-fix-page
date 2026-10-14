@@ -1,0 +1,169 @@
+{
+  "bugs": {
+    "url": "https://github.com/motiondivision/motion/issues"
+  },
+  "dist": {
+    "shasum": "1e1a16a0035806461e6773e0bed9f7f6983d90a6",
+    "tarball": "https://registry.npmjs.org/motion/-/motion-14.2.0.tgz",
+    "fileCount": 40,
+    "integrity": "sha512-45cDwjZh0yOMZtnX3hIFPIPmzCWz/RC2bD/niWVIssGBjJlMmosbDILG9a+ZyoP635Z5xrbKvuo10spv9dBdnw==",
+    "signatures": [
+      {
+        "sig": "MEUCID1cQmiM75YtFObCKZ/bAxSWuGJfm+jsANAsXL8BzlgVAiEAtGy2wwGLtJ2I9WBevDYCHJoWNaeN2JYXmsflyT+RYhs=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "sig": "MEQCIBfYDghPsOSb7hR0wURpwj6j57xwiueYaUgmPryGMj93AiBTYP0c8PnJ2OQRIWyDDROTMCx5ztVlqa5pbyxtq5YaMA==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 805933
+  },
+  "main": "dist/cjs/index.js",
+  "name": "motion",
+  "types": "dist/index.d.ts",
+  "author": {
+    "name": "Matt Perry"
+  },
+  "module": "dist/es/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/es/index.mjs",
+      "default": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./mini": {
+      "types": "./dist/mini.d.ts",
+      "import": "./dist/es/mini.mjs",
+      "default": "./dist/cjs/mini.js",
+      "require": "./dist/cjs/mini.js"
+    },
+    "./vgpu": {
+      "types": "./dist/vgpu.d.ts",
+      "import": "./dist/es/vgpu.mjs",
+      "default": "./dist/cjs/vgpu.js",
+      "require": "./dist/cjs/vgpu.js"
+    },
+    "./debug": {
+      "types": "./dist/debug.d.ts",
+      "import": "./dist/es/debug.mjs",
+      "default": "./dist/cjs/debug.js",
+      "require": "./dist/cjs/debug.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/es/react.mjs",
+      "default": "./dist/cjs/react.js",
+      "require": "./dist/cjs/react.js"
+    },
+    "./three": {
+      "types": "./dist/three.d.ts",
+      "import": "./dist/es/three.mjs",
+      "default": "./dist/cjs/three.js",
+      "require": "./dist/cjs/three.js"
+    },
+    "./react-m": {
+      "types": "./dist/react-m.d.ts",
+      "import": "./dist/es/react-m.mjs",
+      "default": "./dist/cjs/react-m.js",
+      "require": "./dist/cjs/react-m.js"
+    },
+    "./react-mini": {
+      "types": "./dist/react-mini.d.ts",
+      "import": "./dist/es/react-mini.mjs",
+      "default": "./dist/cjs/react-mini.js",
+      "require": "./dist/cjs/react-mini.js"
+    },
+    "./package.json": "./package.json",
+    "./react-client": {
+      "types": "./dist/react-client.d.ts",
+      "import": "./dist/es/react-client.mjs",
+      "default": "./dist/cjs/react-client.js",
+      "require": "./dist/cjs/react-client.js"
+    },
+    "./react-animate-view": {
+      "types": "./dist/react-animate-view.d.ts",
+      "import": "./dist/es/react-animate-view.mjs",
+      "default": "./dist/cjs/react-animate-view.js",
+      "require": "./dist/cjs/react-animate-view.js"
+    }
+  },
+  "gitHead": "790a654dfef305307c566cf4e94d67a9f7a403c8",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently -c blue,red -n tsc,rollup --kill-others \"tsc --watch -p . --preserveWatchOutput\" \"rollup --config --watch --no-watch.clearScreen\"",
+    "test": "jest --config jest.config.json --max-workers=2",
+    "build": "yarn clean && tsc -p . && rollup -c",
+    "clean": "rm -rf types dist lib",
+    "prepack": "yarn build",
+    "postpublish": "git push --tags"
+  },
+  "_npmUser": {
+    "name": "popmotion",
+    "email": "mattgperry@gmail.com"
+  },
+  "homepage": "https://github.com/motiondivision/motion#readme",
+  "keywords": [
+    "javascript animation",
+    "react animation",
+    "react",
+    "three",
+    "3d",
+    "animation",
+    "gestures",
+    "drag",
+    "spring",
+    "popmotion",
+    "framer",
+    "waapi"
+  ],
+  "repository": {
+    "url": "git+https://github.com/motiondivision/motion.git",
+    "type": "git"
+  },
+  "_npmVersion": "lerna/4.0.0/node@v22.23.3+arm64 (darwin)",
+  "description": "An animation library for JavaScript and React.",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "popmotion",
+      "email": "mattgperry@gmail.com"
+    },
+    {
+      "name": "motionone",
+      "email": "matt@motion.dev"
+    }
+  ],
+  "sideEffects": false,
+  "_nodeVersion": "22.23.3",
+  "dependencies": {
+    "tslib": "^2.4.0",
+    "framer-motion": "14.2.0"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "rollup": "4.59.0",
+    "typescript": "5.4.3",
+    "concurrently": "^7.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/motion_14.2.0_1791891117115_0.1261747118309604",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "motion@14.2.0",
+  "version": "14.2.0"
+}

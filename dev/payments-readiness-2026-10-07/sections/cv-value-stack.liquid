@@ -1,0 +1,446 @@
+{%- comment -%}
+  Casify — Converting PDP: value stack, redesigned.
+
+  Content is unchanged: every heading, problem, fix, benefit, and every proof-
+  bar name/value/percentage is exactly what shipped before, straight out of
+  the same schema/preset defaults. This pass only changes how it's built and
+  how it moves.
+
+  Three parts, all block-driven:
+    1. "problem → fix" rows: icon in a brass medallion, a count-up metric, and
+       a them-vs-us balance beam that tips toward "us" on reveal
+    2. a benefit grid, lightly refreshed
+    3. the proof chart rebuilt as a vertical gauge: each contender's column
+       rises from the counter line in sequence, tallest first, ours capped
+       with a candy-cane flag
+  Styles: assets/cv-value-stack.css. Motion: assets/cv-value-stack-motion.js.
+{%- endcomment -%}
+{{ 'cv-value-stack.css' | asset_url | stylesheet_tag }}
+<script>
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvvs-pending');
+    setTimeout(function () { root.classList.remove('cvvs-pending'); }, 1600);
+  })(document.documentElement);
+</script>
+
+{%- comment -%} No "cvvs" class here: cv-vs.css styles .cvvs as the "Us vs. them" section root. {%- endcomment -%}
+<section class="cv-sec cv-values" id="cv-value" data-cvvs>
+  <div class="cv-sec__hd" data-cv-reveal>
+    <span class="cv-eyebrow">
+      <span class="cv-eyebrow__ico" aria-hidden="true">{{ 'icon-candy-swirl.svg' | inline_asset_content }}</span>
+      {{ section.settings.eyebrow | default: 'Before you order' | escape }}
+    </span>
+    <h2 data-cv-split>{{ section.settings.heading | default: 'Three steps to choose your case' | escape }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ---------- 1. Problem / fix rows ---------- {%- endcomment -%}
+  {%- assign fix_i = 0 -%}
+  {%- for b in section.blocks -%}
+    {%- if b.type == 'fix' -%}
+      {%- assign fix_i = fix_i | plus: 1 -%}
+      {%- assign fix_i_mod = fix_i | modulo: 2 -%}
+      <article class="cvvs-fix{% if fix_i_mod == 0 %} cvvs-fix--flip{% endif %}" data-cvvs-fix {{ b.shopify_attributes }}>
+        <div class="cvvs-fix__figure">
+          <span class="cvvs-fix__medal" aria-hidden="true"></span>
+          <span class="cvvs-fix__ico">{%- render 'cv-icon', name: b.settings.icon, size: 56, animate: true -%}</span>
+          <span class="cvvs-fix__metric" data-cvvs-metric data-value="{{ b.settings.metric_value }}">
+            <b data-cvvs-metric-num>{{ b.settings.metric_value | escape }}</b><i>{{ b.settings.metric_unit | escape }}</i>
+          </span>
+        </div>
+
+        <div class="cvvs-fix__body">
+          <span class="cvvs-fix__index">{{ fix_i | prepend: '0' | slice: -2, 2 }}</span>
+          <h3 class="cvvs-fix__problem">{{ b.settings.problem | escape }}</h3>
+          <div class="cvvs-fix__copy">{{ b.settings.body }}</div>
+
+          {%- if b.settings.them_label != blank or b.settings.us_label != blank -%}
+            <div class="cvvs-beam" data-cvvs-beam>
+              <span class="cvvs-beam__side cvvs-beam__side--them">
+                <span class="cvvs-beam__tag">{%- render 'cv-icon', name: 'cross', size: 13 -%} {{ b.settings.them_title | default: 'Typical case' | escape }}</span>
+                <strong>{{ b.settings.them_label | escape }}</strong>
+              </span>
+              <span class="cvvs-beam__fulcrum" aria-hidden="true">
+                <span class="cvvs-beam__bar" data-cvvs-beam-bar></span>
+              </span>
+              <span class="cvvs-beam__side cvvs-beam__side--us">
+                <span class="cvvs-beam__tag">{%- render 'cv-icon', name: 'check', size: 13 -%} {{ b.settings.us_title | default: 'This case' | escape }}</span>
+                <strong>{{ b.settings.us_label | escape }}</strong>
+              </span>
+            </div>
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} ---------- 2. Benefit grid ---------- {%- endcomment -%}
+  {%- assign has_benefit = false -%}
+  {%- for b in section.blocks -%}{%- if b.type == 'benefit' -%}{%- assign has_benefit = true -%}{%- endif -%}{%- endfor -%}
+  {%- if has_benefit -%}
+    <div class="cvvs-benefits">
+      {%- if section.settings.benefits_heading != blank -%}
+        <h3 class="cvvs-benefits__hd" data-cv-reveal>{{ section.settings.benefits_heading | escape }}</h3>
+      {%- endif -%}
+      <ul class="cvvs-benefits__grid" role="list">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'benefit' -%}
+            <li class="cvvs-benefit" data-cvvs-benefit style="--i:{{ forloop.index0 }}" {{ b.shopify_attributes }}>
+              <span class="cvvs-benefit__ico">{%- render 'cv-icon', name: b.settings.icon, size: 28, animate: true -%}</span>
+              <h4>{{ b.settings.title | escape }}</h4>
+              <p>{{ b.settings.body | escape }}</p>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- 3. Proof gauge ---------- {%- endcomment -%}
+  {%- assign bars = section.blocks | where: 'type', 'bar' -%}
+  {%- if bars.size > 0 -%}
+    <div class="cvvs-gauge" data-cvvs-gauge>
+      <div class="cvvs-gauge__hd">
+        <span class="cv-eyebrow">{{ section.settings.proof_eyebrow | default: 'Product information' | escape }}</span>
+        <h3>{{ section.settings.proof_heading | default: 'Product information' | escape }}</h3>
+      </div>
+      <div class="cvvs-gauge__rig" tabindex="0" role="group" aria-label="{{ section.settings.proof_heading | default: 'Product information' | escape }}">
+        {%- for b in bars -%}
+          <div class="cvvs-gauge__col{% if b.settings.highlight %} is-us{% endif %}" data-cvvs-col data-pct="{{ b.settings.pct | default: 50 }}" style="--i:{{ forloop.index0 }}" {{ b.shopify_attributes }}>
+            <span class="cvvs-gauge__val" data-cvvs-col-val>{{ b.settings.value | escape }}</span>
+            <span class="cvvs-gauge__bar" data-cvvs-col-bar style="--fill: {{ b.settings.pct | default: 50 }}%">
+              {%- if b.settings.highlight -%}<span class="cvvs-gauge__flag" aria-hidden="true">{%- render 'cv-icon', name: 'candy-cane', size: 20 -%}</span>{%- endif -%}
+            </span>
+            <span class="cvvs-gauge__name">{{ b.settings.name | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+      <span class="cvvs-gauge__line" aria-hidden="true"></span>
+      {%- if section.settings.proof_footnote != blank -%}
+        <p class="cvvs-gauge__foot">{%- render 'cv-icon', name: 'lab', size: 14 -%} {{ section.settings.proof_footnote | escape }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+<script src="{{ 'cv-value-stack-motion.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Convert — Value stack",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Before you order"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Three steps to choose your case"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "benefits_heading",
+      "label": "Benefit grid heading",
+      "default": "Shopping with Casify"
+    },
+    {
+      "type": "text",
+      "id": "proof_eyebrow",
+      "label": "Proof eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "proof_heading",
+      "label": "Proof heading"
+    },
+    {
+      "type": "text",
+      "id": "proof_footnote",
+      "label": "Proof footnote"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fix",
+      "name": "Problem / fix row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "drop-shield",
+              "label": "Drop shield"
+            },
+            {
+              "value": "honeycomb",
+              "label": "Air-cell structure"
+            },
+            {
+              "value": "magnet-ring",
+              "label": "Magnet ring"
+            },
+            {
+              "value": "no-yellow",
+              "label": "No yellowing"
+            },
+            {
+              "value": "slim",
+              "label": "Slim profile"
+            },
+            {
+              "value": "uv-sun",
+              "label": "UV exposure"
+            }
+          ],
+          "default": "drop-shield"
+        },
+        {
+          "type": "text",
+          "id": "metric_value",
+          "label": "Metric number",
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "metric_unit",
+          "label": "Metric unit"
+        },
+        {
+          "type": "text",
+          "id": "problem",
+          "label": "The problem",
+          "default": "Choose your phone model"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "The fix"
+        },
+        {
+          "type": "text",
+          "id": "them_title",
+          "label": "Them — label",
+          "default": "Typical case"
+        },
+        {
+          "type": "text",
+          "id": "them_label",
+          "label": "Them — value"
+        },
+        {
+          "type": "text",
+          "id": "us_title",
+          "label": "Us — label",
+          "default": "This case"
+        },
+        {
+          "type": "text",
+          "id": "us_label",
+          "label": "Us — value"
+        }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "wireless-charge",
+              "label": "Wireless charging"
+            },
+            {
+              "value": "camera-lip",
+              "label": "Camera lip"
+            },
+            {
+              "value": "button-click",
+              "label": "Button feel"
+            },
+            {
+              "value": "precision-fit",
+              "label": "Precision fit"
+            },
+            {
+              "value": "sparkle-clear",
+              "label": "Clarity"
+            },
+            {
+              "value": "returns",
+              "label": "Returns"
+            },
+            {
+              "value": "warranty-seal",
+              "label": "Warranty"
+            },
+            {
+              "value": "truck-fast",
+              "label": "Fast shipping"
+            }
+          ],
+          "default": "wireless-charge"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Read the product details"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Check the materials, features and available options for the case you choose."
+        }
+      ]
+    },
+    {
+      "type": "bar",
+      "name": "Proof bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "This case"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Displayed value"
+        },
+        {
+          "type": "range",
+          "id": "pct",
+          "label": "Bar fill %",
+          "min": 4,
+          "max": 100,
+          "step": 2,
+          "default": 100
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight as ours",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Convert — Value stack",
+      "blocks": [
+        {
+          "type": "fix",
+          "settings": {
+            "icon": "slim",
+            "metric_value": "1",
+            "metric_unit": "",
+            "problem": "Find your phone model",
+            "body": "<p>Look up the model name in your phone settings. On each product page, choose the matching option before ordering.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        {
+          "type": "fix",
+          "settings": {
+            "icon": "magnet-ring",
+            "metric_value": "2",
+            "metric_unit": "",
+            "problem": "Read the product details",
+            "body": "<p>Materials, charging compatibility and features vary by case. Check the details for the particular design you choose.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        {
+          "type": "fix",
+          "settings": {
+            "icon": "uv-sun",
+            "metric_value": "3",
+            "metric_unit": "",
+            "problem": "Choose your style",
+            "body": "<p>Use the photos and colour options to find the case you want. Your chosen model and colour appear in your bag before checkout.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "wireless-charge",
+            "title": "Compatibility details",
+            "body": "Check the product page for charging and accessory information."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "precision-fit",
+            "title": "Model options",
+            "body": "Select the phone model listed on the product page."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle-clear",
+            "title": "Photos and colours",
+            "body": "See the available finishes before choosing your case."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "On every order. Dispatch in 1–2 business days."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "Read our return policy for conditions and instructions."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "button-click",
+            "title": "Help choosing",
+            "body": "Use our contact page if you have a question before ordering."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

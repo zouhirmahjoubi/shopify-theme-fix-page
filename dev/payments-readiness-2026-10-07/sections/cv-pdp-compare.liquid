@@ -1,0 +1,230 @@
+{%- comment -%}
+  Casify product page: the pack comparison (the home comparison table, rebuilt).
+  The home table set Casify against rival cases with in-house lab figures that
+  are not confirmed. This one compares the choices a shopper actually has on
+  this page: one, two or three cases, each under its glass candy jar (KIE set
+  pieces assets/pdp-home-jar-*.webp). Every figure is worked out from this
+  case's price and each column's percentage, with the USD discount amount rounded down to a whole cent for a
+  line discount; the percentages must match the store's automatic discounts.
+  "Choose" picks that pack in the buy box and scrolls back to it.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+  assign cols = section.blocks | where: 'type', 'pack'
+  assign thumb = product.featured_image
+-%}
+
+{%- if cols.size > 0 -%}
+  <section class="cvw cvw-compare" data-cvw-compare aria-labelledby="cvwCompareTitle-{{ section.id }}">
+    <div class="cvp__inner">
+      <div class="cvw-head">
+        <h2 class="cvp__h2" id="cvwCompareTitle-{{ section.id }}" data-cvw-split>{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+      </div>
+
+      <div class="cvw-compare__scroll">
+        <table class="cvw-compare__table" style="--cols: {{ cols.size }};">
+          <caption class="cvw-sr">{{ section.settings.heading | escape }}: {{ product.title | escape }}</caption>
+          <thead>
+            <tr>
+              <td class="cvw-compare__corner"></td>
+              {%- for b in cols -%}
+                {%- liquid
+                  assign q = b.settings.qty | at_least: 1
+                  case b.settings.jar
+                    when 'large'
+                      assign jar_w = 194
+                      assign jar_h = 460
+                    when 'medium'
+                      assign jar_w = 178
+                      assign jar_h = 380
+                    else
+                      assign jar_w = 175
+                      assign jar_h = 300
+                  endcase
+                -%}
+                <th scope="col" class="cvw-pack{% if b.settings.highlight %} is-highlight{% endif %}" data-cvw-pack-col {{ b.shopify_attributes }}>
+                  {%- if b.settings.flag != blank -%}<span class="cvw-pack__flag">{{ b.settings.flag | escape }}</span>{%- endif -%}
+                  <span class="cvw-pack__jar cvw-pack__jar--{{ b.settings.jar }}" aria-hidden="true">
+                    <span class="cvw-pack__fill" data-cvw-jar-fill>
+                      {%- if thumb -%}
+                        {%- for i in (1..q) -%}
+                          <img class="cvw-pack__case" src="{{ thumb | image_url: width: 120 }}" width="60" height="60" alt="" loading="lazy" decoding="async">
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </span>
+                    <img class="cvw-pack__glass" src="{{ 'pdp-home-jar-' | append: b.settings.jar | append: '.webp' | asset_url }}" width="{{ jar_w }}" height="{{ jar_h }}" alt="" loading="lazy" decoding="async">
+                  </span>
+                  <span class="cvw-pack__name">{{ b.settings.name | escape }}</span>
+                </th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{ section.settings.each_label | escape }}</th>
+              {%- for b in cols -%}
+                {%- liquid
+                  assign q = b.settings.qty | at_least: 1
+                  assign line = cvar.price | times: q
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
+                  assign each = line | minus: o | divided_by: q
+                -%}
+                <td class="cvw-compare__num{% if b.settings.highlight %} is-highlight{% endif %}"><b>{{ each | money }}</b></td>
+              {%- endfor -%}
+            </tr>
+            <tr>
+              <th scope="row">{{ section.settings.total_label | escape }}</th>
+              {%- for b in cols -%}
+                {%- liquid
+                  assign q = b.settings.qty | at_least: 1
+                  assign line = cvar.price | times: q
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
+                -%}
+                <td class="cvw-compare__num{% if b.settings.highlight %} is-highlight{% endif %}">{{ line | minus: o | money }}</td>
+              {%- endfor -%}
+            </tr>
+            <tr>
+              <th scope="row">{{ section.settings.save_label | escape }}</th>
+              {%- for b in cols -%}
+                {%- liquid
+                  assign q = b.settings.qty | at_least: 1
+                  assign line = cvar.price | times: q
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
+                -%}
+                <td class="cvw-compare__num cvw-compare__save{% if b.settings.highlight %} is-highlight{% endif %}">
+                  {%- if o > 0 -%}<span class="cvw-compare__chip">{{ o | money }}</span>{%- else -%}<span class="cvw-compare__none">{{ section.settings.none_label | escape }}</span>{%- endif -%}
+                </td>
+              {%- endfor -%}
+            </tr>
+            {%- for b in section.blocks -%}
+              {%- if b.type == 'fact' -%}
+                <tr {{ b.shopify_attributes }}>
+                  <th scope="row">{{ b.settings.label | escape }}</th>
+                  {%- for c in cols -%}
+                    <td class="cvw-compare__yes{% if c.settings.highlight %} is-highlight{% endif %}">
+                      {%- render 'cv-icon', name: 'check', size: 20 -%}<span class="cvw-sr">{{ section.settings.yes_label | escape }}</span>
+                    </td>
+                  {%- endfor -%}
+                </tr>
+              {%- endif -%}
+            {%- endfor -%}
+            <tr class="cvw-compare__actions">
+              <td></td>
+              {%- for b in cols -%}
+                <td class="{% if b.settings.highlight %}is-highlight{% endif %}">
+                  <button type="button" class="cvw-compare__choose" data-cvw-pack="{{ b.settings.qty | at_least: 1 }}">
+                    {{ section.settings.choose_label | replace: '[name]', b.settings.name | escape }}
+                  </button>
+                </td>
+              {%- endfor -%}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {%- comment -%} Phones: the same packs as stacked candy-jar cards, so no column hides off-screen. {%- endcomment -%}
+      <ul class="cvw-compare__cards" role="list">
+        {%- for b in cols -%}
+          {%- liquid
+            assign q = b.settings.qty | at_least: 1
+            assign line = cvar.price | times: q
+            assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
+            assign each = line | minus: o | divided_by: q
+            case b.settings.jar
+              when 'large'
+                assign jar_w = 194
+                assign jar_h = 460
+              when 'medium'
+                assign jar_w = 178
+                assign jar_h = 380
+              else
+                assign jar_w = 175
+                assign jar_h = 300
+            endcase
+          -%}
+          <li class="cvw-pcard{% if b.settings.highlight %} is-highlight{% endif %}" data-cvw-pack-col>
+            <span class="cvw-pack__jar cvw-pack__jar--{{ b.settings.jar }} cvw-pcard__jar" aria-hidden="true">
+              <span class="cvw-pack__fill">
+                {%- if thumb -%}
+                  {%- for i in (1..q) -%}
+                    <img class="cvw-pack__case" src="{{ thumb | image_url: width: 120 }}" width="60" height="60" alt="" loading="lazy" decoding="async">
+                  {%- endfor -%}
+                {%- endif -%}
+              </span>
+              <img class="cvw-pack__glass" src="{{ 'pdp-home-jar-' | append: b.settings.jar | append: '.webp' | asset_url }}" width="{{ jar_w }}" height="{{ jar_h }}" alt="" loading="lazy" decoding="async">
+            </span>
+            <div class="cvw-pcard__info">
+              {%- if b.settings.flag != blank -%}<span class="cvw-pcard__flag">{{ b.settings.flag | escape }}</span>{%- endif -%}
+              <h3 class="cvw-pcard__name">{{ b.settings.name | escape }}</h3>
+              <dl class="cvw-pcard__lines">
+                <div><dt>{{ section.settings.each_label | escape }}</dt><dd><b>{{ each | money }}</b></dd></div>
+                <div><dt>{{ section.settings.total_label | escape }}</dt><dd>{{ line | minus: o | money }}</dd></div>
+                <div><dt>{{ section.settings.save_label | escape }}</dt><dd>{%- if o > 0 -%}<span class="cvw-compare__chip">{{ o | money }}</span>{%- else -%}<span class="cvw-compare__none">{{ section.settings.none_label | escape }}</span>{%- endif -%}</dd></div>
+              </dl>
+            </div>
+            <button type="button" class="cvw-compare__choose cvw-pcard__choose" data-cvw-pack="{{ q }}">
+              {{ section.settings.choose_label | replace: '[name]', b.settings.name | escape }}
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.settings.footnote != blank -%}<p class="cvw-compare__foot">{{ section.settings.footnote | escape }}</p>{%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: pack comparison",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Put the packs side by side" },
+    { "type": "text", "id": "lede", "label": "Intro", "default": "Same case, same phone. Only the number of jars on the counter changes." },
+    { "type": "text", "id": "each_label", "label": "Row: price each", "default": "Price per case" },
+    { "type": "text", "id": "total_label", "label": "Row: total", "default": "You pay" },
+    { "type": "text", "id": "save_label", "label": "Row: saving", "default": "You save" },
+    { "type": "text", "id": "none_label", "label": "No saving", "default": "Full price" },
+    { "type": "text", "id": "yes_label", "label": "Included (screen readers)", "default": "Included" },
+    { "type": "text", "id": "choose_label", "label": "Button", "default": "Choose [name]" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Prices for the phone and style chosen above. Pack discounts are applied automatically at checkout." }
+  ],
+  "blocks": [
+    {
+      "type": "pack",
+      "name": "Pack column",
+      "limit": 4,
+      "settings": [
+        { "type": "number", "id": "qty", "label": "Cases", "default": 1 },
+        { "type": "range", "id": "pct", "label": "Discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Must match the automatic discount in Shopify admin." },
+        { "type": "text", "id": "name", "label": "Name", "default": "1 case" },
+        { "type": "text", "id": "flag", "label": "Ribbon", "info": "Only what is true, for example Save 18% or Best value." },
+        { "type": "select", "id": "jar", "label": "Jar", "default": "small", "options": [ { "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" } ] },
+        { "type": "checkbox", "id": "highlight", "label": "Highlight this column", "default": false }
+      ]
+    },
+    {
+      "type": "fact",
+      "name": "Included in every pack",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Row", "default": "Free shipping", "info": "Only facts true for every order." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: pack comparison",
+      "blocks": [
+        { "type": "pack", "settings": { "qty": 1, "pct": 0, "name": "1 case", "jar": "small" } },
+        { "type": "pack", "settings": { "qty": 2, "pct": 18, "name": "2 cases", "flag": "Save 18%", "jar": "medium", "highlight": true } },
+        { "type": "pack", "settings": { "qty": 3, "pct": 31, "name": "3 cases", "flag": "Best value", "jar": "large" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

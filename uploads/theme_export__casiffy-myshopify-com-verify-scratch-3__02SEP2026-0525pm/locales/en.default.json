@@ -1,0 +1,27 @@
+{
+  "general": {
+    "search": { "search": "Search", "placeholder": "Search sweets, gifts, and flavours", "submit": "Search" },
+    "cart":   { "title": "Your bag" },
+    "newsletter": { "label": "Email address", "placeholder": "you@sweetmail.com", "submit": "Sign up", "confirmation": "You're in. See you soon." },
+    "account_fallback": "Account",
+    "currency": { "dropdown_label": "Currency" },
+    "close": "Close",
+    "menu": "Menu",
+    "pagination": { "previous": "Previous", "next": "Next", "of": "of" }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to bag",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "adding": "Wrapping…",
+      "quantity": "Quantity",
+      "description": "Description",
+      "share": "Share"
+    }
+  },
+  "sections": {
+    "header": { "menu": "Menu" },
+    "footer": { "copyright_html": "© {{ year }} {{ shop }}" }
+  }
+}

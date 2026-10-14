@@ -1,0 +1,147 @@
+/* =========================================================================
+   Casify: mix-and-match packs (snippets/cv-pack-slots.liquid)
+   A candy box that fills with the real photo of each case in the pack, then
+   one row per case with its own colour and phone model.
+   Plates (KIE, cobalt-keyed; sources in assets/plates/):
+     assets/plates/pack-box.png -> pack-box-wall.webp (the box front)
+                                -> pack-box-lid.webp  (the lid with its bow)
+   Motion lives in cv-pack-motion.js; this file is the finished state.
+   ========================================================================= */
+
+.cvpk {
+  --cvpk-ink: var(--cocoa-700);
+  --cvpk-muted: var(--cocoa-600);
+  --cvpk-red: var(--red-500);
+  --cvpk-rule: rgba(74, 51, 36, .3);
+  margin-top: 20px;
+  color: var(--cvpk-ink);
+}
+.cvpk[hidden] { display: none; }
+
+/* ---------- The boxes: one striped candy box per case, the real photo standing in it ---------- */
+.cvpk__tray { padding-top: 14px; }
+.cvpk__cases {
+  display: flex; justify-content: center; align-items: flex-end; gap: 16px;
+  margin: 0; padding: 0; list-style: none;
+}
+.cvpk__case { position: relative; flex: 0 0 132px; height: 128px; }
+.cvpk__case[hidden] { display: none; }
+.cvpk__photo {
+  position: absolute; left: 15px; right: 15px; bottom: 16px; z-index: 1;
+  aspect-ratio: 1; padding: 5px; border-radius: 3px;
+  background: #fffdf8;
+  box-shadow: 0 10px 16px -10px rgba(51, 35, 26, .55), 0 0 0 1px rgba(74, 51, 36, .08);
+  rotate: var(--r, 0deg);
+}
+.cvpk__case:nth-child(1) { --r: -4deg; }
+.cvpk__case:nth-child(2) { --r: 3deg; }
+.cvpk__case:nth-child(3) { --r: -2deg; }
+.cvpk__photo img { display: block; width: 100%; height: 100%; max-width: none; object-fit: cover; border-radius: 2px; background: var(--cream-100); }
+.cvpk__front {
+  position: absolute; left: 0; bottom: 0; z-index: 2;
+  display: block; width: 100%; height: auto; max-width: none;
+  filter: drop-shadow(0 7px 8px rgba(51, 35, 26, .24));
+  pointer-events: none;
+}
+.cvpk__lid {
+  position: absolute; left: 50%; bottom: 28px; z-index: 3;
+  width: 112%; max-width: none; height: auto; translate: -50% 0;
+  opacity: 0; visibility: hidden;
+  pointer-events: none;
+}
+.cvpk__num {
+  position: absolute; top: -9px; left: -9px;
+  display: grid; place-items: center; width: 26px; height: 26px;
+  border-radius: 50%;
+  font-family: var(--font-display); font-weight: 900; font-size: 14px; line-height: 1;
+  color: var(--cream-50); background: var(--cvpk-red);
+  box-shadow: 0 3px 6px -2px rgba(126, 26, 23, .5);
+}
+.cvpk__wall {
+  position: absolute; left: 0; bottom: 0; z-index: 2;
+  width: 100%; height: 66px; max-width: none;
+  object-fit: cover; object-position: 50% 0;
+  filter: drop-shadow(0 8px 10px rgba(51, 35, 26, .22));
+  pointer-events: none;
+}
+.cvpk__lid {
+  position: absolute; left: 50%; bottom: 34px; z-index: 3;
+  width: 74%; max-width: none; height: auto; translate: -50% 0;
+  opacity: 0; visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- One row per case ---------- */
+.cvpk__rows { min-width: 0; margin: 14px 0 0; padding: 0; border: 0; }
+.cvpk__legend {
+  padding: 0; margin: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: 20px; line-height: 1.15;
+  color: var(--cvpk-ink);
+}
+.cvpk__hint { margin: 3px 0 6px; font-size: 13px; line-height: 1.45; color: var(--cvpk-muted); }
+.cvpk__row {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 6px 12px; align-items: center;
+  padding: 10px 0;
+  border-top: 1px dashed var(--cvpk-rule);
+}
+.cvpk__row[hidden] { display: none; }
+.cvpk__name {
+  font-family: var(--font-label); font-size: 12px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--cvpk-ink);
+}
+.cvpk__first { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0; font-size: 14px; line-height: 1.35; }
+.cvpk__first small { font-family: var(--font-label); font-size: 11.5px; color: var(--cvpk-muted); }
+.cvpk__fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; min-width: 0; }
+.cvpk__select { position: relative; display: block; min-width: 0; }
+.cvpk__select select {
+  display: block; width: 100%; height: 42px; margin: 0;
+  padding: 0 34px 0 12px;
+  -webkit-appearance: none; appearance: none;
+  font-family: var(--font-body); font-size: 14px; line-height: 1.2; color: var(--cvpk-ink); text-transform: none; letter-spacing: 0;
+  text-overflow: ellipsis; white-space: nowrap;
+  background: var(--cream-50);
+  border: 1px solid rgba(74, 51, 36, .45); border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 150ms var(--ease-standard), box-shadow 150ms var(--ease-standard);
+}
+.cvpk__select select:hover { border-color: var(--cvpk-ink); }
+.cvpk__select select:focus-visible { outline: 2px solid var(--cvpk-red); outline-offset: 2px; }
+.cvpk__select svg { position: absolute; right: 11px; top: 50%; translate: 0 -50%; pointer-events: none; color: var(--cvpk-ink); }
+.cvpk__row[data-cv-slot-bad] select { border-color: var(--cvpk-red); box-shadow: 0 0 0 3px rgba(196, 48, 43, .12); }
+.cvpk__same {
+  grid-column: 2; justify-self: start;
+  margin: 0; padding: 2px 0; border: 0; background: none; cursor: pointer;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.3; text-transform: none; letter-spacing: .01em;
+  color: var(--red-600);
+  text-decoration: underline dashed; text-underline-offset: 4px; text-decoration-thickness: 1px;
+}
+.cvpk__same:hover { color: var(--red-700); }
+.cvpk__same:focus-visible { outline: 2px solid var(--cvpk-red); outline-offset: 3px; }
+.cvpk__same[hidden] { display: none; }
+
+/* ---------- The Order Slip: the box sits on the paper, rows keep the slip's lines ---------- */
+.cvpk--slip { margin-left: -28px; }
+.cvpk--slip .cvpk__legend { font-family: var(--font-label); font-weight: 400; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+.cvpk--slip .cvpk__select select { border-style: dashed; border-radius: 6px; background: rgba(255, 253, 248, .7); }
+
+/* ---------- The Shop Counter ---------- */
+.cvpk--counter { margin-top: 22px; }
+
+/* motion start states, only while the page's motion script is getting ready */
+.cvc-pending .cvpk__photo, .cvs-pending .cvpk__photo { opacity: 0; }
+
+@media (max-width: 749px) {
+  .cvpk--slip { margin-left: -44px; }
+}
+@media (max-width: 540px) {
+  .cvpk__cases { gap: 8px; }
+  .cvpk__case { flex-basis: 104px; height: 102px; }
+  .cvpk__photo { left: 12px; right: 12px; bottom: 12px; }
+  .cvpk__lid { bottom: 21px; }
+  .cvpk__row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .cvpk__same { grid-column: 1; }
+  .cvpk__fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cvpk__select select { transition: none; }
+}

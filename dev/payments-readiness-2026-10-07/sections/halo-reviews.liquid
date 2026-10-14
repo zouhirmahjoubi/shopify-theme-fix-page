@@ -1,0 +1,62 @@
+<section class="halo-sec" id="halo-reviews">
+  <div class="halo-rev-top" data-halo-reveal>
+    <div class="halo-rev-score">
+      <span class="halo-rev-num">{{ section.settings.score | default: '4.8' }}</span>
+      <div>
+        <div class="halo-stars" style="font-size:16px">★★★★★</div>
+        <p style="font-size:14px;color:var(--cocoa-500);margin-top:3px;font-family:var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase">{{ section.settings.count | default: '12,480' }} verified reviews</p>
+      </div>
+    </div>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 04 — what buyers say' }}</span>
+  </div>
+  <div class="halo-revs halo-stagger">
+    {%- for block in section.blocks -%}
+      <div class="halo-rev" {{ block.shopify_attributes }}>
+        <div class="halo-rev__hd">
+          <span class="halo-rev__stars">{% for i in (1..block.settings.stars) %}★{% endfor %}{% assign halo_empty_stars = 5 | minus: block.settings.stars %}{% for i in (1..halo_empty_stars) %}☆{% endfor %}</span>
+          <span class="halo-rev__ver">Verified</span>
+        </div>
+        <p>{{ block.settings.body }}</p>
+        <span class="halo-rev__ft"><b>{{ block.settings.author | escape }}</b> · {{ block.settings.model | escape }}{% if block.settings.finish != blank %} · {{ block.settings.finish | escape }}{% endif %}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Reviews",
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range",    "id": "stars",  "label": "Stars",          "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "body",   "label": "Review body" },
+        { "type": "text",     "id": "author", "label": "Author name",    "default": "Customer" },
+        { "type": "text",     "id": "model",  "label": "Model",          "default": "iPhone 17 Pro Max" },
+        { "type": "text",     "id": "finish", "label": "Finish",         "default": "Clear" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "tick_label", "label": "Section tick", "default": "Section 04 — what buyers say" },
+    { "type": "text", "id": "score", "label": "Average score",  "default": "4.8" },
+    { "type": "text", "id": "count", "label": "Review count",   "default": "12,480" }
+  ],
+  "presets": [
+    {
+      "name": "Halo — Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "stars": 5, "body": "Dropped it off a ladder onto the driveway, maybe nine feet. I picked it up expecting the worst and there's one scuff on the corner. Phone's fine. That's the whole review.", "author": "Marcus T.", "model": "iPhone 17 Pro Max", "finish": "Midnight" } },
+        { "type": "review", "settings": { "stars": 5, "body": "I've bought a clear case every four months for years because they all go yellow. Mine's been on since February and it's still exactly the colour it was in the box.", "author": "Priya N.", "model": "iPhone 16", "finish": "Clear" } },
+        { "type": "review", "settings": { "stars": 5, "body": "The magnet is the thing nobody tells you about. My old case fell off the vent mount at every light. This one has not moved once, and I drive a truck with bad suspension.", "author": "Dee R.", "model": "Galaxy S25 Ultra", "finish": "Cobalt" } },
+        { "type": "review", "settings": { "stars": 4, "body": "Genuinely thin, which I didn't expect from something rated for twelve feet. Only note: the Butter finish shows fingerprints more than the Frost does. Not a dealbreaker, just so you know.", "author": "Alison K.", "model": "iPhone 17", "finish": "Butter" } },
+        { "type": "review", "settings": { "stars": 5, "body": "Cracked my screen in a car park drop and honestly assumed the Screen Promise was marketing. Sent the invoice, got $187 back in nine days. No argument.", "author": "Tomás V.", "model": "iPhone 16 Pro Max", "finish": "Clear" } },
+        { "type": "review", "settings": { "stars": 5, "body": "Buttons actually click. I've returned two cases this year because the volume buttons went mushy after a month. These feel like the phone's own.", "author": "Wen L.", "model": "Pixel 10 Pro", "finish": "Sage" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

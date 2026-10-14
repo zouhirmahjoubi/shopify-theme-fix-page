@@ -1,0 +1,72 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Questions about a product or order? Contact us for help.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support",
+        "preview_content": "<h2>Phone cases, with the details up front</h2><p>Casify is an online shop for phone cases and accessories. Browse the collection and choose the available model, color, and style on each product page.</p><h2>Find the right fit</h2><p>Check your phone model before ordering. Product pages show the available options and details for each case. If you have a question about compatibility, <a href=\"/pages/contact\">contact us</a> before you buy.</p><h2>Shopping with Casify</h2><p>Shipping is free on every order. Review our <a href=\"/pages/shipping-policy\">Shipping Policy</a> for processing and estimated delivery times, and our <a href=\"/pages/return-policy\">Return Policy</a> for return and refund information.</p><h2>Need help?</h2><p>For product questions or help with an order, visit our <a href=\"/pages/contact\">contact page</a>. Include your order number when asking about an existing order.</p>"
+      }
+    },
+    "hanging_cards": {
+      "type": "cv-hanging-cards",
+      "settings": {
+        "heading": "Where to next?",
+        "intro": "<p>Explore the shop or get a hand finding your fit.</p>"
+      },
+      "blocks": {
+        "collections": {
+          "type": "card",
+          "settings": {
+            "tone": "red",
+            "title": "Every collection",
+            "text": "Take a look through the shop’s aisles and see what is here.",
+            "link": "/collections",
+            "link_label": "See collections"
+          }
+        },
+        "cases": {
+          "type": "card",
+          "settings": {
+            "tone": "teal",
+            "title": "Find your case",
+            "text": "Open a case to check its available phone models and styles.",
+            "link": "/collections/all",
+            "link_label": "Browse cases"
+          }
+        },
+        "contact": {
+          "type": "card",
+          "settings": {
+            "tone": "gold",
+            "title": "Ask the shop",
+            "text": "Need help choosing? Send us a question through the contact page.",
+            "link": "/pages/contact",
+            "link_label": "Contact us"
+          }
+        }
+      },
+      "block_order": [
+        "collections",
+        "cases",
+        "contact"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "hanging_cards"
+  ]
+}

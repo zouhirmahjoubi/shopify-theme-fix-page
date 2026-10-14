@@ -1,0 +1,679 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-halo-product",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "bar_item",
+          "settings": {
+            "text": "<p>Free shipping over <b>$45</b></p>"
+          }
+        },
+        "block-1": {
+          "type": "bar_item",
+          "settings": {
+            "text": "<p><b>90-day</b> case trial</p>"
+          }
+        },
+        "block-2": {
+          "type": "bar_item",
+          "settings": {
+            "text": "<p>Screen Promise — we cover up to <b>$200</b></p>"
+          }
+        },
+        "block-3": {
+          "type": "bar_item",
+          "settings": {
+            "text": "<p>Ships in <b>24h</b> from Austin, TX</p>"
+          }
+        },
+        "block-4": {
+          "type": "usp",
+          "settings": {
+            "metric": "12ft",
+            "bold": "DropCore™ air-cell corners.",
+            "desc": "Survived 26 drops onto concrete at 12 feet — 4× Apple's own test height."
+          }
+        },
+        "block-5": {
+          "type": "usp",
+          "settings": {
+            "metric": "1400g",
+            "bold": "MagLock™ 18-magnet array.",
+            "desc": "Holds on a car vent over speed bumps. Most cases measure 800–900g."
+          }
+        },
+        "block-6": {
+          "type": "usp",
+          "settings": {
+            "metric": "0Δb",
+            "bold": "ClearGuard™ UV coating.",
+            "desc": "No measurable yellowing after 36 months of accelerated UV exposure."
+          }
+        },
+        "block-7": {
+          "type": "usp",
+          "settings": {
+            "metric": "2.8mm",
+            "bold": "Still fits your pocket.",
+            "desc": "Thinner than a stack of three credit cards. Adds 24g."
+          }
+        },
+        "block-8": {
+          "type": "usp",
+          "settings": {
+            "metric": "1.4mm",
+            "bold": "Raised camera lip.",
+            "desc": "Lens sits below the rim face-down. Buttons stay clicky, not mushy."
+          }
+        },
+        "block-25": {
+          "type": "tier",
+          "settings": {
+            "qty": "1",
+            "each": "39",
+            "was": "69",
+            "note": "One case · free shipping over $45",
+            "name": "1 case",
+            "meta": "Standard"
+          }
+        },
+        "block-26": {
+          "type": "tier",
+          "settings": {
+            "qty": "2",
+            "each": "32",
+            "was": "39",
+            "note": "2 cases · you save $14 · free shipping",
+            "name": "2 cases — save 18%",
+            "meta": "One on, one in the bag",
+            "flag_label": "Most popular",
+            "flag_style": "popular",
+            "default_checked": true
+          }
+        },
+        "block-27": {
+          "type": "tier",
+          "settings": {
+            "qty": "3",
+            "each": "27",
+            "was": "39",
+            "note": "3 cases + free screen protector · you save $36",
+            "name": "3 cases — save 31%",
+            "meta": "+ free ArmorGlass protector",
+            "flag_label": "Best value",
+            "flag_style": "save"
+          }
+        },
+        "block-28": {
+          "type": "thumb",
+          "settings": {
+            "label": "Back<br>view"
+          }
+        },
+        "block-29": {
+          "type": "thumb",
+          "settings": {
+            "label": "Drop<br>test"
+          }
+        },
+        "block-30": {
+          "type": "thumb",
+          "settings": {
+            "label": "MagLock<br>1400g"
+          }
+        },
+        "block-31": {
+          "type": "thumb",
+          "settings": {
+            "label": "2.8mm<br>profile"
+          }
+        },
+        "block-32": {
+          "type": "thumb",
+          "settings": {
+            "label": "36-mo<br>clarity"
+          }
+        },
+        "block-33": {
+          "type": "acc",
+          "settings": {
+            "title": "What you get",
+            "default_open": true,
+            "body": "<p>One Halo case cut for your exact model — no universal moulds, no loose corners. Every unit is checked against the manufacturer's CAD file, so the button throw, the mute switch cut-out and the camera ring line up to a tenth of a millimetre.</p><ul><li>Halo case in your chosen finish</li><li>Microfibre lining that won't scratch a glass back</li><li>Fitment card + Screen Promise registration code</li><li>90 days to change your mind, return shipping on us</li></ul>"
+          }
+        },
+        "block-34": {
+          "type": "acc",
+          "settings": {
+            "title": "Full specifications",
+            "body": "<dl class=\"halo-spec\"><dt>Drop rating</dt><dd>12 ft / 3.6 m · MIL-STD-810G 516.6</dd><dt>Magnet hold</dt><dd>1,400 g pull force · 18 × N52 neodymium</dd><dt>Charging</dt><dd>MagSafe, Qi2 25W, standard Qi</dd><dt>Thickness</dt><dd>2.8 mm back · 3.4 mm rail</dd><dt>Weight</dt><dd>24 g</dd><dt>Camera lip</dt><dd>1.4 mm raised</dd><dt>Screen lip</dt><dd>1.2 mm raised</dd><dt>Materials</dt><dd>PC back · TPU rail · microfibre lining</dd><dt>Coating</dt><dd>ClearGuard UV-stable, anti-fingerprint</dd><dt>Warranty</dt><dd>2 years + Screen Promise</dd></dl>"
+          }
+        },
+        "block-35": {
+          "type": "acc",
+          "settings": {
+            "title": "How the Screen Promise works",
+            "body": "<p>Register your case within 30 days of delivery using the code on your fitment card. If your screen cracks in a drop while the Halo is fitted, send us a photo of the phone in the case and the repair invoice. We reimburse the repair up to <strong>$200</strong>, once per registered case, for two years.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5",
+        "block-6",
+        "block-7",
+        "block-8",
+        "block-25",
+        "block-26",
+        "block-27",
+        "block-28",
+        "block-29",
+        "block-30",
+        "block-31",
+        "block-32",
+        "block-33",
+        "block-34",
+        "block-35"
+      ]
+    },
+    "press": {
+      "type": "halo-press",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "outlet",
+          "settings": {
+            "name": "WIRED"
+          }
+        },
+        "block-1": {
+          "type": "outlet",
+          "settings": {
+            "name": "The Verge"
+          }
+        },
+        "block-2": {
+          "type": "outlet",
+          "settings": {
+            "name": "Tom's Guide"
+          }
+        },
+        "block-3": {
+          "type": "outlet",
+          "settings": {
+            "name": "Engadget"
+          }
+        },
+        "block-4": {
+          "type": "outlet",
+          "settings": {
+            "name": "GQ"
+          }
+        },
+        "block-5": {
+          "type": "outlet",
+          "settings": {
+            "name": "Fast Company"
+          }
+        },
+        "block-6": {
+          "type": "outlet",
+          "settings": {
+            "name": "MKBHD"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5",
+        "block-6"
+      ]
+    },
+    "fixes": {
+      "type": "halo-three-fixes",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "fix",
+          "settings": {
+            "metric": "12",
+            "unit": "ft",
+            "title": "It cracks on the first real drop",
+            "body": "<p>Slim cases usually mean solid plastic corners that transmit the shock straight into the frame. DropCore corners are a honeycomb of collapsing air cells — they crush, absorb, and spring back. 26 drops onto concrete, no phone damage.</p>",
+            "compare": "Typical slim case: 6–8 ft · Halo: 12 ft"
+          }
+        },
+        "block-1": {
+          "type": "fix",
+          "settings": {
+            "metric": "1400",
+            "unit": "g",
+            "title": "The magnet lets go when you need it",
+            "body": "<p>\"MagSafe compatible\" is not a spec, it's a sticker. We publish pull force. Eighteen N52 magnets in a full ring hold 1,400 g — your phone stays on the vent mount over a speed bump, and charges at the full Qi2 25W.</p>",
+            "compare": "Category average: 800–900 g · Halo: 1,400 g"
+          }
+        },
+        "block-2": {
+          "type": "fix",
+          "settings": {
+            "metric": "0",
+            "unit": "Δb after 36mo",
+            "title": "Clear turns yellow by month four",
+            "body": "<p>Cheap TPU oxidises under UV and skin oil. It's why your last clear case looked like an old fingernail. ClearGuard is a UV-stable polycarbonate with a bonded top coat — no measurable colour shift after the equivalent of three years outdoors.</p>",
+            "compare": "Standard TPU: visible by month 4 · Halo: none at 36 months"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "yellow": {
+      "type": "halo-yellowing",
+      "settings": {}
+    },
+    "proof": {
+      "type": "halo-drop-test",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "bar",
+          "settings": {
+            "name": "Casify Halo",
+            "feet": "12.0 ft",
+            "pct": 100,
+            "highlight": true
+          }
+        },
+        "block-1": {
+          "type": "bar",
+          "settings": {
+            "name": "Rugged bulk case",
+            "feet": "10.5 ft",
+            "pct": 88,
+            "highlight": false
+          }
+        },
+        "block-2": {
+          "type": "bar",
+          "settings": {
+            "name": "Designer clear case",
+            "feet": "7.2 ft",
+            "pct": 60,
+            "highlight": false
+          }
+        },
+        "block-3": {
+          "type": "bar",
+          "settings": {
+            "name": "Slim hard shell",
+            "feet": "5.1 ft",
+            "pct": 43,
+            "highlight": false
+          }
+        },
+        "block-4": {
+          "type": "bar",
+          "settings": {
+            "name": "Marketplace case",
+            "feet": "2.9 ft",
+            "pct": 24,
+            "highlight": false
+          }
+        },
+        "block-5": {
+          "type": "bar",
+          "settings": {
+            "name": "No case",
+            "feet": "0.9 ft",
+            "pct": 8,
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5"
+      ]
+    },
+    "reviews": {
+      "type": "halo-reviews",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "Dropped it off a ladder onto the driveway, maybe nine feet. I picked it up expecting the worst and there's one scuff on the corner. Phone's fine. That's the whole review.",
+            "author": "Marcus T.",
+            "model": "iPhone 17 Pro Max",
+            "finish": "Midnight"
+          }
+        },
+        "block-1": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "I've bought a clear case every four months for years because they all go yellow. Mine's been on since February and it's still exactly the colour it was in the box.",
+            "author": "Priya N.",
+            "model": "iPhone 16",
+            "finish": "Clear"
+          }
+        },
+        "block-2": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "The magnet is the thing nobody tells you about. My old case fell off the vent mount at every light. This one has not moved once, and I drive a truck with bad suspension.",
+            "author": "Dee R.",
+            "model": "Galaxy S25 Ultra",
+            "finish": "Cobalt"
+          }
+        },
+        "block-3": {
+          "type": "review",
+          "settings": {
+            "stars": 4,
+            "body": "Genuinely thin, which I didn't expect from something rated for twelve feet. Only note: the Butter finish shows fingerprints more than the Frost does. Not a dealbreaker, just so you know.",
+            "author": "Alison K.",
+            "model": "iPhone 17",
+            "finish": "Butter"
+          }
+        },
+        "block-4": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "Cracked my screen in a car park drop and honestly assumed the Screen Promise was marketing. Sent the invoice, got $187 back in nine days. No argument.",
+            "author": "Tomás V.",
+            "model": "iPhone 16 Pro Max",
+            "finish": "Clear"
+          }
+        },
+        "block-5": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "Buttons actually click. I've returned two cases this year because the volume buttons went mushy after a month. These feel like the phone's own.",
+            "author": "Wen L.",
+            "model": "Pixel 10 Pro",
+            "finish": "Sage"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5"
+      ]
+    },
+    "cmp": {
+      "type": "halo-comparison",
+      "settings": {}
+    },
+    "faq": {
+      "type": "halo-faq",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "qa",
+          "settings": {
+            "question": "Will it fit my exact phone?",
+            "answer": "<p>Every Halo is cut from the manufacturer's CAD file for one specific model — there's no universal mould. Pick your model above; if it isn't listed, it isn't made yet, and we'd rather tell you that than sell you a loose fit. Your model number is in Settings → General → About, or on the back of the phone in small print.</p>"
+          }
+        },
+        "block-1": {
+          "type": "qa",
+          "settings": {
+            "question": "Does it work with MagSafe wallets and chargers?",
+            "answer": "<p>Yes — the full 18-magnet ring is in the case, not a stick-on adapter. It holds MagSafe wallets, car mounts and stands at 1,400 g of pull force, and charges at the full Qi2 25W. You don't need to take the case off for anything.</p>"
+          }
+        },
+        "block-2": {
+          "type": "qa",
+          "settings": {
+            "question": "Is the clear version really not going to yellow?",
+            "answer": "<p>The yellowing you've seen before comes from soft TPU oxidising under UV and skin oil. The Halo back is UV-stable polycarbonate with a bonded top coat, and the flexible rail is a modified TPU with UV inhibitors through the material rather than sprayed on top. After 36 months of accelerated exposure there was no measurable colour shift. If yours yellows inside two years, that's a warranty replacement.</p>"
+          }
+        },
+        "block-3": {
+          "type": "qa",
+          "settings": {
+            "question": "2.8 mm sounds thin for a 12-foot rating. What's the catch?",
+            "answer": "<p>The back is 2.8 mm; the corners are 4.7 mm. Almost all drop damage enters through a corner, so that's where the material goes. You feel the thin part in your pocket and in your hand, and the thick part only does something on the way to the floor.</p>"
+          }
+        },
+        "block-4": {
+          "type": "qa",
+          "settings": {
+            "question": "Will the buttons go mushy?",
+            "answer": "<p>The button covers are a separate, harder durometer than the rail, moulded in rather than stretched over. They keep a defined click through the two-year warranty. Mushy buttons are what happens when a case uses one soft material for the whole frame to save on tooling.</p>"
+          }
+        },
+        "block-5": {
+          "type": "qa",
+          "settings": {
+            "question": "What if I drop it and the screen still cracks?",
+            "answer": "<p>Send us a photo of the phone in the case plus the repair invoice, and we reimburse up to $200 — once per registered case, for two years from delivery. Register within 30 days using the code on your fitment card. It doesn't cover water damage, theft, or drops where the case wasn't fitted.</p>"
+          }
+        },
+        "block-6": {
+          "type": "qa",
+          "settings": {
+            "question": "Can I return it if I just don't like it?",
+            "answer": "<p>90 days, any reason, including \"I changed my mind about the colour.\" We email a prepaid label and refund in full once it's scanned. Keep the box or don't.</p>"
+          }
+        },
+        "block-7": {
+          "type": "qa",
+          "settings": {
+            "question": "When does it arrive?",
+            "answer": "<p>Order before 2pm CT on a business day and it leaves Austin the same day. US delivery is 2–4 business days and free over $45. International is 6–11 days with duties calculated at checkout, so nothing gets charged on the doorstep.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5",
+        "block-6",
+        "block-7"
+      ]
+    },
+    "xs": {
+      "type": "halo-xsell",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "item",
+          "settings": {
+            "title": "ArmorGlass Screen Protector",
+            "body": "9H tempered glass with an alignment frame, so it goes on straight the first time. Two in a pack.",
+            "price": "$19",
+            "compare_at_price": "$29",
+            "icon_svg": "<svg width=\"76\" height=\"112\" viewBox=\"0 0 76 112\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"68\" height=\"104\" rx=\"14\" fill=\"#FFFDF8\" stroke=\"#A87B58\" stroke-width=\"2\"/><rect x=\"12\" y=\"12\" width=\"52\" height=\"88\" rx=\"9\" fill=\"#FBF3E4\"/><path d=\"M24 56l9 9 20-21\" stroke=\"#4E7C7B\" stroke-width=\"3.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        },
+        "block-1": {
+          "type": "item",
+          "settings": {
+            "title": "Halo Wallet",
+            "body": "Three cards, 1,100 g of magnet, and a fold-out stand. Snaps onto the case without weakening the charge.",
+            "price": "$29",
+            "compare_at_price": "$45",
+            "icon_svg": "<svg width=\"96\" height=\"96\" viewBox=\"0 0 96 96\" aria-hidden=\"true\"><rect x=\"14\" y=\"22\" width=\"68\" height=\"52\" rx=\"10\" fill=\"#FFFDF8\" stroke=\"#A87B58\" stroke-width=\"2\"/><rect x=\"22\" y=\"60\" width=\"26\" height=\"4\" rx=\"2\" fill=\"#A87B58\"/><rect x=\"22\" y=\"52\" width=\"34\" height=\"4\" rx=\"2\" fill=\"#A87B58\" opacity=\".6\"/><circle cx=\"48\" cy=\"48\" r=\"17\" fill=\"none\" stroke=\"#4E7C7B\" stroke-width=\"5\"/></svg>"
+          }
+        },
+        "block-2": {
+          "type": "item",
+          "settings": {
+            "title": "VentLock Car Mount",
+            "body": "Built for the 1,400 g ring. Grips the vent blade instead of hanging off it, so it doesn't droop on hot days.",
+            "price": "$25",
+            "compare_at_price": "$39",
+            "icon_svg": "<svg width=\"96\" height=\"96\" viewBox=\"0 0 96 96\" aria-hidden=\"true\"><rect x=\"26\" y=\"16\" width=\"44\" height=\"64\" rx=\"10\" fill=\"#FFFDF8\" stroke=\"#A87B58\" stroke-width=\"2\"/><path d=\"M48 80v-8M34 88h28\" stroke=\"#A87B58\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"48\" cy=\"44\" r=\"13\" fill=\"none\" stroke=\"#C4302B\" stroke-width=\"4\"/></svg>"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "bb": {
+      "type": "bundle-buybox",
+      "settings": {
+        "eyebrow": "Pair it with",
+        "heading": "Save when you bundle"
+      },
+      "blocks": {
+        "block-0": {
+          "type": "card",
+          "settings": {
+            "title": "Halo case only",
+            "body": "The Halo shell with DropCore corners and the full 1,400 g magnet ring.",
+            "price": "39",
+            "rating": 5,
+            "review_count": "642",
+            "variant_id": ""
+          }
+        },
+        "block-1": {
+          "type": "card",
+          "settings": {
+            "title": "Halo + ArmorGlass (2-pack)",
+            "body": "Case plus two tempered-glass screen protectors with the alignment frame.",
+            "price": "54",
+            "compare": "68",
+            "badge": "Most popular",
+            "tone": "red",
+            "rating": 5,
+            "review_count": "318",
+            "variant_id": ""
+          }
+        },
+        "block-2": {
+          "type": "card",
+          "settings": {
+            "title": "Halo + ArmorGlass + VentLock",
+            "body": "Case, screen glass, and the 1,400 g vent mount that won't droop on a hot day.",
+            "price": "74",
+            "compare": "93",
+            "tone": "teal",
+            "rating": 5,
+            "review_count": "146",
+            "variant_id": ""
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "closer": {
+      "type": "halo-closer",
+      "settings": {}
+    },
+    "love": {
+      "type": "halo-why-love",
+      "settings": {},
+      "blocks": {
+        "b0": {
+          "type": "item",
+          "settings": {
+            "icon": "drop",
+            "title": "Drop-tested protection",
+            "body": "Air-cell corners absorb the shock so the shell does not have to."
+          }
+        },
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "magsafe",
+            "title": "MagSafe ready",
+            "body": "Full-strength magnet ring — snaps to chargers, mounts, and wallets."
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "anti-yellow",
+            "title": "Never turns yellow",
+            "body": "UV-stable coating keeps clear finishes clear for years, not months."
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "slim",
+            "title": "Slim, not bulky",
+            "body": "Protection without the pocket bulge — still fits your case like it is not there."
+          }
+        },
+        "b4": {
+          "type": "item",
+          "settings": {
+            "icon": "camera",
+            "title": "Camera protected",
+            "body": "Raised lip keeps the lens off tables and out of scratches."
+          }
+        },
+        "b5": {
+          "type": "item",
+          "settings": {
+            "icon": "warranty",
+            "title": "Screen Promise warranty",
+            "body": "Crack your screen with the case on and we help cover the repair."
+          }
+        }
+      },
+      "block_order": [
+        "b0",
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "press",
+    "fixes",
+    "love",
+    "yellow",
+    "proof",
+    "reviews",
+    "cmp",
+    "faq",
+    "xs",
+    "bb",
+    "closer"
+  ]
+}

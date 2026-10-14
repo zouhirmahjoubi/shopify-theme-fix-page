@@ -1,0 +1,221 @@
+<section class="halo-sec">
+  <div class="halo-sec__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 05 — side by side' }}</span>
+    <h2>{{ section.settings.heading | default: "Halo vs. the case you're using right now" }}</h2>
+  </div>
+
+  <div class="halo-cmp">
+    <div class="halo-cmp__box">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Measured spec</th>
+            {%- for col in section.blocks -%}
+              {%- if col.type == 'column' -%}
+                <th scope="col"{% if forloop.first %} class="col-us"{% endif %}>{{ col.settings.col | escape }}</th>
+              {%- endif -%}
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for row in section.blocks -%}
+            {%- if row.type == 'row' -%}
+              <tr>
+                <th scope="row">{{ row.settings.row | escape }}</th>
+                {%- assign ci = 0 -%}
+                {%- for col in section.blocks -%}
+                  {%- if col.type == 'column' -%}
+                    {%- assign ci = ci | plus: 1 -%}
+                    {%- assign key = 'cell_' | append: ci -%}
+                    {%- assign raw = row.settings[key] | default: '' -%}
+                    {%- assign parts = raw | split: '||' -%}
+                    {%- assign value = parts[0] | default: '' -%}
+                    {%- assign kind  = parts[1] | default: 'val' -%}
+                    <td class="{% if forloop.first %}col-us {% endif %}{% if kind == 'yes' %}yes{% elsif kind == 'no' %}no{% else %}val{% endif %}">{{ value | escape }}</td>
+                  {%- endif -%}
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Comparison",
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column header",
+      "settings": [
+        {
+          "type": "text",
+          "id": "col",
+          "label": "Column header",
+          "default": "Casify Halo"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "row",
+          "label": "Row label",
+          "default": "Drop height"
+        },
+        {
+          "type": "text",
+          "id": "cell_1",
+          "label": "Cell 1 (value||val|yes|no)",
+          "default": "12 ft||val"
+        },
+        {
+          "type": "text",
+          "id": "cell_2",
+          "label": "Cell 2 (value||val|yes|no)",
+          "default": "7.2 ft||val"
+        },
+        {
+          "type": "text",
+          "id": "cell_3",
+          "label": "Cell 3 (value||val|yes|no)",
+          "default": "10.5 ft||val"
+        },
+        {
+          "type": "text",
+          "id": "cell_4",
+          "label": "Cell 4 (value||val|yes|no)",
+          "default": "—||val"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tick_label",
+      "label": "Section tick",
+      "default": "Section 05 — side by side"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Halo vs. the case you're using right now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halo — Comparison",
+      "blocks": [
+        {
+          "type": "column",
+          "settings": {
+            "col": "Casify Halo"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "col": "Designer clear case"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "col": "Rugged bulk case"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Drop height before damage",
+            "cell_1": "12 ft||val",
+            "cell_2": "7.2 ft||val",
+            "cell_3": "10.5 ft||val"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "MagSafe pull force",
+            "cell_1": "1,400 g||val",
+            "cell_2": "850 g||val",
+            "cell_3": "1,100 g||val"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Back thickness",
+            "cell_1": "2.8 mm||val",
+            "cell_2": "3.1 mm||val",
+            "cell_3": "6.4 mm||val"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Added weight",
+            "cell_1": "24 g||val",
+            "cell_2": "31 g||val",
+            "cell_3": "78 g||val"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Yellowing at 36 months",
+            "cell_1": "None||yes",
+            "cell_2": "Visible by month 4||no",
+            "cell_3": "N/A — opaque||no"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Raised camera lip",
+            "cell_1": "1.4 mm||val",
+            "cell_2": "0.6 mm||val",
+            "cell_3": "1.5 mm||val"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Published lab data",
+            "cell_1": "Yes||yes",
+            "cell_2": "No||no",
+            "cell_3": "No||no"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Pays for your screen",
+            "cell_1": "Up to $200||yes",
+            "cell_2": "No||no",
+            "cell_3": "No||no"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "row": "Price",
+            "cell_1": "$39||val",
+            "cell_2": "$65+||val",
+            "cell_3": "$55||val"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

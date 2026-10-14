@@ -1,0 +1,23 @@
+# Installed dependencies and Python caches
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Local credentials; keep reusable environment templates
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.pfx
+*.p12
+
+# Browser profiles used for local rendering
+/deliverables/edge-render-profile/
+/deliverables/.edge-render-profile*/
+/casify-theme/.impeccable/edge-*/
+
+# Local logs and operating-system files
+*.log
+Thumbs.db
+.DS_Store

@@ -1,0 +1,11 @@
+<div class="cm-container" data-cm-reveal>
+  <h1 style="font:800 clamp(28px,4vw,52px)/1.05 var(--font-display);color:var(--red-600);text-transform:uppercase;letter-spacing:-.03em;margin:0 0 18px">{{ page.title | escape }}</h1>
+  <div class="rte" style="max-width:70ch;color:var(--cocoa-600);font-size:16px;line-height:1.65">{{ page.content }}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "presets": [{ "name": "Page" }]
+}
+{% endschema %}

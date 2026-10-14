@@ -1,0 +1,54 @@
+{%- comment -%}
+  Casify logo — drop this snippet in any section, header, footer, etc.
+  Usage:  {% render 'casify-logo', variant: 'light' %}
+          {% render 'casify-logo', variant: 'dark', size: 28 %}
+  Variants: 'light' (default, on cream), 'dark' (on cocoa)
+
+  Motion: the mark fades/scales in, its ring and C-arc draw themselves in via
+  stroke-dashoffset, the magnet dot and the wordmark's "y" pop in — then each
+  handoffs seamlessly into its own continuous idle animation (bob / spin /
+  wobble / pulse). All defined in theme.css under "Casify brand logo".
+{%- endcomment -%}
+{%- assign v = variant | default: 'light' -%}
+{%- assign s = size | default: 34 -%}
+{%- capture uid -%}{{ section.id | default: 'g' }}{{ forloop.index | default: 0 }}{{ v }}{%- endcapture -%}
+<a href="{{ routes.root_url }}" class="casify-logo casify-logo--{{ v }}" aria-label="Casify home">
+  {%- if settings.logo != blank -%}
+  {%- assign lh = settings.logo_height | default: 56 -%}
+  {%- assign lw = settings.logo.aspect_ratio | times: lh | round -%}
+  {%- assign src_w = lw | times: 2 -%}
+  <span class="casify-logo__img-wrap">
+    {{ settings.logo | image_url: width: src_w | image_tag: width: lw, height: lh, alt: shop.name, style: 'display:block', class: 'casify-logo__img' }}
+  </span>
+  {%- else -%}
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="{{ s }}" height="{{ s }}" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="cmBg-{{ uid }}" x1="0" y1="0" x2="1" y2="1">
+        {%- if v == 'dark' -%}
+          <stop offset="0" stop-color="#E58C82"/><stop offset="1" stop-color="#A8231F"/>
+        {%- else -%}
+          <stop offset="0" stop-color="#C4302B"/><stop offset="1" stop-color="#7E1A17"/>
+        {%- endif -%}
+      </linearGradient>
+      <linearGradient id="cmShell-{{ uid }}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FDF9F1"/><stop offset="1" stop-color="#F0E2C2"/>
+      </linearGradient>
+      <radialGradient id="cmSheen-{{ uid }}" cx=".35" cy=".3" r=".7">
+        <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g class="cm-mark">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#cmBg-{{ uid }})"/>
+      <rect class="cm-mark__sheen" x="2" y="2" width="60" height="60" rx="14" fill="url(#cmSheen-{{ uid }})"/>
+      <g class="cm-mark__ring">
+        <circle class="cm-mark__ring-stroke" cx="32" cy="32" r="26" fill="none" stroke="#F0E2C2" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 4"/>
+      </g>
+      <g class="cm-mark__c">
+        <path class="cm-mark__c-stroke" d="M44 24.5a13 13 0 1 0 0 15" fill="none" stroke="url(#cmShell-{{ uid }})" stroke-width="6.5" stroke-linecap="round"/>
+        <circle class="cm-mark__dot" cx="44" cy="24.5" r="2.4" fill="#FDF9F1"/>
+      </g>
+    </g>
+  </svg>
+  <span class="casify-logo__word"><span class="cm-letter">c</span><span class="cm-letter">a</span><span class="cm-letter">s</span><span class="cm-letter">i</span><span class="cm-letter">f</span><em>y</em></span>
+  {%- endif -%}
+</a>

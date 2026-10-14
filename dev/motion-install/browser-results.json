@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "version": "old",
+      "api": {
+        "completion": {
+          "then": "function",
+          "finishedThen": "function",
+          "stop": "function"
+        },
+        "x": 40,
+        "opacity": 0.5
+      },
+      "faq": "click/keyboard open and close with cleanup",
+      "cards": "reveal and hover working"
+    },
+    {
+      "version": "new",
+      "api": {
+        "completion": {
+          "then": "function",
+          "finishedThen": "function",
+          "stop": "function"
+        },
+        "x": 40,
+        "opacity": 0.5
+      },
+      "faq": "click/keyboard open and close with cleanup",
+      "cards": "reveal and hover working"
+    },
+    {
+      "version": "new",
+      "reducedMotion": "native details working, no hidden cards"
+    }
+  ]
+}

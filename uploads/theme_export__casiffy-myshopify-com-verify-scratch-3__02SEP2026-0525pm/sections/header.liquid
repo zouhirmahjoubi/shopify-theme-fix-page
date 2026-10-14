@@ -1,0 +1,248 @@
+<div class="awning" aria-hidden="true"></div>
+
+{%- if section.settings.topbar_enable -%}
+<div class="topbar">
+  <div class="topbar__inner">
+    <span>{{ section.settings.topbar_left | default: 'Ships from Austin, TX' }}</span>
+    {%- if section.settings.topbar_pill != blank -%}
+      <span class="pill">{{ section.settings.topbar_pill | default: '★ EST. 1920 · Still on awning duty' }}</span>
+    {%- endif -%}
+    <span>{{ section.settings.topbar_right | default: '30-day returns' }}</span>
+  </div>
+</div>
+{%- endif -%}
+
+<header class="nav" data-section-id="{{ section.id }}" data-section-type="header">
+  <div class="nav__inner">
+    <button type="button" class="iconbtn" data-mobile-menu-toggle aria-label="Menu">
+      {% render 'icon', name: 'menu', size: 22 %}
+    </button>
+
+    <a class="brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+      {%- comment -%} Casify brand mark with motion. Falls back to the seal if the snippet is unavailable. {%- endcomment -%}
+      {% render 'casify-logo', variant: 'light' %}
+    </a>
+
+    {%- if section.settings.menu -%}
+    <nav class="nav__links" aria-label="Primary">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %} class="cm-underline">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+    {%- endif -%}
+
+    <div class="nav__spacer"></div>
+
+    <div class="nav__icons">
+      <button type="button" class="iconbtn" data-search-toggle aria-label="Search">{% render 'icon', name: 'search', size: 18 %}</button>
+      <a href="{{ routes.account_url }}" class="iconbtn" aria-label="Account">{% render 'icon', name: 'user', size: 18 %}</a>
+      <a href="{{ routes.wishlist_url | default: '/pages/wishlist' }}" class="iconbtn" aria-label="Wishlist">{% render 'icon', name: 'heart', size: 18 %}</a>
+      <a href="{{ routes.cart_url }}" class="iconbtn" id="bagBtn" data-cart-drawer-open aria-label="Cart, {{ cart.item_count }} items">
+        {% render 'icon', name: 'bag', size: 18 %}
+        <span class="badge" id="bagBadge" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div id="cm-search-panel" class="cm-search-panel" aria-hidden="true">
+  <form action="{{ routes.search_url }}" method="get" role="search" class="cm-container" style="padding:16px 24px;display:flex;gap:10px" data-predictive-search-form>
+    <span class="cm-input-shell" style="flex:1;position:relative">
+      {% render 'icon', name: 'search', size: 16 %}
+      <input class="cm-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search sweets, gifts, and flavours&hellip;" aria-label="Search" autocomplete="off" data-predictive-search-input role="combobox" aria-expanded="false" aria-controls="cm-predictive-search-results" aria-owns="cm-predictive-search-results" aria-autocomplete="list">
+    </span>
+    <input type="hidden" name="type" value="product">
+    <button type="submit" class="btn btn--ghost cm-press">Search</button>
+  </form>
+  <div id="cm-predictive-search-results" class="cm-predictive-results" data-predictive-search-results hidden aria-live="polite"></div>
+</div>
+
+<div id="cm-mobile-nav-scrim" class="cm-mobile-nav__scrim" data-mobile-menu-close aria-hidden="true"></div>
+<nav id="cm-mobile-nav" class="cm-mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile" aria-hidden="true">
+  <div class="cm-mobile-nav__head">
+    <div class="cm-mobile-nav__head-inner">
+      <h3>Menu</h3>
+      <button type="button" class="cm-mobile-nav__close" data-mobile-menu-close aria-label="Close menu">
+        {% render 'icon', name: 'close', size: 18 %}
+      </button>
+    </div>
+  </div>
+  <div style="padding:18px 24px">
+    {%- if section.settings.menu -%}
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}" style="display:block;padding:14px 0;border-bottom:1px solid var(--border-hairline);font-family:var(--font-label);font-size:11px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</nav>
+
+<style>
+  .cm-skip-link{position:absolute;left:-9999px;top:0;padding:10px 16px;background:var(--cocoa-600);color:#fff;z-index:1000}
+  .cm-skip-link:focus{left:8px;top:8px}
+  .cm-underline{position:relative;padding-bottom:2px}
+  .cm-underline::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--red-500);transform:scaleX(0);transform-origin:0 50%;transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-underline:hover::after,.cm-underline[aria-current=page]::after{transform:scaleX(1)}
+  .cm-search-panel{display:none;background:var(--cream-100);border-bottom:1px solid var(--border-hairline)}
+  .cm-search-panel.is-open{display:block}
+  .cm-input-shell{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border-hairline);border-radius:5px;padding:9px 12px;box-shadow:inset 0 1px 2px rgba(74,51,36,.10)}
+  .cm-input{border:none;outline:none;background:transparent;width:100%;font:14px var(--font-body);color:var(--cocoa-600)}
+  .cm-predictive-results{max-width:var(--max);margin:0 auto;padding:0 24px 20px;display:flex;flex-direction:column;gap:14px}
+  .cm-predictive-results[hidden]{display:none}
+  .cm-predictive-results__queries{display:flex;flex-wrap:wrap;gap:8px}
+  .cm-predictive-results__query{font:600 12px var(--font-body);color:var(--cocoa-600);background:var(--cream-50);border:1px solid var(--border-hairline);border-radius:999px;padding:6px 12px;text-decoration:none}
+  .cm-predictive-results__query:hover{border-color:var(--red-500);color:var(--red-600)}
+  .cm-predictive-results__query strong{color:var(--red-600)}
+  .cm-predictive-results__group{display:flex;flex-direction:column;gap:2px}
+  .cm-predictive-results__group--links{flex-direction:row;flex-wrap:wrap;gap:8px 18px}
+  .cm-predictive-results__item{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;padding:8px;border-radius:8px;text-decoration:none;transition:background var(--duration-fast) var(--ease-standard)}
+  .cm-predictive-results__item:hover{background:var(--cream-50)}
+  .cm-predictive-results__thumb{width:48px;height:48px;border-radius:6px;overflow:hidden;background:var(--cream-200);display:block}
+  .cm-predictive-results__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .cm-predictive-results__text{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .cm-predictive-results__text strong{font:600 14px var(--font-body);color:var(--cocoa-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-predictive-results__price{font:700 13px var(--font-display);color:var(--red-600)}
+  .cm-predictive-results__link{font:600 12px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .cm-predictive-results__link:hover{color:var(--red-600)}
+  .cm-predictive-results__link small{font-weight:400;color:var(--cocoa-400);text-transform:none;letter-spacing:0}
+  .cm-predictive-results__viewall{align-self:flex-start;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--red-600);text-decoration:underline;text-underline-offset:3px}
+  .cm-predictive-results__empty{font:14px var(--font-body);color:var(--cocoa-500);margin:0}
+  .cm-mobile-nav{display:none;position:fixed;inset:0 0 0 auto;width:min(340px,88vw);height:100%;background:var(--surface-page);z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(100%);transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-mobile-nav.is-open{display:block;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}
+  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-hairline);background-image:repeating-linear-gradient(90deg,var(--red-500) 0 18px,var(--cream-50) 18px 36px)}
+  .cm-mobile-nav__head-inner{background:var(--surface-card);padding:6px 12px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}
+  .cm-mobile-nav__head-inner h3{margin:0;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)}
+  .cm-mobile-nav__close{background:none;border:0;color:var(--cocoa-600);cursor:pointer;padding:4px;display:grid;place-items:center}
+  .cm-mobile-nav__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
+  .cm-mobile-nav__scrim.is-open{opacity:1;pointer-events:auto}
+  .cart-drawer{position:fixed;top:0;right:0;height:100%;width:420px;max-width:92vw;background:var(--surface-page);box-shadow:var(--shadow-lifted);z-index:95;display:flex;flex-direction:column;transform:translateX(100%);transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cart-drawer.is-open{transform:translateX(0)}
+  .cart-drawer__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
+  .cart-drawer__scrim.is-open{opacity:1;pointer-events:auto}
+  .cart-drawer__head{padding:14px 18px;background-image:repeating-linear-gradient(90deg,var(--red-500) 0 18px,var(--cream-50) 18px 36px)}
+  .cart-drawer__head-inner{background:var(--surface-card);padding:8px 14px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;flex:1}
+  .cart-drawer__head-inner h3{margin:0;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)}
+  .cart-drawer__close{background:none;border:0;color:var(--cocoa-600);cursor:pointer;padding:4px;display:grid;place-items:center}
+  .cart-drawer__body{flex:1;overflow-y:auto;padding:18px}
+  .cart-drawer__footer{padding:18px;border-top:1px solid var(--border-hairline);background:var(--surface-card)}
+  .cm-scroll-lock{overflow:hidden}
+</style>
+
+<script>
+  (function () {
+    var header = document.querySelector('.nav[data-section-id="{{ section.id }}"]');
+    if (!header || header.dataset.csReady === '1') return;
+    header.dataset.csReady = '1';
+    var burger = header.querySelector('[data-mobile-menu-toggle]');
+    var drawer = document.getElementById('cm-mobile-nav');
+    var scrim = document.getElementById('cm-mobile-nav-scrim');
+    var mobileNavRelease = null;
+    function setMobileMenu(open) {
+      if (!drawer) return;
+      drawer.classList.toggle('is-open', open);
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (scrim) scrim.classList.toggle('is-open', open);
+      document.body.classList.toggle('cm-scroll-lock', open);
+      if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open && window.CasifyA11y) {
+        mobileNavRelease = window.CasifyA11y.trapFocus(drawer, burger);
+      } else if (mobileNavRelease) {
+        mobileNavRelease();
+        mobileNavRelease = null;
+      }
+    }
+    if (burger && drawer) {
+      burger.addEventListener('click', function () {
+        setMobileMenu(!drawer.classList.contains('is-open'));
+      });
+    }
+    if (drawer) {
+      drawer.querySelectorAll('[data-mobile-menu-close]').forEach(function (el) {
+        el.addEventListener('click', function () { setMobileMenu(false); });
+      });
+      drawer.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () { setMobileMenu(false); });
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer && drawer.classList.contains('is-open')) {
+        setMobileMenu(false);
+      }
+    });
+    var searchBtn = header.querySelector('[data-search-toggle]');
+    var searchPanel = document.getElementById('cm-search-panel');
+    function setSearchPanel(open) {
+      if (!searchPanel) return;
+      searchPanel.classList.toggle('is-open', open);
+      searchPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (searchBtn) searchBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        var input = searchPanel.querySelector('input[type=search]');
+        if (input) input.focus();
+      } else {
+        clearPredictive();
+      }
+    }
+    if (searchBtn && searchPanel) {
+      searchBtn.addEventListener('click', function () {
+        setSearchPanel(!searchPanel.classList.contains('is-open'));
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && searchPanel && searchPanel.classList.contains('is-open')) {
+        setSearchPanel(false);
+        if (searchBtn) searchBtn.focus();
+      }
+    });
+
+    /* Predictive search: live results as you type, via Shopify's
+       predictive_search Liquid object rendered by sections/predictive-search.liquid */
+    var predictiveUrl = {{ routes.predictive_search_url | json }};
+    var predictiveInput = searchPanel && searchPanel.querySelector('[data-predictive-search-input]');
+    var predictiveResults = document.getElementById('cm-predictive-search-results');
+    var predictiveTimer = null;
+    var predictiveController = null;
+    function clearPredictive() {
+      if (!predictiveResults) return;
+      predictiveResults.hidden = true;
+      predictiveResults.innerHTML = '';
+      if (predictiveInput) predictiveInput.setAttribute('aria-expanded', 'false');
+    }
+    function runPredictive(term) {
+      if (predictiveController && predictiveController.abort) predictiveController.abort();
+      predictiveController = window.AbortController ? new AbortController() : null;
+      var params = 'q=' + encodeURIComponent(term) + '&resources[type]=product,collection,page,query&resources[limit]=4&section_id=predictive-search';
+      fetch(predictiveUrl + '?' + params, { signal: predictiveController ? predictiveController.signal : undefined })
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          if (!predictiveResults) return;
+          predictiveResults.innerHTML = html;
+          var isEmpty = predictiveResults.textContent.trim() === '';
+          predictiveResults.hidden = isEmpty;
+          if (predictiveInput) predictiveInput.setAttribute('aria-expanded', isEmpty ? 'false' : 'true');
+        })
+        .catch(function (err) { if (err && err.name !== 'AbortError') clearPredictive(); });
+    }
+    if (predictiveInput && predictiveResults) {
+      predictiveInput.addEventListener('input', function () {
+        var term = predictiveInput.value.trim();
+        clearTimeout(predictiveTimer);
+        if (term.length < 2) { clearPredictive(); return; }
+        predictiveTimer = setTimeout(function () { runPredictive(term); }, 220);
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "checkbox", "id": "topbar_enable", "label": "Show topbar", "default": true },
+    { "type": "text", "id": "topbar_left", "label": "Topbar left text", "default": "Ships from Austin, TX" },
+    { "type": "text", "id": "topbar_pill", "label": "Topbar centre pill (optional)", "default": "★ EST. 1920 · Still on awning duty" },
+    { "type": "text", "id": "topbar_right", "label": "Topbar right text", "default": "30-day returns" },
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" }
+  ],
+  "presets": [{ "name": "Header" }]
+}
+{% endschema %}

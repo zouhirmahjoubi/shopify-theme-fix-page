@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Questions about a product or order? Contact us for help.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support",
+        "preview_content": "<h2>Find your tracking information</h2><p>Check the shipping confirmation email for your order. It includes tracking information when your order ships.</p><h2>Need help with a delivery?</h2><p>If you cannot find the email or your order has not arrived within the estimated delivery window, <a href=\"/pages/contact\">contact us</a> with your order number and the email address used at checkout.</p><h2>Processing and delivery</h2><p>Review our <a href=\"/pages/shipping-policy\">Shipping Policy</a> for processing times, estimated delivery windows, and information about international orders.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

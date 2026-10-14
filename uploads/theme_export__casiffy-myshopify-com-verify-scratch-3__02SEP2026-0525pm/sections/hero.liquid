@@ -1,0 +1,394 @@
+{%- comment -%}
+  Scroll-driven "story" hero. Recreates the pinned particle-morph-with-crossfading-text
+  mechanic (shape A -> shape B tied to scroll progress, text chapters crossfade) in
+  Casify's own palette/type/iconography instead of copying the reference's visuals.
+  Renders a fully real, stacked, accessible version by default (works with no JS,
+  reduced motion, or a narrow viewport); JS only *adds* the pin + canvas-particle
+  treatment on top when conditions allow — the theme never depends on the enhancement.
+{%- endcomment -%}
+{%- liquid
+  assign chapter_count = section.blocks.size
+  assign chapter_vh = section.settings.chapter_height
+-%}
+<section
+  class="story"
+  id="story-{{ section.id }}"
+  data-story
+  style="--story-vh:{{ chapter_vh }}vh;--story-count:{{ chapter_count }}"
+>
+  <div class="story__void" aria-hidden="true">
+    {%- if section.settings.void_image != blank -%}
+      {{ section.settings.void_image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', alt: '' }}
+    {%- else -%}
+      {%- comment -%} Shipped default: a kie.ai-generated atmosphere image so the void isn't flat before a merchant picks their own. {%- endcomment -%}
+      <img src="{{ 'hero-void.jpg' | asset_url }}" alt="" width="1920" height="1088" loading="eager" fetchpriority="high">
+    {%- endif -%}
+  </div>
+
+  <div class="story__pin" data-story-pin>
+    <div class="story__stage" data-story-stage>
+      <canvas class="story__canvas" data-story-canvas aria-hidden="true"></canvas>
+      <div class="story__chapters">
+        {%- for block in section.blocks -%}
+          <div class="story__chapter{% if forloop.first %} is-active{% endif %}" data-story-chapter data-shape="{{ block.settings.shape }}" {{ block.shopify_attributes }}>
+            <span class="story__chapter-icon">
+              {%- case block.settings.shape -%}
+                {%- when 'case' -%}{{ 'icon-phone-case.svg' | inline_asset_content }}
+                {%- when 'magsafe' -%}{{ 'icon-magsafe.svg' | inline_asset_content }}
+                {%- when 'candy' -%}{{ 'icon-candy-swirl.svg' | inline_asset_content }}
+                {%- when 'ribbon' -%}{{ 'icon-ribbon.svg' | inline_asset_content }}
+              {%- endcase -%}
+            </span>
+            {%- if block.settings.eyebrow != blank -%}<span class="story__eyebrow">{{ block.settings.eyebrow }}</span>{%- endif -%}
+            <h2 class="story__heading">{{ block.settings.heading }}</h2>
+            {%- if block.settings.body != blank -%}<p class="story__body">{{ block.settings.body }}</p>{%- endif -%}
+            {%- if forloop.first or forloop.last -%}
+              <div class="story__cta">
+                {%- if section.settings.button_text != blank -%}
+                  <a href="{{ section.settings.button_link | default: '#' }}" class="btn cm-press">{{ section.settings.button_text }}</a>
+                {%- endif -%}
+                {%- if section.settings.note != blank -%}<span class="story__note">{{ section.settings.note }}</span>{%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story{position:relative;background:var(--cocoa-700);isolation:isolate}
+  .story__void{position:absolute;inset:0;z-index:0;opacity:.55}
+  .story__void img{width:100%;height:100%;object-fit:cover}
+  .story__void::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 40%, transparent 0%, var(--cocoa-700) 92%)}
+
+  .story__pin{position:relative;z-index:1}
+  .story__stage{display:block;padding:96px 24px}
+  .story__canvas{display:none}
+  .story__chapters{position:relative;max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:96px}
+  .story__chapter{position:static;opacity:1;text-align:center;color:var(--cream-50)}
+  .story__chapter-icon{display:block;width:56px;height:56px;margin:0 auto 20px;color:var(--gold-400)}
+  .story__chapter-icon svg{width:100%;height:100%;display:block}
+  .story__eyebrow{display:inline-block;font-family:var(--font-label);font-size:11px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--gold-400);margin-bottom:14px}
+  .story__heading{font-family:var(--font-display);font-weight:800;font-size:clamp(30px,4.6vw,56px);line-height:1.04;letter-spacing:-.02em;margin:0 0 14px;color:var(--cream-50)}
+  .story__body{font-family:var(--font-body);font-size:clamp(15px,1.4vw,17px);line-height:1.55;color:var(--cream-200);max-width:46ch;margin:0 auto}
+  .story__cta{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .story__note{font-family:var(--font-label);font-size:10.5px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cream-300)}
+
+  /* ---------- Enhanced (JS-driven pin + particle canvas) ---------- */
+  .story--enhanced .story__pin{height:calc(var(--story-vh) * var(--story-count))}
+  .story--enhanced .story__stage{position:sticky;top:0;height:100vh;padding:0;overflow:hidden}
+  .story--enhanced .story__canvas{display:block;position:absolute;inset:0;width:100%;height:100%}
+  .story--enhanced .story__chapters{position:absolute;inset:0;display:block;gap:0;max-width:none}
+  .story--enhanced .story__chapter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease-out-soft),transform .6s var(--ease-out-soft);pointer-events:none;text-shadow:0 2px 20px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.7)}
+  .story--enhanced .story__chapter.is-active{opacity:1;transform:none;pointer-events:auto}
+  .story--enhanced .story__chapter-icon{display:none}
+  .story--enhanced .story__heading{max-width:16ch}
+
+  @media (max-width:640px){
+    .story__stage{padding:72px 20px}
+    .story__chapters{gap:72px}
+  }
+</style>
+
+{%- if section.blocks.size > 1 -%}
+<script>
+(function () {
+  var section = document.getElementById('story-{{ section.id }}');
+  if (!section) return;
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canJs = !reduced && 'IntersectionObserver' in window && window.innerWidth >= 768;
+  var canvas = section.querySelector('[data-story-canvas]');
+  if (!canJs || !canvas || !canvas.getContext) return;
+
+  var pin = section.querySelector('[data-story-pin]');
+  var stage = section.querySelector('[data-story-stage]');
+  var chapterEls = Array.prototype.slice.call(section.querySelectorAll('[data-story-chapter]'));
+  var count = chapterEls.length;
+  if (count < 2) return;
+
+  var ctx = canvas.getContext('2d');
+  var PALETTE = ['#C4302B', '#D2B57C', '#A8C8C4', '#FBF3E4', '#E58C82'];
+
+  /* ---- shape silhouettes, drawn straight to an offscreen canvas and sampled into point clouds ---- */
+  function drawCase(c, s) {
+    var w = s * 0.42, h = s * 0.74, x = (s - w) / 2, y = (s - h) / 2, r = s * 0.09;
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+    c.fill();
+    c.globalCompositeOperation = 'destination-out';
+    c.beginPath(); c.arc(x + w * 0.32, y + h * 0.14, s * 0.035, 0, 7); c.fill();
+    c.beginPath(); c.arc(x + w * 0.68, y + h * 0.14, s * 0.035, 0, 7); c.fill();
+    c.globalCompositeOperation = 'source-over';
+  }
+  function drawMagsafe(c, s) {
+    var cx = s / 2, cy = s / 2;
+    c.beginPath(); c.arc(cx, cy, s * 0.34, 0, 7); c.fill();
+    c.globalCompositeOperation = 'destination-out';
+    c.beginPath(); c.arc(cx, cy, s * 0.24, 0, 7); c.fill();
+    c.globalCompositeOperation = 'source-over';
+    c.beginPath(); c.arc(cx, cy, s * 0.07, 0, 7); c.fill();
+  }
+  function drawCandy(c, s) {
+    var cx = s / 2, cy = s / 2, r1 = s * 0.16, r2 = s * 0.34;
+    c.lineCap = 'round';
+    c.lineWidth = s * 0.11;
+    c.beginPath(); c.arc(cx, cy, (r1 + r2) / 2, Math.PI * 0.05, Math.PI * 0.95); c.stroke();
+    c.beginPath(); c.arc(cx, cy, (r1 + r2) / 2, Math.PI * 1.05, Math.PI * 1.95); c.stroke();
+    c.beginPath(); c.arc(cx, cy, s * 0.045, 0, 7); c.fill();
+  }
+  function drawRibbon(c, s) {
+    var cx = s / 2, cy = s / 2, rx = s * 0.26, ry = s * 0.17;
+    c.save(); c.translate(cx - rx * 0.55, cy); c.rotate(-0.5);
+    c.beginPath(); c.ellipse(0, 0, rx, ry, 0, 0, 7); c.fill(); c.restore();
+    c.save(); c.translate(cx + rx * 0.55, cy); c.rotate(0.5);
+    c.beginPath(); c.ellipse(0, 0, rx, ry, 0, 0, 7); c.fill(); c.restore();
+    c.beginPath(); c.arc(cx, cy, s * 0.06, 0, 7); c.fill();
+  }
+  var SHAPES = { case: drawCase, magsafe: drawMagsafe, candy: drawCandy, ribbon: drawRibbon };
+
+  function sampleShape(drawFn) {
+    var size = 220, step = 5;
+    var off = document.createElement('canvas'); off.width = size; off.height = size;
+    var octx = off.getContext('2d');
+    octx.fillStyle = '#fff'; octx.strokeStyle = '#fff';
+    drawFn(octx, size);
+    var data = octx.getImageData(0, 0, size, size).data;
+    var pts = [];
+    for (var y = 0; y < size; y += step) {
+      for (var x = 0; x < size; x += step) {
+        if (data[(y * size + x) * 4 + 3] > 128) pts.push([x / size - 0.5, y / size - 0.5]);
+      }
+    }
+    return pts.length ? pts : [[0, 0]];
+  }
+
+  var shapePoints = chapterEls.map(function (el) {
+    var fn = SHAPES[el.dataset.shape] || SHAPES.case;
+    return sampleShape(fn);
+  });
+
+  var PARTICLE_COUNT = 640;
+  var particles = [];
+  for (var i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      jx: (Math.random() - 0.5) * 0.03,
+      jy: (Math.random() - 0.5) * 0.03,
+      phase: Math.random() * Math.PI * 2,
+      size: 2 + Math.random() * 3.4,
+      color: PALETTE[i % PALETTE.length]
+    });
+  }
+
+  section.classList.add('story--enhanced');
+
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function resize() {
+    canvas.width = stage.clientWidth * dpr;
+    canvas.height = stage.clientHeight * dpr;
+    canvas.style.width = stage.clientWidth + 'px';
+    canvas.style.height = stage.clientHeight + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var targetProgress = 0, displayProgress = 0, lastActive = 0;
+  function onScroll() {
+    var total = pin.offsetHeight - window.innerHeight;
+    var top = pin.getBoundingClientRect().top;
+    targetProgress = total > 0 ? Math.min(1, Math.max(0, -top / total)) : 0;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function frame(t) {
+    displayProgress += (targetProgress - displayProgress) * 0.09;
+    var scaled = displayProgress * (count - 1);
+    var from = Math.min(count - 2, Math.floor(scaled));
+    var to = from + 1;
+    var localT = scaled - from;
+    var eased = localT * localT * (3 - 2 * localT);
+
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var shapeSize = Math.min(w, h) * 0.66;
+    var cx = w / 2, cy = h * 0.5;
+    var ptsA = shapePoints[from], ptsB = shapePoints[to];
+
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var a = ptsA[i % ptsA.length], b = ptsB[i % ptsB.length];
+      var nx = lerp(a[0], b[0], eased) + p.jx;
+      var ny = lerp(a[1], b[1], eased) + p.jy;
+      var drift = 6 * dpr;
+      var x = cx + nx * shapeSize + Math.sin(t * 0.0006 + p.phase) * drift;
+      var y = cy + ny * shapeSize + Math.cos(t * 0.0005 + p.phase) * drift;
+      var rot = t * 0.0008 + p.phase;
+      var sz = p.size * dpr;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.moveTo(0, -sz); ctx.lineTo(sz * 0.75, 0); ctx.lineTo(0, sz); ctx.lineTo(-sz * 0.75, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    var active = Math.round(scaled);
+    if (active !== lastActive) {
+      chapterEls[lastActive] && chapterEls[lastActive].classList.remove('is-active');
+      chapterEls[active] && chapterEls[active].classList.add('is-active');
+      lastActive = active;
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Scroll story hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "void_image",
+      "label": "Background atmosphere image",
+      "info": "Sits faded behind the particle field. Generated with kie.ai — see README."
+    },
+    {
+      "type": "range",
+      "id": "chapter_height",
+      "label": "Scroll length per chapter",
+      "min": 60,
+      "max": 130,
+      "step": 5,
+      "default": 90,
+      "unit": "vh"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "CTA button text",
+      "default": "Shop iPhone 18 cases"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "CTA button link"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "CTA microcopy",
+      "default": "Free shipping over $40 · 30-day returns"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "select",
+          "id": "shape",
+          "label": "Particle shape",
+          "options": [
+            {
+              "value": "case",
+              "label": "Phone case"
+            },
+            {
+              "value": "magsafe",
+              "label": "MagSafe ring"
+            },
+            {
+              "value": "candy",
+              "label": "Candy swirl"
+            },
+            {
+              "value": "ribbon",
+              "label": "Ribbon bow"
+            }
+          ],
+          "default": "case"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Cases built for iPhone 18."
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Scroll story hero",
+      "blocks": [
+        {
+          "type": "chapter",
+          "settings": {
+            "shape": "case",
+            "eyebrow": "iPhone 18 collection",
+            "heading": "Cases built for iPhone 18.",
+            "body": "Hand-finished candy-shop protection, cut precisely for the new lineup."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "shape": "magsafe",
+            "eyebrow": "Engineered to protect",
+            "heading": "Drop-tested. MagSafe-ready.",
+            "body": "A drop-tested cocoa core with a flush N52 magnet array — snaps to chargers and wallets without wobble."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "shape": "candy",
+            "eyebrow": "Printed to last",
+            "heading": "Flavor, not just color.",
+            "body": "UV-cured candy-stripe prints that won't scratch, fade, or peel — anti-yellowing shell guaranteed."
+          }
+        },
+        {
+          "type": "chapter",
+          "settings": {
+            "shape": "ribbon",
+            "eyebrow": "The whole set",
+            "heading": "Cases, tins, and ribbon.",
+            "body": "Bundle your case with a tin of sweets, wrapped by hand, posted in a striped box."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

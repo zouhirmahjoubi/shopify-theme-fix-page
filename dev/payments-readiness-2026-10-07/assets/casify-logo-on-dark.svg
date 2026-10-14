@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" role="img" aria-label="Casify">
+  <title>Casify</title>
+  <defs>
+    <linearGradient id="cwfMarkBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E58C82"/>
+      <stop offset="1" stop-color="#A8231F"/>
+    </linearGradient>
+    <linearGradient id="cwfMarkShell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDF9F1"/>
+      <stop offset="1" stop-color="#EADCBF"/>
+    </linearGradient>
+  </defs>
+
+  <g class="cwf-mark">
+    <rect x="2" y="2" width="76" height="76" rx="17" fill="url(#cwfMarkBg)"/>
+    <g class="cwf-mark__ring" transform-origin="40 40">
+      <circle cx="40" cy="40" r="32" fill="none" stroke="#33231A" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="3.5 5"/>
+    </g>
+    <g class="cwf-mark__c" transform-origin="40 40">
+      <path d="M55 30.5a16 16 0 1 0 0 19"
+            fill="none" stroke="url(#cwfMarkShell)" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="55" cy="30.5" r="2.8" fill="#FDF9F1"/>
+    </g>
+  </g>
+
+  <g font-family="Playfair Display, Georgia, serif" font-weight="800" font-size="52" letter-spacing="-2">
+    <text x="96" y="55" fill="#FDF9F1">casif<tspan fill="#E7D3A8">y</tspan></text>
+    <text x="96" y="78" font-family="Special Elite, Courier New, monospace" font-size="9" letter-spacing="3" fill="rgba(255,253,248,.6)">EST. 1920 · CASES WITH NUMBERS</text>
+  </g>
+</svg>

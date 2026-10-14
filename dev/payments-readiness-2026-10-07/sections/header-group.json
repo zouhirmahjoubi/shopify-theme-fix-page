@@ -1,0 +1,20 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "ticker_text": "Casify phone cases · Free shipping · 30-day returns",
+        "topbar_enable": true,
+        "topbar_left": "Ships in 1-2 business days",
+        "topbar_right": "30-day returns",
+        "nav_style": "bubble",
+        "topbar_pill": ""
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

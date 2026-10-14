@@ -1,0 +1,52 @@
+{% doc %}
+  Google rating strip shown under the product buttons ("google_rating" block in
+  sections/cv-product-counter.liquid). Renders nothing until a rating is entered.
+
+  @param {object} block - The google_rating block.
+{% enddoc %}
+{%- liquid
+  assign rating = block.settings.rating | strip
+  comment
+    Accept "4,4" as well as "4.4": plus: 0 would read "4,4" as 4.
+  endcomment
+  assign rating_value = rating | replace: ',', '.' | plus: 0
+  assign count = block.settings.review_count | strip
+  assign url = block.settings.reviews_url
+-%}
+{%- if rating_value > 0 -%}
+  {%- assign rating_value = rating_value | at_most: 5 -%}
+  {%- assign star_fill = rating_value | times: 20 -%}
+  {{ 'cv-google-rating.css' | asset_url | stylesheet_tag }}
+  {%- capture label -%}
+    {{ 'products.google_rating.aria_label' | t: rating: rating }}{% if count != blank %}, {{ 'products.google_rating.count' | t: count: count }}{% endif %}
+  {%- endcapture -%}
+  {%- if url != blank -%}
+    <a class="cvgr" href="{{ url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="{{ label | strip | escape }} {{ 'products.google_rating.new_window' | t | escape }}" {{ block.shopify_attributes }}>
+  {%- else -%}
+    <div class="cvgr" role="group" aria-label="{{ label | strip | escape }}" {{ block.shopify_attributes }}>
+  {%- endif -%}
+    <span class="cvgr__inner" aria-hidden="true">
+      {%- if block.settings.headline != blank -%}
+        <span class="cvgr__quote">“{{ block.settings.headline | escape }}”</span>
+      {%- endif -%}
+      <span class="cvgr__stars">{%- render 'cv-stars', fill: star_fill -%}</span>
+      <span class="cvgr__text">
+        {{- 'products.google_rating.rated' | t }} <strong>{{ 'products.google_rating.score' | t: rating: rating }}</strong> {{ 'products.google_rating.on' | t -}}
+      </span>
+      <span class="cvgr__google">
+        <svg viewBox="0 0 24 24" width="16" height="16" focusable="false">
+          <path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/>
+          <path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/>
+          <path fill="#fbbc05" d="M6.4 13.63A6 6 0 0 1 6.09 12c0-.57.11-1.12.31-1.63V7.52H3.06A9.96 9.96 0 0 0 2 12c0 1.61.38 3.14 1.06 4.48l3.34-2.85Z"/>
+          <path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/>
+        </svg>
+        {{- 'products.google_rating.google' | t -}}
+      </span>
+      {%- if count != blank -%}
+        <span class="cvgr__count">{{ 'products.google_rating.count' | t: count: count }}</span>
+      {%- endif -%}
+    </span>
+  {%- if url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+{%- elsif request.design_mode -%}
+  <p class="cvgr cvgr--hint" {{ block.shopify_attributes }}>{{ 'products.google_rating.editor_hint' | t }}</p>
+{%- endif -%}

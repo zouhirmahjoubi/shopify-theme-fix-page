@@ -1,0 +1,178 @@
+{%- comment -%}
+  Casify "Us vs. them": two pictures with a 3D peppermint VS token between them
+  (three.js, assets/cv-vs.js), then paired rows — our point with a check, theirs
+  with a cross — that slide together on scroll (GSAP). Layout adapted from the
+  "Us vs Them" snippet in the code library; content is the merchant's own.
+  The finished comparison is plain HTML/CSS: without JS, WebGL or motion the
+  VS is a flat candy badge and every row is already in place.
+{%- endcomment -%}
+{{ 'cv-vs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign row_count = 0
+  for block in section.blocks
+    if block.settings.us_text != blank and block.settings.them_text != blank
+      assign row_count = row_count | plus: 1
+    endif
+  endfor
+  assign us_label = section.settings.us_label | default: shop.name
+  assign them_label = section.settings.them_label
+  assign us_image = section.settings.us_image
+  if us_image == blank and section.settings.us_product != blank
+    assign us_image = section.settings.us_product.featured_image
+  endif
+  comment
+    On a product page, with neither picked, "us" is the case being viewed.
+  endcomment
+  if us_image == blank and product != blank
+    assign us_image = product.featured_image
+  endif
+  assign them_image = section.settings.them_image
+-%}
+
+{%- if row_count > 0 or request.design_mode -%}
+<section class="cvvs cvvs--{{ section.settings.surface }}" data-cvvs aria-labelledby="cvvs-title-{{ section.id }}">
+  <div class="cvvs__inner">
+    <header class="cvvs__header" data-cvvs-head>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="cvvs__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      <h2 class="cvvs__title" id="cvvs-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="cvvs__sub">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="cvvs__stage" data-cvvs-stage>
+      <figure class="cvvs__pic cvvs__pic--us" data-cvvs-pic="us">
+        <div class="cvvs__frame">
+          {%- if us_image != blank -%}
+            {{ us_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 900px) 360px, 42vw', alt: us_label }}
+          {%- else -%}
+            <span class="cvvs__art" aria-hidden="true">{%- render 'cv-icon', name: 'drop-shield', size: 72 -%}</span>
+          {%- endif -%}
+          {%- if section.settings.us_sticker != blank -%}
+            <span class="cvvs__sticker">{{ section.settings.us_sticker | escape }}</span>
+          {%- endif -%}
+        </div>
+        <figcaption class="cvvs__label">{{ us_label | escape }}</figcaption>
+      </figure>
+
+      <div class="cvvs__token" data-cvvs-token aria-hidden="true">
+        <span class="cvvs__token-flat">{{ 'sections.vs.vs' | t }}</span>
+      </div>
+
+      <figure class="cvvs__pic cvvs__pic--them" data-cvvs-pic="them">
+        <div class="cvvs__frame">
+          {%- if them_image != blank -%}
+            {{ them_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 900px) 360px, 42vw', alt: them_label }}
+          {%- else -%}
+            <span class="cvvs__art cvvs__art--them" aria-hidden="true">{%- render 'cv-icon', name: 'device', size: 72 -%}</span>
+          {%- endif -%}
+        </div>
+        <figcaption class="cvvs__label cvvs__label--them">{{ them_label | escape }}</figcaption>
+      </figure>
+    </div>
+
+    <ul class="cvvs__rows" role="list" data-cvvs-rows>
+      {%- for block in section.blocks -%}
+        {%- if block.settings.us_text != blank and block.settings.them_text != blank -%}
+          <li class="cvvs__row" data-cvvs-row {{ block.shopify_attributes }}>
+            <span class="cvvs__side cvvs__side--us" data-cvvs-us>
+              <span class="cvvs__sr">{{ us_label | escape }}:</span>
+              <span class="cvvs__text">{{ block.settings.us_text | escape }}</span>
+              <svg class="cvvs__mark cvvs__mark--check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="11"/>
+                <path d="M7 12.4l3.2 3.2L17.2 8.6" data-cvvs-check/>
+              </svg>
+            </span>
+            <span class="cvvs__side cvvs__side--them" data-cvvs-them>
+              <svg class="cvvs__mark cvvs__mark--cross" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-cvvs-cross>
+                <circle cx="12" cy="12" r="11"/>
+                <path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>
+              </svg>
+              <span class="cvvs__sr">{{ them_label | escape }}:</span>
+              <span class="cvvs__text">{{ block.settings.them_text | escape }}</span>
+            </span>
+          </li>
+        {%- elsif request.design_mode -%}
+          <li class="cvvs__row cvvs__row--draft" {{ block.shopify_attributes }}>
+            <span class="cvvs__draft">{{ 'sections.vs.editor_row' | t }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+
+    <div class="cvvs__foot" data-cvvs-foot>
+      {%- if section.settings.note != blank -%}
+        <p class="cvvs__note">{{ section.settings.note | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="cvvs__cta" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.button_label | escape }}
+          {%- render 'cv-icon', name: 'arrow-right', size: 18 -%}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.button_note != blank -%}
+        <p class="cvvs__fine">{{ section.settings.button_note | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Us vs. them",
+  "tag": "div",
+  "class": "section-cv-vs",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "paragraph", "content": "Compare only what you can back up. Describe the other side generally (e.g. \"ordinary cases\") unless you can prove a claim about a named brand." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Us vs. them" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Not all cases are made the same" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "White" },
+        { "value": "teal", "label": "Soft teal" }
+      ],
+      "default": "cream"
+    },
+    { "type": "header", "content": "Our side" },
+    { "type": "text", "id": "us_label", "label": "Name", "info": "Defaults to your store name." },
+    { "type": "image_picker", "id": "us_image", "label": "Image" },
+    { "type": "product", "id": "us_product", "label": "Or use a product's image", "info": "On a product page, leave both blank to show the product being viewed." },
+    { "type": "text", "id": "us_sticker", "label": "Sticker on the image", "info": "Optional, e.g. \"30-day returns\". Only a policy you really offer." },
+    { "type": "header", "content": "Their side" },
+    { "type": "text", "id": "them_label", "label": "Name", "default": "Ordinary cases" },
+    { "type": "image_picker", "id": "them_image", "label": "Image", "info": "Use your own photo, not another brand's product image." },
+    { "type": "header", "content": "Below the table" },
+    { "type": "text", "id": "note", "label": "Note" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop cases" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to all products." },
+    { "type": "text", "id": "button_note", "label": "Small print under the button", "info": "Only state what is true for every order." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison row",
+      "settings": [
+        { "type": "text", "id": "us_text", "label": "Our side", "info": "Short, e.g. \"Raised lip around the camera\"." },
+        { "type": "text", "id": "them_text", "label": "Their side", "info": "The honest counterpart, e.g. \"Flat edge around the camera\"." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Us vs. them",
+      "blocks": [{ "type": "row" }, { "type": "row" }, { "type": "row" }, { "type": "row" }]
+    }
+  ]
+}
+{% endschema %}

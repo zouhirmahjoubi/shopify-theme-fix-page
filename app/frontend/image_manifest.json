@@ -1,0 +1,51 @@
+{
+  "status": "success",
+  "results": [
+    {
+      "status": "success",
+      "filename": "cv-hero-clear-case-packshot.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppiqcakva/cv-hero-clear-case-packshot.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppiqcakva/cv-hero-clear-case-packshot.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppiqcakva/cv-hero-clear-case-packshot.png"
+    },
+    {
+      "status": "success",
+      "filename": "cv-detail-dropcore-corner.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppxacakua/cv-detail-dropcore-corner.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppxacakua/cv-detail-dropcore-corner.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lppxacakua/cv-detail-dropcore-corner.png"
+    },
+    {
+      "status": "success",
+      "filename": "cv-detail-magsafe-charging.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqfycakwq/cv-detail-magsafe-charging.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqfycakwq/cv-detail-magsafe-charging.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqfycakwq/cv-detail-magsafe-charging.png"
+    },
+    {
+      "status": "success",
+      "filename": "cv-detail-slim-profile.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqsqcakwa/cv-detail-slim-profile.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqsqcakwa/cv-detail-slim-profile.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lpqsqcakwa/cv-detail-slim-profile.png"
+    },
+    {
+      "status": "success",
+      "filename": "cv-detail-clarity-comparison.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lprbacakvq/cv-detail-clarity-comparison.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lprbacakvq/cv-detail-clarity-comparison.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lprbacakvq/cv-detail-clarity-comparison.png"
+    },
+    {
+      "status": "success",
+      "filename": "cv-lifestyle-in-hand.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lproacakuq/cv-lifestyle-in-hand.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lproacakuq/cv-lifestyle-in-hand.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/1284282/2026-09-05/v3lproacakuq/cv-lifestyle-in-hand.png"
+    }
+  ],
+  "success_count": 6,
+  "failed_count": 0,
+  "running_count": 0,
+  "message": "Generated 6/6 images total"
+}

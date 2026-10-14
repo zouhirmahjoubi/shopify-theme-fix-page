@@ -1,0 +1,1339 @@
+{
+ "art": "D:\\ETSY+PRINTIFY\\christmas-bunny-denim-quotes-ten\\png\\01-sew-merry-and-bright.png",
+ "art_size": [
+  887,
+  1774
+ ],
+ "design": {
+  "title": "Sew Merry & Bright",
+  "art": "D:/ETSY+PRINTIFY/christmas-bunny-denim-quotes-ten/png/01-sew-merry-and-bright.png",
+  "keep": [
+   0.03,
+   0.13,
+   0.97,
+   0.955
+  ],
+  "protect": [
+   [
+    0.02,
+    0.165,
+    0.6,
+    0.49
+   ],
+   [
+    0.5,
+    0.13,
+    0.98,
+    0.49
+   ],
+   [
+    0.04,
+    0.5,
+    0.97,
+    0.845
+   ],
+   [
+    0.02,
+    0.85,
+    0.98,
+    0.955
+   ]
+  ],
+  "camera_margin_px": 24,
+  "inner_margin_px": 16,
+  "_notes": "boxes: bunny+bowl, trees, lettering, ribbon. Top 13% (stars, corner holly/poinsettia) may sit under the camera."
+ },
+ "lines": [
+  "magsafe",
+  "magsafe_matte"
+ ],
+ "models": [
+  {
+   "name": "iPhone 17 Pro Max",
+   "code": "17PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\17PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\17PMT_Mockup.png",
+   "print_file": "print\\17PM.png",
+   "mockup_file": "mockup\\17PM.jpg",
+   "back": [
+    465,
+    239,
+    1283,
+    2154
+   ],
+   "camera": [
+    375,
+    239,
+    1373,
+    886
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.839,
+   "x": 501.9,
+   "y": 716.6,
+   "art_ppi": 358,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "17PM-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "17PM-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 17 Pro",
+   "code": "17P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\17PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\17PT_Mockup.png",
+   "print_file": "print\\17P.png",
+   "mockup_file": "mockup\\17P.jpg",
+   "back": [
+    501,
+    318,
+    1247,
+    2075
+   ],
+   "camera": [
+    411,
+    318,
+    1337,
+    966
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.73,
+   "x": 550.2,
+   "y": 822.2,
+   "art_ppi": 411,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "17P-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "17P-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 17 Air",
+   "code": "17A",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\17AT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\17AT_Mockup.png",
+   "print_file": "print\\17A.png",
+   "mockup_file": "mockup\\17A.jpg",
+   "back": [
+    459,
+    283,
+    1290,
+    2137
+   ],
+   "camera": [
+    395,
+    283,
+    1354,
+    762
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.9104,
+   "x": 470.8,
+   "y": 578.7,
+   "art_ppi": 330,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "17A-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "17A-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 17",
+   "code": "17",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\17T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\17T_Mockup.png",
+   "print_file": "print\\17.png",
+   "mockup_file": "mockup\\17.jpg",
+   "back": [
+    504,
+    321,
+    1245,
+    2071
+   ],
+   "camera": [
+    414,
+    321,
+    877,
+    942
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.7441,
+   "x": 544.5,
+   "y": 794.5,
+   "art_ppi": 403,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "17-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "17-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 16e",
+   "code": "16E",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\16ET.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\16ET_Mockup.png",
+   "print_file": "print\\16E.png",
+   "mockup_file": "mockup\\16E.jpg",
+   "back": [
+    470,
+    392,
+    1278,
+    2088
+   ],
+   "camera": [
+    511,
+    435,
+    842,
+    620
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.9307,
+   "x": 461.2,
+   "y": 372.0,
+   "art_ppi": 322,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "16E-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "16E-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 16 Pro Max",
+   "code": "16PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\16PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\16PMT_Mockup.png",
+   "print_file": "print\\16PM.png",
+   "mockup_file": "mockup\\16PM.jpg",
+   "back": [
+    436,
+    243,
+    1312,
+    2183
+   ],
+   "camera": [
+    377,
+    243,
+    997,
+    874
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.8655,
+   "x": 490.2,
+   "y": 700.7,
+   "art_ppi": 347,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "16PM-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "16PM-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 16 Pro",
+   "code": "16P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\16PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\16PT_Mockup.png",
+   "print_file": "print\\16P.png",
+   "mockup_file": "mockup\\16P.jpg",
+   "back": [
+    472,
+    322,
+    1276,
+    2104
+   ],
+   "camera": [
+    413,
+    322,
+    1033,
+    953
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.7569,
+   "x": 538.3,
+   "y": 805.6,
+   "art_ppi": 396,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "16P-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "16P-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 16 Plus",
+   "code": "16PL",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\16PLT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\16PLT_Mockup.png",
+   "print_file": "print\\16PL.png",
+   "mockup_file": "mockup\\16PL.jpg",
+   "back": [
+    434,
+    254,
+    1315,
+    2171
+   ],
+   "camera": [
+    376,
+    254,
+    847,
+    866
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.9012,
+   "x": 474.8,
+   "y": 628.3,
+   "art_ppi": 333,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "16PL-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "16PL-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 16",
+   "code": "16",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\16T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\16T_Mockup.png",
+   "print_file": "print\\16.png",
+   "mockup_file": "mockup\\16.jpg",
+   "back": [
+    470,
+    332,
+    1279,
+    2093
+   ],
+   "camera": [
+    412,
+    332,
+    883,
+    944
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.7572,
+   "x": 538.7,
+   "y": 794.2,
+   "art_ppi": 396,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "16-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "16-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 15 Pro Max",
+   "code": "15PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\15PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\15PMT_Mockup.png",
+   "print_file": "print\\15PM.png",
+   "mockup_file": "mockup\\15PM.jpg",
+   "back": [
+    440,
+    272,
+    1309,
+    2166
+   ],
+   "camera": [
+    387,
+    272,
+    997,
+    888
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.8458,
+   "x": 499.4,
+   "y": 717.1,
+   "art_ppi": 355,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "15PM-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "15PM-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 15 Pro",
+   "code": "15P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\15PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\15PT_Mockup.png",
+   "print_file": "print\\15P.png",
+   "mockup_file": "mockup\\15P.jpg",
+   "back": [
+    476,
+    350,
+    1272,
+    2088
+   ],
+   "camera": [
+    423,
+    350,
+    1033,
+    967
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.7376,
+   "x": 546.9,
+   "y": 822.3,
+   "art_ppi": 407,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "15P-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "15P-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 15 Plus",
+   "code": "15PL",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\15PLT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\15PLT_Mockup.png",
+   "print_file": "print\\15PL.png",
+   "mockup_file": "mockup\\15PL.jpg",
+   "back": [
+    433,
+    265,
+    1316,
+    2172
+   ],
+   "camera": [
+    381,
+    265,
+    909,
+    784
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.9186,
+   "x": 467.1,
+   "y": 599.8,
+   "art_ppi": 327,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "15PL-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "15PL-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 15",
+   "code": "15",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\15T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\15T_Mockup.png",
+   "print_file": "print\\15.png",
+   "mockup_file": "mockup\\15.jpg",
+   "back": [
+    469,
+    343,
+    1280,
+    2094
+   ],
+   "camera": [
+    417,
+    343,
+    945,
+    862
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.8128,
+   "x": 514.0,
+   "y": 700.9,
+   "art_ppi": 369,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "15-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "15-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 14 Pro Max",
+   "code": "14PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\14PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\14PMT_Mockup.png",
+   "print_file": "print\\14PM.png",
+   "mockup_file": "mockup\\14PM.jpg",
+   "back": [
+    433,
+    262,
+    1316,
+    2172
+   ],
+   "camera": [
+    387,
+    262,
+    986,
+    879
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.8548,
+   "x": 495.4,
+   "y": 707.8,
+   "art_ppi": 351,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "14PM-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "14PM-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 14 Pro",
+   "code": "14P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\14PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\14PT_Mockup.png",
+   "print_file": "print\\14P.png",
+   "mockup_file": "mockup\\14P.jpg",
+   "back": [
+    470,
+    341,
+    1279,
+    2094
+   ],
+   "camera": [
+    424,
+    341,
+    1022,
+    957
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.7479,
+   "x": 542.8,
+   "y": 811.0,
+   "art_ppi": 401,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "14P-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "14P-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 14 Plus",
+   "code": "14PL",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\14PLT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\14PLT_Mockup.png",
+   "print_file": "print\\14PL.png",
+   "mockup_file": "mockup\\14PL.jpg",
+   "back": [
+    430,
+    262,
+    1319,
+    2173
+   ],
+   "camera": [
+    380,
+    262,
+    895,
+    772
+   ],
+   "print_area": [
+    174,
+    117,
+    1575,
+    2364
+   ],
+   "scale": 0.9276,
+   "x": 463.1,
+   "y": 585.4,
+   "art_ppi": 323,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "14PL-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "14PL-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 14",
+   "code": "14",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\14T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\14T_Mockup.png",
+   "print_file": "print\\14.png",
+   "mockup_file": "mockup\\14.jpg",
+   "back": [
+    469,
+    345,
+    1280,
+    2090
+   ],
+   "camera": [
+    419,
+    345,
+    925,
+    847
+   ],
+   "print_area": [
+    208,
+    214,
+    1542,
+    2267
+   ],
+   "scale": 0.8198,
+   "x": 510.9,
+   "y": 685.0,
+   "art_ppi": 366,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "14-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "14-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 13 Pro Max",
+   "code": "13PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\13PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\13PMT_Mockup.png",
+   "print_file": "print\\13PM.png",
+   "mockup_file": "mockup\\13PM.jpg",
+   "back": [
+    404,
+    262,
+    1344,
+    2198
+   ],
+   "camera": [
+    384,
+    262,
+    946,
+    837
+   ],
+   "print_area": [
+    174,
+    38,
+    1575,
+    2364
+   ],
+   "scale": 0.9012,
+   "x": 474.3,
+   "y": 655.3,
+   "art_ppi": 333,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "13PM-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "13PM-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 13 Pro",
+   "code": "13P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\13PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\13PT_Mockup.png",
+   "print_file": "print\\13P.png",
+   "mockup_file": "mockup\\13P.jpg",
+   "back": [
+    443,
+    345,
+    1305,
+    2115
+   ],
+   "camera": [
+    423,
+    345,
+    982,
+    919
+   ],
+   "print_area": [
+    211,
+    221,
+    1537,
+    2260
+   ],
+   "scale": 0.7889,
+   "x": 524.1,
+   "y": 762.5,
+   "art_ppi": 380,
+   "warnings": [
+    "art shrunk to 79% to clear the camera"
+   ],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "13P-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "13P-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 13",
+   "code": "13",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\13T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\13T_Mockup.png",
+   "print_file": "print\\13.png",
+   "mockup_file": "mockup\\13.jpg",
+   "back": [
+    443,
+    345,
+    1305,
+    2115
+   ],
+   "camera": [
+    423,
+    345,
+    876,
+    798
+   ],
+   "print_area": [
+    207,
+    214,
+    1541,
+    2267
+   ],
+   "scale": 0.871,
+   "x": 487.7,
+   "y": 623.3,
+   "art_ppi": 344,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "13-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "13-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 13 Mini",
+   "code": "13M",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\13MT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\13MT_Mockup.png",
+   "print_file": "print\\13M.png",
+   "mockup_file": "mockup\\13M.jpg",
+   "back": [
+    485,
+    435,
+    1263,
+    2026
+   ],
+   "camera": [
+    466,
+    435,
+    895,
+    864
+   ],
+   "print_area": [
+    257,
+    290,
+    1492,
+    2190
+   ],
+   "scale": 0.765,
+   "x": 534.7,
+   "y": 714.0,
+   "art_ppi": 392,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "13M-MS",
+     "price": "54.99"
+    },
+    {
+     "line": "magsafe_matte",
+     "label": "MagSafe Tough Matte",
+     "item_sku": "13M-M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 12 Pro Max",
+   "code": "12PM",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\12PMT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\12PMT_Mockup.png",
+   "print_file": "print\\12PM.png",
+   "mockup_file": "mockup\\12PM.jpg",
+   "back": [
+    406,
+    265,
+    1342,
+    2196
+   ],
+   "camera": [
+    388,
+    265,
+    921,
+    827
+   ],
+   "print_area": [
+    236,
+    239,
+    1512,
+    2241
+   ],
+   "scale": 0.908,
+   "x": 471.3,
+   "y": 641.6,
+   "art_ppi": 330,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "12PM-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 12 Pro",
+   "code": "12P",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\12PT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\12PT_Mockup.png",
+   "print_file": "print\\12P.png",
+   "mockup_file": "mockup\\12P.jpg",
+   "back": [
+    444,
+    348,
+    1304,
+    2114
+   ],
+   "camera": [
+    425,
+    348,
+    901,
+    849
+   ],
+   "print_area": [
+    275,
+    321,
+    1474,
+    2159
+   ],
+   "scale": 0.8367,
+   "x": 502.9,
+   "y": 680.6,
+   "art_ppi": 359,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "12P-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 12",
+   "code": "12",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\12T.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\12T_Mockup.png",
+   "print_file": "print\\12.png",
+   "mockup_file": "mockup\\12.jpg",
+   "back": [
+    444,
+    348,
+    1304,
+    2114
+   ],
+   "camera": [
+    425,
+    348,
+    901,
+    849
+   ],
+   "print_area": [
+    275,
+    321,
+    1474,
+    2159
+   ],
+   "scale": 0.8367,
+   "x": 502.9,
+   "y": 680.6,
+   "art_ppi": 359,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "12-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "iPhone 12 Mini",
+   "code": "12M",
+   "brand": "Apple",
+   "template": "case_templates\\Apple\\Tough & MagSafe\\12MT.png",
+   "mockup": "case_mockups\\Apple\\Tough\\Gloss\\12MT_Mockup.png",
+   "print_file": "print\\12M.png",
+   "mockup_file": "mockup\\12M.jpg",
+   "back": [
+    488,
+    438,
+    1260,
+    2024
+   ],
+   "camera": [
+    469,
+    438,
+    893,
+    899
+   ],
+   "print_area": [
+    317,
+    411,
+    1432,
+    2069
+   ],
+   "scale": 0.7411,
+   "x": 545.3,
+   "y": 752.5,
+   "art_ppi": 405,
+   "warnings": [],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "12M-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "Galaxy S26 Ultra",
+   "code": "S26U",
+   "brand": "Samsung",
+   "template": "case_templates\\Samsung\\Tough\\S26UT.png",
+   "mockup": "drawn (no Casestry mockup for this model)",
+   "print_file": "print\\S26U.png",
+   "mockup_file": "mockup\\S26U.jpg",
+   "back": [
+    423,
+    248,
+    1324,
+    2197
+   ],
+   "camera": [
+    387,
+    248,
+    933,
+    1082
+   ],
+   "print_area": [
+    202,
+    140,
+    1546,
+    2340
+   ],
+   "scale": 0.7322,
+   "x": 548.8,
+   "y": 940.6,
+   "art_ppi": 410,
+   "warnings": [
+    "art shrunk to 70% to clear the camera"
+   ],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "S26U-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "Galaxy S26 Plus",
+   "code": "S26P",
+   "brand": "Samsung",
+   "template": "case_templates\\Samsung\\Tough\\S26PT.png",
+   "mockup": "drawn (no Casestry mockup for this model)",
+   "print_file": "print\\S26P.png",
+   "mockup_file": "mockup\\S26P.jpg",
+   "back": [
+    435,
+    278,
+    1313,
+    2167
+   ],
+   "camera": [
+    400,
+    278,
+    826,
+    1015
+   ],
+   "print_area": [
+    214,
+    172,
+    1534,
+    2308
+   ],
+   "scale": 0.7914,
+   "x": 523.0,
+   "y": 810.2,
+   "art_ppi": 379,
+   "warnings": [
+    "art shrunk to 78% to clear the camera"
+   ],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "S26P-MS",
+     "price": "54.99"
+    }
+   ]
+  },
+  {
+   "name": "Galaxy S26",
+   "code": "S26",
+   "brand": "Samsung",
+   "template": "case_templates\\Samsung\\Tough\\S26T.png",
+   "mockup": "drawn (no Casestry mockup for this model)",
+   "print_file": "print\\S26.png",
+   "mockup_file": "mockup\\S26.jpg",
+   "back": [
+    459,
+    331,
+    1289,
+    2113
+   ],
+   "camera": [
+    424,
+    331,
+    854,
+    1067
+   ],
+   "print_area": [
+    245,
+    239,
+    1503,
+    2241
+   ],
+   "scale": 0.6867,
+   "x": 569.4,
+   "y": 933.6,
+   "art_ppi": 437,
+   "warnings": [
+    "art shrunk to 72% to clear the camera"
+   ],
+   "variants": [
+    {
+     "line": "magsafe",
+     "label": "MagSafe Tough",
+     "item_sku": "S26-MS",
+     "price": "54.99"
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "name": "iPhone 18 Pro Max",
+   "code": "18PM",
+   "reason": "no template (18PMT.png)"
+  },
+  {
+   "name": "iPhone 18 Pro",
+   "code": "18P",
+   "reason": "no template (18PT.png)"
+  },
+  {
+   "name": "iPhone 17e",
+   "code": "17E",
+   "reason": "no template (17ET.png)"
+  }
+ ],
+ "heroes": [
+  {
+   "file": "hero/01-main.jpg",
+   "model": "17PM",
+   "kind": "main"
+  },
+  {
+   "file": "hero/02-magsafe.jpg",
+   "model": "15PM",
+   "kind": "magsafe"
+  },
+  {
+   "file": "hero/03-artwork.jpg",
+   "kind": "artwork"
+  }
+ ]
+}

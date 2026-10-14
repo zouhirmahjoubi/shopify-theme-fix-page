@@ -1,0 +1,239 @@
+{%- comment -%}
+  Casify product page: delivery estimate (Chrismass design system).
+
+  Built from the delivery snippets in the abcdef library (Shrine's
+  ss-delivery-timer, "Delivery Time & Guarantee", "Order Arrive"), reworked:
+    - dates are worked out in the browser (assets/cv-pdp-delivery.js), in the
+      shop's time zone — storefront HTML is cached, so dates rendered in
+      Liquid can be a day or more out of date;
+    - business days skip weekends and the holidays listed in the settings;
+    - an optional daily cut-off moves orders placed after it to the next
+      business day, with a live "order within…" countdown;
+    - per-country extra days use Shopify's own localization.country — no
+      third-party IP lookup;
+    - without JavaScript each stop shows its plain range ("1–3 business
+      days").
+  Nothing is invented: the delivery step ships without days (so it shows no
+  date) until the merchant enters their carrier's times, and the cut-off is
+  off until a real one is set. The "leaves our shop" default (1–3 business
+  days) is the figure used by the Order journey section.
+
+  Motion: assets/cv-pdp-delivery.js. Styles: assets/cv-pdp-delivery.css.
+{%- endcomment -%}
+{{ 'cv-pdp-delivery.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign unit = 'days'
+  if st.business_days
+    assign unit = 'business days'
+  endif
+
+  assign country = localization.country.iso_code | upcase
+  assign zone_min = 0
+  assign zone_max = 0
+  assign zones = section.blocks | where: 'type', 'zone'
+  for z in zones
+    assign codes = z.settings.countries | upcase | remove: ' ' | split: ','
+    if codes contains country
+      assign zone_min = z.settings.extra_min | default: 0
+      assign zone_max = z.settings.extra_max | default: zone_min
+      break
+    endif
+  endfor
+
+  assign steps = section.blocks | where: 'type', 'step'
+  assign dated_steps = 0
+  assign head_title = ''
+  assign head_range = ''
+  for b in steps
+    if b.settings.min_days != blank
+      assign dated_steps = dated_steps | plus: 1
+      assign h_min = b.settings.min_days
+      assign h_max = b.settings.max_days | default: h_min
+      if forloop.last
+        assign h_min = h_min | plus: zone_min
+        assign h_max = h_max | plus: zone_max
+      endif
+      assign head_title = b.settings.title
+      if h_min == 0 and h_max == 0
+        assign head_range = 'Today'
+      elsif h_min == h_max or h_max < h_min
+        assign head_range = h_min | append: ' ' | append: unit
+      else
+        assign head_range = h_min | append: '–' | append: h_max | append: ' ' | append: unit
+      endif
+    endif
+  endfor
+-%}
+
+{%- if steps.size > 0 -%}
+<section
+  class="cvdl cvdl--tone-{{ st.tone }}"
+  data-cvdl
+  data-tz="{{ 'now' | date: '%z' }}"
+  data-business="{{ st.business_days }}"
+  data-cutoff="{% if st.use_cutoff %}{{ st.cutoff_hour }}{% endif %}"
+  data-holidays="{{ st.holidays | escape }}"
+  data-zone-min="{{ zone_min }}"
+  data-zone-max="{{ zone_max }}"
+  aria-labelledby="cvdl-title-{{ section.id }}"
+  style="--cvdl-pt: {{ st.padding_top }}px; --cvdl-pb: {{ st.padding_bottom }}px;"
+>
+  <div class="cvdl__inner">
+    <div class="cvdl__ticket" data-cvdl-ticket>
+      <header class="cvdl__hd">
+        <p class="cvdl__kicker" id="cvdl-title-{{ section.id }}">{{ st.kicker | escape }}</p>
+        <p class="cvdl__arrive">
+          <span class="cvdl__arrive-label" data-cvdl-arrive-label>{{ head_title | escape }}</span>
+          <span class="cvdl__arrive-date" data-cvdl-arrive-date>{{ head_range }}</span>
+        </p>
+        <p class="cvdl__cutoff" data-cvdl-cutoff hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
+          <span>{{ st.cutoff_before | escape }} <b data-cvdl-count>–</b> {{ st.cutoff_after | escape }}</span>
+        </p>
+      </header>
+
+      <div class="cvdl__track" data-cvdl-track style="--cvdl-stops: {{ steps.size }};">
+      <div class="cvdl__road" aria-hidden="true"><span class="cvdl__road-fill" data-cvdl-road></span></div>
+      <span class="cvdl__parcel" data-cvdl-parcel aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false"><path class="cvdl__parcel-box" d="M4 10l12-6 12 6v13l-12 6-12-6z"/><path class="cvdl__parcel-edge" d="M4 10l12 6 12-6M16 16v13M10 7l12 6"/></svg>
+      </span>
+      <ol class="cvdl__route" data-cvdl-route>
+        {%- for b in steps -%}
+          {%- liquid
+            assign s = b.settings
+            assign min_d = s.min_days
+            assign max_d = s.max_days | default: s.min_days
+            if forloop.last and min_d != blank
+              assign min_d = min_d | plus: zone_min
+              assign max_d = max_d | plus: zone_max
+            endif
+            if min_d != blank and max_d < min_d
+              assign max_d = min_d
+            endif
+          -%}
+          <li
+            class="cvdl-stop{% if forloop.last %} cvdl-stop--last{% endif %}"
+            data-cvdl-stop
+            data-min="{{ min_d }}"
+            data-max="{{ max_d }}"
+            data-title="{{ s.title | escape }}"
+            {{ b.shopify_attributes }}
+          >
+            <span class="cvdl-stop__icon" data-cvdl-icon aria-hidden="true">
+              {%- case s.icon -%}
+                {%- when 'bag' -%}
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+                {%- when 'shop' -%}
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M4 10v10h16V10"/><path d="M3 10l2-6h14l2 6"/><path d="M3 10c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3"/><path d="M10 20v-5h4v5"/></svg>
+                {%- when 'van' -%}
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8"/><circle cx="6" cy="17.5" r="2"/><circle cx="17" cy="17.5" r="2"/></svg>
+                {%- when 'home' -%}
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+                {%- else -%}
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+              {%- endcase -%}
+            </span>
+            <span class="cvdl-stop__title">{{ s.title | escape }}</span>
+            <span class="cvdl-stop__date" data-cvdl-date>
+              {%- if min_d == blank -%}
+                {{ s.no_date_text | escape }}
+              {%- elsif min_d == 0 and max_d == 0 -%}
+                Today
+              {%- elsif min_d == max_d -%}
+                {{ min_d }} {{ unit }}
+              {%- else -%}
+                {{ min_d }}–{{ max_d }} {{ unit }}
+              {%- endif -%}
+            </span>
+          </li>
+        {%- endfor -%}
+      </ol>
+      </div>
+
+      {%- if st.note != blank -%}
+        <p class="cvdl__note">{{ st.note | escape }}</p>
+      {%- endif -%}
+      {%- if request.design_mode and dated_steps == 0 -%}
+        <p class="cvdl__note">Add days to at least one step to show dates.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: delivery dates",
+  "tag": "div",
+  "class": "section-cv-pdp-delivery",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "paragraph", "content": "Dates are worked out in the shopper's browser from the rules below, in your shop's time zone. Only enter times you can keep." },
+    { "type": "text", "id": "kicker", "label": "Label", "default": "Estimated" },
+    { "type": "checkbox", "id": "business_days", "label": "Count business days only", "info": "Skips Saturdays, Sundays and the holidays below.", "default": true },
+    { "type": "textarea", "id": "holidays", "label": "Holidays (no dispatch or delivery)", "info": "Dates as YYYY-MM-DD, separated by commas. E.g. 2026-12-25, 2026-12-26" },
+    { "type": "header", "content": "Daily cut-off" },
+    { "type": "checkbox", "id": "use_cutoff", "label": "Use a daily order cut-off", "info": "Orders after this time count from the next business day. Shows a countdown until then.", "default": false },
+    { "type": "range", "id": "cutoff_hour", "label": "Cut-off hour (shop time)", "min": 0, "max": 23, "step": 1, "unit": "h", "default": 14 },
+    { "type": "text", "id": "cutoff_before", "label": "Countdown text before the time", "default": "Order within" },
+    { "type": "text", "id": "cutoff_after", "label": "Countdown text after the time", "default": "and it counts as today's order." },
+    { "type": "header", "content": "Style" },
+    { "type": "text", "id": "note", "label": "Small print", "default": "Estimates. Delivery dates depend on the carrier and your address." },
+    {
+      "type": "select", "id": "tone", "label": "Background", "default": "page",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "paper", "label": "Paper" }
+      ]
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Top padding", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Bottom padding", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Step" },
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "check",
+          "options": [
+            { "value": "bag", "label": "Shopping bag" },
+            { "value": "shop", "label": "Shop" },
+            { "value": "van", "label": "Van" },
+            { "value": "home", "label": "Home" },
+            { "value": "check", "label": "Check" }
+          ]
+        },
+        { "type": "number", "id": "min_days", "label": "Days from order (earliest)", "info": "0 = the order day. Leave blank to show no date." },
+        { "type": "number", "id": "max_days", "label": "Days from order (latest)", "info": "Leave blank for a single date." },
+        { "type": "text", "id": "no_date_text", "label": "Text when no days are set", "default": "Shown at checkout" }
+      ]
+    },
+    {
+      "type": "zone",
+      "name": "Country timing",
+      "settings": [
+        { "type": "paragraph", "content": "Adds days to the last step for shoppers in these countries (from Shopify's country detection)." },
+        { "type": "text", "id": "countries", "label": "Country codes", "info": "Two-letter codes, comma separated. E.g. AU, NZ" },
+        { "type": "number", "id": "extra_min", "label": "Extra days (earliest)" },
+        { "type": "number", "id": "extra_max", "label": "Extra days (latest)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: delivery dates",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Ordered", "icon": "bag", "min_days": 0, "max_days": 0 } },
+        { "type": "step", "settings": { "title": "Leaves our shop", "icon": "shop", "min_days": 1, "max_days": 3 } },
+        { "type": "step", "settings": { "title": "At your door", "icon": "home" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

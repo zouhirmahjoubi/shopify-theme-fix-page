@@ -1,0 +1,699 @@
+{%- comment -%}
+  Casify product page: "The Shop Counter" (templates/product.convert.json).
+  The familiar two-column product page set out as a candy counter: the real
+  photos on a marble stage with a rail of candy-shop photo tickets; on the
+  right a vendor ticket, the title, the rating row, a hanging brass price tag,
+  style swatches, the model dropdown, candy-box pack tiers, the savings meter,
+  Add to bag beside Buy now, the ship-by line, the service ribbon and two
+  accordions.
+
+  Commerce is shared with the Order Slip in assets/cv-product.js: the options
+  resolve a real variant id, pack tiers set the quantity, and every pack price
+  applies the tier's percentage the way the store's automatic discounts do
+  ("Pack of 2 cases: 18% off", "Pack of 3 cases: 31% off"), so the page price
+  is the checkout price. Buy now adds the same line and goes to checkout.
+
+  Product ratings come only from Shopify's standard review metafields
+  (reviews.rating, reviews.rating_count), which review apps write. Until they
+  exist the row reads "No reviews yet". The separate Trustpilot and Google
+  strip is a merchant-supplied store rating and never feeds product review data.
+
+  The offer tag uses the selected variant's compare-at price when one exists.
+  Otherwise it may use the merchant-supplied fallback from this section. The
+  percentage and amount saved are always calculated from the displayed prices.
+
+  Low stock line reads the chosen variant's real inventory_quantity; it only
+  shows for a variant Shopify tracks and stops selling at zero, under the
+  merchant's own threshold, so it is never a fabricated urgency cue.
+
+  Styles: assets/cv-pdp-counter.css. Zoom, ship-by date: assets/cv-pdp-counter.js.
+  Motion: assets/cv-pdp-counter-motion.js.
+{%- endcomment -%}
+{{ 'cv-pdp-counter.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-extras.css' | asset_url | stylesheet_tag }}
+<script>
+  /* Hide the tag, photo tickets and meter until cv-pdp-counter-motion.js has set their start
+     states. Never under reduced motion, and never for long. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvc-pending');
+    setTimeout(function () { root.classList.remove('cvc-pending'); }, 1400);
+  })(document.documentElement);
+</script>
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+
+  comment
+    The phone-model option: named like one, or else the first option whose values name phones.
+  endcomment
+  assign model_oi = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+      assign model_oi = forloop.index0
+      break
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign fv = option.values.first | downcase
+      if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+
+  assign tier_count = 0
+  assign active_tier = nil
+  assign max_pct = 0
+  for b in section.blocks
+    if b.type == 'tier'
+      assign tier_count = tier_count | plus: 1
+      if b.settings.discount_pct > max_pct
+        assign max_pct = b.settings.discount_pct
+      endif
+      if active_tier == nil and b.settings.default_checked
+        assign active_tier = b
+      endif
+    endif
+  endfor
+  if tier_count > 0 and active_tier == nil
+    for b in section.blocks
+      if b.type == 'tier'
+        assign active_tier = b
+        break
+      endif
+    endfor
+  endif
+
+  assign active_qty = 1
+  assign active_pct = 0
+  if active_tier != nil
+    assign active_qty = active_tier.settings.qty | at_least: 1
+    assign active_pct = active_tier.settings.discount_pct
+  endif
+
+  comment
+    Shopify takes a percentage discount off the line and rounds to the cent, so the page does too.
+  endcomment
+  assign active_line = cvar.price | times: active_qty
+  assign active_off = active_line | times: active_pct | divided_by: 100.0 | round
+  assign active_total = active_line | minus: active_off
+
+  assign compare_fallback = section.settings.compare_price_fallback | default: '0' | times: 100 | round
+  assign compare_price = cvar.compare_at_price | default: 0
+  if compare_price <= cvar.price and compare_fallback > cvar.price
+    assign compare_price = compare_fallback
+  endif
+  assign show_compare = false
+  assign compare_savings = 0
+  assign compare_discount = 0
+  if compare_price > cvar.price
+    assign show_compare = true
+    assign compare_savings = compare_price | minus: cvar.price
+    assign compare_discount = compare_savings | times: 100.0 | divided_by: compare_price | round
+  endif
+
+  assign next_tier = nil
+  for b in section.blocks
+    if b.type == 'tier' and b.settings.discount_pct > active_pct
+      if next_tier == nil
+        assign next_tier = b
+      elsif b.settings.discount_pct < next_tier.settings.discount_pct
+        assign next_tier = b
+      endif
+    endif
+  endfor
+
+  assign meter_pct = 0
+  if max_pct > 0
+    assign meter_pct = active_pct | times: 100.0 | divided_by: max_pct | round
+  endif
+
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  assign star_pct = 100
+  assign has_rating = false
+  if rating != blank and rating_count > 0
+    assign has_rating = true
+    assign r_max = rating.scale_max | default: 5
+    assign star_pct = rating.rating | times: 100.0 | divided_by: r_max | round: 1
+  endif
+
+  comment
+    Low stock: only for a variant Shopify itself is tracking, only while it's
+    actually in stock, and only under the merchant's own threshold. Never
+    shown for untracked inventory or "continue selling" variants, where a
+    count would not be a real number.
+  endcomment
+  assign show_stock = false
+  assign stock_qty = 0
+  if section.settings.low_stock_threshold > 0 and cvar.inventory_management == 'shopify' and cvar.inventory_policy == 'deny' and cvar.inventory_quantity > 0 and cvar.inventory_quantity <= section.settings.low_stock_threshold
+    assign show_stock = true
+    assign stock_qty = cvar.inventory_quantity
+  endif
+  assign stock_text = section.settings.low_stock_text | replace: '[qty]', stock_qty
+
+  assign crumb_collection = collection | default: product.collections.first
+  assign hero_media = cvar.featured_media | default: product.featured_media
+  assign hero_image = hero_media.preview_image | default: hero_media
+  assign gallery_count = product.media.size | at_most: 8
+-%}
+
+<section class="cvc" id="cvPdp" data-cv-pdp="counter"
+         data-variants="{{ product.variants | json | escape }}"
+         data-current-options="{{ cvar.options | json | escape }}"
+         data-money-format="{{ shop.money_format | escape }}"
+         data-model-index="{{ model_oi }}"
+         data-max-pct="{{ max_pct }}"
+         data-compare-at-fallback="{{ compare_fallback }}"
+         style="--cvc-box: url('{{ 'pdp-counter-box.webp' | asset_url }}'); --cvc-box-teal: url('{{ 'pdp-counter-box-teal.webp' | asset_url }}');">
+  <div class="cvc__inner">
+    <nav class="cvc__crumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      {%- if crumb_collection != blank -%}
+        <a href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a>
+      {%- else -%}
+        <a href="{{ routes.all_products_collection_url }}">{{ section.settings.crumb_label | default: 'Cases' | escape }}</a>
+      {%- endif -%}
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ product.title | escape }}</span>
+    </nav>
+
+    <div class="cvc__grid">
+      {%- comment -%} ================= Photos: candy-shop ticket rail + marble stage ================= {%- endcomment -%}
+      <div class="cvc__gallery{% if product.media.size <= 1 %} cvc__gallery--single{% endif %}">
+        {%- if product.media.size > 1 -%}
+          <div class="cvc__photo-reel-shell">
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--vertical" aria-hidden="true">
+              <svg viewBox="0 0 24 320" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M12 7V313"/>
+                <path class="cvc__photo-reel-cream" d="M12 7V313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M12 7V313"/>
+              </svg>
+            </span>
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--horizontal" aria-hidden="true">
+              <svg viewBox="0 0 320 24" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M7 12H313"/>
+                <path class="cvc__photo-reel-cream" d="M7 12H313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M7 12H313"/>
+              </svg>
+            </span>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--start"
+              src="{{ 'hero-sweet-wrapped-red.webp' | asset_url }}"
+              width="440"
+              height="212"
+              alt=""
+              loading="eager"
+              decoding="async"
+            >
+            {%- assign hero_thumb_index = 1 -%}
+            <div class="cvc__photo-reel" role="tablist" aria-label="{{ 'products.gallery.photos' | t }}">
+              {%- for media in product.media limit: 8 -%}
+                {%- if media.media_type == 'image' or media.preview_image -%}
+                  {%- assign pic = media.preview_image | default: media -%}
+                  {%- if media.id == hero_media.id -%}{%- assign hero_thumb_index = forloop.index -%}{%- endif -%}
+                  <button type="button" class="cvc__photo-ticket" id="cvcThumb-{{ section.id }}-{{ forloop.index }}" role="tab" data-cv-thumb
+                          aria-selected="{% if media.id == hero_media.id %}true{% else %}false{% endif %}"
+                          aria-controls="cvcMedia-{{ section.id }}"
+                          tabindex="{% if media.id == hero_media.id %}0{% else %}-1{% endif %}"
+                          aria-label="{{ 'products.gallery.photo_count' | t: index: forloop.index, count: gallery_count }}"
+                          data-cv-full="{{ pic | image_url: width: 1400 }}"
+                          data-cv-zoom="{{ pic | image_url: width: 2400 }}">
+                    <span class="cvc__photo-ticket-card">
+                      <svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true" focusable="false">
+                        <path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-perf" d="M13 86H83"/>
+                      </svg>
+                      <span class="cvc__photo-ticket-image">{{ pic | image_url: width: 240 | image_tag: width: 160, height: 160, alt: '', loading: 'lazy' }}</span>
+                      <span class="cvc__photo-ticket-no" aria-hidden="true">{{ forloop.index }}</span>
+                    </span>
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--end"
+              src="{{ 'hero-sweet-wrapped-teal.webp' | asset_url }}"
+              width="440"
+              height="164"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+        {%- endif -%}
+
+        <div class="cvc__stage"{% if product.media.size > 1 %} id="cvcMedia-{{ section.id }}" role="tabpanel" aria-labelledby="cvcThumb-{{ section.id }}-{{ hero_thumb_index }}"{% endif %}>
+          {%- if hero_media != blank -%}
+            {{ hero_image | image_url: width: 1400 | image_tag:
+                widths: '600, 900, 1200, 1400',
+                sizes: '(min-width: 1270px) 520px, (min-width: 990px) 44vw, calc(100vw - 32px)',
+                class: 'cvc__photo', id: 'cvMainImage',
+                alt: hero_media.alt | default: product.title,
+                loading: 'eager', fetchpriority: 'high' }}
+            <button type="button" class="cvc__zoom" data-cvc-zoom-open aria-haspopup="dialog" aria-controls="cvcZoom-{{ section.id }}"
+                    data-cv-zoom="{{ hero_image | image_url: width: 2400 }}">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
+              <span>{{ section.settings.zoom_label | default: 'Tap to zoom' | escape }}</span>
+            </button>
+          {%- else -%}
+            <span class="cvc__photo cvc__photo--empty" id="cvMainImage" role="img" aria-label="{{ product.title | escape }}"></span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ================= The counter: buy box ================= {%- endcomment -%}
+      <form class="cvc__box" id="cvAddForm" method="post" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" id="cvVariantId" value="{{ cvar.id }}">
+        <input type="hidden" name="quantity" id="cvQuantity" value="{{ active_qty }}">
+
+        {%- if product.vendor != blank -%}
+          <p class="cvc__vendor">{{ product.vendor | escape }}{% if section.settings.vendor_suffix != blank %} {{ section.settings.vendor_suffix | escape }}{% endif %}</p>
+        {%- endif -%}
+
+        <p class="cvc__tag">
+          <img class="cvc__tag-plate" src="{{ 'pdp-counter-tag.webp' | asset_url }}" width="360" height="414" alt="" loading="eager">
+          <span class="cvc__tag-price" aria-live="polite">
+            <span id="cvPriceNow"><span class="cvc__visually-hidden">{{ 'products.price_offer.now' | t }}: </span>{{ cvar.price | money }}</span>
+            <s id="cvPriceWas"{% unless show_compare %} hidden{% endunless %}><span class="cvc__visually-hidden">{{ 'products.price_offer.compare_at' | t }}: </span>{{ compare_price | money }}</s>
+          </span>
+          <span class="cvc__tag-sale" data-cv-tag-sale{% unless show_compare %} hidden{% endunless %} aria-hidden="true">
+            <svg viewBox="0 0 100 100" focusable="false">
+              <path d="M50 3 59 12 72 8 77 21 91 23 88 37 98 47 89 58 93 72 79 77 76 91 62 88 51 98 41 89 27 93 22 79 8 76 12 62 2 51 11 41 7 27 21 22 24 8 38 12Z"/>
+              <circle cx="50" cy="50" r="34"/>
+            </svg>
+            <span class="cvc__tag-sale-copy"><strong data-cv-discount-pct>{{ compare_discount }}%</strong><small>{{ 'products.price_offer.off' | t }}</small></span>
+          </span>
+        </p>
+
+        <h1 class="cvc__title">{{ product.title | escape }}</h1>
+
+        <p class="cvc__price-saving" data-cv-price-proof aria-live="polite"{% unless show_compare %} hidden{% endunless %}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13 13 20 4 11V4h7l9 9Z"/><circle cx="8.5" cy="8.5" r="1.25"/></svg>
+          <span>{{ 'products.price_offer.you_save' | t }}</span>
+          <strong data-cv-price-save>{{ compare_savings | money }}</strong>
+        </p>
+
+        {%- assign service_count = 0 -%}
+        {%- for b in section.blocks -%}{%- if b.type == 'service' -%}{%- assign service_count = service_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        {%- if service_count > 0 -%}
+          <ul class="cvc__ribbon" role="list" data-cvc-benefits>
+            {%- for b in section.blocks -%}
+              {%- if b.type == 'service' -%}
+                <li class="cvc__ribbon-item" data-cvc-benefit {{ b.shopify_attributes }}>
+                  {%- case b.settings.icon -%}
+                    {%- when 'returns' -%}
+                      <svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg>
+                    {%- when 'box' -%}
+                      <svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7z"/><path d="m4 7 8 4.2L20 7"/><path d="M12 11.2v10"/><path d="m8 4.9 8 4.2"/></svg>
+                    {%- else -%}
+                      <svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 6.5h10.5v9H2.5z"/><path d="M13 9.5h4.2l3.3 3.4v2.6H13z"/><circle cx="6.5" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></svg>
+                  {%- endcase -%}
+                  <span>{{ b.settings.text | escape }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.show_rating -%}
+          <a class="cvc__rating" href="#{{ section.settings.reviews_anchor | default: 'cvc-reviews' | remove: '#' | escape }}" data-cvc-rating>
+            {%- render 'cv-stars', fill: star_pct, class: 'cvc__stars' -%}
+            {%- if has_rating -%}
+              <span class="cvc__rating-text" data-cvc-rating-text>{{ rating.rating | round: 1 }} <span class="cvc__visually-hidden">out of {{ rating.scale_max | default: 5 }} stars,</span><span class="cvc__rating-separator" aria-hidden="true">·</span><u>{{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}</u></span>
+            {%- else -%}
+              <span class="cvc__rating-text" data-cvc-rating-text>{{ section.settings.empty_rating_text | default: '+1000 Happy Customer' | escape }}<span class="cvc__rating-separator" aria-hidden="true">·</span><u>{{ section.settings.empty_rating_link | default: 'Write the first' | escape }}</u></span>
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.show_external_review_badges and section.settings.external_review_rating != blank and section.settings.external_review_count != blank -%}
+          <div
+            class="cvc__external-reviews"
+            role="group"
+            aria-label="{{ 'products.review_badges.aria_label' | t: rating: section.settings.external_review_rating, count: section.settings.external_review_count | escape }}"
+          >
+            <span class="cvc__external-label" aria-hidden="true">{{ 'products.review_badges.store_rating' | t }}</span>
+            <span class="cvc__review-source cvc__review-source--trustpilot" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false">
+                <path d="m12 2.3 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 16.87l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z"/>
+              </svg>
+              <span>{{ 'products.review_badges.trustpilot' | t }}</span>
+            </span>
+            <span class="cvc__review-source cvc__review-source--google" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false">
+                <path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/>
+                <path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/>
+                <path fill="#fbbc05" d="M6.4 13.63A6 6 0 0 1 6.09 12c0-.57.11-1.12.31-1.63V7.52H3.06A9.96 9.96 0 0 0 2 12c0 1.61.38 3.14 1.06 4.48l3.34-2.85Z"/>
+                <path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/>
+              </svg>
+              <span>{{ 'products.review_badges.google' | t }}</span>
+            </span>
+            <span class="cvc__external-score" aria-hidden="true">
+              <strong>{{ 'products.review_badges.score' | t: rating: section.settings.external_review_rating }}</strong>
+              <span>{{ 'products.review_badges.reviews' | t: count: section.settings.external_review_count }}</span>
+            </span>
+          </div>
+        {%- endif -%}
+
+        <p class="cvc__stock" data-cvc-stock role="status" aria-atomic="true"
+           data-threshold="{{ section.settings.low_stock_threshold }}"
+           data-template="{{ section.settings.low_stock_text | escape }}"
+           {% unless show_stock %}hidden{% endunless %}>
+          <span class="cvc__stock-dot" aria-hidden="true"></span><span data-cvc-stock-text>{{ stock_text }}</span>
+        </p>
+
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}<div class="cvc__app">{% render block %}</div>{%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} ---------- The non-model options: swatches when every value has its own photo ---------- {%- endcomment -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign oi = forloop.index0 -%}
+          {%- if oi != model_oi and option.values.size > 0 -%}
+            {%- liquid
+              assign line_label = option.name
+              if section.settings.option_label != blank
+                assign line_label = section.settings.option_label
+              endif
+              assign swatch_photos = true
+              for value in option.values
+                assign found = false
+                for v in product.variants
+                  if v.options[oi] == value and v.featured_image
+                    assign found = true
+                    break
+                  endif
+                endfor
+                unless found
+                  assign swatch_photos = false
+                  break
+                endunless
+              endfor
+            -%}
+            <div class="cvc__opt">
+              <p class="cvc__label" id="cvcOpt{{ oi }}-{{ section.id }}">{{ line_label | escape }}: <span class="cvc__label-value" data-cv-opt-out="{{ oi }}">{{ cvar.options[oi] | escape }}</span></p>
+              <div class="cvc__swatches{% unless swatch_photos %} cvc__swatches--text{% endunless %}" role="radiogroup" aria-labelledby="cvcOpt{{ oi }}-{{ section.id }}">
+                {%- for value in option.values -%}
+                  {%- liquid
+                    assign vmatch = nil
+                    assign vpic = nil
+                    for v in product.variants
+                      if v.options[oi] == value
+                        if vmatch == nil
+                          assign vmatch = v
+                        endif
+                        if vpic == nil and v.featured_image
+                          assign vpic = v.featured_image
+                        endif
+                        if v.available
+                          assign vmatch = v
+                          if vpic != nil
+                            break
+                          endif
+                        endif
+                      endif
+                    endfor
+                  -%}
+                  <button type="button" class="cvc__swatch" role="radio"
+                          aria-checked="{% if cvar.options[oi] == value %}true{% else %}false{% endif %}"
+                          tabindex="{% if cvar.options[oi] == value %}0{% else %}-1{% endif %}"
+                          {% if swatch_photos %}aria-label="{{ value | escape }}" title="{{ value | escape }}"{% endif %}
+                          data-cv-option-index="{{ oi }}"
+                          data-cv-value="{{ value | escape }}"
+                          data-cv-stock="{% unless vmatch.available %}out{% endunless %}">
+                    {%- if swatch_photos -%}
+                      {{ vpic | image_url: width: 140 | image_tag: width: 70, height: 70, alt: '', loading: 'lazy' }}
+                    {%- else -%}
+                      {{ value | escape }}
+                    {%- endif -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} ---------- The phone model: a native dropdown, every value this case is made for ---------- {%- endcomment -%}
+        {%- if model_oi >= 0 -%}
+          {%- assign model_option = product.options_with_values[model_oi] -%}
+          <div class="cvc__opt cvc__opt--model">
+            <label class="cvc__label" for="cvcModel-{{ section.id }}">{{ section.settings.model_label | default: 'Model' | escape }}</label>
+            <span class="cvc__select">
+              <select id="cvcModel-{{ section.id }}" name="options[{{ model_option.name | escape }}]" data-cv-option-index="{{ model_oi }}" data-sold-suffix=" (sold out)">
+                {%- for value in model_option.values -%}
+                  {%- liquid
+                    assign vmatch = nil
+                    for v in product.variants
+                      if v.options[model_oi] == value
+                        if vmatch == nil
+                          assign vmatch = v
+                        endif
+                        if v.available
+                          assign vmatch = v
+                          break
+                        endif
+                      endif
+                    endfor
+                  -%}
+                  <option value="{{ value | escape }}"{% if cvar.options[model_oi] == value %} selected{% endif %}>{{ value | escape }}{% unless vmatch.available %} (sold out){% endunless %}</option>
+                {%- endfor -%}
+              </select>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ---------- Candy-box packs + savings meter ---------- {%- endcomment -%}
+        {%- if tier_count > 0 -%}
+          <div class="cvc__packs" role="radiogroup" aria-label="{{ section.settings.packs_label | default: 'How many cases' | escape }}">
+            {%- for b in section.blocks -%}
+              {%- if b.type == 'tier' -%}
+                {%- liquid
+                  assign t_qty = b.settings.qty | at_least: 1
+                  assign t_line = cvar.price | times: t_qty
+                  assign t_off = t_line | times: b.settings.discount_pct | divided_by: 100.0 | round
+                  assign t_each = t_line | minus: t_off | divided_by: t_qty
+                -%}
+                <button type="button" class="cvc__pack{% if b.settings.accent == 'teal' %} cvc__pack--teal{% endif %}" role="radio" data-cv-pack
+                        aria-checked="{% if b.id == active_tier.id %}true{% else %}false{% endif %}"
+                        tabindex="{% if b.id == active_tier.id %}0{% else %}-1{% endif %}"
+                        data-cv-qty="{{ t_qty }}"
+                        data-cv-discount="{{ b.settings.discount_pct }}"
+                        {{ b.shopify_attributes }}>
+                  {%- if b.settings.flag_label != blank -%}<span class="cvc__flag">{{ b.settings.flag_label | escape }}</span>{%- endif -%}
+                  <span class="cvc__pack-name">{{ b.settings.name | escape }}</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">{{ t_each | money }}{% if t_qty > 1 %}<small> each</small>{% endif %}</span>
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if max_pct > 0 -%}
+            {%- liquid
+              if active_off > 0
+                assign active_off_money = active_off | money
+                assign savings_line = section.settings.savings_text | default: '[qty] cases saves you [amount] vs buying singly' | replace: '[qty]', active_qty | replace: '[amount]', active_off_money
+              elsif next_tier != nil
+                assign savings_line = section.settings.savings_next_text | default: 'Choose [qty] cases to save [pct]% on each' | replace: '[qty]', next_tier.settings.qty | replace: '[pct]', next_tier.settings.discount_pct
+              endif
+            -%}
+            <div class="cvc__savings">
+              <span class="cvc__meter" aria-hidden="true"><span class="cvc__meter-fill" data-cv-savings-fill style="width: {{ meter_pct }}%;"></span></span>
+              <p class="cvc__savings-text" data-cv-savings aria-live="polite"
+                 data-template-save="{{ section.settings.savings_text | default: '[qty] cases saves you [amount] vs buying singly' | escape }}"
+                 data-template-next="{{ section.settings.savings_next_text | default: 'Choose [qty] cases to save [pct]% on each' | escape }}">{{ savings_line | escape }}</p>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} ---------- Mix-and-match: each case in a pack gets its own colour and phone ---------- {%- endcomment -%}
+          {%- if section.settings.mix_packs -%}
+            {%- assign max_qty = 1 -%}
+            {%- for b in section.blocks -%}{%- if b.type == 'tier' and b.settings.qty > max_qty -%}{%- assign max_qty = b.settings.qty -%}{%- endif -%}{%- endfor -%}
+            {%- render 'cv-pack-slots', product: product, model_oi: model_oi, max_qty: max_qty, active_qty: active_qty, look: 'counter', sid: section.id,
+                heading: section.settings.mix_heading, hint: section.settings.mix_hint, same_label: section.settings.mix_same, first_note: section.settings.mix_first_note -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%} ---------- Add to bag + Buy now ---------- {%- endcomment -%}
+        <div class="cvc__buttons">
+          <button type="submit" class="cvc__add" id="cvAddBtn"{% unless cvar.available %} disabled{% endunless %}>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <span id="cvCtaLabel" data-label-default="{{ section.settings.cta_label | default: 'Add to bag' | escape }}">
+              {%- if cvar.available -%}{{ section.settings.cta_label | default: 'Add to bag' | escape }}{%- else -%}Sold out{%- endif -%}
+            </span>
+            <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal">{{ active_total | money }}</span></span>
+          </button>
+          {%- if section.settings.show_buy_now -%}
+            <button type="button" class="cvc__buy" data-cv-buy-now{% unless cvar.available %} disabled{% endunless %}>
+              <span data-cv-buy-label data-label-default="{{ section.settings.buy_label | default: 'Buy now' | escape }}">{{ section.settings.buy_label | default: 'Buy now' | escape }}</span>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+        <p class="cvc__status" id="cvStatus" role="status" aria-live="polite"></p>
+
+        {%- if section.settings.dispatch_max > 0 -%}
+          <p class="cvc__shipby" data-cvc-ship-by data-max-days="{{ section.settings.dispatch_max }}"
+             data-template="{{ section.settings.ship_by_text | default: 'Order today, ships by [date]' | escape }}">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.3V12l3 1.9"/></svg>
+            <span data-cvc-ship-by-text>{{ section.settings.ship_by_fallback | default: 'Ships in 1-3 business days' | escape }}</span>
+          </p>
+        {%- endif -%}
+
+        {%- render 'cv-product-accordions',
+          product: product,
+          model_oi: model_oi,
+          details_label: section.settings.details_label,
+          brand_label: section.settings.brand_label,
+          shipping_label: section.settings.shipping_label,
+          shipping_text: section.settings.shipping_text
+        -%}
+      </form>
+    </div>
+  </div>
+
+  {%- comment -%} Zoom: the real photos, large, panned by pointer or finger. {%- endcomment -%}
+  {%- if hero_image != blank -%}
+    <dialog class="cvc-zoom" id="cvcZoom-{{ section.id }}" aria-label="{{ product.title | escape }}: photos" data-cvc-zoom>
+      <div class="cvc-zoom__frame" data-cvc-zoom-frame>
+        <img
+          class="cvc-zoom__img"
+          src="{{ hero_image | image_url: width: 2400 }}"
+          alt="{{ hero_image.alt | default: product.title | escape }}"
+          width="{{ hero_image.width }}"
+          height="{{ hero_image.height }}"
+          loading="lazy"
+          data-cvc-zoom-img
+        >
+      </div>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      {%- if product.media.size > 1 -%}
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
+      {%- endif -%}
+      <p class="cvc-zoom__count" data-cvc-zoom-count aria-live="polite"></p>
+    </dialog>
+  {%- endif -%}
+
+  {%- comment -%} Sticky bar once the Add to bag button scrolls away: both buttons stay in reach. {%- endcomment -%}
+  <div class="cvc-sticky" id="cvSticky" aria-hidden="true">
+    {%- if hero_media != blank -%}
+      <span class="cvc-sticky__pic">{{ hero_image | image_url: width: 120 | image_tag: width: 48, height: 48, alt: '', loading: 'lazy' }}</span>
+    {%- endif -%}
+    <div class="cvc-sticky__info">
+      <span class="cvc-sticky__name">{{ product.title | escape }}</span>
+      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>{{ cvar.title | escape }}</span> · <b id="cvStickyTotal">{{ active_total | money }}</b></span>
+    </div>
+    <div class="cvc-sticky__buttons">
+      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" tabindex="-1">{{ section.settings.sticky_cta | default: 'Add to bag' | escape }}</button>
+      {%- if section.settings.show_buy_now -%}
+        <button type="button" class="cvc-sticky__buy" data-cv-buy-now tabindex="-1">{{ section.settings.buy_label | default: 'Buy now' | escape }}</button>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- render 'cv-product-schema', product: product, has_rating: has_rating, rating: rating, rating_count: rating_count -%}
+
+{% schema %}
+{
+  "name": "Product: shop counter",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "crumb_label", "label": "Breadcrumb shop label", "default": "Cases", "info": "Used when the product isn't viewed inside a collection." },
+    { "type": "text", "id": "vendor_suffix", "label": "Vendor ticket suffix", "default": "Cases", "info": "Shown after the vendor name, for example Casify Cases." },
+    { "type": "text", "id": "zoom_label", "label": "Zoom chip", "default": "Tap to zoom" },
+    { "type": "header", "content": "Price offer" },
+    { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "default": "59.99", "info": "Used only when the selected variant has no higher compare-at price." },
+    { "type": "header", "content": "Rating" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Reads Shopify's review metafields, which review apps such as Judge.me write. Turn off if your app adds its own star block here." },
+    { "type": "text", "id": "reviews_anchor", "label": "Reviews section anchor", "default": "cvc-reviews" },
+    { "type": "text", "id": "empty_rating_text", "label": "Customer proof text", "default": "+1000 Happy Customer", "info": "Shown before this product has its own reviews." },
+    { "type": "text", "id": "empty_rating_link", "label": "No reviews link", "default": "Write the first" },
+    { "type": "checkbox", "id": "show_external_review_badges", "label": "Show Trustpilot and Google badges", "default": true },
+    { "type": "text", "id": "external_review_rating", "label": "External store rating", "default": "4.9", "info": "Shown separately from the product's own review data." },
+    { "type": "text", "id": "external_review_count", "label": "External store review count", "default": "952" },
+    { "type": "header", "content": "Low stock" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Show below this many left", "min": 0, "max": 20, "step": 1, "default": 10, "info": "Reads the chosen variant's real Shopify inventory count. Only shows for variants Shopify tracks and that stop selling at zero, so the number is always true. Set 0 to turn off." },
+    { "type": "text", "id": "low_stock_text", "label": "Low stock line", "default": "Only [qty] left in this style" },
+    { "type": "header", "content": "Options" },
+    { "type": "text", "id": "option_label", "label": "Style label", "default": "Style", "info": "Label for the product's other option. Leave empty to use the option's own name." },
+    { "type": "text", "id": "model_label", "label": "Model label", "default": "Model" },
+    { "type": "text", "id": "packs_label", "label": "Packs label (screen readers)", "default": "How many cases" },
+    { "type": "text", "id": "savings_text", "label": "Savings line", "default": "[qty] cases saves you [amount] vs buying singly", "info": "[qty] and [amount] are filled in from the chosen pack." },
+    { "type": "text", "id": "savings_next_text", "label": "Savings line on a single case", "default": "Choose [qty] cases to save [pct]% on each", "info": "[qty] and [pct] come from the next pack up." },
+    { "type": "header", "content": "Mix-and-match packs" },
+    { "type": "checkbox", "id": "mix_packs", "label": "Let each case in a pack have its own colour and phone", "default": true, "info": "Works with the store's pack discounts, which count any cases in the bag." },
+    { "type": "text", "id": "mix_heading", "label": "Heading", "default": "Your [qty] cases", "info": "[qty] is the pack size." },
+    { "type": "text", "id": "mix_hint", "label": "Hint", "default": "Pick a colour and phone for each case. Mix them however you like." },
+    { "type": "text", "id": "mix_first_note", "label": "Note beside case 1", "default": "chosen above" },
+    { "type": "text", "id": "mix_same", "label": "Match case 1 link", "default": "Same as case 1" },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "cta_label", "label": "Add to bag label", "default": "Add to bag" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy now", "default": true, "info": "Adds the chosen case and pack to the bag and goes straight to checkout." },
+    { "type": "text", "id": "buy_label", "label": "Buy now label", "default": "Buy now" },
+    { "type": "text", "id": "sticky_cta", "label": "Sticky bar add label", "default": "Add to bag" },
+    { "type": "header", "content": "Ship-by date" },
+    { "type": "range", "id": "dispatch_max", "label": "Latest dispatch, business days", "min": 0, "max": 10, "step": 1, "default": 3, "info": "The date shown is today plus this many business days (Monday to Friday). Set 0 to hide the line." },
+    { "type": "text", "id": "ship_by_text", "label": "Ship-by line", "default": "Order today, ships by [date]" },
+    { "type": "text", "id": "ship_by_fallback", "label": "Line before the date is worked out", "default": "Ships in 1-3 business days" },
+    { "type": "header", "content": "Accordions" },
+    { "type": "text", "id": "details_label", "label": "Details label", "default": "Details" },
+    { "type": "text", "id": "brand_label", "label": "Brand label", "default": "Brand" },
+    { "type": "text", "id": "shipping_label", "label": "Shipping label", "default": "Shipping & returns" },
+    { "type": "richtext", "id": "shipping_text", "label": "Shipping & returns", "default": "<p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p>", "info": "State only what is true for every order." }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "tier",
+      "name": "Pack tier",
+      "limit": 4,
+      "settings": [
+        { "type": "number", "id": "qty", "label": "Cases", "default": 1 },
+        { "type": "range", "id": "discount_pct", "label": "Discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify admin > Discounts, or checkout will charge a different price than the page shows." },
+        { "type": "text", "id": "name", "label": "Label", "default": "1 case" },
+        { "type": "text", "id": "flag_label", "label": "Ribbon", "info": "Optional. Keep it true, for example Save 18% or Best value." },
+        { "type": "select", "id": "accent", "label": "Box colour", "default": "red", "options": [ { "value": "red", "label": "Red stripes" }, { "value": "teal", "label": "Teal stripes" } ] },
+        { "type": "checkbox", "id": "default_checked", "label": "Selected by default", "default": false }
+      ]
+    },
+    {
+      "type": "service",
+      "name": "Service fact",
+      "limit": 3,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [ { "value": "truck", "label": "Truck" }, { "value": "returns", "label": "Returns" }, { "value": "box", "label": "Box" } ] },
+        { "type": "text", "id": "text", "label": "Text", "default": "Free shipping", "info": "Only facts true for every order." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: shop counter",
+      "blocks": [
+        { "type": "tier", "settings": { "qty": 1, "discount_pct": 0, "name": "1 case" } },
+        { "type": "tier", "settings": { "qty": 2, "discount_pct": 18, "name": "2 cases", "flag_label": "Save 18%", "default_checked": true } },
+        { "type": "tier", "settings": { "qty": 3, "discount_pct": 31, "name": "3 cases", "flag_label": "Best value", "accent": "teal" } },
+        { "type": "service", "settings": { "icon": "truck", "text": "Free shipping" } },
+        { "type": "service", "settings": { "icon": "returns", "text": "30-day returns" } },
+        { "type": "service", "settings": { "icon": "box", "text": "Ships in 1-3 business days" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

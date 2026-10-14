@@ -1,0 +1,11 @@
+{%- comment -%}
+  Casify brand fonts (Google Fonts). Render in <head> before theme.css.
+
+  Linked from the document instead of an @import at the top of theme.css:
+  an @import can only start once the whole stylesheet has downloaded, which
+  chained a second render-blocking request behind it. Preconnecting and
+  linking here fetches the font CSS in parallel with theme.css.
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Parisienne&family=Special+Elite&display=swap">

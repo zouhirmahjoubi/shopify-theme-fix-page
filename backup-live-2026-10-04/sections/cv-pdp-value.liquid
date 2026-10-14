@@ -1,0 +1,131 @@
+{%- comment -%}
+  Casify product page: three worries, settled (the home "why it wins" value
+  stack, rebuilt).
+  The home version answered with lab figures (a 12 ft drop, 1,400 g, 36 months)
+  and a drop-height chart against rival cases; none is confirmed. This answers
+  the worries a shopper really has at the counter with what the shop can
+  stand behind: the list of phones the case is made for, the price at
+  checkout, and the confirmed shipping and returns facts. The brass scale
+  (KIE set piece assets/pdp-home-scale.webp) weighs the pack saving, worked
+  out from this case's price and the pack percentage, which must match the
+  store's automatic discount.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+  assign models = 0
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    assign fv = option.values.first | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'samsung'
+      assign models = option.values.size
+    endif
+  endfor
+
+  assign qty = section.settings.scale_qty | at_least: 2
+  assign singles = cvar.price | times: qty
+  assign off = singles | times: section.settings.scale_pct | divided_by: 100.0 | round
+  assign pack_total = singles | minus: off
+  assign tilt = section.settings.scale_pct | times: 0.35 | at_most: 14
+-%}
+
+<section class="cvw cvw-value" data-cvw-value aria-labelledby="cvwValueTitle-{{ section.id }}">
+  <div class="cvp__inner">
+    <div class="cvw-head">
+      <h2 class="cvp__h2" id="cvwValueTitle-{{ section.id }}" data-cvw-split>{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="cvw-value__grid">
+      <ol class="cvw-value__worries" role="list">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'worry' -%}
+            {%- liquid
+              assign proof = b.settings.proof | replace: '[models]', models
+              assign answer = b.settings.answer | replace: '[models]', models
+            -%}
+            <li class="cvw-worry" data-cvw-worry {{ b.shopify_attributes }}>
+              <span class="cvw-worry__ico">{%- render 'cv-icon', name: b.settings.icon, size: 30, animate: true -%}</span>
+              <div class="cvw-worry__text">
+                <h3 class="cvw-worry__q">{{ b.settings.worry | escape }}</h3>
+                <div class="cvw-worry__a">{{ answer }}</div>
+              </div>
+              {%- if proof != blank -%}<span class="cvw-worry__proof">{{ proof | escape }}</span>{%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+
+      {%- if section.settings.scale_pct > 0 -%}
+        <figure class="cvw-scale" data-cvw-scale style="--tilt: {{ tilt }};">
+          <figcaption class="cvw-scale__title">{{ section.settings.scale_heading | replace: '[qty]', qty | escape }}</figcaption>
+          <div class="cvw-scale__rig">
+            <img class="cvw-scale__img" data-cvw-scale-img src="{{ 'pdp-home-scale.webp' | asset_url }}" width="720" height="707" alt="" loading="lazy" decoding="async">
+            <p class="cvw-scale__pan cvw-scale__pan--left" data-cvw-pan="left">
+              <span class="cvw-scale__pan-label">{{ section.settings.singles_label | replace: '[qty]', qty | escape }}</span>
+              <b>{{ singles | money }}</b>
+            </p>
+            <p class="cvw-scale__pan cvw-scale__pan--right" data-cvw-pan="right">
+              <span class="cvw-scale__pan-label">{{ section.settings.pack_label | replace: '[qty]', qty | escape }}</span>
+              <b>{{ pack_total | money }}</b>
+            </p>
+          </div>
+          <p class="cvw-scale__saving">{{ section.settings.saving_label | escape }} <b>{{ off | money }}</b></p>
+          <p class="cvw-scale__note">{{ section.settings.scale_note | escape }}</p>
+        </figure>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product: three worries",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Three worries, settled at the counter" },
+    { "type": "text", "id": "lede", "label": "Intro", "default": "What people wonder before buying a case online, answered with what we can stand behind." },
+    { "type": "header", "content": "Brass scale" },
+    { "type": "number", "id": "scale_qty", "label": "Cases on the scale", "default": 3 },
+    { "type": "range", "id": "scale_pct", "label": "That pack's discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the automatic discount in Shopify admin. Set 0 to hide the scale." },
+    { "type": "text", "id": "scale_heading", "label": "Scale heading", "default": "[qty] cases on the scale" },
+    { "type": "text", "id": "singles_label", "label": "Left pan", "default": "[qty] bought one by one" },
+    { "type": "text", "id": "pack_label", "label": "Right pan", "default": "One [qty]-case pack" },
+    { "type": "text", "id": "saving_label", "label": "Saving label", "default": "The pack keeps" },
+    { "type": "text", "id": "scale_note", "label": "Note", "default": "Worked out from this case's price. The discount is applied automatically at checkout." }
+  ],
+  "blocks": [
+    {
+      "type": "worry",
+      "name": "Worry",
+      "limit": 4,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "device", "options": [
+          { "value": "device", "label": "Phone" },
+          { "value": "price-tag", "label": "Price tag" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "truck-fast", "label": "Shipping" },
+          { "value": "clock", "label": "Clock" },
+          { "value": "lock-secure", "label": "Lock" }
+        ] },
+        { "type": "text", "id": "worry", "label": "Worry", "default": "Will it fit my phone?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Choose your exact model from the [models] phones this case is made for.</p>", "info": "[models] becomes the number of phone models this product is made for." },
+        { "type": "text", "id": "proof", "label": "Proof tag", "default": "[models] models", "info": "Only what is true for this product." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: three worries",
+      "blocks": [
+        { "type": "worry", "settings": { "icon": "device", "worry": "Will it fit my phone?", "answer": "<p>Choose your exact model from the [models] phones this case is made for. If your phone isn't on the list, this case isn't made for it.</p>", "proof": "[models] models" } },
+        { "type": "worry", "settings": { "icon": "price-tag", "worry": "Will checkout cost more?", "answer": "<p>The pack prices on this page are what checkout charges for the cases, before any tax. Pack discounts come off automatically, with no code to enter.</p>", "proof": "No code to enter" } },
+        { "type": "worry", "settings": { "icon": "returns", "worry": "What if it isn't right?", "answer": "<p>Shipping is free, your order leaves us within 1 to 3 business days, and you have 30 days to send it back.</p>", "proof": "30 days to decide" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

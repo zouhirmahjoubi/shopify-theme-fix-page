@@ -1,0 +1,73 @@
+{%- comment -%}
+  Casify product page: video reviews, as a section of their own.
+
+  The markup, rules and behaviour live in snippets/cv-video-reviews.liquid,
+  shared with "The Shop Counter" (sections/cv-product-counter.liquid), which
+  shows the same row under the product photo from its own "Video review" blocks.
+  Use this section to place video reviews anywhere else on a product template.
+{%- endcomment -%}
+{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'review', settings: section.settings, uid: section.id, product: product -%}
+
+{% schema %}
+{
+  "name": "Product: video reviews",
+  "tag": "div",
+  "class": "section-cv-pdp-video-reviews",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "paragraph", "content": "Customer video clips with their star rating and review. Clips play muted in view; tapping one opens it with sound, the full review and Add to bag (through the buy box, so price and pack always match). Hidden until the product has a clip." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Filmed by the people who bought it" },
+    { "type": "text", "id": "lede", "label": "Text", "default": "Short clips from customers with this case on their own phone. Tap one for sound and the full review." },
+    { "type": "header", "content": "Score", "info": "Uses the product's own review-app rating when it has one. Otherwise it is the average of the clips shown on that product." },
+    { "type": "text", "id": "product_score_label", "label": "Label with review-app rating", "default": "[count] reviews of this case", "info": "[count] is the product's review count." },
+    { "type": "text", "id": "clip_score_label", "label": "Label from clips", "default": "Average of [count] video reviews", "info": "[count] is the number of clips on the product." },
+    { "type": "text", "id": "clip_score_label_one", "label": "Label from a single clip", "default": "From 1 video review" },
+    { "type": "header", "content": "Clips" },
+    { "type": "text", "id": "rail_label", "label": "Clip list name (screen readers)", "default": "Customer video reviews" },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a clip for sound and the full review" },
+    { "type": "text", "id": "pause_label", "label": "Pause button", "default": "Pause clips" },
+    { "type": "text", "id": "play_label", "label": "Play button", "default": "Play clips" },
+    { "type": "text", "id": "verified_label", "label": "Verified badge", "default": "Verified buyer" },
+    { "type": "text", "id": "bought_label", "label": "Phone and colour label", "default": "Filmed on" },
+    { "type": "text", "id": "anon_label", "label": "Name when none is given", "default": "Customer" },
+    { "type": "text", "id": "submit_label", "label": "Send-a-clip link", "default": "Filmed yours? Send it in" },
+    { "type": "url", "id": "submit_url", "label": "Send-a-clip page", "info": "The link shows only when a page is chosen, for example your contact page." },
+    { "type": "header", "content": "Shopping panel" },
+    { "type": "text", "id": "model_label", "label": "Phone label", "default": "Your phone" },
+    { "type": "text", "id": "model_placeholder", "label": "Phone placeholder", "default": "Select your phone model" },
+    { "type": "text", "id": "pick_model_text", "label": "Reminder when no phone is chosen", "default": "Pick your phone model first, so the case fits." },
+    { "type": "text", "id": "match_text", "label": "Clip colour line", "default": "This clip shows [colour].", "info": "Shown when the clip's colour is one of this product's colours. [colour] is the colour." },
+    { "type": "text", "id": "match_pick_label", "label": "Choose clip colour button", "default": "Choose [colour]" },
+    { "type": "text", "id": "match_same_text", "label": "Clip colour already chosen", "default": "Same colour as this clip: [colour]." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Add to bag" },
+    { "type": "text", "id": "cta_pack_label", "label": "Button label for a pack", "default": "Add [qty] cases", "info": "[qty] is the number of cases in the pack chosen in the buy box." },
+    { "type": "text", "id": "pack_change_label", "label": "Change pack link", "default": "Change" },
+    { "type": "text", "id": "view_bag_label", "label": "View bag button", "default": "View bag" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Video review",
+      "settings": [
+        { "type": "paragraph", "content": "One clip a customer sent you. Type their name, rating and words exactly as they gave them." },
+        { "type": "video", "id": "video", "label": "Video", "info": "Upload the customer's clip. Upright 9:16 works best." },
+        { "type": "text", "id": "mp4_url", "label": "Or a direct MP4 link", "info": "Used when no video is uploaded." },
+        { "type": "image_picker", "id": "poster", "label": "Cover image", "info": "Optional. Without one, the video's own first frame is used. A cover with no video shows as a photo review." },
+        { "type": "header", "content": "The review" },
+        { "type": "text", "id": "name", "label": "Customer name", "info": "As they want it shown, for example \"Sam R.\"" },
+        { "type": "range", "id": "stars", "label": "Their star rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Quote on the clip", "info": "A short line from their review." },
+        { "type": "textarea", "id": "body", "label": "Full review", "info": "Shown when the clip is opened." },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": false, "info": "Tick only after finding their order." },
+        { "type": "text", "id": "date", "label": "Date", "info": "Optional, for example \"September 2026\"." },
+        { "type": "header", "content": "The case in the clip" },
+        { "type": "text", "id": "phone", "label": "Phone", "info": "For example \"iPhone 17 Pro\"." },
+        { "type": "text", "id": "colour", "label": "Colour", "info": "Write it exactly as the product's colour option, and the player offers \"Choose this colour\"." },
+        { "type": "product", "id": "product", "label": "Only show on", "info": "Leave blank to show this clip on every product page." }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [{ "name": "Product: video reviews" }]
+}
+{% endschema %}

@@ -1,0 +1,261 @@
+{{ 'casify-customer-reviews.css' | asset_url | stylesheet_tag }}
+{{ 'casify-facebook-testimonials.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'casify-customer-reviews.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign post_count = 0
+  assign draft_count = 0
+  for block in section.blocks
+    if block.settings.author != blank and block.settings.post_text != blank
+      assign post_count = post_count | plus: 1
+    else
+      assign draft_count = draft_count | plus: 1
+    endif
+  endfor
+  assign is_carousel = false
+  if section.settings.layout == 'carousel' and post_count > 1
+    assign is_carousel = true
+  endif
+  assign fallback_heading = 'sections.facebook_testimonials.heading' | t
+-%}
+
+{%- if post_count > 0 or request.design_mode -%}
+<section
+  class="ccr ccr--{{ section.settings.surface }} cvfbt{% if section.settings.float_cards %} cvfbt--float{% endif %}"
+  id="cv-facebook-posts-{{ section.id }}"
+  aria-labelledby="cv-facebook-posts-title-{{ section.id }}"
+  {% if is_carousel %}data-casify-customer-reviews aria-roledescription="carousel"{% endif %}
+>
+  <div class="ccr__inner">
+    <header class="ccr__header">
+      <h2 class="ccr__title" id="cv-facebook-posts-title-{{ section.id }}">
+        {{ section.settings.heading | default: fallback_heading | escape }}
+        {%- if section.settings.accent_text != blank -%}
+          <span>{{ section.settings.accent_text | escape }}</span>
+        {%- endif -%}
+      </h2>
+      {%- if section.settings.intro != blank -%}
+        <p class="ccr__description">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if post_count > 0 -%}
+      <div
+        class="{% if is_carousel %}ccr__rail{% else %}cvfbt__grid{% endif %}"
+        id="cv-facebook-posts-rail-{{ section.id }}"
+        role="list"
+        {% if is_carousel %}data-ccr-rail tabindex="0" aria-label="{{ 'sections.facebook_testimonials.carousel_label' | t | escape }}"{% endif %}
+      >
+        {%- for block in section.blocks -%}
+          {%- if block.settings.author != blank and block.settings.post_text != blank -%}
+            <article class="ccr__card cvfbt__post" role="listitem" data-ccr-card {{ block.shopify_attributes }}>
+              <header class="cvfbt__top">
+                <span class="cvfbt__avatar" aria-hidden="true">
+                  {%- if block.settings.avatar != blank -%}
+                    {{ block.settings.avatar | image_url: width: 96, height: 96, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                  {%- else -%}
+                    {{ block.settings.author | slice: 0, 1 | upcase | escape }}
+                  {%- endif -%}
+                </span>
+                <div class="cvfbt__who">
+                  <h3 class="cvfbt__author">{{ block.settings.author | escape }}</h3>
+                  {%- if block.settings.post_time != blank -%}
+                    <span class="cvfbt__time">{{ block.settings.post_time | escape }}</span>
+                  {%- endif -%}
+                </div>
+                <span class="cvfbt__source" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.027 4.388 11.024 10.125 11.927v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.695 4.533-4.695 1.312 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.931-1.956 1.886v2.262h3.328l-.532 3.49h-2.796V24C19.612 23.097 24 18.1 24 12.073Z"/></svg>
+                </span>
+              </header>
+
+              <div class="cvfbt__text rte">{{ block.settings.post_text }}</div>
+
+              {%- if block.settings.post_image != blank -%}
+                {%- assign photo_alt = block.settings.image_alt | default: block.settings.author -%}
+                <div class="cvfbt__media">
+                  {{ block.settings.post_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: photo_alt, widths: '360, 540, 720, 900', sizes: '(max-width: 720px) 86vw, 365px' }}
+                </div>
+              {%- elsif block.settings.post_video != blank -%}
+                {%- assign poster = block.settings.video_poster | default: block.settings.post_video.preview_image -%}
+                <div class="cvfbt__media cvfbt__media--video">
+                  <video
+                    controls
+                    playsinline
+                    preload="none"
+                    {% if poster != blank %}poster="{{ poster | image_url: width: 900 }}"{% endif %}
+                    aria-label="{{ 'sections.facebook_testimonials.video_label' | t: author: block.settings.author | escape }}"
+                  >
+                    {%- for source in block.settings.post_video.sources -%}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {%- endfor -%}
+                  </video>
+                </div>
+              {%- endif -%}
+
+              {%- liquid
+                assign engagement = block.settings.comments_text | strip
+                assign shares = block.settings.shares_text | strip
+                if engagement != blank and shares != blank
+                  assign engagement = engagement | append: ' · ' | append: shares
+                elsif shares != blank
+                  assign engagement = shares
+                endif
+              -%}
+              {%- if block.settings.reactions_text != blank or engagement != blank -%}
+                <div class="cvfbt__counts">
+                  {%- if block.settings.reactions_text != blank -%}
+                    <span class="cvfbt__reactions">
+                      <span class="cvfbt__heart" aria-hidden="true">{%- render 'cv-icon', name: 'heart', size: 13 -%}</span>
+                      {{ block.settings.reactions_text | escape }}
+                    </span>
+                  {%- endif -%}
+                  {%- if engagement != blank -%}
+                    <span class="cvfbt__comment-count">{{ engagement | escape }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- liquid
+                assign has_replies = false
+                if block.settings.reply_1_author != blank and block.settings.reply_1_text != blank
+                  assign has_replies = true
+                endif
+                if block.settings.reply_2_author != blank and block.settings.reply_2_text != blank
+                  assign has_replies = true
+                endif
+              -%}
+              {%- if has_replies -%}
+                <ul class="cvfbt__replies" role="list">
+                  {%- for n in (1..2) -%}
+                    {%- liquid
+                      assign reply_author_key = 'reply_' | append: n | append: '_author'
+                      assign reply_text_key = 'reply_' | append: n | append: '_text'
+                      assign reply_author = block.settings[reply_author_key]
+                      assign reply_text = block.settings[reply_text_key]
+                    -%}
+                    {%- if reply_author != blank and reply_text != blank -%}
+                      <li class="cvfbt__reply">
+                        <span class="cvfbt__reply-avatar" aria-hidden="true">{{ reply_author | slice: 0, 1 | upcase | escape }}</span>
+                        <div class="cvfbt__reply-bubble">
+                          <strong>{{ reply_author | escape }}</strong>
+                          <p>{{ reply_text | escape | newline_to_br }}</p>
+                        </div>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+              {%- if block.settings.source_url != blank -%}
+                <a class="cvfbt__link" href="{{ block.settings.source_url | escape }}" target="_blank" rel="noopener noreferrer">
+                  {{ 'sections.facebook_testimonials.view_post' | t }}
+                  {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+                  <span class="cvfbt__sr">{{ 'sections.facebook_testimonials.new_window' | t }}</span>
+                </a>
+              {%- endif -%}
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if is_carousel -%}
+        <div class="ccr__controls" data-ccr-controls hidden>
+          <button type="button" class="ccr__nav" data-ccr-prev aria-label="{{ 'sections.facebook_testimonials.previous_post' | t | escape }}" aria-controls="cv-facebook-posts-rail-{{ section.id }}">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="ccr__position" data-ccr-position data-template="{{ 'sections.facebook_testimonials.position' | t: current: '%current%', total: '%total%' | escape }}" aria-live="polite" aria-atomic="true">{{ 'sections.facebook_testimonials.position' | t: current: 1, total: post_count }}</span>
+          <button type="button" class="ccr__nav ccr__nav--next" data-ccr-next aria-label="{{ 'sections.facebook_testimonials.next_post' | t | escape }}" aria-controls="cv-facebook-posts-rail-{{ section.id }}">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div class="ccr__empty">
+        <span class="ccr__empty-symbol" aria-hidden="true">“ ”</span>
+        <p>{{ 'sections.facebook_testimonials.editor_hint' | t }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if request.design_mode and draft_count > 0 -%}
+      <div class="ccr__drafts">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.author == blank or block.settings.post_text == blank -%}
+            <div class="ccr__draft" {{ block.shopify_attributes }}>{{ 'sections.facebook_testimonials.editor_draft' | t }}</div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Facebook testimonials",
+  "tag": "div",
+  "class": "section-casify-facebook-testimonials",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Seen on Facebook" },
+    { "type": "text", "id": "accent_text", "label": "Accent heading", "default": "From our community" },
+    { "type": "text", "id": "intro", "label": "Intro text", "info": "Add posts as blocks. This section does not sync with Facebook." },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "White" },
+        { "value": "teal", "label": "Soft teal" }
+      ],
+      "default": "cream"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "carousel", "label": "Carousel" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel"
+    },
+    { "type": "checkbox", "id": "float_cards", "label": "Gently float the posts", "default": false, "info": "Neighbouring posts drift up and down. Turned off for shoppers who prefer reduced motion." }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Facebook post",
+      "settings": [
+        { "type": "header", "content": "Post" },
+        { "type": "text", "id": "author", "label": "Author name" },
+        { "type": "image_picker", "id": "avatar", "label": "Author photo" },
+        { "type": "text", "id": "post_time", "label": "Date or time", "info": "Enter the original date only if you know it." },
+        { "type": "richtext", "id": "post_text", "label": "Post text" },
+        { "type": "image_picker", "id": "post_image", "label": "Image" },
+        { "type": "text", "id": "image_alt", "label": "Image description", "info": "Describe the image for screen readers." },
+        { "type": "video", "id": "post_video", "label": "Video", "info": "Used when no image is set." },
+        { "type": "image_picker", "id": "video_poster", "label": "Video thumbnail" },
+        { "type": "url", "id": "source_url", "label": "Original Facebook post URL", "info": "Optional. Adds a link to the original post." },
+        { "type": "header", "content": "Counts" },
+        { "type": "paragraph", "content": "Copy these from the original post. Leave blank to hide them." },
+        { "type": "text", "id": "reactions_text", "label": "Reactions", "placeholder": "e.g. 214" },
+        { "type": "text", "id": "comments_text", "label": "Comments", "placeholder": "e.g. 18 comments" },
+        { "type": "text", "id": "shares_text", "label": "Shares", "placeholder": "e.g. 6 shares" },
+        { "type": "header", "content": "Replies" },
+        { "type": "text", "id": "reply_1_author", "label": "Reply 1 author" },
+        { "type": "textarea", "id": "reply_1_text", "label": "Reply 1 text" },
+        { "type": "text", "id": "reply_2_author", "label": "Reply 2 author" },
+        { "type": "textarea", "id": "reply_2_text", "label": "Reply 2 text" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Facebook testimonials",
+      "blocks": [{ "type": "post" }, { "type": "post" }, { "type": "post" }]
+    }
+  ]
+}
+{% endschema %}

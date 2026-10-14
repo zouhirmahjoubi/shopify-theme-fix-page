@@ -1,0 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-best-product",
+      "settings": {
+        "eyebrow": "CASIFY CASES",
+        "intro": "",
+        "benefit_one": "",
+        "benefit_one_copy": "",
+        "benefit_two": "",
+        "benefit_two_copy": "",
+        "benefit_three": "",
+        "benefit_three_copy": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

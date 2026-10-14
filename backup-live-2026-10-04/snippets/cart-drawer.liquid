@@ -1,0 +1,46 @@
+<div class="cart-drawer__scrim" id="cm-cart-drawer-scrim" data-cart-drawer-close></div>
+<aside class="cart-drawer" id="cm-cart-drawer" aria-label="Cart" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="cart-drawer__head">
+    <div class="cart-drawer__head-inner">
+      <h3>Your bag</h3>
+      <button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="cart-drawer__body" id="cm-cart-drawer-content">
+    {%- if cart.item_count == 0 -%}
+      <p style="text-align:center;color:var(--cocoa-500);padding:40px 0">Your bag is empty.</p>
+    {%- else -%}
+      {%- for item in cart.items -%}
+        <div class="cart-drawer-item" data-key="{{ item.key }}">
+          <a href="{{ item.url }}"><img src="{{ item | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="60" height="60"></a>
+          <div>
+            <a href="{{ item.url }}"><strong>{{ item.product.title | escape }}</strong></a>
+            <p style="margin:0;color:var(--cocoa-500);font-size:13px">{{ item.variant.title | escape }}</p>
+            <p style="margin:6px 0 0;font:700 14px var(--font-display);color:var(--cocoa-600)">{{ item.final_line_price | money }}</p>
+          </div>
+          <div class="cm-stepper" style="margin:0;height:36px;border-radius:6px">
+            <button type="button" data-qty-decrease style="width:36px;height:36px">-</button>
+            <input type="number" data-cart-line-qty="{{ item.key }}" value="{{ item.quantity }}" min="0" style="height:36px;font-size:13px">
+            <button type="button" data-qty-increase style="width:36px;height:36px">+</button>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+  {%- if cart.item_count > 0 -%}
+  <div class="cart-drawer__footer">
+    <div class="cm-flex" style="justify-content:space-between;align-items:baseline;margin-bottom:12px">
+      <strong style="font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Subtotal</strong>
+      <strong style="font:700 22px var(--font-display);color:var(--cocoa-600)">{{ cart.total_price | money }}</strong>
+    </div>
+    <a href="{{ routes.cart_url }}" class="btn btn--block" style="text-decoration:none">Checkout</a>
+  </div>
+  {%- endif -%}
+</aside>
+
+<style>
+  .cart-drawer-item{display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-hairline)}
+  .cart-drawer-item .cm-stepper{margin:0;height:36px}
+</style>

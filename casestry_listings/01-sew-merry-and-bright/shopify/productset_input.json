@@ -1,0 +1,2287 @@
+{
+ "input": {
+  "title": "Sew Merry & Bright Christmas Bunny MagSafe Case for iPhone & Samsung",
+  "handle": "sew-merry-and-bright-magsafe-phone-case",
+  "status": "DRAFT",
+  "descriptionHtml": "<p>A plush patchwork bunny, quilted Christmas trees and stitched fabric letters spelling <strong>Sew Merry &amp; Bright</strong>: a cozy, handmade-look Christmas design on soft cream linen, printed edge to edge on your case.</p><ul>\n<li><strong>MagSafe Tough</strong>: a hard polycarbonate shell over a shock-absorbing TPU insert with built-in magnets for MagSafe chargers, wallets and mounts.</li>\n<li><strong>Full-wrap print</strong>: the design is sublimated into the surface and wraps around the edges, sealed under a scratch-resistant finish.</li>\n<li><strong>Gloss or Matte</strong>: glossy shine or soft-touch matte (Matte for iPhone 13 and newer).</li>\n</ul><p>Fabric, quilting, buttons and stitching are printed details, not raised texture. Made to order and printed for your exact phone model. Choose your model and finish above.</p>",
+  "vendor": "Casify",
+  "productType": "Phone Case",
+  "tags": [
+   "casestry",
+   "christmas",
+   "holiday",
+   "phone case",
+   "print on demand",
+   "bunny",
+   "patchwork",
+   "magsafe",
+   "stitches-and-snowflakes",
+   "sew-merry-and-bright"
+  ],
+  "category": "gid://shopify/TaxonomyCategory/el-4-8-4-2",
+  "seo": {
+   "title": "Sew Merry & Bright Christmas Bunny MagSafe Phone Case | Casify",
+   "description": "Plush patchwork bunny, quilted Christmas trees and stitched letters on cream linen. MagSafe Tough case for iPhone 12-17 and Galaxy S26, gloss or matte."
+  },
+  "productOptions": [
+   {
+    "name": "Phone model",
+    "position": 1,
+    "values": [
+     {
+      "name": "iPhone 17 Pro Max"
+     },
+     {
+      "name": "iPhone 17 Pro"
+     },
+     {
+      "name": "iPhone 17 Air"
+     },
+     {
+      "name": "iPhone 17"
+     },
+     {
+      "name": "iPhone 16e"
+     },
+     {
+      "name": "iPhone 16 Pro Max"
+     },
+     {
+      "name": "iPhone 16 Pro"
+     },
+     {
+      "name": "iPhone 16 Plus"
+     },
+     {
+      "name": "iPhone 16"
+     },
+     {
+      "name": "iPhone 15 Pro Max"
+     },
+     {
+      "name": "iPhone 15 Pro"
+     },
+     {
+      "name": "iPhone 15 Plus"
+     },
+     {
+      "name": "iPhone 15"
+     },
+     {
+      "name": "iPhone 14 Pro Max"
+     },
+     {
+      "name": "iPhone 14 Pro"
+     },
+     {
+      "name": "iPhone 14 Plus"
+     },
+     {
+      "name": "iPhone 14"
+     },
+     {
+      "name": "iPhone 13 Pro Max"
+     },
+     {
+      "name": "iPhone 13 Pro"
+     },
+     {
+      "name": "iPhone 13"
+     },
+     {
+      "name": "iPhone 13 Mini"
+     },
+     {
+      "name": "iPhone 12 Pro Max"
+     },
+     {
+      "name": "iPhone 12 Pro"
+     },
+     {
+      "name": "iPhone 12"
+     },
+     {
+      "name": "iPhone 12 Mini"
+     },
+     {
+      "name": "Galaxy S26 Ultra"
+     },
+     {
+      "name": "Galaxy S26 Plus"
+     },
+     {
+      "name": "Galaxy S26"
+     }
+    ]
+   },
+   {
+    "name": "Case type",
+    "position": 2,
+    "values": [
+     {
+      "name": "MagSafe Tough"
+     },
+     {
+      "name": "MagSafe Tough Matte"
+     }
+    ]
+   }
+  ],
+  "files": [
+   {
+    "id": "gid://shopify/MediaImage/46203210072309"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210105077"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210137845"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210170613"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210236149"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210301685"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210367221"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210432757"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210498293"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210563829"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210629365"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210694901"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210760437"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210825973"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210891509"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203210957045"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211022581"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211088117"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211153653"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211219189"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211284725"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211350261"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211415797"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211481333"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211546869"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211612405"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211677941"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211743477"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211809013"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211874549"
+   },
+   {
+    "id": "gid://shopify/MediaImage/46203211940085"
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210170613"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17pm.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17PM-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210170613"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17PM-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17pm.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210236149"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17P-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210236149"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17P-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Air"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17A-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210301685"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17A-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17a.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-air.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17 Air"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17A-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210301685"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17A-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17a.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-air.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210367221"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 17"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-17-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210367221"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "17-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16e"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16E-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210432757"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16E-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16e.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16e.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16e"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16E-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210432757"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16E-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16e.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16e.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210498293"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16PM-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210498293"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16PM-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210563829"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16P-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210563829"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16P-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16PL-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210629365"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16PL-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pl.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16PL-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210629365"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16PL-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pl.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210694901"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 16"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-16-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210694901"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "16-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210760437"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pm.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15PM-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210760437"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15PM-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pm.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210825973"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15P-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210825973"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15P-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15PL-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210891509"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15PL-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pl.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15PL-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210891509"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15PL-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pl.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210957045"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 15"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-15-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203210957045"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "15-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211022581"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14PM-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211022581"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14PM-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211088117"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14P-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211088117"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14P-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14PL-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211153653"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14PL-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pl.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14PL-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211153653"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14PL-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pl.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211219189"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 14"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-14-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211219189"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "14-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211284725"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13PM-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211284725"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13PM-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13pm.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211350261"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13P-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211350261"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13P-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211415797"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211415797"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Mini"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211481333"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13m.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-mini.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 13 Mini"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough Matte"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-13M-M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211481333"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "13M-M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13m.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-mini.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 12 Pro Max"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-12PM-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211546869"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "12PM-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12pm.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-pro-max.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 12 Pro"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-12P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211612405"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "12P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12p.png?v=1791334494"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-pro.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 12"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-12-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211677941"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "12-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "iPhone 12 Mini"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-12M-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211743477"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "12M-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12m.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-mini.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "Galaxy S26 Ultra"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-S26U-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211809013"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "S26U-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26u.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26-ultra.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "Galaxy S26 Plus"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-S26P-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211874549"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "S26P-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26p.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26-plus.jpg?v=1791334492"
+     }
+    ]
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Phone model",
+      "name": "Galaxy S26"
+     },
+     {
+      "optionName": "Case type",
+      "name": "MagSafe Tough"
+     }
+    ],
+    "price": "54.99",
+    "compareAtPrice": "59.99",
+    "sku": "CS-S26-MS",
+    "inventoryItem": {
+     "tracked": false,
+     "cost": "14.00"
+    },
+    "file": {
+     "id": "gid://shopify/MediaImage/46203211940085"
+    },
+    "metafields": [
+     {
+      "namespace": "casestry",
+      "key": "item_sku",
+      "type": "single_line_text_field",
+      "value": "S26-MS"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_artwork",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26.png?v=1791334493"
+     },
+     {
+      "namespace": "casestry",
+      "key": "front_mockup",
+      "type": "url",
+      "value": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26.jpg?v=1791334492"
+     }
+    ]
+   }
+  ]
+ },
+ "synchronous": true
+}

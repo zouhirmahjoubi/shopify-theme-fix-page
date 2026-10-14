@@ -1,0 +1,13 @@
+{% doc %}
+  Renders a catalog summary from the product title and actual option values.
+
+  @param {product} product - The product being described.
+{% enddoc %}
+<p>{{ 'products.product.catalog_summary' | t: title: product.title | escape }}</p>
+{%- unless product.has_only_default_variant -%}
+  <ul class="cvc__facts" role="list" aria-label="{{ 'products.product.available_options' | t | escape }}">
+    {%- for option in product.options_with_values -%}
+      <li><b>{{ option.name | escape }}:</b> {{ option.values | join: ', ' | escape }}</li>
+    {%- endfor -%}
+  </ul>
+{%- endunless -%}

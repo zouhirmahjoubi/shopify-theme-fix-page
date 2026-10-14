@@ -1,0 +1,89 @@
+{%- comment -%}
+  Casify — Apps (Chrismass design system).
+
+  A rebuild of the standard "Apps" section: a container for app blocks
+  (reviews, UGC galleries, loyalty widgets…), with optional page margins.
+  Adds an optional heading, a background, and an optional paper-card frame so
+  third-party widgets sit on shop paper rather than floating on the page.
+
+  Motion: assets/cv-apps.js — only the wrappers around each app move (never
+  the app's own markup), and page positions are re-measured when apps finish
+  loading so every scroll animation below stays in sync.
+  Styles: assets/cv-apps.css.
+{%- endcomment -%}
+{{ 'cv-apps.css' | asset_url | stylesheet_tag }}
+
+{%- assign st = section.settings -%}
+
+{%- if section.blocks.size > 0 or request.design_mode -%}
+<div
+  class="cvap cvap--tone-{{ st.tone }} cvap--frame-{{ st.frame }}{% if st.include_margins %} cvap--contained{% endif %}"
+  data-cvap
+  data-cvap-animate="{{ st.animate }}"
+  style="--cvap-pt: {{ st.padding_top }}px; --cvap-pb: {{ st.padding_bottom }}px;"
+>
+  <div class="cvap__inner">
+    {%- if st.heading != blank or st.subheading != blank -%}
+      <header class="cvap__hd cvap__hd--{{ st.heading_align }}">
+        {%- if st.heading != blank -%}
+          <h2 class="cvap__title" data-cvap-heading>{{ st.heading }}</h2>
+        {%- endif -%}
+        {%- if st.subheading != blank -%}
+          <div class="cvap__lede" data-cvap-fade>{{ st.subheading }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <div class="cvap__apps" data-cvap-apps>
+      {%- for block in section.blocks -%}
+        <div class="cvap__app" data-cvap-app>{% render block %}</div>
+      {%- endfor -%}
+      {%- if section.blocks.size == 0 -%}
+        <p class="cvap__empty">Add an app block to show a widget from one of your installed apps.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "div",
+  "settings": [
+    { "type": "checkbox", "id": "include_margins", "label": "Include page margins", "default": true, "info": "Off lets an app span the full width of the page." },
+    {
+      "type": "inline_richtext", "id": "heading", "label": "Heading",
+      "info": "Optional. Italic words are set in the script face — use it for one short flourish."
+    },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading" },
+    {
+      "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" } ]
+    },
+    {
+      "type": "select", "id": "frame", "label": "App frame", "default": "none",
+      "info": "\"Paper card\" places each app on a raised paper panel.",
+      "options": [ { "value": "none", "label": "None" }, { "value": "card", "label": "Paper card" } ]
+    },
+    {
+      "type": "select", "id": "tone", "label": "Background", "default": "page",
+      "info": "Kept light, because most app widgets are designed for light pages.",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "paper", "label": "Paper" }
+      ]
+    },
+    {
+      "type": "checkbox", "id": "animate", "label": "Reveal on scroll", "default": true,
+      "info": "Turn off if an app's layout looks wrong while it animates in."
+    },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 40 }
+  ],
+  "blocks": [ { "type": "@app" } ],
+  "presets": [ { "name": "Apps" } ]
+}
+{% endschema %}

@@ -1,0 +1,356 @@
+{
+ "hero:main": {
+  "id": "gid://shopify/MediaImage/46203210072309",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-main.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-main.jpg"
+ },
+ "hero:magsafe": {
+  "id": "gid://shopify/MediaImage/46203210105077",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-magsafe.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-magsafe.jpg"
+ },
+ "hero:artwork": {
+  "id": "gid://shopify/MediaImage/46203210137845",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-artwork.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-artwork.jpg"
+ },
+ "mockup:17PM": {
+  "id": "gid://shopify/MediaImage/46203210170613",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-17-pro-max.jpg"
+ },
+ "print:17PM": {
+  "id": "gid://shopify/MediaImage/46203210203381",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17pm.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-17pm.png"
+ },
+ "mockup:17P": {
+  "id": "gid://shopify/MediaImage/46203210236149",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-17-pro.jpg"
+ },
+ "print:17P": {
+  "id": "gid://shopify/MediaImage/46203210268917",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-17p.png"
+ },
+ "mockup:17A": {
+  "id": "gid://shopify/MediaImage/46203210301685",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17-air.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-17-air.jpg"
+ },
+ "print:17A": {
+  "id": "gid://shopify/MediaImage/46203210334453",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17a.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-17a.png"
+ },
+ "mockup:17": {
+  "id": "gid://shopify/MediaImage/46203210367221",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-17.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-17.jpg"
+ },
+ "print:17": {
+  "id": "gid://shopify/MediaImage/46203210399989",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-17.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-17.png"
+ },
+ "mockup:16E": {
+  "id": "gid://shopify/MediaImage/46203210432757",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16e.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-16e.jpg"
+ },
+ "print:16E": {
+  "id": "gid://shopify/MediaImage/46203210465525",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16e.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-16e.png"
+ },
+ "mockup:16PM": {
+  "id": "gid://shopify/MediaImage/46203210498293",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-16-pro-max.jpg"
+ },
+ "print:16PM": {
+  "id": "gid://shopify/MediaImage/46203210531061",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pm.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-16pm.png"
+ },
+ "mockup:16P": {
+  "id": "gid://shopify/MediaImage/46203210563829",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-16-pro.jpg"
+ },
+ "print:16P": {
+  "id": "gid://shopify/MediaImage/46203210596597",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-16p.png"
+ },
+ "mockup:16PL": {
+  "id": "gid://shopify/MediaImage/46203210629365",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16-plus.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-16-plus.jpg"
+ },
+ "print:16PL": {
+  "id": "gid://shopify/MediaImage/46203210662133",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16pl.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-16pl.png"
+ },
+ "mockup:16": {
+  "id": "gid://shopify/MediaImage/46203210694901",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-16.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-16.jpg"
+ },
+ "print:16": {
+  "id": "gid://shopify/MediaImage/46203210727669",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-16.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-16.png"
+ },
+ "mockup:15PM": {
+  "id": "gid://shopify/MediaImage/46203210760437",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-15-pro-max.jpg"
+ },
+ "print:15PM": {
+  "id": "gid://shopify/MediaImage/46203210793205",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pm.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-15pm.png"
+ },
+ "mockup:15P": {
+  "id": "gid://shopify/MediaImage/46203210825973",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-15-pro.jpg"
+ },
+ "print:15P": {
+  "id": "gid://shopify/MediaImage/46203210858741",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-15p.png"
+ },
+ "mockup:15PL": {
+  "id": "gid://shopify/MediaImage/46203210891509",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15-plus.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-15-plus.jpg"
+ },
+ "print:15PL": {
+  "id": "gid://shopify/MediaImage/46203210924277",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15pl.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-15pl.png"
+ },
+ "mockup:15": {
+  "id": "gid://shopify/MediaImage/46203210957045",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-15.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-15.jpg"
+ },
+ "print:15": {
+  "id": "gid://shopify/MediaImage/46203210989813",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-15.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-15.png"
+ },
+ "mockup:14PM": {
+  "id": "gid://shopify/MediaImage/46203211022581",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-14-pro-max.jpg"
+ },
+ "print:14PM": {
+  "id": "gid://shopify/MediaImage/46203211055349",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pm.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-14pm.png"
+ },
+ "mockup:14P": {
+  "id": "gid://shopify/MediaImage/46203211088117",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-14-pro.jpg"
+ },
+ "print:14P": {
+  "id": "gid://shopify/MediaImage/46203211120885",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-14p.png"
+ },
+ "mockup:14PL": {
+  "id": "gid://shopify/MediaImage/46203211153653",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14-plus.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-14-plus.jpg"
+ },
+ "print:14PL": {
+  "id": "gid://shopify/MediaImage/46203211186421",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14pl.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-14pl.png"
+ },
+ "mockup:14": {
+  "id": "gid://shopify/MediaImage/46203211219189",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-14.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-14.jpg"
+ },
+ "print:14": {
+  "id": "gid://shopify/MediaImage/46203211251957",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-14.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-14.png"
+ },
+ "mockup:13PM": {
+  "id": "gid://shopify/MediaImage/46203211284725",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-13-pro-max.jpg"
+ },
+ "print:13PM": {
+  "id": "gid://shopify/MediaImage/46203211317493",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13pm.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-13pm.png"
+ },
+ "mockup:13P": {
+  "id": "gid://shopify/MediaImage/46203211350261",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-13-pro.jpg"
+ },
+ "print:13P": {
+  "id": "gid://shopify/MediaImage/46203211383029",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-13p.png"
+ },
+ "mockup:13": {
+  "id": "gid://shopify/MediaImage/46203211415797",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-13.jpg"
+ },
+ "print:13": {
+  "id": "gid://shopify/MediaImage/46203211448565",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-13.png"
+ },
+ "mockup:13M": {
+  "id": "gid://shopify/MediaImage/46203211481333",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-13-mini.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-13-mini.jpg"
+ },
+ "print:13M": {
+  "id": "gid://shopify/MediaImage/46203211514101",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-13m.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-13m.png"
+ },
+ "mockup:12PM": {
+  "id": "gid://shopify/MediaImage/46203211546869",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-pro-max.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-12-pro-max.jpg"
+ },
+ "print:12PM": {
+  "id": "gid://shopify/MediaImage/46203211579637",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12pm.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-12pm.png"
+ },
+ "mockup:12P": {
+  "id": "gid://shopify/MediaImage/46203211612405",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-pro.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-12-pro.jpg"
+ },
+ "print:12P": {
+  "id": "gid://shopify/MediaImage/46203211645173",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12p.png?v=1791334494",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-12p.png"
+ },
+ "mockup:12": {
+  "id": "gid://shopify/MediaImage/46203211677941",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-12.jpg"
+ },
+ "print:12": {
+  "id": "gid://shopify/MediaImage/46203211710709",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-12.png"
+ },
+ "mockup:12M": {
+  "id": "gid://shopify/MediaImage/46203211743477",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-iphone-12-mini.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-iphone-12-mini.jpg"
+ },
+ "print:12M": {
+  "id": "gid://shopify/MediaImage/46203211776245",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-12m.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-12m.png"
+ },
+ "mockup:S26U": {
+  "id": "gid://shopify/MediaImage/46203211809013",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26-ultra.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-galaxy-s26-ultra.jpg"
+ },
+ "print:S26U": {
+  "id": "gid://shopify/MediaImage/46203211841781",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26u.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-s26u.png"
+ },
+ "mockup:S26P": {
+  "id": "gid://shopify/MediaImage/46203211874549",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26-plus.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-galaxy-s26-plus.jpg"
+ },
+ "print:S26P": {
+  "id": "gid://shopify/MediaImage/46203211907317",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26p.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-s26p.png"
+ },
+ "mockup:S26": {
+  "id": "gid://shopify/MediaImage/46203211940085",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-galaxy-s26.jpg?v=1791334492",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-galaxy-s26.jpg"
+ },
+ "print:S26": {
+  "id": "gid://shopify/MediaImage/46203211972853",
+  "url": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/sew-merry-and-bright-print-s26.png?v=1791334493",
+  "status": "READY",
+  "fname": "sew-merry-and-bright-print-s26.png"
+ }
+}

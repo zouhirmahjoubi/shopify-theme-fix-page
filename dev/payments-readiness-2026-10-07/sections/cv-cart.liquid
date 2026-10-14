@@ -1,0 +1,233 @@
+{%- comment -%}
+  Casify — cart page in the Chrismass design system.
+
+  Line items as cards rather than table rows, a free-shipping meter that fills
+  on reveal, an order note, and a summary rail that sticks beside the list on
+  desktop. Quantity steppers and remove buttons use the hooks cart.js already
+  owns (`.qty` wrapper, data-cart-line-qty, data-cart-remove), so all of it is
+  AJAX with no new cart code.
+{%- endcomment -%}
+
+{%- liquid
+  assign threshold = section.settings.free_ship_threshold | times: 100
+  assign remaining = threshold | minus: cart.total_price
+  assign ship_pct = 0
+  if threshold > 0
+    assign ship_pct = cart.total_price | times: 100.0 | divided_by: threshold
+    if ship_pct > 100
+      assign ship_pct = 100
+    endif
+  endif
+-%}
+
+<div class="cv-page-root cv-cart">
+  <header class="cv-cart__hd" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Your bag' | escape }}</span>
+    <h1 data-cv-split>
+      {%- if cart.item_count > 0 -%}
+        {{ section.settings.heading | default: 'Ready when you are' | escape }}
+      {%- else -%}
+        {{ section.settings.empty_heading | default: 'Your bag is empty' | escape }}
+      {%- endif -%}
+    </h1>
+  </header>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="cv-empty" data-cv-reveal>
+      <span class="cv-empty__ico">{%- render 'cv-icon', name: 'bag', size: 40, animate: true -%}</span>
+      <p>{{ section.settings.empty_body | default: 'Nothing in here yet. Pick your phone model and the right case is one tap away.' | escape }}</p>
+      <a class="cv-cta cv-cta--closer" href="{{ routes.all_products_collection_url }}">
+        <span class="cv-cta__shine" aria-hidden="true"></span>
+        {%- render 'cv-icon', name: 'bag', size: 18 -%}
+        <span>{{ section.settings.empty_cta | default: 'Start shopping' | escape }}</span>
+      </a>
+    </div>
+  {%- else -%}
+
+    {%- comment -%} ---------- Free shipping meter ---------- {%- endcomment -%}
+    {%- if section.settings.free_ship_threshold > 0 -%}
+      <div class="cv-ship" data-cv-reveal>
+        <p class="cv-ship__msg">
+          {%- if remaining > 0 -%}
+            {%- render 'cv-icon', name: 'truck-fast', size: 16 -%}
+            <span>You're <b>{{ remaining | money }}</b> from free shipping</span>
+          {%- else -%}
+            {%- render 'cv-icon', name: 'check', size: 16 -%}
+            <span><b>Free shipping unlocked.</b> Nice.</span>
+          {%- endif -%}
+        </p>
+        <span class="cv-ship__track">
+          <span class="cv-ship__fill{% if remaining <= 0 %} is-full{% endif %}" data-cv-pct="{{ ship_pct | round }}"></span>
+        </span>
+      </div>
+    {%- endif -%}
+
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cv-cart__grid">
+
+      {%- comment -%} ---------- Lines ---------- {%- endcomment -%}
+      <div class="cv-lines" data-cv-stagger>
+        {%- for item in cart.items -%}
+          <div class="cv-line" data-cv-reveal style="--cv-i:{{ forloop.index0 }}">
+            <a class="cv-line__media" href="{{ item.url }}">
+              {%- if item.image -%}
+                <img src="{{ item | image_url: width: 220 }}"
+                     alt="{{ item.title | escape }}"
+                     width="110" height="110" loading="lazy" decoding="async">
+              {%- else -%}
+                <span class="cv-line__ph">{%- render 'cv-icon', name: 'precision-fit', size: 24 -%}</span>
+              {%- endif -%}
+            </a>
+
+            <div class="cv-line__body">
+              <a class="cv-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <p class="cv-line__variant">{{ item.variant.title | escape }}</p>
+              {%- endunless -%}
+              {%- if item.selling_plan_allocation -%}
+                <p class="cv-line__variant">{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>
+              {%- endif -%}
+              {%- if item.unit_price_measurement -%}
+                <p class="cv-line__variant">{{ item.unit_price | money }} / {{ item.unit_price_measurement.reference_value }}{{ item.unit_price_measurement.reference_unit }}</p>
+              {%- endif -%}
+
+              <div class="cv-line__ctl">
+                <div class="qty cv-qty">
+                  <button type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                  <input type="number"
+                         data-cart-line-qty="{{ item.key }}"
+                         value="{{ item.quantity }}"
+                         min="0"
+                         aria-label="Quantity for {{ item.product.title | escape }}">
+                  <button type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cv-line__rm" data-cart-remove="{{ item.key }}">
+                  {%- render 'cv-icon', name: 'cross', size: 12 -%}<span>Remove</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="cv-line__money">
+              <span class="cv-line__total">{{ item.final_line_price | money }}</span>
+              {%- if item.original_line_price > item.final_line_price -%}
+                <s class="cv-line__was">{{ item.original_line_price | money }}</s>
+              {%- endif -%}
+              {%- if item.quantity > 1 -%}
+                <span class="cv-line__each">{{ item.final_price | money }} ea</span>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} ---------- Summary ---------- {%- endcomment -%}
+      <aside class="cv-sum" data-cv-reveal>
+        <h2 class="cv-sum__hd">{{ section.settings.summary_title | default: 'Order summary' | escape }}</h2>
+
+        <div class="cv-sum__row">
+          <span>Subtotal</span>
+          <b>{{ cart.total_price | money }}</b>
+        </div>
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          {%- for d in cart.cart_level_discount_applications -%}
+            <div class="cv-sum__row is-save">
+              <span>{{ d.title | escape }}</span>
+              <b>−{{ d.total_allocated_amount | money }}</b>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+        <div class="cv-sum__row is-muted">
+          <span>Shipping</span>
+          <b>{% if remaining <= 0 and section.settings.free_ship_threshold > 0 %}Free{% else %}Calculated at checkout{% endif %}</b>
+        </div>
+
+        <div class="cv-sum__total">
+          <span>Total</span>
+          <b>{{ cart.total_price | money }}</b>
+        </div>
+        <p class="cv-sum__tax">Taxes and any duties are calculated at checkout.</p>
+
+        {%- if section.settings.show_note -%}
+          <details class="cv-acc cv-sum__note">
+            <summary class="cv-acc__sum">
+              {{ section.settings.note_label | default: 'Add a note' | escape }}
+              {%- render 'cv-icon', name: 'chevron-down', size: 16, class: 'cv-acc__chev' -%}
+            </summary>
+            <div class="cv-acc__panel">
+              <textarea name="note" rows="3" placeholder="Gift message, delivery instructions…">{{ cart.note }}</textarea>
+            </div>
+          </details>
+        {%- endif -%}
+
+        <button type="submit" name="checkout" class="cv-cta">
+          <span class="cv-cta__shine" aria-hidden="true"></span>
+          {%- render 'cv-icon', name: 'lock-secure', size: 18 -%}
+          <span class="cv-cta__label">{{ section.settings.checkout_label | default: 'Secure checkout' | escape }}</span>
+          <span class="cv-cta__total">{{ cart.total_price | money }}</span>
+        </button>
+
+        <a class="cv-sum__back" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+
+        {%- assign trust_count = 0 -%}
+        {%- for b in section.blocks -%}{%- if b.type == 'trust' -%}{%- assign trust_count = trust_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        {%- if trust_count > 0 -%}
+          <ul class="cv-trust cv-sum__trust">
+            {%- for b in section.blocks -%}
+              {%- if b.type == 'trust' -%}
+                <li class="cv-trust__item" {{ b.shopify_attributes }}>
+                  {%- render 'cv-icon', name: b.settings.icon, size: 18 -%}
+                  <span>{{ b.settings.text | escape }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </aside>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Your bag" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ready when you are" },
+    { "type": "text", "id": "summary_title", "label": "Summary title", "default": "Order summary" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout button", "default": "Secure checkout" },
+    { "type": "range", "id": "free_ship_threshold", "label": "Free shipping over", "min": 0, "max": 200, "step": 5, "default": 0, "info": "In your store currency. Set to 0 to hide the meter." },
+    { "type": "checkbox", "id": "show_note", "label": "Allow an order note", "default": true },
+    { "type": "text", "id": "note_label", "label": "Note label", "default": "Add a note" },
+    { "type": "header", "content": "Empty state" },
+    { "type": "text", "id": "empty_heading", "label": "Heading", "default": "Your bag is empty" },
+    { "type": "text", "id": "empty_body", "label": "Body", "default": "Nothing in here yet. Pick your phone model and the right case is one tap away." },
+    { "type": "text", "id": "empty_cta", "label": "Button", "default": "Start shopping" }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "truck-fast", "label": "Shipping" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "lock-secure", "label": "Secure checkout" },
+          { "value": "warranty-seal", "label": "Warranty" },
+          { "value": "clock", "label": "Dispatch" }
+        ], "default": "lock-secure" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Secure checkout" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Cart",
+      "blocks": [
+        { "type": "trust", "settings": { "icon": "lock-secure", "text": "Encrypted, secure checkout" } },
+        { "type": "trust", "settings": { "icon": "returns", "text": "30-day returns" } },
+        { "type": "trust", "settings": { "icon": "clock", "text": "Ships in 1-2 business days" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

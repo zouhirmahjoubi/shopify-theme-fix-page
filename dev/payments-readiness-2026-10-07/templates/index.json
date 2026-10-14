@@ -1,0 +1,887 @@
+{
+  "sections": {
+    "trust_bar": {
+      "type": "cv-trust-bar",
+      "blocks": {
+        "t-0": {
+          "type": "item",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "On every order"
+          }
+        },
+        "t-1": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "See our return policy"
+          }
+        },
+        "t-2": {
+          "type": "item",
+          "settings": {
+            "icon": "lock-secure",
+            "title": "Secure checkout",
+            "body": "Checkout through Shopify"
+          }
+        },
+        "t-3": {
+          "type": "item",
+          "settings": {
+            "icon": "clock",
+            "title": "Fast dispatch",
+            "body": "Ships in 1-2 business days"
+          }
+        }
+      },
+      "block_order": [
+        "t-0",
+        "t-1",
+        "t-2",
+        "t-3"
+      ],
+      "settings": {}
+    },
+    "phone_scan": {
+      "type": "cv-phone-scan",
+      "settings": {
+        "heading_1": "Choose your",
+        "heading_2": "phone case",
+        "kicker": "Cases for iPhone 18 & iPhone 18 Pro Max",
+        "lede": "Scroll on and we'll size them up at the counter.",
+        "hero_cta": "Find my case",
+        "tag_1": "Free shipping",
+        "tag_2": "30-day returns",
+        "statement": "Choose a case and check its model list before ordering. Select the model that matches your phone.",
+        "scan_id": "Nº 18",
+        "scan_text": "Browse the collection and check the available models on each case.",
+        "show_checks": true,
+        "stamp": "Fit found",
+        "fit_eyebrow": "The fitting room",
+        "fit_heading": "Which one's yours?",
+        "closing": "Pick your phone model and explore the available cases.",
+        "fit_collection": "",
+        "ticket_cta": "Shop cases",
+        "fit_18_url": "",
+        "fit_pro_url": "",
+        "fit_promax_url": "",
+        "other_label": "Different phone? Browse every case",
+        "other_url": "",
+        "case_finish": "solid",
+        "case_color": "#c4302b",
+        "show_store_rating": true,
+        "store_rating": "4.9",
+        "store_rating_count": "952",
+        "phone_1_label": "iPhone 18",
+        "phone_1_body": "iphone-18",
+        "phone_1_color": "#9fb8b1",
+        "phone_1_url": "shopify://collections/iphone",
+        "phone_2_label": "iPhone 18 Pro Max",
+        "phone_2_body": "iphone-18-pro-max",
+        "phone_2_color": "#5b1f2a",
+        "phone_2_url": "shopify://collections/iphone"
+      }
+    },
+    "casify_hero_U3GTzw": {
+      "type": "casify-hero",
+      "name": "Casify storyboard hero",
+      "settings": {
+        "featured_product": "",
+        "heading": "Your iPhone. Your colour.",
+        "supporting_text": "Explore available iPhone cases and choose your model.",
+        "cta_label": "Shop cases",
+        "details_label": "View details",
+        "fallback_cta_url": "",
+        "enable_intro": true,
+        "model_option_name": "Applicable model",
+        "color_option_name": "Color",
+        "model_1_value": "iPhone 18 Pro 17 Pro",
+        "model_1_label": "iPhone 18 Pro",
+        "model_2_value": "iPhone 18 Pro Max 17 Pro Max",
+        "model_2_label": "iPhone 18 Pro Max",
+        "show_service_facts": true,
+        "fact_1_title": "Free shipping",
+        "fact_1_text": "Every order",
+        "fact_2_title": "30-day returns",
+        "fact_2_text": "Time to decide",
+        "fact_3_title": "Fast dispatch",
+        "fact_3_text": "1-2 business days"
+      },
+      "disabled": true
+    },
+    "spotlight": {
+      "type": "cv-spotlight",
+      "settings": {
+        "eyebrow": "Now in the shop",
+        "heading": "Find a case for your everyday",
+        "subheading": "<p>Browse the styles, then select your phone model from the options on the product page.</p>",
+        "cta_label": "Find my model",
+        "cta_url": "/collections/all",
+        "cta2_label": "",
+        "cta2_url": "",
+        "count_collection": "frontpage",
+        "image_url": "",
+        "image_alt": ""
+      }
+    },
+    "orbit": {
+      "type": "cv-orbit",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "On the turntable",
+        "heading": "The collection, in 3D",
+        "subheading": "<p>Watch the collection turn, or drag to spin. Open a case to check its model options and details.</p>",
+        "link_label": "View all",
+        "limit": 6,
+        "hold": 3.5,
+        "perk_shipping": "Free shipping",
+        "perk_shipping_note": "On every order",
+        "perk_returns": "30-day returns",
+        "perk_returns_note": "See our return policy",
+        "perk_dispatch": "Dispatch in 1–2 days",
+        "perk_dispatch_note": "Business days, from order",
+        "perk_checkout": "Secure checkout",
+        "perk_checkout_note": "Checkout through Shopify",
+        "show_packs": true,
+        "pack_2_pct": 18,
+        "pack_3_pct": 31
+      }
+    },
+    "shop": {
+      "type": "cv-collection-row",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "From the collection",
+        "heading": "Cases on the counter",
+        "subheading": "<p>Explore available designs and choose the model that matches your phone.</p>",
+        "link_label": "View all",
+        "limit": 4
+      }
+    },
+    "showcase": {
+      "type": "cv-showcase",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "Shop the range",
+        "heading": "Explore the collection",
+        "subheading": ""
+      },
+      "disabled": true
+    },
+    "feature_tabs": {
+      "type": "cv-feature-tabs",
+      "blocks": {
+        "tab-1": {
+          "type": "tab",
+          "settings": {
+            "label": "Choose",
+            "icon": "drop-shield",
+            "media_alt": "",
+            "tone": "red",
+            "heading": "Choose your phone model",
+            "text": "<p>Check your model name in your phone settings, then select the matching model on the product page.</p>",
+            "link": "shopify://collections/all",
+            "link_label": "Shop cases"
+          }
+        },
+        "tab-2": {
+          "type": "tab",
+          "settings": {
+            "label": "Charging",
+            "icon": "wireless-charge",
+            "media_alt": "",
+            "tone": "teal",
+            "heading": "Check charging compatibility",
+            "text": "<p>Charging compatibility varies by case. Read the individual product details for magnetic and wireless charging information.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "tab-3": {
+          "type": "tab",
+          "settings": {
+            "label": "Fit",
+            "icon": "precision-fit",
+            "media_alt": "",
+            "tone": "gold",
+            "heading": "Check the model list",
+            "text": "<p>Each product page lists its available phone models. Choose the one that matches your phone before adding it to your bag.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "tab-4": {
+          "type": "tab",
+          "settings": {
+            "label": "Style",
+            "icon": "sparkle-clear",
+            "media_alt": "",
+            "tone": "red",
+            "heading": "Pick your preferred finish",
+            "text": "<p>Browse the product photos and available colours to choose the style you want.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab-1",
+        "tab-2",
+        "tab-3",
+        "tab-4"
+      ],
+      "settings": {
+        "heading": "Choose a case that suits you",
+        "intro": "Four things to check before you order.",
+        "surface": "cream"
+      }
+    },
+    "collage": {
+      "type": "cv-collage",
+      "blocks": {
+        "iphone": {
+          "type": "collection",
+          "settings": {
+            "collection": "iphone",
+            "kicker": "Collection",
+            "show_count": true
+          }
+        },
+        "clear": {
+          "type": "product",
+          "settings": {
+            "product": "transparent-anti-yellowing-pc-phone-case-for-apple-iphone",
+            "second_image": true,
+            "kicker": "Clear case"
+          }
+        },
+        "crossbody": {
+          "type": "product",
+          "settings": {
+            "product": "chain-crossbody-phone-case",
+            "second_image": true,
+            "kicker": "Crossbody"
+          }
+        }
+      },
+      "block_order": [
+        "iphone",
+        "clear",
+        "crossbody"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Straight from the <em>shop window</em>",
+        "subheading": "",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "tone": "page",
+        "parallax": true,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "value": {
+      "type": "cv-value-stack",
+      "blocks": {
+        "fix-0": {
+          "type": "fix",
+          "settings": {
+            "icon": "slim",
+            "metric_value": "1",
+            "metric_unit": "",
+            "problem": "Find your phone model",
+            "body": "<p>Look up the model name in your phone settings. On each product page, choose the matching option before ordering.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        "fix-1": {
+          "type": "fix",
+          "settings": {
+            "icon": "magnet-ring",
+            "metric_value": "2",
+            "metric_unit": "",
+            "problem": "Read the product details",
+            "body": "<p>Materials, charging compatibility and features vary by case. Check the details for the particular design you choose.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        "fix-2": {
+          "type": "fix",
+          "settings": {
+            "icon": "uv-sun",
+            "metric_value": "3",
+            "metric_unit": "",
+            "problem": "Choose your style",
+            "body": "<p>Use the photos and colour options to find the case you want. Your chosen model and colour appear in your bag before checkout.</p>",
+            "them_title": "",
+            "them_label": "",
+            "us_title": "",
+            "us_label": ""
+          }
+        },
+        "ben-0": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wireless-charge",
+            "title": "Compatibility details",
+            "body": "Check the product page for charging and accessory information."
+          }
+        },
+        "ben-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "precision-fit",
+            "title": "Model options",
+            "body": "Select the phone model listed on the product page."
+          }
+        },
+        "ben-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle-clear",
+            "title": "Photos and colours",
+            "body": "See the available finishes before choosing your case."
+          }
+        },
+        "ben-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "On every order. Dispatch in 1–2 business days."
+          }
+        },
+        "ben-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "Read our return policy for conditions and instructions."
+          }
+        },
+        "ben-5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "button-click",
+            "title": "Help choosing",
+            "body": "Use our contact page if you have a question before ordering."
+          }
+        }
+      },
+      "block_order": [
+        "fix-0",
+        "fix-1",
+        "fix-2",
+        "ben-0",
+        "ben-1",
+        "ben-2",
+        "ben-3",
+        "ben-4",
+        "ben-5"
+      ],
+      "settings": {
+        "eyebrow": "Before you order",
+        "heading": "Three steps to choose your case",
+        "subheading": "<p>Start with your phone model, then check the details and pick your style.</p>",
+        "benefits_heading": "Shopping with Casify",
+        "proof_eyebrow": "",
+        "proof_heading": "",
+        "proof_footnote": ""
+      }
+    },
+    "us_vs_them": {
+      "type": "cv-vs",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "Shop information",
+        "heading": "Choose your case",
+        "subheading": "",
+        "surface": "white",
+        "us_label": "Casify",
+        "us_product": "",
+        "us_sticker": "",
+        "them_label": "",
+        "note": "",
+        "button_label": "Find my model",
+        "button_link": "shopify://collections/all",
+        "button_note": "Free shipping on every order · 30-day returns"
+      },
+      "disabled": true
+    },
+    "ugc": {
+      "type": "cv-ugc",
+      "settings": {
+        "eyebrow": "Section 03 — your clips",
+        "heading": "Your case, on camera",
+        "subheading": "<p>Videos from real customers go up here once people send them in.</p>",
+        "hint": "Tap any clip for sound",
+        "cta_label": "Find my model",
+        "empty_heading": "No customer clips yet",
+        "empty_text": "Filmed an unboxing or your case out and about? Send it to us through the contact page."
+      }
+    },
+    "iphone": {
+      "type": "cv-collection-row",
+      "settings": {
+        "collection": "iphone",
+        "eyebrow": "Explore iPhone cases",
+        "heading": "Find your iPhone case",
+        "subheading": "<p>Open a product to see the phone models available for that case.</p>",
+        "link_label": "See all iPhone",
+        "limit": 4
+      }
+    },
+    "social": {
+      "type": "cv-social-proof",
+      "settings": {
+        "heading": "The proof, as it arrives",
+        "intro": "Our store rating from Trustpilot and Google, and product reviews in customers' own words as they're published.",
+        "enable_3d": true,
+        "show_store_rating": true,
+        "store_rating": "4.9",
+        "store_rating_count": "952",
+        "trustpilot_url": "",
+        "google_url": "",
+        "empty_heading": "No published reviews yet",
+        "empty_text": "The first customer review will set the score — not us.",
+        "write_url": "",
+        "write_label": "Write the first review",
+        "ledger_empty_text": "Customer notes will appear here automatically as they are published.",
+        "source_note": "No sample quotes and no press logos. Product reviews appear here as customers publish them.",
+        "thank_you_heading": "Thank you.",
+        "thank_you_text": "For helping us build the record one honest review at a time.",
+        "badge_heading": "Source checked",
+        "badge_text": "Live Shopify review data"
+      }
+    },
+    "trustpilot_reviews": {
+      "type": "trustpilot-reviews",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3"
+      ],
+      "settings": {
+        "heading": "Rated on Trustpilot",
+        "accent_text": "Straight from our shoppers",
+        "intro": "",
+        "profile_url": "",
+        "trustscore": 0,
+        "link_label": "Read all reviews on Trustpilot",
+        "surface": "white",
+        "layout": "carousel"
+      }
+    },
+    "facebook_testimonials": {
+      "type": "facebook-testimonials",
+      "blocks": {
+        "post-1": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        },
+        "post-2": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        },
+        "post-3": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "post-1",
+        "post-2",
+        "post-3"
+      ],
+      "settings": {
+        "heading": "Seen on Facebook",
+        "accent_text": "From our community",
+        "intro": "",
+        "surface": "cream",
+        "layout": "carousel",
+        "float_cards": true
+      }
+    },
+    "customer_reviews": {
+      "type": "customer-reviews-carousel",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3"
+      ],
+      "settings": {
+        "heading": "Customer reviews",
+        "accent_text": "In their own words",
+        "description": "",
+        "surface": "cream",
+        "empty_heading": "There are no reviews to display yet.",
+        "app_heading": "More customer feedback"
+      }
+    },
+    "facebook_comments": {
+      "type": "facebook-comments",
+      "blocks": {
+        "comment-1": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        },
+        "comment-2": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        },
+        "comment-3": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "comment-1",
+        "comment-2",
+        "comment-3"
+      ],
+      "settings": {
+        "heading": "In their words",
+        "intro": "",
+        "empty_text": "Customer comments will appear here when added.",
+        "surface": "cream",
+        "desktop_columns": "three",
+        "card_spacing": 24
+      }
+    },
+    "risk": {
+      "type": "cv-guarantee",
+      "blocks": {
+        "g-0": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "You have 30 days after delivery to request a return. Read our return policy for conditions and instructions."
+          }
+        },
+        "g-3": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Dispatch in 1–2 business days",
+            "body": "Orders dispatch from the USA within 1–2 business days. Delivery estimates vary by product and are shown at checkout."
+          }
+        },
+        "faq-0": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I choose the right model?",
+            "answer": "<p>Check your model name in your phone settings, then choose the matching model from the list on the product page.</p>",
+            "default_open": true
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Does this case support wireless charging?",
+            "answer": "<p>Compatibility varies by design. Read the product details for the case you choose and check your charger requirements.</p>",
+            "default_open": false
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Which materials and finishes are available?",
+            "answer": "<p>See each product page for its materials, photos and available colours. The details vary by case.</p>",
+            "default_open": false
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Estimated delivery is 4–6 business days for Printify items and 8–12 business days for other items. Shipping is free for both options. Review the estimate shown at checkout for your order.</p>",
+            "default_open": false
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I ordered the wrong model?",
+            "answer": "<p>Contact us with your order number. Read our return policy for the conditions and instructions that apply to your order.</p>",
+            "default_open": false
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I buy more than one case?",
+            "answer": "<p>You can choose a pack on the product page. Review your selected cases and the final order total at checkout.</p>",
+            "default_open": false
+          }
+        },
+        "note-0": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Free shipping on every order"
+          }
+        },
+        "note-1": {
+          "type": "closer_note",
+          "settings": {
+            "text": "30-day returns"
+          }
+        },
+        "note-2": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Ships in 1–2 business days"
+          }
+        },
+        "note-3": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Secure checkout"
+          }
+        }
+      },
+      "block_order": [
+        "g-0",
+        "g-3",
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "note-0",
+        "note-1",
+        "note-2",
+        "note-3"
+      ],
+      "settings": {
+        "guard_eyebrow": "Shopping with Casify",
+        "guard_heading": "Shipping and returns",
+        "faq_eyebrow": "Still deciding?",
+        "faq_heading": "Questions before you order",
+        "closer_eyebrow": "One case, one decision",
+        "closer_heading": "Find your next case",
+        "closer_body": "<p>Choose your phone model and preferred style. Orders dispatch in 1–2 business days.</p>",
+        "closer_cta": "Find my model",
+        "closer_url": "/collections/all"
+      }
+    },
+    "offer_delivery": {
+      "type": "cv-offer-courier",
+      "settings": {
+        "eyebrow": "From the counter",
+        "heading": "Two cases? 18% off each. Three? 31% off.",
+        "text": "<p>Pick a pack on any case and the saving comes off automatically at checkout — no code needed.</p>",
+        "code": "",
+        "apply_code": false,
+        "button_label": "Shop cases",
+        "link": "shopify://collections/all",
+        "fine_print": "Free shipping on every order · 30-day returns",
+        "tone": "red",
+        "display": "inline",
+        "popup_delay": 12,
+        "popup_days": 7,
+        "bubble_before": "Hold on — I’ve got something for you!",
+        "bubble_after": "Here you go!"
+      }
+    },
+    "signup": {
+      "type": "cv-signup-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Letters from the <em>sweet shop</em>",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>New designs and restocks, posted straight to your inbox.</p>",
+            "text_style": "body"
+          }
+        },
+        "form": {
+          "type": "email_form",
+          "settings": {
+            "button_label": "",
+            "fine_print": "Unsubscribe any time.",
+            "postmark_text": "Posted"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "form"
+      ],
+      "settings": {
+        "show_background_image": true,
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "box_tone": "paper",
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    }
+  },
+  "order": [
+    "trust_bar",
+    "phone_scan",
+    "casify_hero_U3GTzw",
+    "spotlight",
+    "orbit",
+    "shop",
+    "showcase",
+    "feature_tabs",
+    "collage",
+    "value",
+    "us_vs_them",
+    "ugc",
+    "iphone",
+    "social",
+    "trustpilot_reviews",
+    "facebook_testimonials",
+    "customer_reviews",
+    "facebook_comments",
+    "risk",
+    "offer_delivery",
+    "signup"
+  ]
+}

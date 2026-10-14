@@ -1,0 +1,10 @@
+{%- comment -%}
+  Casify hero — wraps each word of an already-escaped string in a masked span
+  so assets/cv-hero.js can raise it out of its mask.
+  Usage: {% render 'cv-hero-words', text: heading %}
+{%- endcomment -%}
+{%- assign cvhero_words = text | split: ' ' -%}
+{%- for word in cvhero_words -%}
+  <span class="cvhero__w"><span>{{ word }}</span></span>
+  {%- unless forloop.last %} {% endunless -%}
+{%- endfor -%}

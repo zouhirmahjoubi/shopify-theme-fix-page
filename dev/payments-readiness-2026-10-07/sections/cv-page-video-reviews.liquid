@@ -1,0 +1,69 @@
+{%- comment -%}
+  Casify: video reviews on a content page ("Default page" template).
+
+  The markup, rules and behaviour live in snippets/cv-video-reviews.liquid,
+  shared with "The Shop Counter" (sections/cv-product-counter.liquid) and the
+  product-page section (sections/cv-pdp-video-reviews.liquid). A page has no
+  buy box, so the player here shows only the clip and the review — no phone
+  picker, price or "Add to bag" — and the row is the full-width layout, not the
+  counter's compact inline one.
+
+  A page-level clip is for every visitor: the "Only show on" product limit of
+  the product-page blocks does not exist here.
+
+  Styles: assets/cv-pdp-video-reviews.css. Script: assets/cv-pdp-video-reviews.js
+  (loaded by the layout for the Shop Counter's row; it mounts on this section
+  the same way).
+{%- endcomment -%}
+{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'review', settings: section.settings, uid: section.id, commerce: false, product: product -%}
+
+{% schema %}
+{
+  "name": "Video reviews",
+  "tag": "div",
+  "class": "section-cv-page-video-reviews",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "paragraph", "content": "Customer video clips with their star rating and review, for a landing or content page. Clips play muted in view; tapping one opens it with sound and the full review. Hidden until the section has a clip." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Filmed by the people who bought it" },
+    { "type": "text", "id": "lede", "label": "Text", "default": "Short clips from customers with their case on their own phone. Tap one for sound and the full review." },
+    { "type": "header", "content": "Score" },
+    { "type": "text", "id": "clip_score_label", "label": "Label from clips", "default": "Average of [count] video reviews", "info": "[count] is the number of clips shown. A page shows no product rating, so the score is the clips' average." },
+    { "type": "text", "id": "clip_score_label_one", "label": "Label from a single clip", "default": "From 1 video review" },
+    { "type": "header", "content": "Clips" },
+    { "type": "text", "id": "rail_label", "label": "Clip list name (screen readers)", "default": "Customer video reviews" },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a clip for sound and the full review" },
+    { "type": "text", "id": "pause_label", "label": "Pause button", "default": "Pause clips" },
+    { "type": "text", "id": "play_label", "label": "Play button", "default": "Play clips" },
+    { "type": "text", "id": "verified_label", "label": "Verified badge", "default": "Verified buyer" },
+    { "type": "text", "id": "bought_label", "label": "Phone and colour label", "default": "Filmed on" },
+    { "type": "text", "id": "anon_label", "label": "Name when none is given", "default": "Customer" },
+    { "type": "text", "id": "submit_label", "label": "Send-a-clip link", "default": "Filmed yours? Send it in" },
+    { "type": "url", "id": "submit_url", "label": "Send-a-clip page", "info": "The link shows only when a page is chosen, for example your contact page." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Video review",
+      "settings": [
+        { "type": "paragraph", "content": "One clip a customer sent you. Type their name, rating and words exactly as they gave them." },
+        { "type": "video", "id": "video", "label": "Video", "info": "Upload the customer's clip. Upright 9:16 works best." },
+        { "type": "text", "id": "mp4_url", "label": "Or a direct MP4 link", "info": "Used when no video is uploaded." },
+        { "type": "image_picker", "id": "poster", "label": "Cover image", "info": "Optional. Without one, the video's own first frame is used. A cover with no video shows as a photo review." },
+        { "type": "header", "content": "The review" },
+        { "type": "text", "id": "name", "label": "Customer name", "info": "As they want it shown, for example \"Sam R.\"" },
+        { "type": "range", "id": "stars", "label": "Their star rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Quote on the clip", "info": "A short line from their review." },
+        { "type": "textarea", "id": "body", "label": "Full review", "info": "Shown when the clip is opened." },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": false, "info": "Tick only after finding their order." },
+        { "type": "text", "id": "date", "label": "Date", "info": "Optional, for example \"September 2026\"." },
+        { "type": "header", "content": "The case in the clip" },
+        { "type": "text", "id": "phone", "label": "Phone", "info": "For example \"iPhone 17 Pro\"." },
+        { "type": "text", "id": "colour", "label": "Colour", "info": "Shown after the phone, for example \"Filmed on iPhone 17 Pro · Sage\"." }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [{ "name": "Video reviews" }]
+}
+{% endschema %}

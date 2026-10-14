@@ -1,0 +1,17 @@
+{
+ "created": "2026-10-07",
+ "product_id": "gid://shopify/Product/15415081140469",
+ "handle": "sew-merry-and-bright-magsafe-phone-case",
+ "status": "DRAFT",
+ "variants": 49,
+ "media": 31,
+ "variant_metafield_definitions_created": [
+  "gid://shopify/MetafieldDefinition/276446839029 casestry.front_artwork",
+  "gid://shopify/MetafieldDefinition/276446871797 casestry.front_mockup"
+ ],
+ "collections": [
+  "iphone",
+  "samsung"
+ ],
+ "preview_url_note": "onlineStorePreviewUrl from the Admin API (draft preview, expires)"
+}

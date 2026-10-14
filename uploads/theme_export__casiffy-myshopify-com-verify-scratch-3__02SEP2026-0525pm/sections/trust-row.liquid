@@ -1,0 +1,103 @@
+<section class="trust-row cm-stagger-cm">
+  {%- for block in section.blocks -%}
+    <div class="trust" {{ block.shopify_attributes }}>
+      {%- case block.settings.icon -%}
+        {%- when 'shipping' -%}{{ 'icon-shipping.svg' | inline_asset_content }}
+        {%- when 'returns' -%}{{ 'icon-returns.svg' | inline_asset_content }}
+        {%- when 'warranty' -%}{{ 'icon-warranty.svg' | inline_asset_content }}
+        {%- when 'secure' -%}{{ 'icon-secure.svg' | inline_asset_content }}
+      {%- endcase -%}
+      <div><div class="t">{{ block.settings.title }}</div><div class="s">{{ block.settings.body }}</div></div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Trust row",
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "returns",
+              "label": "Returns"
+            },
+            {
+              "value": "warranty",
+              "label": "Warranty"
+            },
+            {
+              "value": "secure",
+              "label": "Secure"
+            }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "body",
+          "label": "Body",
+          "default": "US orders over $40"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Trust row",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free shipping",
+            "body": "US orders over $40"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "No questions asked"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon": "warranty",
+            "title": "1-year warranty",
+            "body": "Print or shell, replaced"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure checkout",
+            "body": "256-bit SSL · PCI"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

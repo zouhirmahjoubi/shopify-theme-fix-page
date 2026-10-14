@@ -1,0 +1,246 @@
+/* =========================================================================
+   Casify: email signup banner (sections/cv-signup-banner.liquid).
+   A full-bleed banner with an airmail-envelope signup card: candy-striped
+   edge, red wax seal, typewriter label and an enamel pill button.
+   This file is the finished, static state; cv-signup-motion.js animates it.
+   ========================================================================= */
+
+.cvsu {
+  --cvsu-h: 520px;
+  --cvsu-card-bg: var(--cream-50);
+  --cvsu-ink: var(--cocoa-700);
+  --cvsu-body: var(--cocoa-600);
+  --cvsu-muted: var(--cocoa-400);
+  --cvsu-accent: var(--red-500);
+  --cvsu-stripe-a: var(--red-500);
+  --cvsu-stripe-b: var(--teal-500);
+  --cvsu-stripe-gap: var(--cream-50);
+  position: relative; display: grid; grid-template-areas: "stack";
+  min-height: var(--cvsu-h);
+  background: var(--cream-200);
+  overflow: clip;
+  isolation: isolate;
+}
+.cvsu > *, .cvsu::before { grid-area: stack; }
+.cvsu--h-small { --cvsu-h: 380px; }
+.cvsu--h-medium { --cvsu-h: 540px; }
+.cvsu--h-large { --cvsu-h: 720px; }
+.cvsu--h-adapt-image { --cvsu-h: 0px; }
+.cvsu--h-adapt-image::before { content: ""; display: block; padding-bottom: var(--cvsu-ratio, 0); }
+.cvsu--no-media { --cvsu-h: 0px; background: transparent; }
+
+.cvsu--box-ticket { --cvsu-card-bg: var(--gold-200); --cvsu-stripe-gap: var(--gold-200); }
+.cvsu--box-cocoa {
+  --cvsu-card-bg: var(--cocoa-700);
+  --cvsu-ink: var(--cream-50);
+  --cvsu-body: var(--cream-200);
+  --cvsu-muted: var(--gold-300);
+  --cvsu-accent: var(--gold-400);
+  --cvsu-stripe-a: var(--red-500);
+  --cvsu-stripe-b: var(--gold-400);
+  --cvsu-stripe-gap: var(--cocoa-700);
+}
+
+/* ---- backdrop ----------------------------------------------------------- */
+.cvsu__media { position: relative; overflow: hidden; min-height: 100%; }
+.cvsu__media::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: #1c130d; opacity: var(--cvsu-overlay, 0);
+}
+.cvsu__drift { position: absolute; inset: -8% 0; }
+.cvsu__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+.cvsu__stripes {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(253, 249, 241, .85) 0%, rgba(253, 249, 241, 0) 62%),
+    repeating-linear-gradient(-35deg, var(--cream-200) 0 36px, var(--cream-100) 36px 72px);
+}
+.cvsu__sweet { position: absolute; display: block; filter: drop-shadow(0 10px 14px rgba(51, 35, 26, .22)); }
+.cvsu__sweet--1 { width: 110px; left: 7%; top: 14%; }
+.cvsu__sweet--2 { width: 70px; left: 17%; bottom: 12%; }
+.cvsu__sweet--3 { width: 86px; right: 9%; top: 18%; }
+.cvsu__sweet--4 { width: 124px; right: 5%; bottom: 7%; }
+.cvsu__mint-rim { fill: var(--cream-50); }
+.cvsu__mint-swirl { fill: var(--red-500); }
+.cvsu__mint-swirl--teal { fill: var(--teal-500); }
+
+/* ---- content placement -------------------------------------------------- */
+.cvsu__content {
+  position: relative; z-index: 2;
+  display: grid; align-items: center; justify-items: center;
+  width: 100%; max-width: var(--max, 1160px); margin: 0 auto;
+  padding: 64px 24px;
+}
+.cvsu--pos-top-left .cvsu__content, .cvsu--pos-top-center .cvsu__content, .cvsu--pos-top-right .cvsu__content { align-items: start; }
+.cvsu--pos-bottom-left .cvsu__content, .cvsu--pos-bottom-center .cvsu__content, .cvsu--pos-bottom-right .cvsu__content { align-items: end; }
+.cvsu--pos-top-left .cvsu__content, .cvsu--pos-middle-left .cvsu__content, .cvsu--pos-bottom-left .cvsu__content { justify-items: start; }
+.cvsu--pos-top-right .cvsu__content, .cvsu--pos-middle-right .cvsu__content, .cvsu--pos-bottom-right .cvsu__content { justify-items: end; }
+
+/* ---- the envelope card -------------------------------------------------- */
+.cvsu__card {
+  position: relative; display: grid; gap: 14px;
+  width: min(540px, 100%);
+  margin-top: 28px;
+  padding: 46px 38px 32px;
+  border: 10px solid transparent; border-radius: 16px;
+  background:
+    linear-gradient(var(--cvsu-card-bg), var(--cvsu-card-bg)) padding-box,
+    repeating-linear-gradient(-45deg,
+      var(--cvsu-stripe-a) 0 14px, var(--cvsu-stripe-gap) 14px 22px,
+      var(--cvsu-stripe-b) 22px 36px, var(--cvsu-stripe-gap) 36px 44px) border-box;
+  background-size: 100% 100%, 124.45px 124.45px;
+  color: var(--cvsu-body);
+  box-shadow: 0 1px 0 rgba(255, 253, 248, .6) inset, 0 30px 60px -28px rgba(28, 19, 13, .55);
+  text-align: center;
+}
+.cvsu__card::after {
+  content: ""; position: absolute; inset: 6px; border-radius: 8px; pointer-events: none;
+  border: 1px dashed rgba(74, 51, 36, .28);
+}
+.cvsu--box-cocoa .cvsu__card::after { border-color: rgba(240, 226, 194, .3); }
+
+.cvsu--align-left .cvsu__card { text-align: left; }
+.cvsu--align-right .cvsu__card { text-align: right; }
+
+.cvsu__seal {
+  position: absolute; z-index: 2; top: -38px; left: 50%;
+  width: 60px; height: 60px; margin-left: -30px;
+  display: grid; place-items: center; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--red-400), var(--red-500) 48%, var(--red-700));
+  box-shadow: 0 0 0 3px var(--gold-400), 0 0 0 6px rgba(126, 26, 23, .3), 0 10px 18px -6px rgba(28, 19, 13, .6);
+  color: var(--cream-50);
+}
+.cvsu__seal svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.cvsu--align-left .cvsu__seal { left: 30px; margin-left: 0; }
+.cvsu--align-right .cvsu__seal { left: auto; right: 30px; margin-left: 0; }
+
+.cvsu__title {
+  margin: 0; font-family: var(--font-display); font-weight: 900;
+  line-height: 1.02; letter-spacing: -.025em; color: var(--cvsu-ink); text-wrap: balance;
+}
+.cvsu__title--h2 { font-size: clamp(26px, 3vw, 34px); }
+.cvsu__title--h1 { font-size: clamp(30px, 4vw, 46px); }
+.cvsu__title--h0 { font-size: clamp(36px, 5.4vw, 64px); }
+.cvsu__title em {
+  font-family: var(--font-script); font-style: normal; font-weight: 400;
+  font-size: 1.16em; letter-spacing: 0; color: var(--cvsu-accent);
+}
+
+.cvsu__text { font: 15.5px/1.62 var(--font-body); color: var(--cvsu-body); }
+.cvsu__text p { margin: 0; }
+.cvsu__text--subtitle {
+  font-family: var(--font-label); font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+}
+
+/* ---- form --------------------------------------------------------------- */
+.cvsu__form-wrap { margin-top: 6px; }
+.cvsu-form { margin: 0; }
+.cvsu-form__label {
+  display: block; margin-bottom: 8px;
+  font-family: var(--font-label); font-size: 11.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--cvsu-muted);
+}
+.cvsu-form__row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px; border-radius: 999px;
+  background: var(--cream-100);
+  box-shadow: inset 0 0 0 1.5px var(--border-hairline, rgba(74, 51, 36, .28)), inset 0 2px 5px rgba(51, 35, 26, .08);
+  transition: box-shadow var(--duration-base, 240ms) var(--ease-standard, ease);
+}
+.cvsu-form__row:focus-within {
+  box-shadow: inset 0 0 0 2px var(--focus-ring, #4E7C7B), 0 0 0 4px rgba(78, 124, 123, .18);
+}
+.cvsu-form__input {
+  flex: 1; min-width: 0; height: 48px; padding: 0 16px;
+  border: 0; background: transparent; outline: none;
+  font: 15px/1 var(--font-body); color: var(--cocoa-700);
+}
+.cvsu-form__input::placeholder { color: var(--cocoa-300); opacity: 1; }
+.cvsu-form__input[aria-invalid="true"] { color: var(--red-600); }
+
+.cvsu-form__btn {
+  flex: none; display: inline-flex; align-items: center; gap: 10px;
+  height: 48px; padding: 0 20px 0 22px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--red-500); color: var(--cream-50);
+  font-family: var(--font-label); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: inset 0 -3px 0 var(--red-700), inset 0 1px 0 rgba(255, 253, 248, .35), 0 8px 16px -8px rgba(126, 26, 23, .7);
+  transition: background var(--duration-base, 240ms) var(--ease-standard, ease);
+}
+.cvsu-form__btn:hover { background: var(--red-600); }
+.cvsu-form__btn:focus-visible { outline: 3px solid var(--focus-ring, #4E7C7B); outline-offset: 3px; }
+.cvsu-form__btn-arrow { width: 20px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.cvsu-form__error { margin: 10px 0 0; font: 13px/1.45 var(--font-body); color: var(--red-600); }
+.cvsu--box-cocoa .cvsu-form__error { color: var(--red-300); }
+.cvsu-form__fine { margin: 12px 0 0; font-family: var(--font-label); font-size: 11px; letter-spacing: .08em; color: var(--cvsu-muted); }
+
+/* ---- after posting ------------------------------------------------------ */
+.cvsu-done { display: grid; justify-items: center; gap: 12px; }
+.cvsu--align-left .cvsu-done { justify-items: start; }
+.cvsu--align-right .cvsu-done { justify-items: end; }
+.cvsu-done__mark { position: relative; display: grid; place-items: center; width: 116px; height: 116px; color: var(--cvsu-accent); transform: rotate(-12deg); }
+.cvsu-done__mark svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 3; opacity: .85; }
+.cvsu-done__word {
+  position: relative; padding: 2px 8px; background: var(--cvsu-card-bg);
+  font-family: var(--font-label); font-size: 15px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+}
+.cvsu-done__msg { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--cvsu-ink); outline: none; }
+
+/* ---- desktop: bare text over the image ---------------------------------- */
+@media (min-width: 750px) {
+  .cvsu--bare .cvsu__card {
+    background: none; border-color: transparent; box-shadow: none;
+    --cvsu-ink: var(--cream-50); --cvsu-body: var(--cream-100); --cvsu-muted: var(--gold-200); --cvsu-accent: var(--gold-300);
+    text-shadow: 0 2px 18px rgba(28, 19, 13, .45);
+  }
+  .cvsu--bare .cvsu__card::after, .cvsu--bare .cvsu__seal { display: none; }
+  .cvsu--bare .cvsu-form__row, .cvsu--bare .cvsu-form__btn { text-shadow: none; }
+}
+
+/* ---- phone -------------------------------------------------------------- */
+@media (max-width: 749px) {
+  .cvsu--h-small { --cvsu-h: 300px; }
+  .cvsu--h-medium { --cvsu-h: 400px; }
+  .cvsu--h-large { --cvsu-h: 500px; }
+  .cvsu__content { padding: 44px 16px 28px; }
+  .cvsu__card { width: 100%; padding: 42px 20px 24px; border-width: 8px; }
+  .cvsu__sweet--1 { width: 64px; left: 2%; top: 4%; }
+  .cvsu__sweet--2, .cvsu__sweet--3 { display: none; }
+  .cvsu__sweet--4 { width: 72px; right: 3%; top: 6%; bottom: auto; }
+
+  .cvsu__card, .cvsu--align-left .cvsu__card, .cvsu--align-right .cvsu__card { text-align: center; }
+  .cvsu--m-align-left .cvsu__card { text-align: left; }
+  .cvsu--m-align-right .cvsu__card { text-align: right; }
+  .cvsu .cvsu__seal { left: 50%; right: auto; margin-left: -30px; }
+  .cvsu--m-align-left .cvsu__seal { left: 22px; margin-left: 0; }
+  .cvsu--m-align-right .cvsu__seal { left: auto; right: 22px; margin-left: 0; }
+  .cvsu .cvsu-done { justify-items: center; }
+  .cvsu--m-align-left .cvsu-done { justify-items: start; }
+  .cvsu--m-align-right .cvsu-done { justify-items: end; }
+
+  .cvsu-form__row { flex-wrap: wrap; border-radius: 26px; }
+  .cvsu-form__input { flex-basis: 100%; }
+  .cvsu-form__btn { flex: 1; justify-content: center; }
+
+  /* Card below the image: the banner becomes a picture with the envelope tucked under it. */
+  .cvsu--m-below { display: block; min-height: 0; background: transparent; }
+  .cvsu--m-below.cvsu--h-adapt-image::before { display: none; }
+  .cvsu--m-below .cvsu__media { height: var(--cvsu-h); }
+  .cvsu--m-below.cvsu--h-adapt-image .cvsu__media { height: auto; padding-bottom: var(--cvsu-ratio, 62%); }
+  .cvsu--m-below .cvsu__content { margin-top: -64px; padding-top: 0; }
+  .cvsu--m-below.cvsu--no-media .cvsu__content { margin-top: 0; padding-top: 44px; }
+}
+
+/* theme.css caps every h2 at ~20–26px on small phones with !important;
+   the envelope heading is the card's one display line, so it opts out. */
+@media (max-width: 420px) {
+  .cvsu .cvsu__title--h2 { font-size: clamp(24px, 7vw, 28px) !important; }
+  .cvsu .cvsu__title--h1 { font-size: clamp(28px, 8vw, 34px) !important; }
+  .cvsu .cvsu__title--h0 { font-size: clamp(32px, 9.5vw, 40px) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvsu-form__row, .cvsu-form__btn { transition: none; }
+}

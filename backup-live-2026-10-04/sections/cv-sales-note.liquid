@@ -1,0 +1,66 @@
+{%- comment -%}
+  Casify: a "Sales note" section for content pages ("Default page" template).
+
+  Same note as the Shop Counter's "Sales note" blocks (snippets/cv-sales-note.liquid):
+  a pill with a blinking dot or a rocket line with a pulsing number, showing a
+  real count you type in. A page has no product, so there is no product
+  metafield here — the number is the one typed in this section's settings, and
+  the note stays hidden until there is one. Word the text to match what the
+  number really counts, and only use a number you can stand behind.
+
+  Styles: assets/cv-pdp-counter.css (the counter's .cvc__pill / .cvc__sold),
+  loaded only when a number is set (or in the theme editor, for the hint).
+{%- endcomment -%}
+{%- if section.settings.count != blank or request.design_mode -%}
+  {{ 'cv-pdp-counter.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+{%- render 'cv-sales-note', block: section, product: product -%}
+
+{% schema %}
+{
+  "name": "Sales note",
+  "tag": "div",
+  "class": "section-cv-sales-note",
+  "enabled_on": { "templates": ["page"] },
+  "settings": [
+    { "type": "paragraph", "content": "Shows a real sales number, e.g. \"18 sold this week\": the number typed here. Hidden when there is no number. On a product page the counter's own \"Sales note\" block can read the product's count instead." },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "pill", "label": "Pill with blinking dot" },
+        { "value": "rocket", "label": "Rocket line with pulsing number" }
+      ],
+      "default": "pill"
+    },
+    { "type": "number", "id": "count", "label": "Number", "info": "Use a real number, and word the text to match what it counts." },
+    { "type": "text", "id": "text", "label": "Text", "default": "[count] sold this week", "info": "[count] is the number above. Match the wording to what the number really counts, e.g. \"Hurry up! [count] items have been sold\" for an all-time total." },
+    {
+      "type": "select",
+      "id": "round_to",
+      "label": "Round down",
+      "options": [
+        { "value": "1", "label": "Exact number" },
+        { "value": "10", "label": "To tens, e.g. 530+" },
+        { "value": "50", "label": "To fifties, e.g. 500+" },
+        { "value": "100", "label": "To hundreds, e.g. 500+" }
+      ],
+      "default": "1",
+      "info": "Rounds down and adds +, so the claim never overstates."
+    },
+    { "type": "range", "id": "min_count", "label": "Hide below", "min": 1, "max": 50, "step": 1, "default": 5, "info": "Hides the note when the number is smaller than this." },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Pill colour",
+      "options": [
+        { "value": "gold", "label": "Yellow" },
+        { "value": "teal", "label": "Teal" }
+      ],
+      "default": "gold"
+    }
+  ],
+  "presets": [{ "name": "Sales note" }]
+}
+{% endschema %}

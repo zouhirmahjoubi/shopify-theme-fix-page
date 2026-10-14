@@ -1,0 +1,93 @@
+{{ 'casify-cs-blocks.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Theme blocks keep their settings private: in section.blocks Shopify lists
+  them as "@theme" with no settings, so this section can't tell from Liquid
+  whether a review or rating is filled in. Each block marks what it renders
+  with data-csp-item (and renders nothing on the storefront when empty), so
+  the section shows only when at least one block produced content. Shopify
+  allows content_for 'blocks' once per file, hence the capture.
+{%- endcomment -%}
+{%- capture csp_blocks -%}{% content_for 'blocks' %}{%- endcapture -%}
+
+{%- if csp_blocks contains 'data-csp-item' or request.design_mode -%}
+  <section class="csp csp--{{ section.settings.surface }} csp--layout-{{ section.settings.desktop_columns }}" aria-labelledby="csp-title-{{ section.id }}">
+    <div class="csp__inner">
+      <header class="csp__heading csp__heading--{{ section.settings.heading_align | default: 'left' }}">
+        <span class="csp__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h2 id="csp-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.intro != blank -%}<p>{{ section.settings.intro | escape }}</p>{%- endif -%}
+      </header>
+      <div class="csp__grid csp__grid--{{ section.settings.desktop_columns }}">
+        {{ csp_blocks }}
+        {%- if section.blocks.size == 0 and request.design_mode -%}
+          <div class="csp-placeholder">Add a star rating, customer review or video block to get started.</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Ratings & reviews",
+  "tag": "div",
+  "class": "section-casify-customer-proof",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From our customers" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ratings & reviews" },
+    { "type": "textarea", "id": "intro", "label": "Introduction" },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "White" },
+        { "value": "teal", "label": "Soft teal" }
+      ],
+      "default": "cream"
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Layout",
+      "options": [
+        { "value": "2", "label": "Two" },
+        { "value": "3", "label": "Three" },
+        { "value": "list", "label": "Stacked list (one review under another)" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    { "type": "cs-rating" },
+    { "type": "cs-review" },
+    { "type": "cs-video" }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    { "name": "Ratings & reviews" },
+    {
+      "name": "Customer reviews (list)",
+      "settings": { "heading": "Customer reviews", "desktop_columns": "list", "heading_align": "center", "surface": "white" },
+      "blocks": [
+        { "type": "cs-rating", "settings": { "layout": "inline", "alignment": "center" } },
+        { "type": "cs-review" },
+        { "type": "cs-review" },
+        { "type": "cs-review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

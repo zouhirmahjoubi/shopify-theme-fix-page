@@ -1,0 +1,24 @@
+const { chromium } = require('C:/Users/LENOVO/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const fs = require('fs');
+const path = require('path');
+const url = process.argv[2] || 'https://casiffy.myshopify.com/';
+const label = process.argv[3] || 'baseline';
+(async () => {
+ const browser = await chromium.launch({channel:'msedge',headless:true});
+ const context = await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ const page = await context.newPage();
+ const errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:90000});
+ await page.waitForTimeout(5000);
+ const info=await page.evaluate(()=>({url:location.href,title:document.title,theme:window.Shopify?.theme,headings:[...document.querySelectorAll('h1,h2')].map(e=>e.textContent.trim()),text:document.body.innerText,overflow:document.documentElement.scrollWidth>innerWidth+2,links:[...document.querySelectorAll('footer a')].map(e=>({text:e.textContent.trim(),href:e.getAttribute('href')}))}));
+ const out=path.resolve('dev/payments-readiness-review');
+ await page.screenshot({path:path.join(out,label+'-desktop.png'),fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:path.join(out,label+'-mobile.png'),fullPage:true});
+ info.mobileOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);
+ info.status=response.status();info.errors=errors;
+ fs.writeFileSync(path.join(out,label+'.json'),JSON.stringify(info,null,2));
+ console.log(JSON.stringify({url:info.url,title:info.title,theme:info.theme,status:info.status,overflow:info.overflow,mobileOverflow:info.mobileOverflow,headings:info.headings,footerLinks:info.links,errors:errors.slice(0,10),textExcerpt:info.text.slice(0,1800)},null,2));
+ await browser.close();
+})().catch(e=>{console.error(e.message);process.exit(1);});

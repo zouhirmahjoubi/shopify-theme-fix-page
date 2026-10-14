@@ -1,0 +1,61 @@
+{
+  "packs": [
+    {
+      "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+      "unit": 4999,
+      "quantity": 2,
+      "status": 200,
+      "original": 9998,
+      "total": 8199,
+      "pct": 18,
+      "expected": 8199
+    },
+    {
+      "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+      "unit": 4999,
+      "quantity": 3,
+      "status": 200,
+      "original": 14997,
+      "total": 10348,
+      "pct": 31,
+      "expected": 10348
+    },
+    {
+      "handle": "two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+      "unit": 2399,
+      "quantity": 2,
+      "status": 200,
+      "original": 4798,
+      "total": 3935,
+      "pct": 18,
+      "expected": 3935
+    },
+    {
+      "handle": "two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+      "unit": 2399,
+      "quantity": 3,
+      "status": 200,
+      "original": 7197,
+      "total": 4966,
+      "pct": 31,
+      "expected": 4966
+    }
+  ],
+  "images": [
+    {
+      "source": "https://casiffy.myshopify.com/cdn/shop/files/9cb0b845-5189-4b43-9766-6c0cdbd264ce.jpg?v=1787515599&width=320",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "source": "https://casiffy.myshopify.com/cdn/shop/files/4b189824-f055-4254-b5fc-7fe7cae166c6.jpg?v=1787515327&width=320",
+      "status": 200,
+      "contentType": "image/jpeg"
+    },
+    {
+      "source": "https://casiffy.myshopify.com/cdn/shop/files/989cb061-274f-4f0f-9315-59261463b148.jpg?v=1789696677&width=320",
+      "status": 200,
+      "contentType": "image/jpeg"
+    }
+  ]
+}

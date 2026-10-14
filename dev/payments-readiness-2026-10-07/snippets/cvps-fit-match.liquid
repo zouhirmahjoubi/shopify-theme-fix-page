@@ -1,0 +1,80 @@
+{%- comment -%}
+  Which iPhone 18 bodies one product fits, for "3D phone scan"
+  (sections/cv-phone-scan.liquid).
+
+  Prints "price,variant_id;price,variant_id;price,variant_id" for iPhone 18,
+  iPhone 18 Pro and iPhone 18 Pro Max in that order: the product's cheapest
+  available variant for that phone, or "0,0" when none fits.
+
+  A product fits a phone when one of its phone-model option values names that
+  phone, after lower-casing and dropping spaces, so "iPhone18PROMAX",
+  "iPhone 17 Pro Max / 18 Pro Max" and "IPHONE 18 PRO MAX" all read as
+  18 Pro Max. "18 Pro" never counts as "18 Pro Max", plain "18" never counts as
+  either, and "2018" is not an 18.
+
+  Usage: {%- render 'cvps-fit-match', product: product -%}
+{%- endcomment -%}
+{%- liquid
+  assign p0 = 0
+  assign p1 = 0
+  assign p2 = 0
+  assign v0 = 0
+  assign v1 = 0
+  assign v2 = 0
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    unless oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'size'
+      continue
+    endunless
+    assign option_key = 'option' | append: option.position
+    for value in option.values
+      assign v = value | downcase | remove: ' ' | remove: '-' | remove: '_' | remove: '2018'
+      unless v contains 'iphone'
+        continue
+      endunless
+      assign is_promax = false
+      if v contains '18promax'
+        assign is_promax = true
+      endif
+      assign rest = v | remove: '18promax'
+      assign is_pro = false
+      if rest contains '18pro'
+        assign is_pro = true
+      endif
+      assign rest = rest | remove: '18pro' | remove: '18plus' | remove: '18air' | remove: '18e'
+      assign is_base = false
+      if rest contains '18'
+        assign is_base = true
+      endif
+      unless is_base or is_pro or is_promax
+        continue
+      endunless
+
+      assign matching = product.variants | where: option_key, value
+      for variant in matching
+        unless variant.available
+          continue
+        endunless
+        if is_base
+          if p0 == 0 or variant.price < p0
+            assign p0 = variant.price
+            assign v0 = variant.id
+          endif
+        endif
+        if is_pro
+          if p1 == 0 or variant.price < p1
+            assign p1 = variant.price
+            assign v1 = variant.id
+          endif
+        endif
+        if is_promax
+          if p2 == 0 or variant.price < p2
+            assign p2 = variant.price
+            assign v2 = variant.id
+          endif
+        endif
+      endfor
+    endfor
+  endfor
+  echo p0 | append: ',' | append: v0 | append: ';' | append: p1 | append: ',' | append: v1 | append: ';' | append: p2 | append: ',' | append: v2
+-%}

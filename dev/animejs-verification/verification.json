@@ -1,0 +1,28 @@
+{
+  "version": "4.5.0",
+  "source": "https://registry.npmjs.org/animejs/-/animejs-4.5.0.tgz",
+  "declaredLicense": "MIT",
+  "integrity": "sha512-NQimYX+lz8WaXonGS9zVVoviCIAjONeJayxacUditaivYLqyXgGjFKjuyl0aUUhFKm5MriX9ty1TGovNzoJQWA==",
+  "integrityMatches": true,
+  "licensePath": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\dev\\animejs-verification\\LICENSE.md",
+  "bundles": [
+    {
+      "name": "anime.umd.min.js",
+      "installedPath": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\casify-theme\\assets\\anime.umd.min.js",
+      "officialPath": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\dev\\animejs-verification\\package\\dist\\bundles\\anime.umd.min.js",
+      "bytes": 118043,
+      "byteForByteEqual": true,
+      "sha256": "8d5b3a58a1f64023a04a4cedeef135a2263b18da04b35177ac13438a0bad033b",
+      "sha512": "76785f95e73959a5efa5562bb74a167ded225325a98cd8996f1923ae136ef560165872d7ed5aaacb10991cbedd582af08fa94df9718df45b625880605f66ff3c"
+    },
+    {
+      "name": "anime.esm.min.js",
+      "installedPath": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\casify-theme\\assets\\anime.esm.min.js",
+      "officialPath": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\dev\\animejs-verification\\package\\dist\\bundles\\anime.esm.min.js",
+      "bytes": 118678,
+      "byteForByteEqual": true,
+      "sha256": "a19015a1a92d52025a2fb6703b6d67eadd1cc2aeaf880770e96e04cf6aa07be1",
+      "sha512": "5abd3f25d310ef465c26e18cd34fec5490dfcde0964452fe1fb03ccd38b58081fab792b0205062e721b25c06f5115f35cb225f3800b9701311e7a359342e5ad2"
+    }
+  ]
+}

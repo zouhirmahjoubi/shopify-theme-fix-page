@@ -1,0 +1,190 @@
+{{ 'cv-home-conversion.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign catalog = section.settings.collection | default: collections.all
+  assign featured = catalog.products.first
+  for item in catalog.products limit: 4
+    if item.id == section.settings.featured_product.id
+      assign featured = item
+    endif
+  endfor
+  assign sid = section.id
+  assign limit = section.settings.product_limit | default: 12
+-%}
+
+<div class="cvhc" data-home-conversion data-cart-add-url="{{ routes.cart_add_url }}.js" data-cart-url="{{ routes.cart_url }}" data-money-format="{{ shop.money_format | escape }}" data-currency="{{ cart.currency.iso_code | default: shop.currency }}">
+  <section class="cvhc__hero cvhc__width" data-home-hero aria-labelledby="HomeTitle-{{ sid }}">
+    <div class="cvhc__hero-copy">
+      <h1 id="HomeTitle-{{ sid }}" data-home-intro>{{ section.settings.heading | escape }} <em>{{ section.settings.heading_accent | escape }}</em></h1>
+      <div class="cvhc__intro" data-home-intro>{{ section.settings.intro }}</div>
+      <div class="cvhc__actions" data-home-intro>
+        <a class="cvhc__button" href="#HomeCases-{{ sid }}">{{ section.settings.cta_label | escape }}{% render 'cv-icon', name: 'arrow-right', size: 20 %}</a>
+        <a class="cvhc__text-link" href="#HomeGuide-{{ sid }}">How to choose your fit</a>
+      </div>
+      <p class="cvhc__hero-note" data-home-intro>{% render 'cv-icon', name: 'truck-fast', size: 20 %}Free shipping. Every order.</p>
+    </div>
+
+    {%- if featured != blank -%}
+      <div class="cvhc__hero-display" data-home-hero-media>
+        <div class="cvhc__stage">
+          <img class="cvhc__backdrop" src="{{ 'conversion-counter-stage-v2.png' | asset_url }}" width="1536" height="1024" alt="" fetchpriority="high" decoding="async">
+          <div class="cvhc__hero-photo">
+            {%- if featured.featured_image != blank -%}
+              <img src="{{ featured.featured_image | image_url: width: 860 }}" width="860" height="860" alt="{{ featured.featured_image.alt | default: featured.title | escape }}" fetchpriority="high" decoding="async" data-home-hero-image>
+            {%- endif -%}
+          </div>
+          <img class="cvhc__sweet" data-home-decor src="{{ 'hero-sweet-wrapped-teal.webp' | asset_url }}" width="440" height="164" alt="" decoding="async">
+          <div class="cvhc__shop-note" data-home-decor><span>Picked by you.</span><strong>Made for your phone.</strong></div>
+        </div>
+        <div class="cvhc__hero-ticket">
+          <div><h2 data-home-hero-title>{{ featured.title | escape }}</h2><p data-home-hero-price>{% if featured.price_varies %}From {% endif %}{{ featured.price | money }}</p></div>
+          <a class="cvhc__ticket-link" href="{{ featured.url }}" data-home-hero-link data-home-pick="{{ featured.id }}" aria-label="Choose options for {{ featured.title | escape }}">Choose your fit{% render 'cv-icon', name: 'arrow-right', size: 19 %}</a>
+        </div>
+        <div class="cvhc__features" aria-label="Explore featured cases">
+          {%- for item in catalog.products limit: 4 -%}
+            <button class="cvhc__feature{% if item.id == featured.id %} is-active{% endif %}" type="button" data-home-feature="{{ item.id }}" aria-pressed="{% if item.id == featured.id %}true{% else %}false{% endif %}" aria-label="Preview {{ item.title | escape }}">
+              {%- if item.featured_image != blank -%}<img src="{{ item.featured_image | image_url: width: 120 }}" width="60" height="60" alt="" loading="lazy">{%- endif -%}
+            </button>
+          {%- endfor -%}
+          <span>A little window shopping.</span>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="cvhc__hero-display cvhc__hero-display--empty"><img src="{{ 'conversion-counter-stage-v2.png' | asset_url }}" width="1536" height="1024" alt="A warmly lit vintage shop counter"></div>
+    {%- endif -%}
+  </section>
+
+  <div class="cvhc__service-strip">
+    <ul class="cvhc__width" role="list">
+      <li>{% render 'cv-icon', name: 'truck-fast', size: 25 %}<span><strong>Free shipping</strong><small>On every order</small></span></li>
+      <li>{% render 'cv-icon', name: 'returns', size: 25 %}<span><strong>30-day returns</strong><small>A little time to decide</small></span></li>
+      <li>{% render 'cv-icon', name: 'clock', size: 25 %}<span><strong>Ready for dispatch</strong><small>In 1–3 business days</small></span></li>
+    </ul>
+  </div>
+
+  <section class="cvhc__catalog cvhc__width" id="HomeCases-{{ sid }}" aria-labelledby="HomeCasesTitle-{{ sid }}">
+    <div class="cvhc__section-head" data-home-reveal>
+      <div><h2 id="HomeCasesTitle-{{ sid }}">{{ section.settings.shop_heading | escape }}</h2><p>{{ section.settings.shop_intro | escape }}</p></div>
+      <div class="cvhc__filter" data-home-filter hidden><label for="HomeModel-{{ sid }}">What’s your phone?</label><select id="HomeModel-{{ sid }}" data-home-model><option value="">All phones</option></select></div>
+    </div>
+    <p class="cvhc__results" data-home-results role="status">{{ catalog.products.size | at_most: limit }} case designs to make your own</p>
+    <div class="cvhc__products">
+      {%- for item in catalog.products limit: limit -%}
+        <article class="cvhc__card" data-home-card="{{ item.id }}">
+          <a class="cvhc__card-image" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+            {%- if item.featured_image != blank -%}
+              <img src="{{ item.featured_image | image_url: width: 720 }}" width="720" height="720" alt="" loading="lazy" decoding="async">
+            {%- endif -%}
+            {%- unless item.available -%}<span class="cvhc__stock">Sold out</span>{%- endunless -%}
+          </a>
+          <div class="cvhc__card-body">
+            <h3><a href="{{ item.url }}">{{ item.title | escape }}</a></h3>
+            <p class="cvhc__card-price">{% if item.price_varies %}<span>From </span>{% endif %}{{ item.price | money }}</p>
+            <a class="cvhc__card-pick" href="{{ item.url }}" data-home-pick="{{ item.id }}">{% if item.available %}Choose your fit{% else %}View case{% endif %}{% render 'cv-icon', name: 'arrow-right', size: 18 %}</a>
+          </div>
+        </article>
+      {%- else -%}
+        <p class="cvhc__no-catalog">The next collection is on its way. <a href="{{ routes.all_products_collection_url }}">Explore the shop</a>.</p>
+      {%- endfor -%}
+    </div>
+    <div class="cvhc__empty" data-home-empty hidden><h3>No cases for that model here yet.</h3><p>Try another phone or explore every case in the shop.</p><button type="button" class="cvhc__button" data-home-clear>Show all cases</button></div>
+    {%- if catalog.products_count > limit -%}<a class="cvhc__text-link cvhc__all" href="{{ catalog.url }}">Explore the full collection{% render 'cv-icon', name: 'arrow-right', size: 18 %}</a>{%- endif -%}
+  </section>
+
+  <section class="cvhc__guide" id="HomeGuide-{{ sid }}" aria-labelledby="HomeGuideTitle-{{ sid }}">
+    <div class="cvhc__guide-inner cvhc__width">
+      <div class="cvhc__guide-art" data-home-reveal><img src="{{ 'pdp-home-parcel.webp' | asset_url }}" width="620" height="620" alt="" loading="lazy" decoding="async"><span>Your next everyday favourite.</span></div>
+      <div class="cvhc__guide-copy" data-home-reveal>
+        <h2 id="HomeGuideTitle-{{ sid }}">A good fit starts<br>with your phone.</h2>
+        <ol class="cvhc__steps">
+          <li><span>1</span><div><h3>Know your exact model</h3><p>Find the model name in your phone’s Settings. Pro, Plus and Max are different fits.</p></div></li>
+          <li><span>2</span><div><h3>Pick your kind of case</h3><p>Choose a design you love, then select your phone and colour from its available options.</p></div></li>
+          <li><span>3</span><div><h3>Make it yours</h3><p>Check your selection, add it to your bag, and we’ll get it ready in 1–3 business days.</p></div></li>
+        </ol>
+        <a class="cvhc__text-link" href="#HomeCases-{{ sid }}">Let’s find your case{% render 'cv-icon', name: 'arrow-right', size: 18 %}</a>
+      </div>
+    </div>
+  </section>
+
+  {%- if section.settings.show_packs -%}
+    <section class="cvhc__pack cvhc__width" aria-labelledby="HomePackTitle-{{ sid }}">
+      <div class="cvhc__pack-copy" data-home-reveal>
+        <h2 id="HomePackTitle-{{ sid }}">Good things<br>come together.</h2>
+        <p>A second look for you. A little something for them. Mix phone models and styles in the same bag.</p>
+        <div class="cvhc__pack-tiers"><div><span>Pick any 2 cases</span><strong>Save {{ section.settings.pack_2_pct }}%</strong></div><div><span>Pick any 3 cases</span><strong>Save {{ section.settings.pack_3_pct }}%</strong></div></div>
+        <p class="cvhc__pack-note">Your automatic discount appears at checkout.</p>
+        <a class="cvhc__button" href="#HomeCases-{{ sid }}">Build your little collection{% render 'cv-icon', name: 'arrow-right', size: 20 %}</a>
+      </div>
+      <div class="cvhc__pack-art" data-home-reveal>
+        <img class="cvhc__pack-box" src="{{ 'pdp-counter-box-teal.webp' | asset_url }}" width="760" height="760" alt="" loading="lazy">
+        {%- for item in catalog.products limit: 2 -%}
+          {%- if item.featured_image != blank -%}<img class="cvhc__pack-photo cvhc__pack-photo--{{ forloop.index }}" src="{{ item.featured_image | image_url: width: 480 }}" width="480" height="480" alt="{{ item.title | escape }}" loading="lazy">{%- endif -%}
+        {%- endfor -%}
+        <img class="cvhc__pack-candy" src="{{ 'hero-sweet-wrapped-red.webp' | asset_url }}" width="440" height="212" alt="" loading="lazy">
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="cvhc__faq cvhc__width" aria-labelledby="HomeFaqTitle-{{ sid }}">
+    <div class="cvhc__faq-intro" data-home-reveal><h2 id="HomeFaqTitle-{{ sid }}">A few things<br>before you pick.</h2><p>Still need a hand?</p><a class="cvhc__text-link" href="{{ section.settings.contact_url | default: '/pages/contact' }}">Ask the shop{% render 'cv-icon', name: 'arrow-right', size: 18 %}</a></div>
+    <div class="cvhc__questions" data-home-reveal>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <details class="cvhc__question" {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}{% render 'cv-icon', name: 'chevron-down', size: 18 %}</summary><div>{{ block.settings.answer }}</div></details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  <section class="cvhc__close" aria-labelledby="HomeCloseTitle-{{ sid }}"><div class="cvhc__width" data-home-reveal><h2 id="HomeCloseTitle-{{ sid }}">Your phone’s next<br><em>sweet little upgrade.</em></h2><a class="cvhc__button cvhc__button--cream" href="#HomeCases-{{ sid }}">Find my case{% render 'cv-icon', name: 'arrow-right', size: 20 %}</a><p>Free shipping on every order · 30-day returns</p></div></section>
+
+  <dialog class="cvhc__dialog" data-home-dialog aria-labelledby="HomePickTitle-{{ sid }}">
+    <button type="button" class="cvhc__dialog-close" data-home-close aria-label="Close case options">{% render 'cv-icon', name: 'close', size: 22 %}</button>
+    <div class="cvhc__dialog-grid">
+      <div class="cvhc__dialog-photo"><img data-home-dialog-image width="560" height="560" alt=""></div>
+      <div class="cvhc__dialog-copy"><h2 id="HomePickTitle-{{ sid }}" data-home-dialog-title>Choose your fit</h2><p class="cvhc__dialog-price" data-home-dialog-price></p><p class="cvhc__dialog-hint">Pick your exact phone and style before adding to your bag.</p>
+        <form data-home-form method="post" action="{{ routes.cart_add_url }}"><input type="hidden" name="id"><input type="hidden" name="quantity" value="1"><div data-home-options></div><button class="cvhc__button cvhc__dialog-add" type="submit" data-home-add disabled>Add to bag{% render 'cv-icon', name: 'bag', size: 19 %}</button></form>
+        <p class="cvhc__status" data-home-status role="status" aria-live="polite"></p><div class="cvhc__success" data-home-success hidden><a class="cvhc__button" href="{{ routes.cart_url }}">View your bag{% render 'cv-icon', name: 'arrow-right', size: 18 %}</a></div><a class="cvhc__text-link" data-home-more href="{{ routes.all_products_collection_url }}">See all product details</a><p class="cvhc__dialog-service">Free shipping · 30-day returns</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="application/json" data-home-catalog>[
+    {%- for item in catalog.products limit: limit -%}
+      {%- unless forloop.first -%},{%- endunless -%}
+      {"id":{{ item.id | json }},"title":{{ item.title | json | replace: '<', '\u003c' }},"url":{{ item.url | json }},"image":{% if item.featured_image %}{{ item.featured_image | image_url: width: 860 | json }}{% else %}""{% endif %},"price":{{ item.price | json }},"price_varies":{{ item.price_varies | json }},"available":{{ item.available | json }},"options":[{% for option in item.options_with_values %}{% unless forloop.first %},{% endunless %}{"name":{{ option.name | json | replace: '<', '\u003c' }},"values":[{% for value in option.values %}{% unless forloop.first %},{% endunless %}{{ value | append: '' | json | replace: '<', '\u003c' }}{% endfor %}]}{% endfor %}],"variants":{{ item.variants | json | replace: '<', '\u003c' }}}
+    {%- endfor -%}
+  ]</script>
+</div>
+<script src="{{ 'cv-home-conversion.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Casify conversion home",
+  "tag": "div",
+  "enabled_on": { "templates": ["index"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your phone." },
+    { "type": "text", "id": "heading_accent", "label": "Heading accent", "default": "Your kind of sweet." },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Meet your next everyday favourite. Phone cases for your exact model, with a little more personality.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Main action", "default": "Find my case" },
+    { "type": "collection", "id": "collection", "label": "Products", "info": "Leave blank to use all products. Names, images, prices and options come directly from Shopify." },
+    { "type": "product", "id": "featured_product", "label": "Hero product", "info": "Choose one of the first four products in the collection. Otherwise the first product is featured." },
+    { "type": "range", "id": "product_limit", "label": "Products shown", "min": 4, "max": 24, "step": 1, "default": 12 },
+    { "type": "text", "id": "shop_heading", "label": "Collection heading", "default": "Find a case that feels like you." },
+    { "type": "text", "id": "shop_intro", "label": "Collection introduction", "default": "Choose your phone. Discover your favourites. Make it your own." },
+    { "type": "checkbox", "id": "show_packs", "label": "Show the pack offer", "default": true },
+    { "type": "range", "id": "pack_2_pct", "label": "Two-case discount", "min": 1, "max": 60, "step": 1, "unit": "%", "default": 18, "info": "Must match the active automatic discount in Shopify." },
+    { "type": "range", "id": "pack_3_pct", "label": "Three-case discount", "min": 1, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the active automatic discount in Shopify." },
+    { "type": "url", "id": "contact_url", "label": "Contact page" }
+  ],
+  "blocks": [{ "type": "faq", "name": "Question", "settings": [{ "type": "text", "id": "question", "label": "Question" }, { "type": "richtext", "id": "answer", "label": "Answer" }] }],
+  "max_blocks": 8,
+  "presets": [{ "name": "Casify conversion home", "blocks": [
+    { "type": "faq", "settings": { "question": "How do I find my exact phone model?", "answer": "<p>On iPhone, open Settings → General → About and check Model Name. On Samsung, open Settings → About phone. Choose the exact model in the case options; Pro, Plus and Max are not interchangeable.</p>" } },
+    { "type": "faq", "settings": { "question": "How much is shipping?", "answer": "<p>Shipping is free on every order. There is no minimum spend.</p>" } },
+    { "type": "faq", "settings": { "question": "When will my order leave the shop?", "answer": "<p>Orders are prepared for dispatch in 1–3 business days. This is the dispatch window; delivery time depends on the destination.</p>" } },
+    { "type": "faq", "settings": { "question": "Can I return my case?", "answer": "<p>We offer 30-day returns. Contact the shop with your order details for help starting a return.</p>" } },
+    { "type": "faq", "settings": { "question": "Does every case support wireless charging?", "answer": "<p>Features vary by case and phone model. Check the individual product details before ordering. If anything is unclear, ask the shop and we’ll help you choose.</p>" } }
+  ] }]
+}
+{% endschema %}

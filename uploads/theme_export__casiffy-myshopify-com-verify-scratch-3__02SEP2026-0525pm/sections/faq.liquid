@@ -1,0 +1,95 @@
+<section class="faq" data-cm-reveal>
+  <h2 class="cm-section-title"><small>{{ section.settings.eyebrow | default: 'Common questions' }}</small>{{ section.settings.heading | default: 'Frequently asked' }}</h2>
+  {%- for block in section.blocks -%}
+    <details class="acc" {{ block.shopify_attributes }}>
+      <summary class="acc__sum">
+        <span>{{ block.settings.question | escape }}</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="acc__panel"><div>{{ block.settings.answer }}</div></div>
+    </details>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Common questions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Will the print scratch off?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>The print sits under a 0.2mm UV-cured top coat. It won't flake, peel, or scratch off in normal use.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "Will the print scratch off?",
+            "answer": "<p>The print sits under a 0.2mm UV-cured top coat. It won't flake, peel, or scratch off in normal use. If it does, the case is replaced under the 1-year warranty — no photos needed.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Is it compatible with my phone?",
+            "answer": "<p>iPhone 14, 15, 15 Pro, 15 Pro Max and SE (3rd gen) for now. Pixel 9 and Galaxy S25 are in the queue — sign up below to be told when.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How fast does it ship?",
+            "answer": "<p>US orders ship the next business day from Brooklyn. Free over $40; $4 otherwise. Arrives in 3–5 business days. International to 14 countries.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What's the return policy?",
+            "answer": "<p>30 days, no questions asked. The case has to come back in its sleeve — that's the only condition. We'll send a return label by email.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Where is it made?",
+            "answer": "<p>Designed in Brooklyn, printed and assembled in a partner shop in Porto. The shells are made from 30% recycled polycarbonate sourced in the EU.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

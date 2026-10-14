@@ -1,0 +1,121 @@
+<div class="stripes" aria-hidden="true"></div>
+
+<footer>
+  <div class="footer__inner">
+    <div>
+      {% render 'casify-logo', variant: 'dark', size: 32 %}
+      <h4 style="margin-top:10px">{{ shop.name | default: 'casify' | escape }}</h4>
+      <p style="font-style:italic;color:var(--cream-200);font-size:14px;max-width:36ch;margin:0 0 8px">{{ section.settings.blurb | default: "Cases that publish their numbers. Built in Austin, tested until they break, priced like we expect you to come back." }}</p>
+      <div class="socials">
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram">{% render 'icon', name: 'instagram', size: 16 %}</a>{%- endif -%}
+        {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" aria-label="TikTok">{% render 'icon', name: 'tiktok', size: 16 %}</a>{%- endif -%}
+        {%- if settings.social_pinterest != blank -%}<a href="{{ settings.social_pinterest }}" aria-label="Pinterest">{% render 'icon', name: 'pinterest', size: 16 %}</a>{%- endif -%}
+        {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" aria-label="Facebook">{% render 'icon', name: 'facebook', size: 16 %}</a>{%- endif -%}
+        <a href="mailto:{{ shop.email }}" aria-label="Email">{% render 'icon', name: 'mail', size: 16 %}</a>
+      </div>
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'link_list' -%}
+        <div {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.title }}</h4>
+          <ul>
+            {%- for link in linklists[block.settings.menu].links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- else -%}
+        <div {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.title }}</h4>
+          <ul>
+            {%- if shop.address.address1 != blank -%}
+              <li>{{ shop.address.address1 }}{% if shop.address.address2 != blank %}, {{ shop.address.address2 }}{% endif %}</li>
+              <li>{{ shop.address.city }}{% if shop.address.province_code != blank %}, {{ shop.address.province_code }}{% endif %} {{ shop.address.zip }}, {{ shop.address.country }}</li>
+            {%- endif -%}
+            {%- if shop.phone != blank -%}
+              <li><a href="tel:{{ shop.phone }}">{{ shop.phone }}</a></li>
+            {%- endif -%}
+            <li><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></li>
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="footer__bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | default: 'casify' | escape }}</span>
+    <span>Not affiliated with Apple, Samsung or Google. MagSafe is a trademark of Apple Inc.</span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "blurb",
+      "label": "Brand blurb",
+      "default": "An old-fashioned candy shop, online. Tins, cases, ribbons — wrapped by hand since 1920."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column title",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column title",
+          "default": "Visit"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support"
+          }
+        },
+        {
+          "type": "contact",
+          "settings": {
+            "title": "Company"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

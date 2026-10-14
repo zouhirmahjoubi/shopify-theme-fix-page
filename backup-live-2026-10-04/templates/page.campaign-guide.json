@@ -1,0 +1,74 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "guide": {
+      "type": "cv-campaign-guide",
+      "settings": {
+        "featured_product": "mobile-phone-case-apple",
+        "heading_level": "h1",
+        "layout": "list",
+        "show_offer": true,
+        "pack_2_percent": 18,
+        "pack_3_percent": 31
+      },
+      "blocks": {
+        "fit": {
+          "type": "reason",
+          "settings": {
+            "heading": "Start with your exact phone model",
+            "body": "<p>A case is only right for you if it fits your phone. Check your model in your phone settings, then choose that model on the product page.</p>",
+            "product_image": 2,
+            "caption": "Check the camera opening and the fit for your model."
+          }
+        },
+        "details": {
+          "type": "reason",
+          "settings": {
+            "heading": "Look closer before you choose",
+            "body": "<p>Use the product photos to compare the finish, camera opening and design. Pick the case and colour you want to carry every day.</p>",
+            "product_image": 3,
+            "caption": "A closer look at the finish and details."
+          }
+        },
+        "service": {
+          "type": "reason",
+          "settings": {
+            "heading": "Give yourself time to decide",
+            "body": "<p>Free shipping comes with every order. Orders dispatch in 1–3 business days, and you have 30 days to return your case.</p>"
+          }
+        },
+        "model": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right model?",
+            "answer": "<p>Check your model name in your phone settings. On the product page, choose the matching model and your preferred colour before adding to your bag.</p>"
+          }
+        },
+        "pack": {
+          "type": "question",
+          "settings": {
+            "question": "Can I choose different cases in a pack?",
+            "answer": "<p>Yes. Choose a two- or three-case pack on the product page, then choose the colour and phone model for each case.</p>"
+          }
+        },
+        "shipping": {
+          "type": "question",
+          "settings": {
+            "question": "What about shipping and returns?",
+            "answer": "<p>Shipping is free on every order. Orders dispatch within 1–3 business days. You have 30 days to return your case.</p>"
+          }
+        }
+      },
+      "block_order": ["fit", "details", "service", "model", "pack", "shipping"]
+    }
+  },
+  "order": ["guide"]
+}

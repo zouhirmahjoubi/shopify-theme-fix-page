@@ -1,0 +1,104 @@
+<section class="features cm-stagger-cm">
+  {%- for block in section.blocks -%}
+    <div class="feature" {{ block.shopify_attributes }}>
+      {%- case block.settings.icon -%}
+        {%- when 'drop' -%}{{ 'icon-drop.svg' | inline_asset_content }}
+        {%- when 'magsafe' -%}{{ 'icon-magsafe.svg' | inline_asset_content }}
+        {%- when 'anti-yellow' -%}{{ 'icon-anti-yellow.svg' | inline_asset_content }}
+        {%- when 'leaf' -%}{{ 'icon-leaf.svg' | inline_asset_content }}
+      {%- endcase -%}
+      <h4>{{ block.settings.title }}</h4>
+      <p>{{ block.settings.body }}</p>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Features",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "drop",
+              "label": "Drop"
+            },
+            {
+              "value": "magsafe",
+              "label": "MagSafe"
+            },
+            {
+              "value": "anti-yellow",
+              "label": "Anti-yellow"
+            },
+            {
+              "value": "leaf",
+              "label": "Recycled"
+            }
+          ],
+          "default": "drop"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "6ft drop tested"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Air-corners absorb the shock. The print stays put."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "title": "6ft drop tested",
+            "body": "Air-corners absorb the shock. The print stays put."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "magsafe",
+            "title": "MagSafe ready",
+            "body": "Built-in ring lines up flush with your wallet and charger."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "anti-yellow",
+            "title": "Anti-yellowing",
+            "body": "UV-stable resin keeps the cream as cream, not custard."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "title": "Recycled shell",
+            "body": "30% post-consumer polycarbonate, fully recyclable again."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

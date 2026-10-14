@@ -1,0 +1,636 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "chapter",
+          "settings": {
+            "shape": "case",
+            "eyebrow": "iPhone 18 collection",
+            "heading": "Cases built for iPhone 18.",
+            "body": "Hand-finished candy-shop protection, cut precisely for the new lineup."
+          }
+        },
+        "block-1": {
+          "type": "chapter",
+          "settings": {
+            "shape": "magsafe",
+            "eyebrow": "Engineered to protect",
+            "heading": "Drop-tested. MagSafe-ready.",
+            "body": "A drop-tested cocoa core with a flush N52 magnet array — snaps to chargers and wallets without wobble."
+          }
+        },
+        "block-2": {
+          "type": "chapter",
+          "settings": {
+            "shape": "candy",
+            "eyebrow": "Printed to last",
+            "heading": "Flavor, not just color.",
+            "body": "UV-cured candy-stripe prints that won't scratch, fade, or peel — anti-yellowing shell guaranteed."
+          }
+        },
+        "block-3": {
+          "type": "chapter",
+          "settings": {
+            "shape": "ribbon",
+            "eyebrow": "The whole set",
+            "heading": "Cases, tins, and ribbon.",
+            "body": "Bundle your case with a tin of sweets, wrapped by hand, posted in a striped box."
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3"
+      ]
+    },
+    "trust": {
+      "type": "trust-row",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "card",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free shipping",
+            "body": "US orders over $40"
+          }
+        },
+        "block-1": {
+          "type": "card",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "No questions asked"
+          }
+        },
+        "block-2": {
+          "type": "card",
+          "settings": {
+            "icon": "warranty",
+            "title": "1-year warranty",
+            "body": "Print or shell, replaced"
+          }
+        },
+        "block-3": {
+          "type": "card",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure checkout",
+            "body": "256-bit SSL · PCI"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3"
+      ]
+    },
+    "bestsellers": {
+      "type": "best-sellers",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "product",
+          "settings": {
+            "title": "CandyStripe Classic Case",
+            "body": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready.",
+            "price": "34",
+            "compare": "44",
+            "badge": "Bestseller",
+            "badge_tone": "red",
+            "panel_tone": "cream",
+            "icon": "candy",
+            "chip1_text": "6ft Drop Tested",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "12,482"
+          }
+        },
+        "block-1": {
+          "type": "product",
+          "settings": {
+            "title": "MagSafe Wallet Case",
+            "body": "Snap-fit wallet with a flush N52 magnet ring. Holds three cards.",
+            "price": "42",
+            "compare": "52",
+            "badge": "Bestseller",
+            "badge_tone": "red",
+            "panel_tone": "teal",
+            "icon": "magsafe",
+            "chip1_text": "Snap-Fit Wallet",
+            "chip2_text": "Drop Tested",
+            "rating": 5,
+            "review_count": "8,930",
+            "tone": "teal"
+          }
+        },
+        "block-2": {
+          "type": "product",
+          "settings": {
+            "title": "Anti-Yellow Clear Case",
+            "body": "UV-stable resin stays clear for years — no yellowing, no cloudiness.",
+            "price": "36",
+            "badge": "New",
+            "badge_tone": "teal",
+            "panel_tone": "cocoa",
+            "icon": "anti-yellow",
+            "chip1_text": "Stays Crystal Clear",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "3,204"
+          }
+        },
+        "block-3": {
+          "type": "product",
+          "settings": {
+            "title": "Recycled Shell Case",
+            "body": "30% post-consumer polycarbonate. Same drop protection, lighter footprint.",
+            "price": "38",
+            "badge": "New Colors!",
+            "badge_tone": "gold",
+            "panel_tone": "cream",
+            "icon": "leaf",
+            "chip1_text": "30% Recycled",
+            "chip2_text": "Drop Tested",
+            "rating": 4,
+            "review_count": "1,865",
+            "tone": "ghost"
+          }
+        },
+        "block-4": {
+          "type": "product",
+          "settings": {
+            "title": "Ribbon Gift Bundle",
+            "body": "Case plus a hand-tied tin of sweets, wrapped and ready to gift.",
+            "price": "58",
+            "compare": "70",
+            "badge": "New Size!",
+            "badge_tone": "gold",
+            "panel_tone": "teal",
+            "icon": "ribbon",
+            "chip1_text": "Case + Sweet Tin",
+            "chip2_text": "Hand-Tied Bow",
+            "rating": 5,
+            "review_count": "962",
+            "tone": "teal"
+          }
+        },
+        "block-5": {
+          "type": "product",
+          "settings": {
+            "title": "Sparkle Edition Case",
+            "body": "Glitter-cast resin shell that catches the light without feeling cheap.",
+            "price": "39",
+            "badge": "New",
+            "badge_tone": "teal",
+            "panel_tone": "cream",
+            "icon": "sparkle",
+            "chip1_text": "Glitter-Cast Resin",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "441"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5"
+      ]
+    },
+    "tabs": {
+      "type": "tabs",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "tab",
+          "settings": {
+            "key": "description",
+            "title": "Description",
+            "content": "<p>A candy-striped case screen-printed on a 1.2mm matte polycarbonate shell. The print sits under a 0.2mm UV-cured top coat, so it won't scratch, fade or peel. MagSafe ready with a built-in N52 neodymium ring.</p>"
+          }
+        },
+        "block-1": {
+          "type": "tab",
+          "settings": {
+            "key": "specs",
+            "title": "Specs",
+            "content": "<p>Material: 30% post-consumer polycarbonate, TPU frame. Drop rating: 6ft (MIL-STD-810G). MagSafe: N52 magnet array. Compatibility: iPhone 15 Pro (and many more).</p>"
+          }
+        },
+        "block-2": {
+          "type": "tab",
+          "settings": {
+            "key": "care",
+            "title": "Care",
+            "content": "<p>Wipe with a soft damp cloth. Don't use solvents, bleach, or abrasives. The print is sealed under a top coat and should outlast the phone.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "features": {
+      "type": "features",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "title": "6ft drop tested",
+            "body": "Air-corners absorb the shock. The print stays put."
+          }
+        },
+        "block-1": {
+          "type": "feature",
+          "settings": {
+            "icon": "magsafe",
+            "title": "MagSafe ready",
+            "body": "Built-in ring lines up flush with your wallet and charger."
+          }
+        },
+        "block-2": {
+          "type": "feature",
+          "settings": {
+            "icon": "anti-yellow",
+            "title": "Anti-yellowing",
+            "body": "UV-stable resin keeps the cream as cream, not custard."
+          }
+        },
+        "block-3": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "title": "Recycled shell",
+            "body": "30% post-consumer polycarbonate, fully recyclable again."
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3"
+      ]
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "Looks exactly like the banner on the website. Dropped it twice on the kitchen tiles, came away with nothing. The print is sharp and the cream is the right cream — not that plasticky off-white.",
+            "name": "Margaret W.",
+            "date": "3 days ago",
+            "device": "iPhone 15 Pro",
+            "colour": "Candy stripe"
+          }
+        },
+        "block-1": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "MagSafe wallet snaps on, charges fine through it. The candy stripes line up cleanly — no halftone, no faded edges. Feels like a tin, not a wrapper.",
+            "name": "Devon P.",
+            "date": "1 week ago",
+            "device": "iPhone 15 Pro Max",
+            "colour": "Teal counter",
+            "bg": "var(--teal-100)",
+            "color": "var(--teal-600)"
+          }
+        },
+        "block-2": {
+          "type": "review",
+          "settings": {
+            "stars": 4,
+            "body": "The Gold ticket colour is exactly the colour of the foil on the tin. Wish I'd ordered the matching tin too, going back for the bundle. Tiny gripe: the case is a touch slicker than I expected.",
+            "name": "Saoirse L.",
+            "date": "2 weeks ago",
+            "device": "iPhone 15",
+            "colour": "Gold ticket",
+            "bg": "var(--gold-200)",
+            "color": "var(--cocoa-600)"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "bundle": {
+      "type": "bundle",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "card",
+          "settings": {
+            "title": "Phone case only",
+            "body": "The Peppermint Cream. MagSafe ready.",
+            "price": "34",
+            "variant_id": ""
+          }
+        },
+        "block-1": {
+          "type": "card",
+          "settings": {
+            "title": "Case + charging puck",
+            "body": "Matching cocoa MagSafe charger, 15W.",
+            "price": "58",
+            "compare": "66",
+            "badge": "Most popular",
+            "variant_id": ""
+          }
+        },
+        "block-2": {
+          "type": "card",
+          "settings": {
+            "title": "Case + tin of 12 sweets",
+            "body": "Peppermint creams, hand-tied ribbon.",
+            "price": "62",
+            "compare": "70",
+            "tone": "teal",
+            "variant_id": ""
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "bundle-buybox": {
+      "type": "bundle-buybox",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "card",
+          "settings": {
+            "title": "Phone case only",
+            "body": "The Peppermint Cream. MagSafe ready.",
+            "price": "34",
+            "rating": 5,
+            "review_count": "128",
+            "variant_id": ""
+          }
+        },
+        "block-1": {
+          "type": "card",
+          "settings": {
+            "title": "Case + charging puck",
+            "body": "Matching cocoa MagSafe charger, 15W.",
+            "price": "58",
+            "compare": "66",
+            "badge": "Most popular",
+            "rating": 5,
+            "review_count": "212",
+            "variant_id": ""
+          }
+        },
+        "block-2": {
+          "type": "card",
+          "settings": {
+            "title": "Case + tin of 12 sweets",
+            "body": "Peppermint creams, hand-tied ribbon.",
+            "price": "62",
+            "compare": "70",
+            "tone": "teal",
+            "rating": 5,
+            "review_count": "94",
+            "variant_id": ""
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "build-box": {
+      "type": "build-box",
+      "settings": {
+        "eyebrow": "Build a box",
+        "heading": "Make it yours",
+        "subheading": "Pick one from each shelf.",
+        "lede": "Choose a case, add a charger, finish with a tin. Save 10% when you fill the box.",
+        "accent": "var(--red-600)",
+        "bg": "var(--cream-50)",
+        "discount_threshold": 3,
+        "discount_pct": 10
+      },
+      "blocks": {
+        "block-0": {
+          "type": "slot",
+          "settings": {
+            "eyebrow": "Pick a case",
+            "title": "Choose your case",
+            "sub": "MagSafe-ready candy stripe shell."
+          }
+        },
+        "block-1": {
+          "type": "slot",
+          "settings": {
+            "eyebrow": "Add a charger",
+            "title": "Choose a charger",
+            "sub": "Snap-on 15W MagSafe."
+          }
+        },
+        "block-2": {
+          "type": "slot",
+          "settings": {
+            "eyebrow": "Sweet finish",
+            "title": "Choose a tin",
+            "sub": "Hand-tied, posted next day."
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {},
+      "blocks": {
+        "block-0": {
+          "type": "question",
+          "settings": {
+            "question": "Will the print scratch off?",
+            "answer": "<p>The print sits under a 0.2mm UV-cured top coat. It won't flake, peel, or scratch off in normal use. If it does, the case is replaced under the 1-year warranty — no photos needed.</p>"
+          }
+        },
+        "block-1": {
+          "type": "question",
+          "settings": {
+            "question": "Is it compatible with my phone?",
+            "answer": "<p>iPhone 14, 15, 15 Pro, 15 Pro Max and SE (3rd gen) for now. Pixel 9 and Galaxy S25 are in the queue — sign up below to be told when.</p>"
+          }
+        },
+        "block-2": {
+          "type": "question",
+          "settings": {
+            "question": "How fast does it ship?",
+            "answer": "<p>US orders ship the next business day from Brooklyn. Free over $40; $4 otherwise. Arrives in 3–5 business days. International to 14 countries.</p>"
+          }
+        },
+        "block-3": {
+          "type": "question",
+          "settings": {
+            "question": "What's the return policy?",
+            "answer": "<p>30 days, no questions asked. The case has to come back in its sleeve — that's the only condition. We'll send a return label by email.</p>"
+          }
+        },
+        "block-4": {
+          "type": "question",
+          "settings": {
+            "question": "Where is it made?",
+            "answer": "<p>Designed in Brooklyn, printed and assembled in a partner shop in Porto. The shells are made from 30% recycled polycarbonate sourced in the EU.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block-0",
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4"
+      ]
+    },
+    "cta": {
+      "type": "cta-banner",
+      "settings": {}
+    },
+    "compare": {
+      "type": "halo-comparison",
+      "settings": {
+        "tick_label": "Why it is worth it",
+        "heading": "See how we compare"
+      },
+      "blocks": {
+        "col-0": {
+          "type": "column",
+          "settings": {
+            "col": "Casify"
+          }
+        },
+        "col-1": {
+          "type": "column",
+          "settings": {
+            "col": "Typical marketplace seller"
+          }
+        },
+        "col-2": {
+          "type": "column",
+          "settings": {
+            "col": "Premium branded case"
+          }
+        },
+        "row-0": {
+          "type": "row",
+          "settings": {
+            "row": "Free shipping",
+            "cell_1": "Over $40||yes",
+            "cell_2": "Rarely||no",
+            "cell_3": "Sometimes||val"
+          }
+        },
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "row": "Returns",
+            "cell_1": "30 days, no questions||yes",
+            "cell_2": "Often none||no",
+            "cell_3": "14 days||val"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "row": "Warranty",
+            "cell_1": "1 year||yes",
+            "cell_2": "None||no",
+            "cell_3": "Limited||val"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "row": "Checkout security",
+            "cell_1": "256-bit SSL / PCI||yes",
+            "cell_2": "Unclear||no",
+            "cell_3": "Yes||yes"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "row": "Real product photos",
+            "cell_1": "Always||yes",
+            "cell_2": "Stock images||no",
+            "cell_3": "Always||yes"
+          }
+        },
+        "row-5": {
+          "type": "row",
+          "settings": {
+            "row": "Support",
+            "cell_1": "Real humans, fast replies||yes",
+            "cell_2": "Slow or none||no",
+            "cell_3": "Ticket queue||val"
+          }
+        }
+      },
+      "block_order": [
+        "col-0",
+        "col-1",
+        "col-2",
+        "row-0",
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
+        "row-5"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "bestsellers",
+    "tabs",
+    "features",
+    "compare",
+    "newsletter",
+    "reviews",
+    "bundle",
+    "bundle-buybox",
+    "build-box",
+    "faq",
+    "cta"
+  ]
+}

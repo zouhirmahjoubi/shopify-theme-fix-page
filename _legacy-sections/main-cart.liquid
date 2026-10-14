@@ -1,0 +1,50 @@
+<div class="cm-container" style="padding:40px 20px;max-width:960px;margin:auto" data-cm-reveal>
+  <h1 style="font:800 clamp(28px,4vw,52px)/1.05 var(--font-display);color:var(--red-600);text-transform:uppercase;margin:0 0 24px">Your bag</h1>
+  <form action="{{ routes.cart_url }}" method="post" novalidate>
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border-hairline)">
+          <th style="text-align:left;padding:14px 8px;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Item</th>
+          <th style="text-align:right;padding:14px 8px;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Price</th>
+          <th style="text-align:right;padding:14px 8px;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Qty</th>
+          <th style="text-align:right;padding:14px 8px;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for item in cart.items -%}
+          <tr style="border-bottom:1px solid var(--cream-200)">
+            <td style="padding:14px 8px;display:flex;align-items:center;gap:12px">
+              <a href="{{ item.url }}"><img src="{{ item | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="60" height="60"></a>
+              <div>
+                <a href="{{ item.url }}"><strong>{{ item.product.title | escape }}</strong></a>
+                <p style="margin:4px 0 0;font-size:13px;color:var(--cocoa-500)">{{ item.variant.title | escape }}</p>
+                <button type="button" data-cart-remove="{{ item.key }}" style="margin-top:6px;background:none;border:0;color:var(--red-500);font:700 10px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;cursor:pointer;padding:0">Remove</button>
+              </div>
+            </td>
+            <td style="text-align:right;padding:14px 8px;font-family:var(--font-display);font-weight:700;color:var(--cocoa-600)">{{ item.final_price | money }}</td>
+            <td style="text-align:right;padding:14px 8px">
+              <div class="cm-stepper" style="height:36px;border-radius:6px;width:120px;margin:0 0 0 auto">
+                <button type="button" data-qty-decrease style="width:36px;height:36px">-</button>
+                <input type="number" data-cart-line-qty="{{ item.key }}" value="{{ item.quantity }}" min="0" style="height:36px;font-size:13px">
+                <button type="button" data-qty-increase style="width:36px;height:36px">+</button>
+              </div>
+            </td>
+            <td style="text-align:right;padding:14px 8px;font-family:var(--font-display);font-weight:700;color:var(--cocoa-600)">{{ item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+    <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:24px;align-items:baseline">
+      <strong style="font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Subtotal</strong>
+      <strong style="font:800 28px var(--font-display);color:var(--red-600)">{{ cart.total_price | money }}</strong>
+    </div>
+    <div style="margin-top:18px;display:flex;gap:10px;justify-content:flex-end">
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--ghost" style="text-decoration:none">Continue shopping</a>
+      <button type="submit" name="checkout" class="btn">Checkout</button>
+    </div>
+  </form>
+</div>
+
+{% schema %}
+{ "name": "Cart", "presets": [{ "name": "Cart" }] }
+{% endschema %}

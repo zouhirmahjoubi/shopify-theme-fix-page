@@ -1,0 +1,651 @@
+{
+ "_about": "Casestry phone models, newest first. 'lines' = case lines this store sells for the model (from casestry.com product pages + the store's existing Casestry listing, 2026-10-07). Verify SKUs with scripts/verify_skus.py before going live.",
+ "case_lines": {
+  "tough": {
+   "label": "Tough",
+   "sku": "{code}T",
+   "finish": "gloss",
+   "price": "49.99"
+  },
+  "tough_matte": {
+   "label": "Tough Matte",
+   "sku": "{code}-MT",
+   "finish": "matte",
+   "price": "49.99"
+  },
+  "magsafe": {
+   "label": "MagSafe Tough",
+   "sku": "{code}-MS",
+   "finish": "gloss",
+   "price": "54.99"
+  },
+  "magsafe_matte": {
+   "label": "MagSafe Tough Matte",
+   "sku": "{code}-M-MS",
+   "finish": "matte",
+   "price": "54.99"
+  }
+ },
+ "compare_at_price": "59.99",
+ "shopify_sku_prefix": "CS-",
+ "models": [
+  {
+   "name": "iPhone 18 Pro Max",
+   "brand": "Apple",
+   "code": "18PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 18 Pro",
+   "brand": "Apple",
+   "code": "18P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 17 Pro Max",
+   "brand": "Apple",
+   "code": "17PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 17 Pro",
+   "brand": "Apple",
+   "code": "17P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 17 Air",
+   "brand": "Apple",
+   "code": "17A",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 17",
+   "brand": "Apple",
+   "code": "17",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 17e",
+   "brand": "Apple",
+   "code": "17E",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 16e",
+   "brand": "Apple",
+   "code": "16E",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 16 Pro Max",
+   "brand": "Apple",
+   "code": "16PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 16 Pro",
+   "brand": "Apple",
+   "code": "16P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 16 Plus",
+   "brand": "Apple",
+   "code": "16PL",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 16",
+   "brand": "Apple",
+   "code": "16",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 15 Pro Max",
+   "brand": "Apple",
+   "code": "15PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 15 Pro",
+   "brand": "Apple",
+   "code": "15P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 15 Plus",
+   "brand": "Apple",
+   "code": "15PL",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 15",
+   "brand": "Apple",
+   "code": "15",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 14 Pro Max",
+   "brand": "Apple",
+   "code": "14PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 14 Pro",
+   "brand": "Apple",
+   "code": "14P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 14 Plus",
+   "brand": "Apple",
+   "code": "14PL",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 14",
+   "brand": "Apple",
+   "code": "14",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 13 Pro Max",
+   "brand": "Apple",
+   "code": "13PM",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 13 Pro",
+   "brand": "Apple",
+   "code": "13P",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 13",
+   "brand": "Apple",
+   "code": "13",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 13 Mini",
+   "brand": "Apple",
+   "code": "13M",
+   "lines": [
+    "tough",
+    "tough_matte",
+    "magsafe",
+    "magsafe_matte"
+   ]
+  },
+  {
+   "name": "iPhone 12 Pro Max",
+   "brand": "Apple",
+   "code": "12PM",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "iPhone 12 Pro",
+   "brand": "Apple",
+   "code": "12P",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "iPhone 12",
+   "brand": "Apple",
+   "code": "12",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "iPhone 12 Mini",
+   "brand": "Apple",
+   "code": "12M",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "iPhone 11 Pro Max",
+   "brand": "Apple",
+   "code": "11PM",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 11 Pro",
+   "brand": "Apple",
+   "code": "11P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 11",
+   "brand": "Apple",
+   "code": "11",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 8 Plus",
+   "brand": "Apple",
+   "code": "8P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 8 / SE (2020, 2022)",
+   "brand": "Apple",
+   "code": "8",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 7 Plus",
+   "brand": "Apple",
+   "code": "7P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "iPhone 7",
+   "brand": "Apple",
+   "code": "7",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S26 Ultra",
+   "brand": "Samsung",
+   "code": "S26U",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Galaxy S26 Plus",
+   "brand": "Samsung",
+   "code": "S26P",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Galaxy S26",
+   "brand": "Samsung",
+   "code": "S26",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Galaxy S25 Ultra",
+   "brand": "Samsung",
+   "code": "S25U",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S25 Plus",
+   "brand": "Samsung",
+   "code": "S25P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S25",
+   "brand": "Samsung",
+   "code": "S25",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S24 Ultra",
+   "brand": "Samsung",
+   "code": "S24U",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S24 Plus",
+   "brand": "Samsung",
+   "code": "S24P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S24",
+   "brand": "Samsung",
+   "code": "S24",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S23 Ultra",
+   "brand": "Samsung",
+   "code": "S23U",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S23 Plus",
+   "brand": "Samsung",
+   "code": "S23P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S23",
+   "brand": "Samsung",
+   "code": "S23",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S22 Ultra",
+   "brand": "Samsung",
+   "code": "S22U",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S22 Plus",
+   "brand": "Samsung",
+   "code": "S22P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S22",
+   "brand": "Samsung",
+   "code": "S22",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S21 Ultra",
+   "brand": "Samsung",
+   "code": "S21U",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S21 Plus",
+   "brand": "Samsung",
+   "code": "S21P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Galaxy S21",
+   "brand": "Samsung",
+   "code": "S21",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 11 Pro XL",
+   "brand": "Google",
+   "code": "PX11PXL",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Pixel 11 Pro",
+   "brand": "Google",
+   "code": "PX11P",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Pixel 11",
+   "brand": "Google",
+   "code": "PX11",
+   "lines": [
+    "tough",
+    "magsafe"
+   ]
+  },
+  {
+   "name": "Pixel 10 Pro XL",
+   "brand": "Google",
+   "code": "PX10PXL",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 10 Pro",
+   "brand": "Google",
+   "code": "PX10P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 10",
+   "brand": "Google",
+   "code": "PX10",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 9 Pro XL",
+   "brand": "Google",
+   "code": "PX9PXL",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 9 Pro",
+   "brand": "Google",
+   "code": "PX9P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 9",
+   "brand": "Google",
+   "code": "PX9",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 9a",
+   "brand": "Google",
+   "code": "PX9A",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 8 Pro",
+   "brand": "Google",
+   "code": "PX8P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 8",
+   "brand": "Google",
+   "code": "PX8",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 7 Pro",
+   "brand": "Google",
+   "code": "PX7P",
+   "lines": [
+    "tough"
+   ]
+  },
+  {
+   "name": "Pixel 7",
+   "brand": "Google",
+   "code": "PX7",
+   "lines": [
+    "tough"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,89 @@
+{%- comment -%}
+  Casify product page: a shelf of real products (the home collection rows,
+  rebuilt; replaces the product page's recommendations shelf).
+  Products from a chosen collection standing on a honey-oak candy-shop shelf
+  (KIE set piece assets/pdp-home-shelf.webp). Names, photos and prices are the
+  products' own; the page's own product is skipped. Use it more than once,
+  for example the whole shop and then every iPhone case.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign coll = section.settings.collection
+  assign total = 0
+  if coll != blank
+    assign skipped = 0
+    for item in coll.products
+      if item.id != product.id
+        if skipped < section.settings.offset
+          assign skipped = skipped | plus: 1
+        elsif total < section.settings.limit
+          assign total = total | plus: 1
+        endif
+      endif
+    endfor
+  endif
+-%}
+{%- if total > 0 -%}
+  <section class="cvw cvw-row" data-cvw-row aria-labelledby="cvwRowTitle-{{ section.id }}"
+           style="--cvw-shelf: url('{{ 'pdp-home-shelf.webp' | asset_url }}');">
+    <div class="cvp__inner">
+      <div class="cvw-head cvw-head--link">
+        <div>
+          <h2 class="cvp__h2" id="cvwRowTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+        </div>
+        {%- if section.settings.link_label != blank -%}
+          <a class="cvw-link" href="{{ coll.url }}">{{ section.settings.link_label | escape }}{%- render 'cv-icon', name: 'arrow-right', size: 18 -%}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="cvw-row__shelf">
+        <ul class="cvw-row__items" role="list" style="--n: {{ total }};">
+          {%- assign placed = 0 -%}
+          {%- assign passed = 0 -%}
+          {%- for item in coll.products -%}
+            {%- if item.id != product.id -%}
+              {%- if passed < section.settings.offset -%}
+                {%- assign passed = passed | plus: 1 -%}
+              {%- elsif placed < section.settings.limit -%}
+              {%- assign placed = placed | plus: 1 -%}
+              <li class="cvw-row__item" data-cvw-row-item>
+                <a class="cvw-row__card" href="{{ item.url }}">
+                  <span class="cvw-row__box">
+                    {%- if item.featured_image -%}
+                      {{ item.featured_image | image_url: width: 520 | image_tag: widths: '260, 390, 520', sizes: '(min-width: 990px) 250px, 42vw', loading: 'lazy', alt: item.featured_image.alt | default: item.title, class: 'cvw-row__img' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="cvw-row__tag">
+                    <span class="cvw-row__title">{{ item.title | escape }}</span>
+                    <span class="cvw-row__price">{% if item.price_varies %}<small>From</small> {% endif %}{{ item.price_min | money }}{% if item.compare_at_price > item.price %} <s>{{ item.compare_at_price | money }}</s>{% endif %}</span>
+                  </span>
+                </a>
+              </li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: product shelf",
+  "tag": "div",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More from the counter" },
+    { "type": "text", "id": "lede", "label": "Intro" },
+    { "type": "text", "id": "link_label", "label": "Link", "default": "See all" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "offset", "label": "Skip the first products", "min": 0, "max": 8, "step": 1, "default": 0, "info": "Use it when another section on the page (the showcase) already shows the first products of this collection." }
+  ],
+  "presets": [{ "name": "Product: product shelf" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

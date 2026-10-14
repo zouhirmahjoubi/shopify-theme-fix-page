@@ -1,0 +1,215 @@
+{%- comment -%}
+  Casify — footer: stripe band with scallops, the hanging "thank you" sign,
+  brand + newsletter + link columns, the shop-items shelf and the bottom bar.
+
+  Motion: assets/cv-footer.js (GSAP, loaded from layout/theme.liquid after the
+  GSAP bundle). Styles: assets/cv-footer.css. The sign and shelf art were
+  generated with GPT Image 2.5 and cut out to assets/footer-thank-you-sign.webp
+  and assets/footer-item-{jar,gumball,gift,case,bag}.webp.
+{%- endcomment -%}
+{{ 'cv-footer.css' | asset_url | stylesheet_tag }}
+
+<div class="cvf" data-cv-footer>
+  <div class="stripes cvf-stripes" aria-hidden="true">
+    <span class="cvf-stripes__valance"><span class="cvf-stripes__scallops"></span></span>
+  </div>
+
+  <footer class="cvf-footer">
+    {%- if section.settings.show_sign -%}
+      <div class="cvf-sign">
+        <img class="cvf-sign__img" src="{{ 'footer-thank-you-sign.webp' | asset_url }}" width="900" height="470" alt="Thank you — come again soon!" loading="lazy" decoding="async">
+      </div>
+    {%- endif -%}
+
+    <div class="footer__inner cvf-ledger" data-cvf-ledger>
+      <div class="cvf-brand">
+        {% render 'casify-logo', variant: 'dark', size: 32 %}
+        <p class="cvf-blurb">{{ section.settings.blurb | default: 'Phone cases for iPhone and Samsung. Browse the styles and choose the model that matches your phone.' | escape | newline_to_br }}</p>
+
+        {%- if section.settings.show_newsletter -%}
+          {%- form 'customer', id: 'cvf-newsletter', class: 'cvf-news' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            {%- if form.posted_successfully? -%}
+              <p class="cvf-news__ok" role="status">{{ section.settings.newsletter_success | escape }}</p>
+            {%- else -%}
+              <label class="cvf-news__label" for="cvf-news-email-{{ section.id }}">{{ section.settings.newsletter_heading | escape }}</label>
+              <div class="cvf-news__row">
+                <input class="cvf-news__input" id="cvf-news-email-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="you@example.com" autocomplete="email" autocorrect="off" autocapitalize="off" required>
+                <button type="submit" class="cvf-news__btn"><span>Join</span></button>
+              </div>
+              {%- if form.errors -%}
+                <p class="cvf-news__err" role="alert">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endform -%}
+        {%- endif -%}
+
+        <div class="socials">
+          {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram">{% render 'icon', name: 'instagram', size: 16 %}</a>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" aria-label="TikTok">{% render 'icon', name: 'tiktok', size: 16 %}</a>{%- endif -%}
+          {%- if settings.social_pinterest != blank -%}<a href="{{ settings.social_pinterest }}" aria-label="Pinterest">{% render 'icon', name: 'pinterest', size: 16 %}</a>{%- endif -%}
+          {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" aria-label="Facebook">{% render 'icon', name: 'facebook', size: 16 %}</a>{%- endif -%}
+          <a href="mailto:{{ shop.email }}" aria-label="Email">{% render 'icon', name: 'mail', size: 16 %}</a>
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_list' -%}
+          {%- assign show_policy_column = false -%}
+          {%- if section.settings.show_policy_links -%}
+            {%- if block.settings.menu.handle == 'footer' or block.settings.menu == 'footer' -%}
+              {%- assign show_policy_column = true -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- if show_policy_column -%}
+            <div {{ block.shopify_attributes }}>
+              <h4>{% if block.settings.title != blank %}{{ block.settings.title | escape }}{% else %}{{ 'sections.footer.policies' | t | escape }}{% endif %}</h4>
+              <ul>
+                <li><a href="{{ shop.shipping_policy.url | default: '/pages/shipping-policy' | escape }}">{{ 'sections.footer.shipping' | t | escape }}</a></li>
+                <li><a href="{{ shop.refund_policy.url | default: '/pages/return-policy' | escape }}">{{ 'sections.footer.returns' | t | escape }}</a></li>
+                <li><a href="{{ shop.privacy_policy.url | default: '/pages/privacy-policy' | escape }}">{{ 'sections.footer.privacy' | t | escape }}</a></li>
+                <li><a href="{{ shop.terms_of_service.url | default: '/pages/terms-and-conditions' | escape }}">{{ 'sections.footer.terms' | t | escape }}</a></li>
+                <li><a href="/pages/contact">{{ 'sections.footer.contact' | t | escape }}</a></li>
+              </ul>
+            </div>
+          {%- elsif linklists[block.settings.menu].links.size > 0 -%}
+            <div {{ block.shopify_attributes }}>
+              <h4>{{ block.settings.title | escape }}</h4>
+              <ul>
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.title | escape }}</h4>
+            <ul>
+              {%- if shop.address.address1 != blank -%}
+                <li>{{ shop.address.address1 }}{% if shop.address.address2 != blank %}, {{ shop.address.address2 }}{% endif %}</li>
+                <li>{{ shop.address.city }}{% if shop.address.province_code != blank %}, {{ shop.address.province_code }}{% endif %} {{ shop.address.zip }}, {{ shop.address.country }}</li>
+              {%- endif -%}
+              {%- if shop.phone != blank -%}
+                <li><a href="tel:{{ shop.phone }}">{{ shop.phone }}</a></li>
+              {%- endif -%}
+              <li><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></li>
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_shelf -%}
+      {%- assign shelf_items = 'jar:158,gumball:133,gift:143,case:121,bag:147' | split: ',' -%}
+      <div class="cvf-shelf" aria-hidden="true">
+        {%- for entry in shelf_items -%}
+          {%- assign parts = entry | split: ':' -%}
+          <img class="cvf-shelf__item" src="{{ 'footer-item-' | append: parts[0] | append: '.webp' | asset_url }}" width="{{ parts[1] }}" height="240" alt="" loading="lazy" decoding="async">
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | default: 'casify' | escape }}</span>
+      <span>Not affiliated with Apple, Samsung or Google. MagSafe is a trademark of Apple Inc.</span>
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="cvf-pay" aria-label="Payment methods">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'cvf-pay__icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <button type="button" class="cvf-top" data-cvf-top>
+        <img src="{{ 'header-peppermint-red.png' | asset_url }}" width="30" height="30" alt="" loading="lazy">
+        <span>Back to top</span>
+      </button>
+    </div>
+  </footer>
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "blurb",
+      "label": "Brand blurb",
+      "default": "Phone cases for iPhone and Samsung. Browse the styles and choose the model that matches your phone."
+    },
+    { "type": "checkbox", "id": "show_policy_links", "label": "Show policy and contact links in Support column", "default": true },
+    { "type": "header", "content": "Newsletter" },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter signup",
+      "default": true,
+      "info": "Signups are saved as customers tagged \"newsletter\" who accept marketing emails."
+    },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Join the sweet list" },
+    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "You're on the list — sweets are on their way." },
+    { "type": "header", "content": "Decoration" },
+    { "type": "checkbox", "id": "show_sign", "label": "Show \"thank you\" hanging sign", "default": true },
+    { "type": "checkbox", "id": "show_shelf", "label": "Show shop-items shelf", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column title",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column title",
+          "default": "Visit"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support"
+          }
+        },
+        {
+          "type": "contact",
+          "settings": {
+            "title": "Company"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

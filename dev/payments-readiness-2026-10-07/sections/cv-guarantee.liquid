@@ -1,0 +1,369 @@
+{%- comment -%}
+  Casify — Converting PDP: risk reversal.
+
+  Guarantee cards + FAQ accordion (with FAQPage schema) + closing CTA that
+  scrolls back to the real buybox.
+{%- endcomment -%}
+
+<section class="cv-sec cv-risk" id="cv-faq">
+
+  {%- comment -%} ---------- Guarantee cards ---------- {%- endcomment -%}
+  {%- assign has_g = false -%}
+  {%- for b in section.blocks -%}{%- if b.type == 'guarantee' -%}{%- assign has_g = true -%}{%- endif -%}{%- endfor -%}
+  {%- if has_g -%}
+    <div class="cv-guards" data-cv-reveal>
+      <div class="cv-sec__hd cv-sec__hd--tight">
+        <span class="cv-eyebrow">{{ section.settings.guard_eyebrow | default: 'Shopping with Casify' | escape }}</span>
+        <h2>{{ section.settings.guard_heading | default: 'Shipping and returns' | escape }}</h2>
+      </div>
+      <div class="cv-guards__grid">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'guarantee' -%}
+            <div class="cv-guard" data-cv-reveal style="--cv-i:{{ forloop.index0 }}" {{ b.shopify_attributes }}>
+              <span class="cv-guard__ico">{%- render 'cv-icon', name: b.settings.icon, size: 32, animate: true -%}</span>
+              <h3>{{ b.settings.title | escape }}</h3>
+              <p>{{ b.settings.body | escape }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- FAQ ---------- {%- endcomment -%}
+  {%- assign has_faq = false -%}
+  {%- for b in section.blocks -%}{%- if b.type == 'faq' -%}{%- assign has_faq = true -%}{%- endif -%}{%- endfor -%}
+  {%- if has_faq -%}
+    <div class="cv-faq" data-cv-reveal>
+      <div class="cv-sec__hd cv-sec__hd--tight">
+        <span class="cv-eyebrow">{{ section.settings.faq_eyebrow | default: 'Still deciding?' | escape }}</span>
+        <h2>{{ section.settings.faq_heading | default: 'Questions before you order' | escape }}</h2>
+      </div>
+      <div class="cv-faq__list">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'faq' -%}
+            <details class="cv-faq__item"{% if b.settings.default_open %} open{% endif %} {{ b.shopify_attributes }}>
+              <summary class="cv-faq__q">
+                <span>{{ b.settings.question | escape }}</span>
+                {%- render 'cv-icon', name: 'chevron-down', size: 18, class: 'cv-faq__chev' -%}
+              </summary>
+              <div class="cv-faq__a">{{ b.settings.answer }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign fi = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'faq' -%}
+            {%- if fi > 0 -%},{%- endif -%}
+            {%- assign fi = fi | plus: 1 -%}
+            {
+              "@type": "Question",
+              "name": {{ b.settings.question | json }},
+              "acceptedAnswer": { "@type": "Answer", "text": {{ b.settings.answer | strip_html | json }} }
+            }
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+    </script>
+  {%- endif -%}
+
+  {%- comment -%} ---------- Closing CTA ---------- {%- endcomment -%}
+  {%- if section.settings.closer_heading != blank -%}
+    <div class="cv-closer" data-cv-reveal>
+      <span class="cv-closer__stripe" aria-hidden="true"></span>
+      <div class="cv-closer__inner">
+        {%- if section.settings.closer_eyebrow != blank -%}
+          <span class="cv-eyebrow cv-eyebrow--light">{{ section.settings.closer_eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2>{{ section.settings.closer_heading | escape }}</h2>
+        {%- if section.settings.closer_body != blank -%}
+          <div class="cv-closer__body">{{ section.settings.closer_body }}</div>
+        {%- endif -%}
+
+        {%- comment -%}
+          On a product page the button scrolls back to the buybox; anywhere
+          else (homepage, landing pages) a link is set and it navigates.
+        {%- endcomment -%}
+        {%- if section.settings.closer_url != blank -%}
+          <a class="cv-cta cv-cta--closer" href="{{ section.settings.closer_url }}">
+            <span class="cv-cta__shine" aria-hidden="true"></span>
+            {%- render 'cv-icon', name: 'bag', size: 19 -%}
+            <span>{{ section.settings.closer_cta | default: 'Pick my model' | escape }}</span>
+          </a>
+        {%- else -%}
+          <button type="button" class="cv-cta cv-cta--closer" data-cv-scroll-to-buy>
+            <span class="cv-cta__shine" aria-hidden="true"></span>
+            {%- render 'cv-icon', name: 'bag', size: 19 -%}
+            <span>{{ section.settings.closer_cta | default: 'Pick my model' | escape }}</span>
+          </button>
+        {%- endif -%}
+
+        {%- assign has_note = false -%}
+        {%- for b in section.blocks -%}{%- if b.type == 'closer_note' -%}{%- assign has_note = true -%}{%- endif -%}{%- endfor -%}
+        {%- if has_note -%}
+          <ul class="cv-closer__notes">
+            {%- for b in section.blocks -%}
+              {%- if b.type == 'closer_note' -%}
+                <li {{ b.shopify_attributes }}>{%- render 'cv-icon', name: 'check', size: 14 -%} {{ b.settings.text | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Convert — Guarantee & FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "guard_eyebrow",
+      "label": "Guarantee eyebrow",
+      "default": "Shopping with Casify"
+    },
+    {
+      "type": "text",
+      "id": "guard_heading",
+      "label": "Guarantee heading",
+      "default": "Shipping and returns"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "FAQ eyebrow",
+      "default": "Still deciding?"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ heading",
+      "default": "Questions before you order"
+    },
+    {
+      "type": "text",
+      "id": "closer_eyebrow",
+      "label": "Closer eyebrow",
+      "default": "One case, one decision"
+    },
+    {
+      "type": "text",
+      "id": "closer_heading",
+      "label": "Closer heading",
+      "default": "Find your next case"
+    },
+    {
+      "type": "richtext",
+      "id": "closer_body",
+      "label": "Closer body",
+      "default": "<p>Choose your phone model and preferred style. Orders dispatch in 1–2 business days.</p>"
+    },
+    {
+      "type": "text",
+      "id": "closer_cta",
+      "label": "Closer button label",
+      "default": "Pick my model"
+    },
+    {
+      "type": "url",
+      "id": "closer_url",
+      "label": "Closer button link",
+      "info": "Leave empty on a product page — the button then scrolls back to the buybox."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guarantee",
+      "name": "Guarantee card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "returns",
+              "label": "Returns"
+            },
+            {
+              "value": "warranty-seal",
+              "label": "Warranty"
+            },
+            {
+              "value": "drop-shield",
+              "label": "Protection"
+            },
+            {
+              "value": "truck-fast",
+              "label": "Shipping"
+            },
+            {
+              "value": "lock-secure",
+              "label": "Secure"
+            },
+            {
+              "value": "lab",
+              "label": "Lab tested"
+            }
+          ],
+          "default": "returns"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "30-day returns"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "You have 30 days after delivery to request a return. Read our return policy for conditions and instructions."
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I choose the right model?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        },
+        {
+          "type": "checkbox",
+          "id": "default_open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "closer_note",
+      "name": "Closer note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on every order"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Convert — Guarantee & FAQ",
+      "blocks": [
+        {
+          "type": "guarantee",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "You have 30 days after delivery to request a return. Read our return policy for conditions and instructions."
+          }
+        },
+        {
+          "type": "guarantee",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Dispatch in 1–2 business days",
+            "body": "Orders dispatch from the USA within 1–2 business days. Delivery estimates vary by product and are shown at checkout."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do I choose the right model?",
+            "answer": "<p>Check your model name in your phone settings, then choose the matching model from the list on the product page.</p>",
+            "default_open": true
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Does this case support wireless charging?",
+            "answer": "<p>Compatibility varies by design. Read the product details for the case you choose and check your charger requirements.</p>",
+            "default_open": false
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Which materials and finishes are available?",
+            "answer": "<p>See each product page for its materials, photos and available colours. The details vary by case.</p>",
+            "default_open": false
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Estimated delivery is 4–6 business days for Printify items and 8–12 business days for other items. Shipping is free for both options. Review the estimate shown at checkout for your order.</p>",
+            "default_open": false
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What if I ordered the wrong model?",
+            "answer": "<p>Contact us with your order number. Read our return policy for the conditions and instructions that apply to your order.</p>",
+            "default_open": false
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Can I buy more than one case?",
+            "answer": "<p>You can choose a pack on the product page. Review your selected cases and the final order total at checkout.</p>",
+            "default_open": false
+          }
+        },
+        {
+          "type": "closer_note",
+          "settings": {
+            "text": "Free shipping on every order"
+          }
+        },
+        {
+          "type": "closer_note",
+          "settings": {
+            "text": "30-day returns"
+          }
+        },
+        {
+          "type": "closer_note",
+          "settings": {
+            "text": "Ships in 1–2 business days"
+          }
+        },
+        {
+          "type": "closer_note",
+          "settings": {
+            "text": "Secure checkout"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

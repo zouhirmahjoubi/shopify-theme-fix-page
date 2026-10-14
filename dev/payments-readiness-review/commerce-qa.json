@@ -1,0 +1,280 @@
+{
+  "products": [
+    {
+      "name": "standard",
+      "chosen": "48884942209269",
+      "chosenOptions": [
+        "Russet Brown",
+        "iPhone 14 Pro Max"
+      ],
+      "status": 200,
+      "quantity": 1,
+      "matchingSelectedVariant": true,
+      "priceMatchesCatalog": true,
+      "compareAtFromCatalog": 5999,
+      "cartTotal": 4999,
+      "bundle": {
+        "quantity": 2,
+        "total": 8199,
+        "originalTotal": 9998,
+        "discounts": [
+          {
+            "title": "Pack of 2 cases: 18% off",
+            "value": "18.0",
+            "valueType": "percentage"
+          }
+        ]
+      }
+    },
+    {
+      "name": "printify",
+      "chosen": "67632646095093",
+      "chosenOptions": [
+        "iPhone 18 Pro"
+      ],
+      "status": 200,
+      "quantity": 1,
+      "matchingSelectedVariant": true,
+      "priceMatchesCatalog": true,
+      "compareAtFromCatalog": 5999,
+      "cartTotal": 4999
+    }
+  ],
+  "policyChecks": {
+    "shipping": {
+      "body": "This policy explains how Casify processes and ships orders.\n\nOrder Processing\n\nOrders typically leave our fulfillment location in the United States within 1–2 business days of purchase, Monday through Friday, excluding public holidays. You'll receive a confirmation email once your order ships, including tracking information where available.\n\nFree Shipping\n\nShipping is free on every order, with no minimum purchase required. Products fulfilled through Printify have an estimated delivery time of 4–6 business days after shipment. Other products have an estimated delivery time of 8–12 business days after shipment. Estimated delivery times for your order are shown at checkout, based on your delivery address and the products in your cart. These are estimates, not guaranteed arrival dates. The 1–2 business day processing period is separate from the delivery estimates.\n\nInternational Shipping & Customs\n\nWe ship to a number of international destinations. International orders may be subject to import duties, taxes, and customs fees charged once the package reaches its destination country. These charges are the responsibility of the recipient and are outside our control.\n\nOrder Tracking\n\nOnce your order ships, you'll receive an email with tracking information so you can follow its progress.\n\nLost or Delayed Packages\n\nIf your order hasn't arrived within the estimated delivery window, contact us at zouhir.mahjoubi@zmdesign.me and we'll look into it with the carrier on your behalf.\n\nContact Us\n\nQuestions about shipping? Email zouhir.mahjoubi@zmdesign.me or call +212 653 926 665.",
+      "overrideVisible": true
+    },
+    "terms": {
+      "body": "These Terms and Conditions (\"Terms\") govern your use of the Casify website and your purchase of products from us. By accessing our site or placing an order, you agree to these Terms.\n\n1. Use of Our Site\n\nYou may use our site to browse and purchase products for personal, non-commercial use. You agree not to misuse the site, interfere with its operation, or attempt to access it using a method other than the interface we provide.\n\n2. Products & Pricing\n\nWe make reasonable efforts to display product colors, dimensions, and details accurately, but we don't guarantee your screen will display colors precisely. Prices are shown in USD and may change without notice. We reserve the right to correct pricing or listing errors, cancel affected orders, and refund any payment already made.\n\n3. Orders & Payment\n\nWhen you place an order, you're making an offer to purchase, which we may accept or decline. Payments are processed using the payment methods displayed at checkout. We do not store your full payment card details.\n\n4. Returns & Shipping\n\nReturns and shipping are governed by our Return Policy and Shipping Policy.\n\n5. Intellectual Property\n\nAll content on this site — including text, graphics, logos, and images — is owned by or licensed to Casify and is protected by applicable intellectual property laws. You may not reproduce or use it without our written permission.\n\n6. Third-Party Links\n\nOur site may link to third-party websites we don't control. We aren't responsible for the content or practices of those sites.\n\n7. Limitation of Liability\n\nTo the fullest extent permitted by law, Casify is not liable for any indirect, incidental, or consequential damages arising from your use of the site or products purchased through it, beyond the amount you paid for the relevant order.\n\n8. Governing Law\n\nThese Terms are governed by the laws applicable in the jurisdiction where Casify operates, without regard to conflict-of-law principles.\n\n9. Changes to These Terms\n\nWe may update these Terms from time to time. Changes take effect once posted on this page, so please check back periodically.\n\n10. Contact Us\n\nQuestions about these Terms? Email zouhir.mahjoubi@zmdesign.me or write to us at centre sidi ghanem essaouira, 44000 essaouira, Morocco.",
+      "overrideVisible": true
+    },
+    "about": {
+      "body": "Phone cases, with the details up front\n\nCasify is an online shop for phone cases and accessories. Browse the collection and choose the available model, color, and style on each product page.\n\nFind the right fit\n\nCheck your phone model before ordering. Product pages show the available options and details for each case. If you have a question about compatibility, contact us before you buy.\n\nShopping with Casify\n\nShipping is free on every order. Review our Shipping Policy for processing and estimated delivery times, and our Return Policy for return and refund information.\n\nNeed help?\n\nFor product questions or help with an order, visit our contact page. Include your order number when asking about an existing order.",
+      "overrideVisible": true
+    }
+  },
+  "errors": [],
+  "media": {
+    "productImages": [
+      {
+        "alt": "iPhone 18 and iPhone 18 Pro Max",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/t/58/assets/cv-phone-scan-duo.webp?v=167175893000920686891791413427"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/9cb0b845-5189-4b43-9766-6c0cdbd264ce.jpg?v=1787515599&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/4b189824-f055-4254-b5fc-7fe7cae166c6.jpg?v=1787515327&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/989cb061-274f-4f0f-9315-59261463b148.jpg?v=1789696677&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/9cb0b845-5189-4b43-9766-6c0cdbd264ce.jpg?v=1787515599&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/4b189824-f055-4254-b5fc-7fe7cae166c6.jpg?v=1787515327&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/989cb061-274f-4f0f-9315-59261463b148.jpg?v=1789696677&width=320"
+      },
+      {
+        "alt": "",
+        "loaded": false,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/9cb0b845-5189-4b43-9766-6c0cdbd264ce.jpg?v=1787515599&width=320"
+      },
+      {
+        "alt": "A clear Casify phone case in a warm cream studio setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/t/58/assets/cv-spotlight-case.jpg?v=90388145359460184321791413441"
+      },
+      {
+        "alt": "Camera lens protective film",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/09b5cbde-d88a-4b1a-b801-13915adbf264.jpg?v=1790605684&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/d9ab9b73-c23a-4fc1-9979-87d032e64cf3.jpg?v=1790605684&width=640"
+      },
+      {
+        "alt": "Magnetic Phone Case with Stand for iPhone Series",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/339a7037-739d-444f-b8a6-550b2337d1c0.jpg?v=1790605598&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/1014b7d6-8393-4103-8318-c99da53d5565.jpg?v=1790605599&width=640"
+      },
+      {
+        "alt": "Sandblasted magnetic suction phone case",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/b217664c-5761-4114-9470-e332eec76336.jpg?v=1790605578&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/12bf5981-6cb8-464a-895e-968de29b3e1c.jpg?v=1790605578&width=640"
+      },
+      {
+        "alt": "Magnetic Silicone Phone Case with Stand for iPhone",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/0f727b2c-c4ea-47ef-8932-876b82daebf7.jpg?v=1790605553&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/988c4bca-bf64-45da-b3fa-0b56c9c57846.jpg?v=1790605554&width=640"
+      },
+      {
+        "alt": "Tech Fabric Magnetic Phone Case for iPhone — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p19-1-hero.png?v=1790122902&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p19-2-detail.png?v=1790122902&width=640"
+      },
+      {
+        "alt": "Eagle Eye Metal Lens Magnetic Phone Case for iPhone — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p06-1-hero.png?v=1790122849&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p06-2-detail.png?v=1790122849&width=640"
+      },
+      {
+        "alt": "Camera lens protective film",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/09b5cbde-d88a-4b1a-b801-13915adbf264.jpg?v=1790605684&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/d9ab9b73-c23a-4fc1-9979-87d032e64cf3.jpg?v=1790605684&width=640"
+      },
+      {
+        "alt": "Magnetic Phone Case with Stand for iPhone Series",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/339a7037-739d-444f-b8a6-550b2337d1c0.jpg?v=1790605598&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/1014b7d6-8393-4103-8318-c99da53d5565.jpg?v=1790605599&width=640"
+      },
+      {
+        "alt": "Sandblasted magnetic suction phone case",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/b217664c-5761-4114-9470-e332eec76336.jpg?v=1790605578&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/12bf5981-6cb8-464a-895e-968de29b3e1c.jpg?v=1790605578&width=640"
+      },
+      {
+        "alt": "Magnetic Silicone Phone Case with Stand for iPhone",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/0f727b2c-c4ea-47ef-8932-876b82daebf7.jpg?v=1790605553&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/988c4bca-bf64-45da-b3fa-0b56c9c57846.jpg?v=1790605554&width=640"
+      },
+      {
+        "alt": "iPhone",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/339a7037-739d-444f-b8a6-550b2337d1c0.jpg?v=1790605598&width=1700"
+      },
+      {
+        "alt": "Transparent Anti-Yellowing PC Phone Case for Apple iPhone — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p20-1-hero.png?v=1790122903&width=1700"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p20-2-detail.png?v=1790122902&width=1700"
+      },
+      {
+        "alt": "Chain Crossbody Phone Case — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-chain-crossbody-hero-20260923.png?v=1790120984&width=1700"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-chain-crossbody-detail-20260923.png?v=1790121054&width=1700"
+      },
+      {
+        "alt": "Magnetic Phone Case with Stand for iPhone Series",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/339a7037-739d-444f-b8a6-550b2337d1c0.jpg?v=1790605598&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/1014b7d6-8393-4103-8318-c99da53d5565.jpg?v=1790605599&width=640"
+      },
+      {
+        "alt": "Magnetic Silicone Phone Case with Stand for iPhone",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/0f727b2c-c4ea-47ef-8932-876b82daebf7.jpg?v=1790605553&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/988c4bca-bf64-45da-b3fa-0b56c9c57846.jpg?v=1790605554&width=640"
+      },
+      {
+        "alt": "Tech Fabric Magnetic Phone Case for iPhone — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p19-1-hero.png?v=1790122902&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p19-2-detail.png?v=1790122902&width=640"
+      },
+      {
+        "alt": "Eagle Eye Metal Lens Magnetic Phone Case for iPhone — hero product view in Casify's warm vintage candy-shop setting",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p06-1-hero.png?v=1790122849&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/files/casify-p06-2-detail.png?v=1790122849&width=640"
+      },
+      {
+        "alt": "",
+        "loaded": true,
+        "source": "https://casiffy.myshopify.com/cdn/shop/t/58/assets/proof-stamp.webp?v=93195957650119406351791413434"
+      }
+    ],
+    "overflow": false,
+    "text": "SKIP TO CONTENT\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nCASIFY PHONE CASES · FREE SHIPPING · 30-DAY RETURNS ·\nSHIPS IN 1-2 BUSINESS DAYS\n30-DAY RETURNS\nIPHONE\nSAMSUNG\nCOLLECTIONS\nCONTACT\n1\nFree shipping\nOn every order\n30-day returns\nSee our return policy\nSecure checkout\nCheckout through Shopify\nFast dispatch\nShips in 1-2 business days\nChoose your\nphone case\n\nCASES FOR IPHONE 18 & IPHONE 18 PRO MAX\n\nFIND MY CASE\n\nScroll on and we'll size them up at the counter.\n\nIPHONE 18\nIPHONE 18 PRO MAX\nFREE SHIPPING\n30-DAY RETURNS\n\nChoose a case and check its model list before ordering. Select the model that matches your phone.\n\nMODEL\nNº 18\n\nBrowse the collection and check the available models on each case.\n\nCAMERAS\nBUTTONS\nPORT\n\nFIT FOUND\n\nTHE FITTING ROOM\n\nWhich one's yours?\n\nPick your phone model and explore the available cases.\n\nYour iPhone\niPhone 18\n1 CASE\niPhone 18 Pro\n24 CASES\niPhone 18 Pro Max\n25 CASES\n\nPick yours to see the cases cut for it.\n\nDifferent phone? Browse every case\nNOW IN THE SHOP\nFind a case for your everyday\n\nBrowse the styles, then select your phone model from the options on the product page.\n\nFIND MY MODEL\nMADE FOR YOUR PHONE\n17\nCASE DESIGNS\n18–31%\nOFF IN PACKS\nFree\nSHIPPING, ALWAYS\n30 days\nTO CHANGE YOUR MIND\nFREE SHIPPING\n30-DAY RETURNS\nSHIPS IN 1–3 BUSINESS DAYS\nMOLDED FOR YOUR EXACT PHONE\nON THE TURNTABLE\nThe collection, in 3D\n\nWatch the collection turn, or drag to spin. Open a case to check its model options and details.\n\nVIEW ALL\n−60%\nCamera lens protective film\n$23.99\n$59.99\nCHOOSE OPTIONS\n−17%\nMagnetic Phone Case with Stand for iPhone Series\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nSandblasted magnetic suction phone case\n\nMade for 5 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nMagnetic Silicone Phone Case with Stand for iPhone\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nTech Fabric Magnetic Phone Case for iPhone\n\nMade for 10 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nEagle Eye Metal Lens Magnetic Phone Case for iPhone\n\nMade for 27 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\nFree shipping\nON EVERY ORDER\n30-day returns\nSEE OUR RETURN POLICY\nDispatch in 1–2 days\nBUSINESS DAYS, FROM ORDER\nSave 18% on 2 · 31% on 3\nMIX COLOURS AND PHONE MODELS\nSecure checkout\nCHECKOUT THROUGH SHOPIFY\nFROM THE COLLECTION\nCases on the counter\n\nExplore available designs and choose the model that matches your phone.\n\nVIEW ALL\n−60%\nCamera lens protective film\n$23.99\n$59.99\nCHOOSE OPTIONS\n−17%\nMagnetic Phone Case with Stand for iPhone Series\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nSandblasted magnetic suction phone case\n\nMade for 5 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nMagnetic Silicone Phone Case with Stand for iPhone\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\nChoose a case that suits you\n\nFour things to check before you order.\n\nChoose\nCharging\nFit\nStyle\nChoose your phone model\n\nCheck your model name in your phone settings, then select the matching model on the product page.\n\nShop cases\nStraight from the shop window\nCOLLECTION · 17 STYLES\niPhone\nCLEAR CASE\nTransparent Anti-Yellowing PC Phone Case for Apple iPhone\n$49.99\n$59.99\nCROSSBODY\nChain Crossbody Phone Case\n$49.99\n$59.99\nBEFORE YOU ORDER\nThree steps to choose your case\n\nStart with your phone model, then check the details and pick your style.\n\n1\n01\nFind your phone model\n\nLook up the model name in your phone settings. On each product page, choose the matching option before ordering.\n\n2\n02\nRead the product details\n\nMaterials, charging compatibility and features vary by case. Check the details for the particular design you choose.\n\n3\n03\nChoose your style\n\nUse the photos and colour options to find the case you want. Your chosen model and colour appear in your bag before checkout.\n\nShopping with Casify\nCompatibility details\n\nCheck the product page for charging and accessory information.\n\nModel options\n\nSelect the phone model listed on the product page.\n\nPhotos and colours\n\nSee the available finishes before choosing your case.\n\nFree shipping\n\nOn every order. Dispatch in 1–2 business days.\n\n30-day returns\n\nRead our return policy for conditions and instructions.\n\nHelp choosing\n\nUse our contact page if you have a question before ordering.\n\nEXPLORE IPHONE CASES\nFind your iPhone case\n\nOpen a product to see the phone models available for that case.\n\nSEE ALL IPHONE\n−17%\nMagnetic Phone Case with Stand for iPhone Series\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nMagnetic Silicone Phone Case with Stand for iPhone\n\nMade for 23 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nTech Fabric Magnetic Phone Case for iPhone\n\nMade for 10 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\n−17%\nEagle Eye Metal Lens Magnetic Phone Case for iPhone\n\nMade for 27 phone models\n\n$49.99\n$59.99\nCHOOSE YOUR PHONE\nCustomer feedback\n\nPublished product ratings and customer feedback.\n\nRECORD OPEN\nNo published ratings yet\n\nPublished customer ratings will appear here when available.\n\nSCORE SOURCE\nPublished customer ratings\nUPDATES\nWith every new review\nEDITORIAL EDITS\nNone\nCustomer ledger\n\nWritten in customers' own words.\n\nCustomer feedback will appear here when published.\n\nRatings shown here come from published product review data.\n\nThank you.\n\nFor sharing your experience with Casify.\n\nPRODUCT FEEDBACK\nPublished product ratings\n\nSHOPPING WITH CASIFY\nShipping and returns\n30-day returns\n\nYou have 30 days after delivery to request a return. Read our return policy for conditions and instructions.\n\nDispatch in 1–2 business days\n\nOrders dispatch from the USA within 1–2 business days. Delivery estimates vary by product and are shown at checkout.\n\nSTILL DECIDING?\nQuestions before you order\nHow do I choose the right model?\n\nCheck your model name in your phone settings, then choose the matching model from the list on the product page.\n\nDoes this case support wireless charging?\nWhich materials and finishes are available?\nHow long does delivery take?\nWhat if I ordered the wrong model?\nCan I buy more than one case?\nONE CASE, ONE DECISION\nFind your next case\n\nChoose your phone model and preferred style. Orders dispatch in 1–2 business days.\n\nFIND MY MODEL\nFREE SHIPPING ON EVERY ORDER\n30-DAY RETURNS\nSHIPS IN 1–2 BUSINESS DAYS\nSECURE CHECKOUT\nHere you go!\nFROM THE COUNTER\nTwo cases? 18% off each. Three? 31% off.\n\nPick a pack on any case and the saving comes off automatically at checkout — no code needed.\n\nShop cases\n\nFree shipping on every order · 30-day returns\n\nLetters from the sweet shop\n\nNew designs and restocks, posted straight to your inbox.\n\nEMAIL ADDRESS\nSIGN UP\n\nUnsubscribe any time.\n\nPhone cases for iPhone and Samsung. Browse the styles and choose the model that matches your phone.\n\nJOIN THE SWEET LIST\nJOIN\nSHOP\nContact\niPhone\nSamsung\nCollections\nSUPPORT\nShipping\nReturns &amp; refunds\nPrivacy\nTerms of service\nContact\nCOMPANY\ncentre sidi ghanem essaouira\nessaouira 44000, Morocco\n+212653926665\nzouhir.mahjoubi@zmdesign.me\n© 2026 CASIFY\nNOT AFFILIATED WITH APPLE, SAMSUNG OR GOOGLE. MAGSAFE IS A TRADEMARK OF APPLE INC.\nBACK TO TOP\nYOUR BAG\nPhone Case — \"A Little Softer\" Pink Bow Protective Tough Case\n\niPhone 18 Pro\n\n$49.99\n\n-\n+\nSUBTOTAL\n$49.99\nCHECKOUT"
+  },
+  "tabletOverflow": false
+}

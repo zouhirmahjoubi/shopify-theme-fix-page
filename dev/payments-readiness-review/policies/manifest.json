@@ -1,0 +1,35 @@
+{
+  "created": "2026-10-07",
+  "scope": "Local review only. No Shopify page or checkout-policy writes.",
+  "changed": [
+    "sections/cv-page.liquid",
+    "templates/page.about-us.json",
+    "templates/page.faq.json",
+    "templates/page.json",
+    "templates/page.shipping-policy.json",
+    "templates/page.terms-and-conditions.json",
+    "templates/page.track-order.json",
+    "templates/page.campaign-guide.json",
+    "sections/cv-campaign-guide.liquid"
+  ],
+  "reviewRequired": [
+    "Exact public legal business name, physical business address, phone, and relationship to Casify",
+    "Confirm that delivery estimates start from shipment rather than order date",
+    "Confirm existing 30-day return policy commitments, including prepaid labels, refund after first carrier scan and 5-10 business day refund time",
+    "Provide the actual return destination address",
+    "Add approved refund, shipping, terms and contact-information text to Shopify checkout Policies only after approval",
+    "Privacy source retains current Moroccan contact details until approved replacement is provided"
+  ],
+  "shippingConfirmed": {
+    "origin": "United States",
+    "dispatch": "1-2 business days",
+    "printify": "4-6 business days",
+    "other": "8-12 business days",
+    "cost": "Free"
+  },
+  "termsChange": {
+    "from": "Payment is processed securely through Shopify Payments and other supported payment providers at checkout.",
+    "to": "Payments are processed using the payment methods displayed at checkout."
+  },
+  "customerProof": "Unverified sales count and customer-video sections disabled on the default page template."
+}

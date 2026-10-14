@@ -1,0 +1,669 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="{{ routes.root_url }}">Home</a><span class="sep">&middot;</span>
+  <a href="{{ routes.all_products_collection_url }}">Shop</a><span class="sep">&middot;</span>
+  <a href="{{ routes.collections_url }}/cases">{{ section.settings.crumb_collection | default: 'Cases' | escape }}</a><span class="sep">&middot;</span>
+  <span style="color:var(--red-600)">{{ product.title | escape }}</span>
+</nav>
+
+<div class="halo-bar" role="region" aria-label="Store announcements">
+  <div class="halo-bar__track" aria-hidden="false">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'bar_item' -%}
+        <span {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign halo_seen = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'bar_item' -%}
+        {%- assign halo_seen = halo_seen | plus: 1 -%}
+        <span aria-hidden="true">{{ block.settings.text }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<div class="halo-pdp halo-stagger" id="haloPdp" data-product-json="{{ product.variants | json | escape }}" data-current-options="{{ current_variant.options | json | escape }}">
+
+  <!-- ============= GALLERY + DROP RAIL ============= -->
+  <div class="halo-gallery">
+    <div class="halo-stage">
+      <div class="halo-rail" aria-hidden="true">
+        <div class="halo-rail__tick is-major" style="top:8%"><span>12 ft</span></div>
+        <div class="halo-rail__tick" style="top:24%"><span>9</span></div>
+        <div class="halo-rail__tick" style="top:40%"><span>6</span></div>
+        <div class="halo-rail__tick" style="top:56%"><span>3</span></div>
+        <div class="halo-rail__tick is-major" style="top:72%"><span>0 — concrete</span></div>
+        <div class="halo-rail__cap">Verified drop<br>height · MIL-STD<br>810G · 26 drops</div>
+      </div>
+
+      <div class="halo-stage__view">
+        <div class="halo-stage__badge" id="haloStageBadge">{{ section.settings.stage_badge | default: 'Clear · Halo' }}</div>
+
+        {%- if section.settings.case_svg != blank -%}
+          <div class="halo-case-svg" style="--case-a:rgba(206,212,224,.42);--case-b:rgba(168,178,196,.30);--case-inner:#DDE1E9;--case-edge:rgba(19,20,23,.22)">
+            {{ section.settings.case_svg }}
+          </div>
+        {%- elsif product.featured_image -%}
+          <img id="haloMainImage" class="halo-case-img" src="{{ current_variant.featured_image | default: product.featured_image | image_url: width: 900 }}" alt="{{ current_variant.featured_image.alt | default: product.featured_image.alt | default: product.title | escape }}" width="900" height="900" loading="eager">
+        {%- else -%}
+          <svg class="halo-case-svg" viewBox="0 0 340 690" role="img" aria-label="{{ product.title | escape }}"
+               style="--case-a:rgba(206,212,224,.42);--case-b:rgba(168,178,196,.30);--case-inner:#DDE1E9;--case-edge:rgba(19,20,23,.22)">
+            <defs>
+              <linearGradient id="haloShellGrad" x1="0" y1="0" x2=".85" y2="1">
+                <stop offset="0"  stop-color="var(--case-a)"/>
+                <stop offset="1"  stop-color="var(--case-b)"/>
+              </linearGradient>
+              <linearGradient id="haloLens" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3B4152"/>
+                <stop offset="1" stop-color="#12141B"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="170" cy="674" rx="118" ry="12" fill="#131417" opacity=".09"/>
+            <rect x="22" y="14" width="296" height="646" rx="58" fill="url(#haloShellGrad)" stroke="var(--case-edge)" stroke-width="2"/>
+            <rect x="33" y="25" width="274" height="624" rx="49" fill="var(--case-inner)" opacity=".55"/>
+            <rect x="54" y="48" width="132" height="132" rx="36" fill="#1C1F28" opacity=".92"/>
+            <circle cx="92"  cy="86"  r="21" fill="url(#haloLens)"/><circle cx="92"  cy="86"  r="9" fill="#0A0C12"/>
+            <circle cx="148" cy="86"  r="21" fill="url(#haloLens)"/><circle cx="148" cy="86"  r="9" fill="#0A0C12"/>
+            <circle cx="92"  cy="142" r="21" fill="url(#haloLens)"/><circle cx="92"  cy="142" r="9" fill="#0A0C12"/>
+            <circle cx="170" cy="384" r="66" fill="none" stroke="#2B1B14" stroke-opacity=".26" stroke-width="13" stroke-dasharray="13.1 10" stroke-linecap="round"/>
+            <rect x="22" y="14" width="296" height="646" rx="58" fill="url(#haloShellGrad)" stroke="var(--case-edge)" stroke-width="2"/>
+            <text x="170" y="612" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="15" font-weight="800" letter-spacing="1.5" fill="var(--halo-ink)" fill-opacity=".26">{{ shop.name | upcase }}</text>
+          </svg>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="halo-thumbs" role="tablist" aria-label="Product views" id="haloThumbs">
+      {%- assign thumb_img_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'thumb' and block.settings.image != blank -%}
+          {%- assign thumb_img_count = thumb_img_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if thumb_img_count > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'thumb' and block.settings.image != blank -%}
+            {%- assign img = block.settings.image -%}
+            <button class="halo-thumb" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-full-src="{{ img | image_url: width: 900 }}" {{ block.shopify_attributes }}>
+              <img src="{{ img | image_url: width: 120 }}" alt="{{ img.alt | default: block.settings.label | escape }}" width="48" height="48" loading="lazy">
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for image in product.images limit: 8 -%}
+          <button class="halo-thumb" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-full-src="{{ image | image_url: width: 900 }}">
+            <img src="{{ image | image_url: width: 120 }}" alt="{{ image.alt | default: product.title | escape }}" width="48" height="48" loading="lazy">
+          </button>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- ============= BUYBOX ============= -->
+  <aside class="halo-buy">
+
+    <div class="halo-rating">
+      <span class="halo-stars" aria-hidden="true">★★★★★</span>
+      <a href="#halo-reviews">{{ section.settings.rating_score | default: '4.8' }} · {{ section.settings.rating_count | default: '12,480 reviews' }}</a>
+    </div>
+
+    <div>
+      <h1 class="halo-title">{{ section.settings.title | default: product.title | escape }}{%- if section.settings.show_trademark %} <sup>™</sup>{%- endif %}</h1>
+      <p class="halo-sub" style="margin-top:10px">
+        {{ section.settings.subtitle | default: '12-foot drop protection in a case <b>2.8 mm thin</b> — with a MagSafe hold twice the industry norm, and a coating that <b>never turns yellow</b>.' }}
+      </p>
+    </div>
+
+    <div>
+      <div class="halo-price-row">
+        <span class="halo-price-now" id="haloPriceNow">{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price and current_variant.compare_at_price > current_variant.price -%}
+          <span class="halo-price-was" id="haloPriceWas">{{ current_variant.compare_at_price | money }}</span>
+          <span class="halo-price-off" id="haloPriceOff">SAVE {{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%</span>
+        {%- else -%}
+          <span class="halo-price-was" id="haloPriceWas" style="display:none">$0</span>
+          <span class="halo-price-off" id="haloPriceOff" style="display:none">SAVE 0%</span>
+        {%- endif -%}
+      </div>
+      <p class="halo-price-note" id="haloPriceNote">{{ section.settings.price_note | default: 'Free shipping over $45 · 90-day trial' }}</p>
+    </div>
+
+    <!-- Variant option pickers — generic, driven entirely by this product's real options/values/variants/images -->
+    {%- for option in product.options_with_values -%}
+      {%- assign opt_index = forloop.index0 -%}
+      {%- assign opt_name_dc = option.name | downcase -%}
+      {%- assign is_color_opt = false -%}
+      {%- if opt_name_dc contains 'colo' or opt_name_dc contains 'finish' or opt_name_dc contains 'shade' -%}
+        {%- assign is_color_opt = true -%}
+      {%- endif -%}
+      {%- assign lbl_prefix = option.name -%}
+      {%- if opt_name_dc contains 'model' or opt_name_dc contains 'phone' or opt_name_dc contains 'device' -%}
+        {%- assign lbl_prefix = 'Your phone' -%}
+      {%- endif -%}
+
+      <div class="halo-field">
+        <div class="halo-field__hd">
+          <span class="lbl">{{ lbl_prefix }}: <i id="haloOptOut{{ opt_index }}">{{ current_variant.options[opt_index] }}</i></span>
+          {%- if opt_index == 0 -%}<a href="#halo-faq">Not sure? Find my model</a>{%- endif -%}
+        </div>
+        <div class="{% if is_color_opt %}halo-swatches{% else %}halo-models{% endif %}" role="radiogroup" aria-label="{{ option.name | escape }}">
+          {%- for value in option.values -%}
+            {%- assign match_variant = blank -%}
+            {%- for v in product.variants -%}
+              {%- if v.options[opt_index] == value -%}
+                {%- if match_variant == blank -%}{%- assign match_variant = v -%}{%- endif -%}
+                {%- if v.available -%}{%- assign match_variant = v -%}{%- break -%}{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- assign is_selected = false -%}
+            {%- if current_variant.options[opt_index] == value -%}{%- assign is_selected = true -%}{%- endif -%}
+
+            {%- if is_color_opt -%}
+              {%- assign sw_color = value.swatch.color -%}
+              {%- assign sw_image = value.swatch.image -%}
+              {%- if sw_image == blank and match_variant.image -%}{%- assign sw_image = match_variant.image -%}{%- endif -%}
+              <button class="halo-sw" role="radio"
+                      aria-checked="{{ is_selected }}"
+                      aria-label="{{ value | escape }}"
+                      title="{{ value | escape }}"
+                      data-option-index="{{ opt_index }}"
+                      data-value="{{ value | escape }}"
+                      data-variant-id="{{ match_variant.id }}"
+                      data-stock="{% unless match_variant.available %}out{% endunless %}"
+                      style="{% if sw_image %}background-image:url('{{ sw_image | image_url: width: 80 }}');background-size:cover;background-position:center;{% elsif sw_color %}background:{{ sw_color }};{% else %}background:var(--cream-200);{% endif %}"></button>
+            {%- else -%}
+              <button class="halo-model" role="radio"
+                      aria-checked="{{ is_selected }}"
+                      data-option-index="{{ opt_index }}"
+                      data-value="{{ value | escape }}"
+                      data-variant-id="{{ match_variant.id }}"
+                      data-stock="{% unless match_variant.available %}out{% endunless %}">
+                {{ value }}<small>{% if match_variant.available %}In stock{% else %}Sold out{% endif %}</small>
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    <!-- Offer ladder -->
+    <div class="halo-field">
+      <div class="halo-field__hd"><span class="lbl">How many?</span><span class="tick" style="color:#6B4229">{{ section.settings.ladder_hint | default: 'Per-case price drops' }}</span></div>
+      <div class="halo-ladder" role="radiogroup" aria-label="Quantity">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'tier' -%}
+            <button class="halo-tier" role="radio"
+                    aria-checked="{% if b.settings.default_checked %}true{% else %}false{% endif %}"
+                    data-qty="{{ b.settings.qty | default: 1 }}"
+                    data-each="{{ b.settings.each | default: 39 }}"
+                    data-was="{{ b.settings.was | default: 69 }}"
+                    data-note="{{ b.settings.note | escape }}"
+                    data-stock="{% if b.settings.out_of_stock %}out{% endif %}"
+                    {{ b.shopify_attributes }}>
+              {%- if b.settings.flag_label != blank -%}
+                <span class="halo-tier__flag{% if b.settings.flag_style == 'save' %} is-save{% endif %}">{{ b.settings.flag_label | escape }}</span>
+              {%- endif -%}
+              <span class="halo-tier__dot"></span>
+              <span><span class="halo-tier__name">{{ b.settings.name | escape }}</span><span class="halo-tier__meta">{{ b.settings.meta | escape }}</span></span>
+              <span class="halo-tier__price"><span class="halo-tier__each">${{ b.settings.each | default: 39 }}{% if b.settings.qty != 1 and b.settings.qty != blank %} ea{% endif %}</span>{% if b.settings.was != blank and b.settings.was > b.settings.each %}<span class="halo-tier__strike">${{ b.settings.was }}</span>{% endif %}</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%}
+      Per-case type/color pickers — shown only when "How many?" is set to 2 or 3,
+      so a customer buying multiple cases can give each one its own model/color
+      instead of getting N copies of the single choice above. Each slot defaults
+      to whatever is currently selected above the first time it's revealed.
+    {%- endcomment -%}
+    <div class="halo-case-slots" id="haloCaseSlots" hidden>
+      {%- for slot_n in (2..3) -%}
+        <div class="halo-case-slot" data-case-slot="{{ slot_n }}" hidden>
+          <div class="halo-field__hd"><span class="lbl">Case {{ slot_n }}</span></div>
+          <div class="halo-case-slot__row">
+            {%- for option in product.options_with_values -%}
+              <select class="halo-case-slot__select" data-slot-option-index="{{ forloop.index0 }}" aria-label="Case {{ slot_n }} {{ option.name | escape }}">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}">{{ value }}</option>
+                {%- endfor -%}
+              </select>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- CTA -->
+    <form method="post" action="{{ routes.cart_add_url }}" id="haloAddToCartForm" data-cart-add-form>
+      <input type="hidden" name="id" id="haloSelectedVariantId" value="{{ current_variant.id }}">
+      <input type="hidden" name="quantity" id="haloSelectedQty" value="1">
+      <button class="halo-cta" id="haloAddBtn" type="submit"{% unless current_variant.available %} disabled{% endunless %}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span id="haloCtaLabel">{% if current_variant.available %}{{ section.settings.cta_label | default: 'Add to bag — ' }}{% else %}Sold out{% endif %}</span><span id="haloCtaTotal">{% if current_variant.available %}{{ current_variant.price | money }}{% endif %}</span>
+      </button>
+      <p class="halo-cta-sub"><span class="halo-dot"></span> In stock · ships today if you order in <b id="haloClock">4h 12m</b></p>
+    </form>
+
+    <!-- SCREEN PROMISE -->
+    <div class="halo-promise">
+      <svg class="halo-promise__ico" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 3l11 4v9c0 7.2-4.6 12.2-11 14C9.6 28.2 5 23.2 5 16V7l11-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M11.5 16.2l3.2 3.2 6-6.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h4>{{ section.settings.promise_title | default: 'The Screen Promise' }}</h4>
+        <p>{{ section.settings.promise_body | default: 'Crack your screen while the Halo is on it and we pay the repair — up to $200, once per case.' }} <a href="#halo-promise-faq">How it works</a></p>
+      </div>
+    </div>
+
+    <!-- INLINE USPs (blocks-driven) -->
+    <div class="halo-usps">
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'usp' -%}
+          <div class="halo-usp" {{ b.shopify_attributes }}>
+            <span class="halo-usp__n">{{ b.settings.metric }}</span>
+            <span><b>{{ b.settings.bold }}</b> <span>{{ b.settings.desc }}</span></span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- assign usp_count = 0 -%}
+      {%- for b in section.blocks -%}{%- if b.type == 'usp' -%}{%- assign usp_count = usp_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- if usp_count == 0 -%}
+        <div class="halo-usp"><span class="halo-usp__n">12ft</span><span><b>DropCore™ air-cell corners.</b> <span>Survived 26 drops onto concrete at 12 feet — 4× Apple's own test height.</span></span></div>
+        <div class="halo-usp"><span class="halo-usp__n">1400g</span><span><b>MagLock™ 18-magnet array.</b> <span>Holds on a car vent over speed bumps. Most cases measure 800–900g.</span></span></div>
+        <div class="halo-usp"><span class="halo-usp__n">0Δb</span><span><b>ClearGuard™ UV coating.</b> <span>No measurable yellowing after 36 months of accelerated UV exposure.</span></span></div>
+        <div class="halo-usp"><span class="halo-usp__n">2.8mm</span><span><b>Still fits your pocket.</b> <span>Thinner than a stack of three credit cards. Adds 24g.</span></span></div>
+        <div class="halo-usp"><span class="halo-usp__n">1.4mm</span><span><b>Raised camera lip.</b> <span>Lens sits below the rim face-down. Buttons stay clicky, not mushy.</span></span></div>
+      {%- endif -%}
+    </div>
+
+    <!-- ACCORDIONS -->
+    <div class="halo-faq" id="halo-accordions">
+      {%- if product.description != blank -%}
+        <details class="acc" open>
+          <summary class="acc__sum">Description
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="acc__panel halo-acc__body rte">{{ product.description }}</div>
+        </details>
+      {%- endif -%}
+      {%- comment -%} Real specifications, pulled from this product's Shopify metafields (category/taxonomy fields when present) {%- endcomment -%}
+      {%- capture spec_rows -%}
+        {%- if product.metafields.shopify.material != blank -%}<dt>Material</dt><dd>{{ product.metafields.shopify.material | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['color-pattern'] != blank -%}<dt>Color</dt><dd>{{ product.metafields.shopify['color-pattern'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify.finish != blank -%}<dt>Finish</dt><dd>{{ product.metafields.shopify.finish | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['case-type'] != blank -%}<dt>Case type</dt><dd>{{ product.metafields.shopify['case-type'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['case-transparency-level'] != blank -%}<dt>Transparency</dt><dd>{{ product.metafields.shopify['case-transparency-level'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['closure-type'] != blank -%}<dt>Closure</dt><dd>{{ product.metafields.shopify['closure-type'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['compatible-device'] != blank -%}<dt>Compatible with</dt><dd>{{ product.metafields.shopify['compatible-device'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['mobile-phone-case-features'] != blank -%}<dt>Case features</dt><dd>{{ product.metafields.shopify['mobile-phone-case-features'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['screen-protection-features'] != blank -%}<dt>Screen protection</dt><dd>{{ product.metafields.shopify['screen-protection-features'] | metafield_tag }}</dd>{%- endif -%}
+        {%- if product.metafields.shopify['magsafe-compatibility'] != blank -%}<dt>MagSafe</dt><dd>{{ product.metafields.shopify['magsafe-compatibility'] | metafield_tag }}</dd>{%- endif -%}
+      {%- endcapture -%}
+      {%- if spec_rows != blank -%}
+        <details class="acc">
+          <summary class="acc__sum">Specifications
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="acc__panel halo-acc__body"><dl class="halo-spec">{{ spec_rows }}</dl></div>
+        </details>
+      {%- endif -%}
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'acc' -%}
+          <details class="acc"{% if b.settings.default_open %} open{% endif %} {{ b.shopify_attributes }}>
+            <summary class="acc__sum">{{ b.settings.title | escape }}
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="acc__panel halo-acc__body">
+              {{ b.settings.body }}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </aside>
+</div>
+
+<!-- ============= STICKY MOBILE ATC ============= -->
+<div class="halo-sticky" id="haloSticky">
+  <div class="halo-sticky__info">
+    <div class="halo-sticky__name" id="haloStickyName">{{ product.title | escape }}</div>
+    <div class="halo-sticky__price"><span id="haloStickyPrice">{{ current_variant.price | money }}</span>{% if current_variant.compare_at_price > current_variant.price %}<s id="haloStickyWas">{{ current_variant.compare_at_price | money }}</s>{% endif %}</div>
+  </div>
+  <button class="halo-cta" type="button" onclick="document.getElementById('haloAddBtn').click()">{{ section.settings.sticky_cta | default: 'Add to bag' }}</button>
+</div>
+
+<script>
+(function () {
+  var pdp = document.getElementById('haloPdp');
+  if (!pdp) return;
+  var variants;
+  try { variants = JSON.parse(pdp.dataset.productJson); } catch (e) { variants = []; }
+  var optionsState;
+  try { optionsState = JSON.parse(pdp.dataset.currentOptions) || []; } catch (e) { optionsState = []; }
+  var checkedTier = pdp.querySelector('.halo-tier[aria-checked="true"]');
+  var qty = (checkedTier && parseInt(checkedTier.getAttribute('data-qty'), 10)) || 1;
+
+  function findVariantByOptions(opts) {
+    for (var i = 0; i < variants.length; i++) {
+      var vo = variants[i].options || [];
+      var match = true;
+      for (var j = 0; j < opts.length; j++) {
+        if (opts[j] != null && String(vo[j]) !== String(opts[j])) { match = false; break; }
+      }
+      if (match) return variants[i];
+    }
+    return null;
+  }
+
+  function money(cents) { return '$' + (cents / 100).toFixed(2).replace(/\.00$/, ''); }
+  function findVariantById(id) {
+    if (!id) return null;
+    for (var i = 0; i < variants.length; i++) { if (String(variants[i].id) === String(id)) return variants[i]; }
+    return null;
+  }
+  function currentVariant() {
+    var id = document.getElementById('haloSelectedVariantId').value;
+    for (var i = 0; i < variants.length; i++) { if (String(variants[i].id) === String(id)) return variants[i]; }
+    return variants[0] || null;
+  }
+  function applyVariant(v) {
+    if (!v) return;
+    var idInput = document.getElementById('haloSelectedVariantId');
+    var addBtn = document.getElementById('haloAddBtn');
+    var ctaLabel = document.getElementById('haloCtaLabel');
+    var priceNow = document.getElementById('haloPriceNow');
+    var priceWas = document.getElementById('haloPriceWas');
+    var priceOff = document.getElementById('haloPriceOff');
+    var stickyPrice = document.getElementById('haloStickyPrice');
+    var stickyWas = document.getElementById('haloStickyWas');
+    var badge = document.getElementById('haloStageBadge');
+    var mainImg = document.getElementById('haloMainImage');
+    idInput.value = v.id;
+    if (addBtn) addBtn.disabled = !v.available;
+    if (ctaLabel) ctaLabel.textContent = v.available ? (ctaLabel.textContent.replace(/^Sold out$/, '') || 'Add to bag — ') : 'Sold out';
+    updateTotal();
+    if (priceNow) priceNow.textContent = money(v.price);
+    if (priceWas && priceOff) {
+      if (v.compare_at_price && v.compare_at_price > v.price) {
+        priceWas.textContent = money(v.compare_at_price);
+        priceOff.textContent = 'SAVE ' + Math.round((v.compare_at_price - v.price) / v.compare_at_price * 100) + '%';
+        priceWas.style.display = ''; priceOff.style.display = '';
+      } else {
+        priceWas.style.display = 'none'; priceOff.style.display = 'none';
+      }
+    }
+    if (stickyPrice) stickyPrice.textContent = money(v.price * qty);
+    if (stickyWas) {
+      if (v.compare_at_price && v.compare_at_price > v.price) { stickyWas.textContent = money(v.compare_at_price * qty); stickyWas.style.display = ''; }
+      else { stickyWas.style.display = 'none'; }
+    }
+    if (badge) badge.textContent = v.title;
+    if (mainImg && v.featured_image && v.featured_image.src) mainImg.src = v.featured_image.src;
+  }
+  function updateTotal() {
+    var v = currentVariant();
+    var total = document.getElementById('haloCtaTotal');
+    var qtyHidden = document.getElementById('haloSelectedQty');
+    if (qtyHidden) qtyHidden.value = qty;
+    if (total && v) total.textContent = v.available ? money(v.price * qty) : '';
+  }
+
+  pdp.querySelectorAll('.halo-model[data-option-index], .halo-sw[data-option-index]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var idx = parseInt(btn.getAttribute('data-option-index'), 10);
+      var val = btn.getAttribute('data-value');
+      var group = btn.closest('[role="radiogroup"]');
+      if (group) group.querySelectorAll('[role="radio"]').forEach(function (b) { b.setAttribute('aria-checked', 'false'); });
+      btn.setAttribute('aria-checked', 'true');
+      var out = document.getElementById('haloOptOut' + idx);
+      if (out) out.textContent = val;
+
+      var pending = optionsState.slice();
+      pending[idx] = val;
+      var match = findVariantByOptions(pending) || findVariantById(btn.getAttribute('data-variant-id'));
+      if (match) {
+        optionsState = (match.options || pending).slice();
+        applyVariant(match);
+      } else {
+        optionsState = pending;
+      }
+    });
+  });
+
+  /* Per-case slots (Case 2 / Case 3): let a multi-case order pick a
+     different model/color per case instead of duplicating one choice. */
+  var caseSlotsWrap = document.getElementById('haloCaseSlots');
+  var caseSlotVariants = {};
+  function computeSlotVariant(slotEl) {
+    var opts = [];
+    slotEl.querySelectorAll('[data-slot-option-index]').forEach(function (sel) {
+      opts[parseInt(sel.getAttribute('data-slot-option-index'), 10)] = sel.value;
+    });
+    var match = findVariantByOptions(opts);
+    caseSlotVariants[slotEl.getAttribute('data-case-slot')] = match ? match.id : null;
+    return match;
+  }
+  function syncSlotToMain(slotEl) {
+    slotEl.querySelectorAll('[data-slot-option-index]').forEach(function (sel) {
+      var idx = parseInt(sel.getAttribute('data-slot-option-index'), 10);
+      if (optionsState[idx] != null) sel.value = optionsState[idx];
+    });
+    computeSlotVariant(slotEl);
+  }
+  function setCaseSlotsVisible(n) {
+    if (!caseSlotsWrap) return;
+    caseSlotsWrap.hidden = !(n > 1);
+    caseSlotsWrap.querySelectorAll('.halo-case-slot').forEach(function (slotEl) {
+      var slotN = parseInt(slotEl.getAttribute('data-case-slot'), 10);
+      var show = slotN <= n;
+      var wasShown = !slotEl.hidden;
+      slotEl.hidden = !show;
+      if (show && !wasShown) syncSlotToMain(slotEl);
+    });
+  }
+  if (caseSlotsWrap) {
+    caseSlotsWrap.addEventListener('change', function (e) {
+      var slotEl = e.target.closest('.halo-case-slot');
+      if (slotEl) computeSlotVariant(slotEl);
+    });
+    setCaseSlotsVisible(qty);
+  }
+
+  pdp.querySelectorAll('.halo-tier').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.dataset.stock === 'out') return;
+      pdp.querySelectorAll('.halo-tier').forEach(function (b) { b.setAttribute('aria-checked', 'false'); });
+      btn.setAttribute('aria-checked', 'true');
+      qty = parseInt(btn.getAttribute('data-qty'), 10) || 1;
+      applyVariant(currentVariant());
+      setCaseSlotsVisible(qty);
+      var note = document.getElementById('haloPriceNote');
+      if (note && btn.getAttribute('data-note')) note.textContent = btn.getAttribute('data-note');
+    });
+  });
+
+  pdp.querySelectorAll('.halo-thumb[data-full-src]').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      pdp.querySelectorAll('.halo-thumb').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      thumb.setAttribute('aria-selected', 'true');
+      var mainImg = document.getElementById('haloMainImage');
+      var src = thumb.getAttribute('data-full-src');
+      if (mainImg && src) mainImg.src = src;
+    });
+  });
+
+  /* Multi-case add-to-cart: when "How many?" is 2 or 3, add one line item
+     per case (each its own model/color) instead of one line item x quantity.
+     Intercepted on the form itself (capture-order beats cart.js's
+     document-level delegated handler) and stopPropagation()'d so cart.js's
+     generic single-item handler never also fires for the same submit. */
+  var addToCartForm = document.getElementById('haloAddToCartForm');
+  if (addToCartForm) {
+    addToCartForm.addEventListener('submit', function (e) {
+      if (qty <= 1) return; // let cart.js's normal single-item flow handle it
+      e.preventDefault();
+      e.stopPropagation();
+
+      var mainVariant = currentVariant();
+      if (!mainVariant) return;
+      var items = [{ id: mainVariant.id, quantity: 1 }];
+      for (var n = 2; n <= qty; n++) {
+        var slotVariantId = caseSlotVariants[String(n)];
+        items.push({ id: slotVariantId || mainVariant.id, quantity: 1 });
+      }
+
+      var btn = document.getElementById('haloAddBtn');
+      var label = document.getElementById('haloCtaLabel');
+      var origLabel = label ? label.textContent : '';
+      if (btn) btn.disabled = true;
+      if (label) label.textContent = 'Wrapping…';
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items: items })
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (!res.ok) {
+            if (window.Casify) window.Casify.showToast('Could not add to bag', (res.data && res.data.description) || '', 'danger');
+            return;
+          }
+          if (window.Casify) {
+            window.Casify.showToast('Added ' + qty + ' cases to bag', mainVariant.title || '', 'success');
+            window.Casify.updateCartCount();
+            window.Casify.openDrawer(btn);
+          }
+        })
+        .catch(function () {
+          if (window.Casify) window.Casify.showToast('Could not add to bag', '', 'danger');
+        })
+        .finally(function () {
+          if (btn) btn.disabled = !mainVariant.available;
+          if (label) label.textContent = origLabel;
+        });
+    });
+  }
+
+  updateTotal();
+})();
+</script>
+
+<!-- ============= STRUCTURED DATA ============= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+  "description": {{ product.description | strip_html | truncate: 300 | json }},
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "lowPrice": {{ product.price_min | money_without_currency | json }},
+    "highPrice": {{ product.price_max | money_without_currency | json }},
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }
+}
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Halo — Main product",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Product title override" },
+    { "type": "checkbox", "id": "show_trademark", "label": "Show ™ in title", "default": true },
+    { "type": "richtext", "id": "subtitle", "label": "Product subtitle" },
+    { "type": "text", "id": "rating_score", "label": "Rating score", "default": "4.8" },
+    { "type": "text", "id": "rating_count", "label": "Rating count label", "default": "12,480 reviews" },
+    { "type": "text", "id": "crumb_collection", "label": "Breadcrumb collection label", "default": "Cases" },
+    { "type": "text", "id": "stage_badge", "label": "Stage badge default", "default": "Clear · Halo" },
+    { "type": "text", "id": "price_note", "label": "Default price note" },
+    { "type": "text", "id": "ladder_hint", "label": "Ladder hint text", "default": "Per-case price drops" },
+    { "type": "text", "id": "cta_label", "label": "CTA label prefix", "default": "Add to bag — " },
+    { "type": "text", "id": "sticky_cta", "label": "Sticky CTA label", "default": "Add to bag" },
+    { "type": "text", "id": "promise_title", "label": "Screen Promise title", "default": "The Screen Promise" },
+    { "type": "richtext", "id": "promise_body", "label": "Screen Promise body" },
+    { "type": "html", "id": "case_svg", "label": "Case SVG (overrides product image)", "info": "Use inline SVG. The colour swatches mutate --case-a/--case-b/--case-inner/--case-edge." }
+  ],
+  "blocks": [
+    { "type": "bar_item", "name": "Announcement bar item", "settings": [
+      { "type": "richtext", "id": "text", "label": "Text (use <b> for bold)", "default": "<p>Free shipping over <b>$45</b></p>" }
+    ]},
+    { "type": "usp", "name": "USP", "settings": [
+      { "type": "text", "id": "metric", "label": "Metric chip", "default": "12ft" },
+      { "type": "text", "id": "bold", "label": "Bold label", "default": "DropCore™ air-cell corners." },
+      { "type": "textarea", "id": "desc", "label": "Description", "default": "Survived 26 drops onto concrete at 12 feet." }
+    ]},
+    { "type": "tier", "name": "Offer tier", "settings": [
+      { "type": "text", "id": "qty", "label": "Quantity", "default": "2" },
+      { "type": "text", "id": "each", "label": "Per-case price", "default": "32" },
+      { "type": "text", "id": "was", "label": "Was price (per case)", "default": "39" },
+      { "type": "text", "id": "note", "label": "Subhead note", "default": "2 cases · you save $14 · free shipping" },
+      { "type": "text", "id": "name", "label": "Tier name", "default": "2 cases — save 18%" },
+      { "type": "text", "id": "meta", "label": "Tier sub-line", "default": "One on, one in the bag" },
+      { "type": "text", "id": "flag_label", "label": "Flag (e.g. Most popular)" },
+      { "type": "select", "id": "flag_style", "label": "Flag style", "options": [
+        { "value": "popular", "label": "Red (popular)" },
+        { "value": "save", "label": "Teal (save)" }
+      ], "default": "popular" },
+      { "type": "checkbox", "id": "out_of_stock", "label": "Out of stock", "default": false },
+      { "type": "checkbox", "id": "default_checked", "label": "Selected by default", "default": false }
+    ]},
+    { "type": "thumb", "name": "Gallery thumb", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Thumbnail image (optional)" },
+      { "type": "text", "id": "label", "label": "Label (if no image)", "default": "Back view" }
+    ]},
+    { "type": "acc", "name": "Accordion", "settings": [
+      { "type": "text", "id": "title", "label": "Summary title", "default": "What you get" },
+      { "type": "html", "id": "body", "label": "Body" },
+      { "type": "checkbox", "id": "default_open", "label": "Open by default", "default": false }
+    ]}
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Halo — Main product",
+      "blocks": [
+        { "type": "bar_item", "settings": { "text": "<p>Free shipping over <b>$45</b></p>" } },
+        { "type": "bar_item", "settings": { "text": "<p><b>90-day</b> case trial</p>" } },
+        { "type": "bar_item", "settings": { "text": "<p>Screen Promise — we cover up to <b>$200</b></p>" } },
+        { "type": "bar_item", "settings": { "text": "<p>Ships in <b>24h</b> from Austin, TX</p>" } },
+        { "type": "usp", "settings": { "metric": "12ft", "bold": "DropCore™ air-cell corners.", "desc": "Survived 26 drops onto concrete at 12 feet — 4× Apple's own test height." } },
+        { "type": "usp", "settings": { "metric": "1400g", "bold": "MagLock™ 18-magnet array.", "desc": "Holds on a car vent over speed bumps. Most cases measure 800–900g." } },
+        { "type": "usp", "settings": { "metric": "0Δb", "bold": "ClearGuard™ UV coating.", "desc": "No measurable yellowing after 36 months of accelerated UV exposure." } },
+        { "type": "usp", "settings": { "metric": "2.8mm", "bold": "Still fits your pocket.", "desc": "Thinner than a stack of three credit cards. Adds 24g." } },
+        { "type": "usp", "settings": { "metric": "1.4mm", "bold": "Raised camera lip.", "desc": "Lens sits below the rim face-down. Buttons stay clicky, not mushy." } },
+        { "type": "tier", "settings": { "qty": "1", "each": "39", "was": "69", "note": "One case · free shipping over $45", "name": "1 case", "meta": "Standard" } },
+        { "type": "tier", "settings": { "qty": "2", "each": "32", "was": "39", "note": "2 cases · you save $14 · free shipping", "name": "2 cases — save 18%", "meta": "One on, one in the bag", "flag_label": "Most popular", "flag_style": "popular", "default_checked": true } },
+        { "type": "tier", "settings": { "qty": "3", "each": "27", "was": "39", "note": "3 cases + free screen protector · you save $36", "name": "3 cases — save 31%", "meta": "+ free ArmorGlass protector", "flag_label": "Best value", "flag_style": "save" } },
+        { "type": "thumb", "settings": { "label": "Back<br>view" } },
+        { "type": "thumb", "settings": { "label": "Drop<br>test" } },
+        { "type": "thumb", "settings": { "label": "MagLock<br>1400g" } },
+        { "type": "thumb", "settings": { "label": "2.8mm<br>profile" } },
+        { "type": "thumb", "settings": { "label": "36-mo<br>clarity" } },
+        { "type": "acc", "settings": {
+          "title": "What you get",
+          "default_open": true,
+          "body": "<p>One Halo case cut for your exact model — no universal moulds, no loose corners. Every unit is checked against the manufacturer's CAD file, so the button throw, the mute switch cut-out and the camera ring line up to a tenth of a millimetre.</p><ul><li>Halo case in your chosen finish</li><li>Microfibre lining that won't scratch a glass back</li><li>Fitment card + Screen Promise registration code</li><li>90 days to change your mind, return shipping on us</li></ul>"
+        } },
+        { "type": "acc", "settings": {
+          "title": "Full specifications",
+          "body": "<dl class=\"halo-spec\"><dt>Drop rating</dt><dd>12 ft / 3.6 m · MIL-STD-810G 516.6</dd><dt>Magnet hold</dt><dd>1,400 g pull force · 18 × N52 neodymium</dd><dt>Charging</dt><dd>MagSafe, Qi2 25W, standard Qi</dd><dt>Thickness</dt><dd>2.8 mm back · 3.4 mm rail</dd><dt>Weight</dt><dd>24 g</dd><dt>Camera lip</dt><dd>1.4 mm raised</dd><dt>Screen lip</dt><dd>1.2 mm raised</dd><dt>Materials</dt><dd>PC back · TPU rail · microfibre lining</dd><dt>Coating</dt><dd>ClearGuard UV-stable, anti-fingerprint</dd><dt>Warranty</dt><dd>2 years + Screen Promise</dd></dl>"
+        } },
+        { "type": "acc", "settings": {
+          "title": "How the Screen Promise works",
+          "body": "<p>Register your case within 30 days of delivery using the code on your fitment card. If your screen cracks in a drop while the Halo is fitted, send us a photo of the phone in the case and the repair invoice. We reimburse the repair up to <strong>$200</strong>, once per registered case, for two years.</p>"
+        } }
+      ]
+    }
+  ]
+}
+{% endschema %}

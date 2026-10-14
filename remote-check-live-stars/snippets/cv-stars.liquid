@@ -1,0 +1,15 @@
+{% doc %}
+  Renders five decorative SVG stars with a percentage-based fill layer.
+
+  @param {number} [fill] - Filled percentage from 0 to 100.
+  @param {string} [class] - Optional classes for the star group.
+
+  @example
+  {% render 'cv-stars', fill: 92.4, class: 'cvc__stars' %}
+{% enddoc %}
+{%- assign star_fill = fill | default: 0 | at_least: 0 | at_most: 100 -%}
+{%- capture star -%}<svg class="cv-stars__icon" viewBox="0 0 24 24" focusable="false"><path vector-effect="non-scaling-stroke" d="M12 2.9l2.8 5.7 6.3.9-4.55 4.45 1.07 6.27L12 17.26l-5.62 2.96 1.07-6.27L2.9 9.5l6.3-.9z"/></svg>{%- endcapture -%}
+<span class="cv-stars {{ class }}" style="--fill: {{ star_fill }}%;" aria-hidden="true">
+  <span class="cv-stars__row">{{ star }}{{ star }}{{ star }}{{ star }}{{ star }}</span>
+  <span class="cv-stars__row cv-stars__row--fill">{{ star }}{{ star }}{{ star }}{{ star }}{{ star }}</span>
+</span>

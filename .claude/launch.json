@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "casify-theme-dev",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": ["theme", "dev", "--path", "casify-theme", "--store", "casiffy.myshopify.com", "--port", "9292", "--live-reload", "off", "--no-color"],
+      "port": 9292
+    }
+  ]
+}

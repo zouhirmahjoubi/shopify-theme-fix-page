@@ -1,0 +1,18 @@
+{%- comment -%}
+  Derives the full theme.css color scale from the four Theme Settings base
+  colors (candy_red/teal/cream/cocoa) via Shopify's native color_lighten/
+  color_darken filters. Render inside <head>, after the theme.css link, on
+  every layout that loads theme.css.
+{%- endcomment -%}
+<style>
+  :root{
+    --red-300:{{ settings.candy_red | color_lighten: 23 }};--red-400:{{ settings.candy_red | color_lighten: 10 }};
+    --red-500:{{ settings.candy_red }};--red-600:{{ settings.candy_red | color_darken: 8 }};--red-700:{{ settings.candy_red | color_darken: 18 }};
+    --teal-100:{{ settings.candy_teal | color_lighten: 40 }};--teal-200:{{ settings.candy_teal | color_lighten: 33 }};--teal-300:{{ settings.candy_teal | color_lighten: 20 }};
+    --teal-400:{{ settings.candy_teal | color_lighten: 9 }};--teal-500:{{ settings.candy_teal }};--teal-600:{{ settings.candy_teal | color_darken: 13 }};
+    --cream-50:{{ settings.candy_cream }};--cream-100:{{ settings.candy_cream | color_darken: 3 }};--cream-200:{{ settings.candy_cream | color_darken: 8 }};
+    --cream-300:{{ settings.candy_cream | color_darken: 14 }};--cream-400:{{ settings.candy_cream | color_darken: 21 }};
+    --cocoa-300:{{ settings.candy_cocoa | color_lighten: 29 }};--cocoa-400:{{ settings.candy_cocoa | color_lighten: 17 }};--cocoa-500:{{ settings.candy_cocoa | color_lighten: 7 }};
+    --cocoa-600:{{ settings.candy_cocoa }};--cocoa-700:{{ settings.candy_cocoa | color_darken: 7 }};
+  }
+</style>

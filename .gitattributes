@@ -1,0 +1,2 @@
+# GitHub requires Git LFS for this archive because it exceeds 100 MB.
+deliverables/christmas-merry-little-moments-2026-10-08/merry-little-moments-design-and-gsap.zip filter=lfs diff=lfs merge=lfs -text

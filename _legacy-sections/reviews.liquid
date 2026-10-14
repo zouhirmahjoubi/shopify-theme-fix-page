@@ -1,0 +1,161 @@
+<section class="reviews" id="reviews">
+  <div class="rating-summary" data-cm-reveal>
+    <div class="big">4.9</div>
+    <div style="color:var(--gold-400);font-size:18px;letter-spacing:2px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    <div class="out">{{ section.settings.summary | default: 'Based on 1,284 reviews' }}</div>
+    <div style="margin-top:12px">
+      {%- for r in (5..1) -%}
+        {%- case r -%}
+          {%- when 5 -%}{%- assign pct = 88 -%}
+          {%- when 4 -%}{%- assign pct = 8  -%}
+          {%- when 3 -%}{%- assign pct = 2  -%}
+          {%- when 2 -%}{%- assign pct = 1  -%}
+          {%- when 1 -%}{%- assign pct = 1  -%}
+        {%- endcase -%}
+        <div class="row"><span class="lbl">{{ r }} star</span><div class="bar"><div class="fill" style="width:{{ pct }}%"></div></div><span>{{ pct }}%</span></div>
+      {%- endfor -%}
+    </div>
+    <button class="btn btn--ghost" style="margin-top:14px;width:100%">Write a review</button>
+  </div>
+
+  <div class="review-list cm-stagger-cm" data-cm-reveal>
+    {%- for block in section.blocks -%}
+      <article class="review" {{ block.shopify_attributes }}>
+        <div class="head">
+          <div class="avatar" style="background:{{ block.settings.bg | default: 'var(--cream-200)' }};color:{{ block.settings.color | default: 'var(--red-600)' }}">{{ block.settings.name | slice: 0, 1 | upcase }}</div>
+          <div>
+            <div class="name">{{ block.settings.name }}</div>
+            <div class="date">Verified buyer &middot; {{ block.settings.date }}</div>
+          </div>
+        </div>
+        <div class="stars cm-stars-cascade">
+          {%- for s in (1..block.settings.stars) -%}<span class="cm-star">&#9733;</span>{%- endfor -%}
+          {%- assign empty_stars = 5 | minus: block.settings.stars -%}
+          {%- for s in (1..empty_stars) -%}<span class="cm-star" style="opacity:.25">&#9733;</span>{%- endfor -%}
+        </div>
+        <p class="body">{{ block.settings.body }}</p>
+        <div class="meta">
+          <span class="verified">{% render 'icon', name: 'verified', size: 12 %} Verified</span>
+          <span>&middot; {{ block.settings.device }}</span>
+          <span>&middot; {{ block.settings.colour }}</span>
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "summary",
+      "label": "Rating summary",
+      "default": "Based on 1,284 reviews"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Stars"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Looks exactly like the banner on the website. Dropped it twice on the kitchen tiles, came away with nothing."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Margaret W."
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "3 days ago"
+        },
+        {
+          "type": "text",
+          "id": "device",
+          "label": "Device",
+          "default": "iPhone 15 Pro"
+        },
+        {
+          "type": "text",
+          "id": "colour",
+          "label": "Colour",
+          "default": "Candy stripe"
+        },
+        {
+          "type": "text",
+          "id": "bg",
+          "label": "Avatar background"
+        },
+        {
+          "type": "text",
+          "id": "color",
+          "label": "Avatar color"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "Looks exactly like the banner on the website. Dropped it twice on the kitchen tiles, came away with nothing. The print is sharp and the cream is the right cream — not that plasticky off-white.",
+            "name": "Margaret W.",
+            "date": "3 days ago",
+            "device": "iPhone 15 Pro",
+            "colour": "Candy stripe"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "body": "MagSafe wallet snaps on, charges fine through it. The candy stripes line up cleanly — no halftone, no faded edges. Feels like a tin, not a wrapper.",
+            "name": "Devon P.",
+            "date": "1 week ago",
+            "device": "iPhone 15 Pro Max",
+            "colour": "Teal counter",
+            "bg": "var(--teal-100)",
+            "color": "var(--teal-600)"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "stars": 4,
+            "body": "The Gold ticket colour is exactly the colour of the foil on the tin. Wish I'd ordered the matching tin too, going back for the bundle. Tiny gripe: the case is a touch slicker than I expected.",
+            "name": "Saoirse L.",
+            "date": "2 weeks ago",
+            "device": "iPhone 15",
+            "colour": "Gold ticket",
+            "bg": "var(--gold-200)",
+            "color": "var(--cocoa-600)"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

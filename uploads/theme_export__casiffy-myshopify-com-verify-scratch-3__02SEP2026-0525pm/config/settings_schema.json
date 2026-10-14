@@ -1,0 +1,36 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Casify (Chrismass design)",
+    "theme_version": "1.0.0",
+    "theme_author": "Casify",
+    "theme_documentation_url": "https://casify.shop",
+    "theme_support_url": "https://casify.shop"
+  },
+  {
+    "name": "Logo & favicon",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo image", "info": "If empty, the Chrismass wordmark + red seal is used" },
+      { "type": "range", "id": "logo_height", "label": "Logo height (px)", "min": 32, "max": 120, "step": 2, "default": 56, "unit": "px" }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "header", "content": "Brand" },
+      { "type": "color", "id": "candy_red",   "label": "Candy red",   "default": "#C4302B" },
+      { "type": "color", "id": "candy_teal",  "label": "Candy teal",  "default": "#6C9E9C" },
+      { "type": "color", "id": "candy_cream", "label": "Paper cream", "default": "#FDF9F1" },
+      { "type": "color", "id": "candy_cocoa", "label": "Cocoa ink",   "default": "#4A3324" }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "url", "id": "social_tiktok",    "label": "TikTok URL" },
+      { "type": "url", "id": "social_pinterest", "label": "Pinterest URL" },
+      { "type": "url", "id": "social_facebook",  "label": "Facebook URL" }
+    ]
+  }
+]

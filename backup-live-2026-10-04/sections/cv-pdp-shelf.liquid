@@ -1,0 +1,45 @@
+{%- comment -%}
+  Casify product page: "More from the counter".
+  Real products from Shopify's product recommendations, set on a wooden shelf.
+  The first render is empty; assets/cv-pdp-story.js fetches this section from
+  the recommendations endpoint and swaps the filled version in. With no
+  recommendations the section stays hidden.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+
+<section class="cvp cvp-shelf{% if recommendations.performed? and recommendations.products_count > 0 %} is-filled{% endif %}" data-cvp-shelf
+         data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=related">
+  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+    <div class="cvp__inner">
+      <h2 class="cvp__h2">{{ section.settings.heading | escape }}</h2>
+      <ul class="cvp-shelf__row" role="list">
+        {%- for item in recommendations.products -%}
+          <li class="cvp-shelf__item">
+            <a class="cvp-shelf__card" href="{{ item.url }}">
+              <span class="cvp-shelf__media">
+                {%- if item.featured_image -%}
+                  {{ item.featured_image | image_url: width: 520 | image_tag: widths: '260, 390, 520', sizes: '(min-width: 990px) 260px, 45vw', loading: 'lazy', alt: item.featured_image.alt | default: item.title }}
+                {%- endif -%}
+              </span>
+              <span class="cvp-shelf__title">{{ item.title | escape }}</span>
+              <span class="cvp-shelf__price">{% if item.price_varies %}From {% endif %}{{ item.price_min | money }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Product: more cases",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More from the counter" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Product: more cases" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

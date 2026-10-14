@@ -1,0 +1,252 @@
+/* Offer delivery — a Casify shopkeeper walks in, then drags an offer card on stage.
+ * This file describes the finished scene; cv-offer-courier.js only animates into it,
+ * so the card is complete without JavaScript or with reduced motion. */
+
+.cvoc {
+  --cvoc-skin: #F2C9A5;
+  overflow: clip;
+  padding: clamp(64px, 8vw, 112px) 0;
+  background: var(--cream-100);
+  color: var(--cocoa-700);
+}
+
+.cvoc__stage {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 24px);
+  width: min(calc(100% - 48px), 760px);
+  margin-inline: auto;
+  padding-top: 64px;
+}
+.cvoc__stage::after {
+  content: "";
+  position: absolute;
+  right: -12%;
+  bottom: -2px;
+  left: -12%;
+  border-bottom: 2px dashed var(--border-dashed, rgba(74,51,36,.45));
+}
+
+/* ---- Shopkeeper ---- */
+.cvoc__figure {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  width: clamp(104px, 16vw, 150px);
+  margin-bottom: -8px;
+}
+.cvoc__figure-inner { transform-origin: 50% 100%; }
+.cvoc__mascot { display: block; width: 100%; height: auto; overflow: visible; }
+.cvoc__shadow { fill: rgba(51,35,26,.14); }
+/* Limb pivots are set by GSAP (it manages SVG transform origins itself). */
+
+.cvoc__bubble {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(100% - 6px);
+  left: 42%;
+  width: max-content;
+  max-width: 220px;
+  padding: 9px 13px 8px;
+  border: 1px solid var(--cocoa-700);
+  border-radius: 14px 14px 14px 4px;
+  background: var(--cream-50);
+  box-shadow: 2px 3px 0 var(--cocoa-700);
+  color: var(--cocoa-700);
+  font: 700 .74rem/1.35 var(--font-label);
+  letter-spacing: .02em;
+  transform-origin: 0 100%;
+}
+.cvoc__bubble--before { visibility: hidden; opacity: 0; }
+
+/* ---- Offer card ---- */
+.cvoc__card {
+  --cvoc-accent: var(--red-500);
+  position: relative;
+  z-index: 1;
+  flex: 0 1 460px;
+  min-width: 0;
+  padding: 38px clamp(22px, 3.4vw, 36px) 28px;
+  overflow: hidden;
+  border: 1px solid rgba(74,51,36,.25);
+  border-radius: 16px;
+  background: var(--cream-50);
+  box-shadow: inset 0 1px rgba(255,255,255,.8), 0 14px 30px rgba(51,35,26,.14), 0 3px 8px rgba(51,35,26,.1);
+  transform-origin: 0 100%;
+}
+.cvoc__card--teal { --cvoc-accent: var(--teal-600); }
+.cvoc__card--gold { --cvoc-accent: var(--gold-500); }
+.cvoc__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 12px;
+  background: repeating-linear-gradient(120deg, var(--cvoc-accent) 0 16px, var(--cream-50) 16px 32px);
+  border-bottom: 1px solid rgba(74,51,36,.22);
+}
+
+.cvoc__eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--cvoc-accent);
+  font: 700 .7rem/1.2 var(--font-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.cvoc__title {
+  margin: 0;
+  color: var(--cocoa-700);
+  font: 800 clamp(1.8rem, 3.6vw, 2.6rem)/1.08 var(--font-display);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.cvoc__text { margin-top: 12px; color: var(--cocoa-600); font: .95rem/1.62 var(--font-body); }
+.cvoc__text > :first-child { margin-top: 0; }
+.cvoc__text > :last-child { margin-bottom: 0; }
+
+.cvoc__code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 20px;
+  padding: 11px 12px 11px 16px;
+  border: 2px dashed var(--cvoc-accent);
+  border-radius: 10px;
+  background: var(--cream-100);
+}
+.cvoc__code-label { color: var(--cocoa-500); font: 700 .66rem/1.2 var(--font-label); letter-spacing: .08em; text-transform: uppercase; }
+.cvoc__code-value {
+  flex: 1 1 auto;
+  color: var(--cocoa-700);
+  font: 700 1.2rem/1.2 var(--font-label);
+  letter-spacing: .08em;
+  overflow-wrap: anywhere;
+}
+.cvoc__copy {
+  min-height: 44px;
+  padding: 8px 15px;
+  border: 1px solid var(--cocoa-700);
+  border-radius: 999px;
+  background: var(--cream-50);
+  color: var(--cocoa-700);
+  font: 700 .7rem/1.2 var(--font-label);
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease-out, color var(--duration-fast) ease-out;
+}
+.cvoc__copy:hover { background: var(--cocoa-700); color: var(--cream-50); }
+.cvoc__copy:focus-visible,
+.cvoc__cta:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+.cvoc__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  margin-top: 22px;
+  padding: 12px 22px;
+  border: 1px solid var(--red-700);
+  border-radius: 999px;
+  background: var(--red-500);
+  color: var(--cream-50);
+  box-shadow: inset 0 1px rgba(255,255,255,.25), 0 3px 6px rgba(51,35,26,.16);
+  font: 700 .76rem/1.2 var(--font-label);
+  letter-spacing: .07em;
+  text-decoration: none;
+  transition: background var(--duration-fast) ease-out, transform var(--duration-fast) ease-out;
+}
+.cvoc__cta:hover { background: var(--red-600); color: var(--cream-50); transform: translateY(-2px); }
+.cvoc__fine { margin: 16px 0 0; color: var(--cocoa-500); font: .74rem/1.5 var(--font-body); }
+.cvoc__placeholder { margin: 12px 0 0; color: var(--cocoa-600); font: .9rem/1.6 var(--font-body); }
+
+.cvoc__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Popup (display: popup) ---- */
+.cvoc-pop {
+  width: min(760px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--cocoa-700);
+}
+.cvoc-pop::backdrop { background: rgba(51,35,26,.55); backdrop-filter: blur(2px); }
+.cvoc-pop[open] { animation: cvoc-pop-in 320ms cubic-bezier(.16, 1, .3, 1); }
+.cvoc-pop[open]::backdrop { animation: cvoc-fade 320ms ease-out; }
+@keyframes cvoc-pop-in { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+@keyframes cvoc-fade { from { opacity: 0; } }
+:root:has(.cvoc-pop[open]) { overflow: hidden; }
+
+.cvoc--popup {
+  padding: 22px 0 34px;
+  border: 1px solid rgba(74,51,36,.25);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px -20px rgba(51,35,26,.55);
+}
+.cvoc-pop__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--cocoa-700);
+  border-radius: 50%;
+  background: var(--cream-50);
+  color: var(--cocoa-700);
+  box-shadow: 2px 2px 0 var(--cocoa-700);
+  cursor: pointer;
+  transition: background var(--duration-fast) ease-out, color var(--duration-fast) ease-out;
+}
+.cvoc-pop__close:hover { background: var(--cocoa-700); color: var(--cream-50); }
+.cvoc-pop__close:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+/* A popup narrower than its full 760px: the shopkeeper stands above the card (as on
+   phones), so the "Here you go!" bubble can't cover the offer text beside him. */
+@media (min-width: 600px) and (max-width: 791px) {
+  .cvoc--popup .cvoc__stage { flex-direction: column; align-items: flex-start; gap: 0; width: min(calc(100% - 48px), 460px); padding-top: 56px; }
+  .cvoc--popup .cvoc__figure { width: 104px; margin: 0 0 -14px 12px; }
+  .cvoc--popup .cvoc__card { flex-basis: auto; width: 100%; }
+  .cvoc--popup .cvoc__bubble { left: 78%; }
+}
+
+@media (max-width: 599px) {
+  .cvoc--popup { padding: 12px 0 22px; }
+  .cvoc-pop__close { top: 8px; right: 8px; }
+  .cvoc__stage { flex-direction: column; align-items: flex-start; gap: 0; width: min(calc(100% - 32px), 430px); padding-top: 56px; }
+  .cvoc__figure { width: 96px; margin: 0 0 -14px 12px; }
+  .cvoc__card { flex-basis: auto; width: 100%; padding-top: 34px; }
+  .cvoc__bubble { left: 78%; max-width: 190px; }
+  .cvoc__cta { width: 100%; }
+}
+
+/* theme.css caps every h2 on small phones with !important; opt out like .cvsr__title. */
+@media (max-width: 420px) {
+  .cvoc .cvoc__title { font-size: clamp(1.8rem, 3.6vw, 2.6rem) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvoc-pop[open], .cvoc-pop[open]::backdrop { animation: none; }
+  .cvoc__copy, .cvoc__cta, .cvoc-pop__close { transition: none; }
+  .cvoc__cta:hover { transform: none; }
+}

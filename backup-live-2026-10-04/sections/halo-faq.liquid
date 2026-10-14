@@ -1,0 +1,121 @@
+<section class="halo-sec" id="halo-faq">
+  <div class="halo-sec__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 06 — before you buy' }}</span>
+    <h2>{{ section.settings.heading | default: "The questions our support inbox actually gets" }}</h2>
+  </div>
+
+  <div class="halo-faq">
+    {%- for block in section.blocks -%}
+      <details class="acc"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+        <summary class="acc__sum">
+          {{ block.settings.question | escape }}
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="acc__panel halo-acc__body">{{ block.settings.answer }}</div>
+      </details>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — FAQ",
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Q&A",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Will it fit my exact phone?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tick_label",
+      "label": "Section tick",
+      "default": "Section 06 — before you buy"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The questions our support inbox actually gets"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halo — FAQ",
+      "blocks": [
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Will it fit my exact phone?",
+            "answer": "<p>Every Halo is cut from the manufacturer's CAD file for one specific model — there's no universal mould. Pick your model above; if it isn't listed, it isn't made yet, and we'd rather tell you that than sell you a loose fit. Your model number is in Settings → General → About, or on the back of the phone in small print.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Does it work with MagSafe wallets and chargers?",
+            "answer": "<p>Yes — the full 18-magnet ring is in the case, not a stick-on adapter. It holds MagSafe wallets, car mounts and stands at 1,400 g of pull force, and charges at the full Qi2 25W. You don't need to take the case off for anything.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Is the clear version really not going to yellow?",
+            "answer": "<p>The yellowing you've seen before comes from soft TPU oxidising under UV and skin oil. The Halo back is UV-stable polycarbonate with a bonded top coat, and the flexible rail is a modified TPU with UV inhibitors through the material rather than sprayed on top. After 36 months of accelerated exposure there was no measurable colour shift. If yours yellows inside two years, that's a warranty replacement.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "2.8 mm sounds thin for a 12-foot rating. What's the catch?",
+            "answer": "<p>The back is 2.8 mm; the corners are 4.7 mm. Almost all drop damage enters through a corner, so that's where the material goes. You feel the thin part in your pocket and in your hand, and the thick part only does something on the way to the floor.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Will the buttons go mushy?",
+            "answer": "<p>The button covers are a separate, harder durometer than the rail, moulded in rather than stretched over. They keep a defined click through the two-year warranty. Mushy buttons are what happens when a case uses one soft material for the whole frame to save on tooling.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "What if I drop it and the screen still cracks?",
+            "answer": "<p>Send us a photo of the phone in the case plus the repair invoice, and we reimburse up to $200 — once per registered case, for two years from delivery. Register within 30 days using the code on your fitment card. It doesn't cover water damage, theft, or drops where the case wasn't fitted.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Can I return it if I just don't like it?",
+            "answer": "<p>90 days, any reason, including \"I changed my mind about the colour.\" We email a prepaid label and refund in full once it's scanned. Keep the box or don't.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "When does it arrive?",
+            "answer": "<p>Order before 2pm CT on a business day and it leaves Austin the same day. US delivery is 2–4 business days and free over $45. International is 6–11 days with duties calculated at checkout, so nothing gets charged on the doorstep.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

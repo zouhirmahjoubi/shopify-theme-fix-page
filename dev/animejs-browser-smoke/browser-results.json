@@ -1,0 +1,16 @@
+{
+  "browser": "Headless Microsoft Edge (Chromium)",
+  "classic": "UMD: PASS — API available; animated DOM to x=100, opacity=0.5",
+  "module": "ESM: PASS — API available; animated DOM to x=100, opacity=0.5",
+  "errors": [],
+  "loaded": [
+    {
+      "url": "http://127.0.0.1:4178/assets/anime.umd.min.js",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4178/assets/anime.esm.min.js",
+      "status": 200
+    }
+  ]
+}

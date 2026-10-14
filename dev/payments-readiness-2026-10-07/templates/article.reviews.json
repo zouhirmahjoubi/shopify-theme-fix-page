@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "review-widget",
+      "settings": {
+        "heading": "Customer reviews",
+        "subheading": "Read customer feedback or share your experience.",
+        "show_summary": true,
+        "show_form": true,
+        "reviews_article": "customer-reviews/reviews",
+        "email_alert": true,
+        "per_page": 12,
+        "pad_top": 48,
+        "pad_bottom": 72
+      }
+    }
+  },
+  "order": ["main"]
+}

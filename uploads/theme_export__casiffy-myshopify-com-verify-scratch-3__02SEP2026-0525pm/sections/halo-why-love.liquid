@@ -1,0 +1,85 @@
+<section class="halo-sec halo-love">
+  <div class="halo-sec__hd halo-love__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 01b — the recap' }}</span>
+    <h2>{{ section.settings.heading | default: "Why you'll love it" }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <p>{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="halo-love__grid">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'item' -%}
+        <div class="halo-love__item" data-halo-reveal style="--love-i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <span class="halo-love__icon" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'drop' -%}{{ 'icon-drop.svg' | inline_asset_content }}
+              {%- when 'magsafe' -%}{{ 'icon-magsafe.svg' | inline_asset_content }}
+              {%- when 'anti-yellow' -%}{{ 'icon-anti-yellow.svg' | inline_asset_content }}
+              {%- when 'warranty' -%}{{ 'icon-warranty.svg' | inline_asset_content }}
+              {%- when 'slim' -%}{{ 'icon-slim.svg' | inline_asset_content }}
+              {%- when 'camera' -%}{{ 'icon-camera.svg' | inline_asset_content }}
+              {%- when 'secure' -%}{{ 'icon-secure.svg' | inline_asset_content }}
+              {%- when 'leaf' -%}{{ 'icon-leaf.svg' | inline_asset_content }}
+            {%- endcase -%}
+          </span>
+          <div class="halo-love__text">
+            <h4>{{ block.settings.title | escape }}</h4>
+            <p>{{ block.settings.body }}</p>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Why you'll love it",
+  "settings": [
+    { "type": "text", "id": "tick_label", "label": "Section tick", "default": "Section 01b — the recap" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Why you'll love it" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "drop", "label": "Drop protection" },
+            { "value": "magsafe", "label": "MagSafe" },
+            { "value": "anti-yellow", "label": "Anti-yellowing" },
+            { "value": "slim", "label": "Slim profile" },
+            { "value": "camera", "label": "Camera protection" },
+            { "value": "warranty", "label": "Warranty" },
+            { "value": "secure", "label": "Secure / locked-in" },
+            { "value": "leaf", "label": "Recycled / sustainable" }
+          ],
+          "default": "drop"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Drop-tested protection" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Survives real drops without a scratch." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Halo — Why you'll love it",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "drop", "title": "Drop-tested protection", "body": "Air-cell corners absorb the shock so the shell doesn't have to." } },
+        { "type": "item", "settings": { "icon": "magsafe", "title": "MagSafe ready", "body": "Full-strength magnet ring — snaps to chargers, mounts, and wallets." } },
+        { "type": "item", "settings": { "icon": "anti-yellow", "title": "Never turns yellow", "body": "UV-stable coating keeps clear finishes clear for years, not months." } },
+        { "type": "item", "settings": { "icon": "slim", "title": "Slim, not bulky", "body": "Protection without the pocket bulge — still fits your case like it isn't there." } },
+        { "type": "item", "settings": { "icon": "camera", "title": "Camera protected", "body": "Raised lip keeps the lens off tables and out of scratches." } },
+        { "type": "item", "settings": { "icon": "warranty", "title": "Screen Promise warranty", "body": "Crack your screen with the case on and we help cover the repair." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

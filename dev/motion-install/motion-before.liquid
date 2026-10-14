@@ -1,0 +1,22 @@
+{%- comment -%}
+  Motion 13.4.6 (https://motion.dev, MIT): self-hosted UMD build from the
+  official `motion` npm package (dist/motion.js), saved as assets/motion.min.js.
+
+  layout/theme.liquid renders this in <head> after the GSAP bundle, only on
+  pages where a section's markup contains `data-motion-dev` (and always in the
+  theme editor), so it costs nothing elsewhere. `defer`, like GSAP: it runs
+  before any deferred script later in the document.
+
+  Use the `Motion` global from a deferred or module script:
+    const { animate, scroll, inView, stagger, spring } = window.Motion;
+    animate('.cv-thing', { opacity: [0, 1], y: [16, 0] }, { duration: 0.6 });
+  Respect reduced motion as the GSAP sections do.
+
+  assets/cv-motion-dev.js follows it: the theme's own Motion modules
+  (data-motion-dev="cards" product grids, data-motion-dev="faq" accordions).
+
+  To upgrade: replace assets/motion.min.js with dist/motion.js from a newer
+  `motion` release and update the version here and in the file's banner.
+{%- endcomment -%}
+<script src="{{ 'motion.min.js' | asset_url }}" defer></script>
+<script src="{{ 'cv-motion-dev.js' | asset_url }}" defer></script>

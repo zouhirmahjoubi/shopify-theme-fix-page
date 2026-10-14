@@ -1,0 +1,54 @@
+{% doc %}
+  Renders the product details and shipping accordions for the shop counter.
+
+  @param {product} product - The product shown by the section.
+  @param {string} [details_label] - The details accordion label.
+  @param {string} [brand_label] - The product vendor label.
+  @param {string} [shipping_label] - The shipping accordion label.
+  @param {string} [shipping_text] - The merchant-authored shipping content.
+{% enddoc %}
+
+{%- liquid
+  assign details_text = details_label
+  if details_text == blank
+    assign details_text = 'products.product.details' | t
+  endif
+
+  assign brand_text = brand_label
+  if brand_text == blank
+    assign brand_text = 'products.product.brand' | t
+  endif
+
+  assign shipping_heading = shipping_label
+  if shipping_heading == blank
+    assign shipping_heading = 'products.product.shipping_returns' | t
+  endif
+-%}
+
+<div class="cvc__accs">
+  <details class="cvc__acc">
+    <summary class="cvc__acc-q">
+      <span>{{ details_text | escape }}</span>
+      <span class="cvc__acc-mark" aria-hidden="true"></span>
+    </summary>
+    <div class="cvc__acc-a">
+      {%- if product.description != blank -%}
+        {{ product.description | replace: ' alt="undefined"', ' alt=""' | replace: '<img ', '<img loading="lazy" decoding="async" ' }}
+      {%- elsif product.metafields.custom.highlights != blank -%}
+        {{ product.metafields.custom.highlights | metafield_tag }}
+      {%- else -%}
+        {%- render 'cv-product-facts', product: product -%}
+      {%- endif -%}
+    </div>
+  </details>
+
+  {%- if shipping_text != blank -%}
+    <details class="cvc__acc">
+      <summary class="cvc__acc-q">
+        <span>{{ shipping_heading | escape }}</span>
+        <span class="cvc__acc-mark" aria-hidden="true"></span>
+      </summary>
+      <div class="cvc__acc-a">{{ shipping_text }}</div>
+    </details>
+  {%- endif -%}
+</div>

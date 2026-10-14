@@ -1,0 +1,375 @@
+{%- comment -%}
+  Casify product page: "The Order Slip".
+  The product's photos sit in a scalloped shop-window frame; the buy box is a
+  paper order slip with numbered lines (your phone, style, how many), a
+  handwritten total and the add-to-bag button.
+
+  Commerce lives in assets/cv-product.js: option buttons resolve a real
+  variant id, pack tiers set the quantity, and every per-case price uses the
+  tier's discount percentage, which must match the store's automatic
+  discounts ("Pack of 2 cases: 18% off", "Pack of 3 cases: 31% off"), so the
+  price on the slip is the price at checkout.
+  Styles: assets/cv-pdp-slip.css. Motion: assets/cv-pdp-slip-motion.js.
+{%- endcomment -%}
+{{ 'cv-pdp-slip.css' | asset_url | stylesheet_tag }}
+<script>
+  /* Hide the slip's stamps, tape and total until cv-pdp-slip-motion.js has set their start
+     states. Never under reduced motion, and never for long. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvs-pending');
+    setTimeout(function () { root.classList.remove('cvs-pending'); }, 1400);
+  })(document.documentElement);
+</script>
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+
+  comment
+    The phone-model option: named like one, or else the first option whose values name phones.
+  endcomment
+  assign model_oi = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+      assign model_oi = forloop.index0
+      break
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign fv = option.values.first | downcase
+      if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+
+  assign tier_count = 0
+  assign active_tier = nil
+  for b in section.blocks
+    if b.type == 'tier'
+      assign tier_count = tier_count | plus: 1
+      if active_tier == nil and b.settings.default_checked
+        assign active_tier = b
+      endif
+    endif
+  endfor
+  if tier_count > 0 and active_tier == nil
+    for b in section.blocks
+      if b.type == 'tier'
+        assign active_tier = b
+        break
+      endif
+    endfor
+  endif
+
+  assign active_qty = 1
+  assign active_pct = 0
+  if active_tier != nil
+    assign active_qty = active_tier.settings.qty | at_least: 1
+    assign active_pct = active_tier.settings.discount_pct
+  endif
+  comment
+    USD percentage discount amounts are rounded down to whole cents.
+  endcomment
+  assign active_line = cvar.price | times: active_qty
+  assign active_off = active_line | times: active_pct | divided_by: 100.0 | floor
+  assign active_total = active_line | minus: active_off
+
+  comment
+    Breadcrumb: the collection the shopper came from, else the product's first real
+    category; never the store's front-page collection ("Home page").
+  endcomment
+  assign crumb_collection = false
+  if collection != blank and collection.handle != 'frontpage'
+    assign crumb_collection = collection
+  else
+    for c in product.collections
+      if c.handle != 'frontpage'
+        assign crumb_collection = c
+        break
+      endif
+    endfor
+  endif
+  assign step = 0
+-%}
+
+<section class="cvs" id="cvPdp" data-cv-pdp
+         style="--cvs-frame: url('{{ 'pdp-slip-frame.webp' | asset_url }}'); --cvs-paper: url('{{ 'pdp-slip-paper.png' | asset_url }}');"
+         data-variants="{{ product.variants | json | escape }}"
+         data-current-options="{{ cvar.options | json | escape }}"
+         data-money-format="{{ shop.money_format | escape }}">
+  <div class="cvs__inner">
+    <nav class="cvs__crumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      {%- if crumb_collection != blank -%}
+        <a href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a>
+      {%- else -%}
+        <a href="{{ routes.all_products_collection_url }}">{{ section.settings.crumb_label | default: 'Cases' | escape }}</a>
+      {%- endif -%}
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ product.title | escape }}</span>
+    </nav>
+
+    <div class="cvs__grid">
+      {%- comment -%} ================= Photos ================= {%- endcomment -%}
+      <div class="cvs__gallery">
+        <div class="cvs__window">
+          <div class="cvs__stage">
+            {%- assign hero_media = cvar.featured_media | default: product.featured_media -%}
+            {%- if hero_media != blank -%}
+              {{ hero_media | image_url: width: 1400 | image_tag:
+                  widths: '560, 820, 1100, 1400',
+                  sizes: '(min-width: 990px) 520px, calc(100vw - 48px)',
+                  class: 'cvs__photo', id: 'cvMainImage',
+                  alt: hero_media.alt | default: product.title,
+                  loading: 'eager', fetchpriority: 'high' }}
+            {%- else -%}
+              <span class="cvs__photo cvs__photo--empty" id="cvMainImage" role="img" aria-label="{{ product.title | escape }}"></span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="cvs__thumbs" role="tablist" aria-label="Product photos">
+            {%- for media in product.media limit: 8 -%}
+              {%- if media.media_type == 'image' or media.preview_image -%}
+                {%- assign pic = media.preview_image | default: media -%}
+                <button type="button" class="cvs__thumb" role="tab"
+                        aria-selected="{% if media.id == hero_media.id %}true{% else %}false{% endif %}"
+                        aria-label="Photo {{ forloop.index }} of {{ product.media.size }}"
+                        data-cv-full="{{ pic | image_url: width: 1400 }}">
+                  {{ pic | image_url: width: 220 | image_tag: width: 98, height: 97, alt: '', loading: 'lazy' }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ================= The order slip ================= {%- endcomment -%}
+      <form class="cvs__slip" id="cvAddForm" method="post" action="{{ routes.cart_add_url }}" data-cvs-slip>
+        <input type="hidden" name="id" id="cvVariantId" value="{{ cvar.id }}">
+        <input type="hidden" name="quantity" id="cvQuantity" value="{{ active_qty }}">
+        <span class="cvs__holes" aria-hidden="true"></span>
+        <img class="cvs__tape" src="{{ 'pdp-slip-tape.webp' | asset_url }}" width="363" height="257" alt="" loading="eager">
+
+        <h1 class="cvs__title">{{ product.title | escape }}</h1>
+        <p class="cvs__price">
+          <span id="cvPriceNow">{{ cvar.price | money }}</span>
+          <s id="cvPriceWas"{% unless cvar.compare_at_price > cvar.price %} hidden{% endunless %}>{{ cvar.compare_at_price | money }}</s>
+        </p>
+
+        {%- if model_oi >= 0 -%}
+          {%- assign model_option = product.options_with_values[model_oi] -%}
+          {%- assign step = step | plus: 1 -%}
+          <div class="cvs__line cvs__line--phone">
+            <span class="cvs__stamp" aria-hidden="true">{{ step }}</span>
+            <div class="cvs__phone">
+              <div>
+                <span class="cvs__label" id="cvsPhoneLabel-{{ section.id }}">{{ section.settings.phone_label | default: 'Your phone' | escape }}</span>
+                <span class="cvs__answer" data-cv-opt-out="{{ model_oi }}">{{ cvar.options[model_oi] | escape }}</span>
+              </div>
+              {%- if model_option.values.size > 1 -%}
+                <button type="button" class="cvs__change" aria-expanded="false" aria-controls="cvsModels-{{ section.id }}" data-cvs-change>{{ section.settings.change_label | default: 'Change' | escape }}</button>
+              {%- endif -%}
+            </div>
+            {%- if model_option.values.size > 1 -%}
+              <div class="cvs__models" id="cvsModels-{{ section.id }}" role="radiogroup" aria-labelledby="cvsPhoneLabel-{{ section.id }}" hidden data-cvs-models>
+                {%- for value in model_option.values -%}
+                  {%- liquid
+                    assign vmatch = nil
+                    for v in product.variants
+                      if v.options[model_oi] == value
+                        if vmatch == nil
+                          assign vmatch = v
+                        endif
+                        if v.available
+                          assign vmatch = v
+                          break
+                        endif
+                      endif
+                    endfor
+                  -%}
+                  <button type="button" class="cvs__model" role="radio"
+                          aria-checked="{% if cvar.options[model_oi] == value %}true{% else %}false{% endif %}"
+                          data-cv-option-index="{{ model_oi }}"
+                          data-cv-value="{{ value | escape }}"
+                          data-cv-stock="{% unless vmatch.available %}out{% endunless %}">{{ value | escape }}</button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- for option in product.options_with_values -%}
+          {%- assign oi = forloop.index0 -%}
+          {%- if oi != model_oi and option.values.size > 0 -%}
+            {%- assign step = step | plus: 1 -%}
+            {%- liquid
+              assign line_label = option.name
+              if section.settings.option_label != blank and forloop.first == true or section.settings.option_label != blank and oi == 1 and model_oi == 0
+                assign line_label = section.settings.option_label
+              endif
+            -%}
+            <div class="cvs__line cvs__line--style">
+              <span class="cvs__stamp" aria-hidden="true">{{ step }}</span>
+              <span class="cvs__label" id="cvsOpt{{ oi }}-{{ section.id }}">{{ line_label | escape }}</span>
+              <div class="cvs__pills" role="radiogroup" aria-labelledby="cvsOpt{{ oi }}-{{ section.id }}">
+                {%- for value in option.values -%}
+                  {%- liquid
+                    assign vmatch = nil
+                    for v in product.variants
+                      if v.options[oi] == value
+                        if vmatch == nil
+                          assign vmatch = v
+                        endif
+                        if v.available
+                          assign vmatch = v
+                          break
+                        endif
+                      endif
+                    endfor
+                  -%}
+                  <button type="button" class="cvs__pill" role="radio"
+                          aria-checked="{% if cvar.options[oi] == value %}true{% else %}false{% endif %}"
+                          data-cv-option-index="{{ oi }}"
+                          data-cv-value="{{ value | escape }}"
+                          data-cv-stock="{% unless vmatch.available %}out{% endunless %}">{{ value | escape }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if tier_count > 0 -%}
+          {%- assign step = step | plus: 1 -%}
+          <div class="cvs__line cvs__line--packs">
+            <span class="cvs__stamp" aria-hidden="true">{{ step }}</span>
+            <span class="cvs__label" id="cvsPacks-{{ section.id }}">{{ section.settings.packs_label | default: 'How many' | escape }}</span>
+            <div class="cvs__packs" role="radiogroup" aria-labelledby="cvsPacks-{{ section.id }}">
+              {%- for b in section.blocks -%}
+                {%- if b.type == 'tier' -%}
+                  {%- liquid
+                    assign t_qty = b.settings.qty | at_least: 1
+                    assign t_line = cvar.price | times: t_qty
+                    assign t_off = t_line | times: b.settings.discount_pct | divided_by: 100.0 | floor
+                    assign t_each = t_line | minus: t_off | divided_by: t_qty
+                  -%}
+                  <button type="button" class="cvs__pack" role="radio"
+                          aria-checked="{% if b.id == active_tier.id %}true{% else %}false{% endif %}"
+                          data-cv-qty="{{ t_qty }}"
+                          data-cv-discount="{{ b.settings.discount_pct }}"
+                          {{ b.shopify_attributes }}>
+                    {%- if b.settings.flag_label != blank -%}<span class="cvs__flag">{{ b.settings.flag_label | escape }}</span>{%- endif -%}
+                    <span>{{ b.settings.name | escape }}</span>
+                    <span class="cvs__pack-each" data-cv-tier-each>{{ t_each | money }}{% if t_qty > 1 %} each{% endif %}</span>
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- if section.settings.mix_packs -%}
+              {%- assign max_qty = 1 -%}
+              {%- for b in section.blocks -%}{%- if b.type == 'tier' and b.settings.qty > max_qty -%}{%- assign max_qty = b.settings.qty -%}{%- endif -%}{%- endfor -%}
+              {%- render 'cv-pack-slots', product: product, model_oi: model_oi, max_qty: max_qty, active_qty: active_qty, look: 'slip', sid: section.id,
+                  heading: section.settings.mix_heading, hint: section.settings.mix_hint, same_label: section.settings.mix_same, first_note: section.settings.mix_first_note -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <p class="cvs__total">
+          <span class="cvs__total-label">{{ section.settings.total_label | default: 'Total' | escape }}</span>
+          <span class="cvs__total-value" id="cvTotal">{{ active_total | money }}</span>
+        </p>
+        <button type="submit" class="cvs__cta" id="cvAddBtn"{% unless cvar.available %} disabled{% endunless %}>
+          <span id="cvCtaLabel" data-label-default="{{ section.settings.cta_label | default: 'Add to bag' | escape }}">
+            {%- if cvar.available -%}{{ section.settings.cta_label | default: 'Add to bag' | escape }}{%- else -%}Sold out{%- endif -%}
+          </span>
+        </button>
+        <p class="cvs__status" id="cvStatus" role="status" aria-live="polite"></p>
+        {%- if section.settings.service_line != blank -%}
+          <p class="cvs__service">{{ section.settings.service_line | escape }}</p>
+        {%- endif -%}
+      </form>
+    </div>
+  </div>
+
+  {%- comment -%} Sticky bar once the slip's button scrolls away. {%- endcomment -%}
+  <div class="cvs-sticky" id="cvSticky" aria-hidden="true">
+    <div class="cvs-sticky__info">
+      <span class="cvs-sticky__name">{{ product.title | escape }}</span>
+      <span class="cvs-sticky__meta"><span data-cv-opt-out-sticky>{{ cvar.title | escape }}</span> · <b id="cvStickyTotal">{{ active_total | money }}</b></span>
+    </div>
+    <button type="button" class="cvs-sticky__btn" id="cvStickyBtn" tabindex="-1">{{ section.settings.sticky_cta | default: 'Add to bag' | escape }}</button>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  {%- if product.featured_image %}"image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+  {%- if product.description != blank %}"description": {{ product.description | strip_html | truncate: 300 | json }},{% endif %}
+  "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "lowPrice": {{ product.price_min | divided_by: 100.0 | json }},
+    "highPrice": {{ product.price_max | divided_by: 100.0 | json }},
+    "offerCount": {{ product.variants.size }},
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Product: order slip",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "crumb_label", "label": "Breadcrumb shop label", "default": "Cases", "info": "Used when the product isn't viewed inside a collection." },
+    { "type": "header", "content": "Order slip" },
+    { "type": "text", "id": "phone_label", "label": "Phone line label", "default": "Your phone" },
+    { "type": "text", "id": "change_label", "label": "Change link", "default": "Change" },
+    { "type": "text", "id": "option_label", "label": "Style line label", "default": "Style", "info": "Label for the product's other option. Leave empty to use the option's own name." },
+    { "type": "text", "id": "packs_label", "label": "Pack line label", "default": "How many" },
+    { "type": "checkbox", "id": "mix_packs", "label": "Let each case in a pack have its own colour and phone", "default": true, "info": "Works with the store's pack discounts, which count any cases in the bag." },
+    { "type": "text", "id": "mix_heading", "label": "Mixed pack heading", "default": "Your [qty] cases", "info": "[qty] is the pack size." },
+    { "type": "text", "id": "mix_hint", "label": "Mixed pack hint", "default": "Pick a colour and phone for each case. Mix them however you like." },
+    { "type": "text", "id": "mix_first_note", "label": "Note beside case 1", "default": "chosen above" },
+    { "type": "text", "id": "mix_same", "label": "Match case 1 link", "default": "Same as case 1" },
+    { "type": "text", "id": "total_label", "label": "Total label", "default": "Total" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Add to bag" },
+    { "type": "text", "id": "service_line", "label": "Service line", "default": "Free shipping · 30-day returns · Ships in 1-3 business days", "info": "State only what is true for every order." },
+    { "type": "text", "id": "sticky_cta", "label": "Sticky bar button", "default": "Add to bag" }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Pack tier",
+      "limit": 4,
+      "settings": [
+        { "type": "number", "id": "qty", "label": "Cases", "default": 1 },
+        { "type": "range", "id": "discount_pct", "label": "Discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify admin > Discounts, or checkout will charge a different price than the slip shows." },
+        { "type": "text", "id": "name", "label": "Label", "default": "1 case" },
+        { "type": "text", "id": "flag_label", "label": "Ribbon", "info": "Optional. Keep it true, for example Save 18% or Best value." },
+        { "type": "checkbox", "id": "default_checked", "label": "Selected by default", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: order slip",
+      "blocks": [
+        { "type": "tier", "settings": { "qty": 1, "discount_pct": 0, "name": "1 case" } },
+        { "type": "tier", "settings": { "qty": 2, "discount_pct": 18, "name": "2 cases", "flag_label": "Save 18%", "default_checked": true } },
+        { "type": "tier", "settings": { "qty": 3, "discount_pct": 31, "name": "3 cases" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

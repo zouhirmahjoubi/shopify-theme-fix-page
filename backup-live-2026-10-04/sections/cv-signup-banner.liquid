@@ -1,0 +1,255 @@
+{%- comment -%}
+  Casify — email signup banner (Chrismass design system).
+
+  A rebuild of the Shrine "email-signup-banner": a full-bleed banner image
+  (or, without one, a candy-stripe backdrop with a few drifting sweets) with
+  the signup card placed in one of nine positions. The card is an airmail
+  envelope from the shop: candy-striped edge, wax seal, typewriter label and
+  an enamel "Sign up" button. After a successful post it shows a postmark.
+
+  Blocks keep the original set: heading, paragraph, email form (one each).
+
+  Motion: assets/cv-signup-motion.js (GSAP + ScrollTrigger + SplitText).
+  Styles: assets/cv-signup-banner.css, the finished static state.
+{%- endcomment -%}
+{{ 'cv-signup-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign has_image = false
+  if st.show_background_image and st.image != blank
+    assign has_image = true
+  endif
+  assign ratio_style = ''
+  if st.image_height == 'adapt-image' and has_image
+    assign ratio = 1 | divided_by: st.image.aspect_ratio | times: 100
+    assign ratio_style = '--cvsu-ratio: ' | append: ratio | append: '%;'
+  endif
+  assign form_id = 'cvsu-form-' | append: section.id
+-%}
+
+<section
+  id="Banner-{{ section.id }}"
+  class="cvsu cvsu--h-{{ st.image_height }} cvsu--pos-{{ st.desktop_content_position }} cvsu--align-{{ st.desktop_content_alignment }} cvsu--m-align-{{ st.mobile_content_alignment }} cvsu--box-{{ st.box_tone }}{% unless st.show_background_image %} cvsu--no-media{% endunless %}{% if st.show_text_below %} cvsu--m-below{% endif %}{% unless st.show_text_box %} cvsu--bare{% endunless %}"
+  data-cvsu
+  style="{{ ratio_style }} --cvsu-overlay: {{ st.image_overlay_opacity | divided_by: 100.0 }};"
+>
+  {%- if st.show_background_image -%}
+    <div class="cvsu__media" data-cvsu-media aria-hidden="{% if has_image %}false{% else %}true{% endif %}">
+      <div class="cvsu__drift" data-cvsu-drift>
+        {%- if has_image -%}
+          {{ st.image | image_url: width: 3840 | image_tag:
+            class: 'cvsu__img',
+            loading: 'lazy',
+            widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+            sizes: '100vw'
+          }}
+        {%- else -%}
+          <div class="cvsu__stripes"></div>
+          <svg class="cvsu__sweet cvsu__sweet--1" data-cvsu-sweet viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="18" class="cvsu__mint-rim"/><path class="cvsu__mint-swirl" d="M20 4a16 16 0 0 1 14 8l-14 8zM36 20a16 16 0 0 1-8 14l-8-14zM20 36a16 16 0 0 1-14-8l14-8zM4 20a16 16 0 0 1 8-14l8 14z"/><circle cx="20" cy="20" r="3" class="cvsu__mint-rim"/></svg>
+          <svg class="cvsu__sweet cvsu__sweet--2" data-cvsu-sweet viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="18" class="cvsu__mint-rim"/><path class="cvsu__mint-swirl cvsu__mint-swirl--teal" d="M20 4a16 16 0 0 1 14 8l-14 8zM36 20a16 16 0 0 1-8 14l-8-14zM20 36a16 16 0 0 1-14-8l14-8zM4 20a16 16 0 0 1 8-14l8 14z"/><circle cx="20" cy="20" r="3" class="cvsu__mint-rim"/></svg>
+          <svg class="cvsu__sweet cvsu__sweet--3" data-cvsu-sweet viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="18" class="cvsu__mint-rim"/><path class="cvsu__mint-swirl" d="M20 4a16 16 0 0 1 14 8l-14 8zM36 20a16 16 0 0 1-8 14l-8-14zM20 36a16 16 0 0 1-14-8l14-8zM4 20a16 16 0 0 1 8-14l8 14z"/><circle cx="20" cy="20" r="3" class="cvsu__mint-rim"/></svg>
+          <svg class="cvsu__sweet cvsu__sweet--4" data-cvsu-sweet viewBox="0 0 40 40" focusable="false"><circle cx="20" cy="20" r="18" class="cvsu__mint-rim"/><path class="cvsu__mint-swirl cvsu__mint-swirl--teal" d="M20 4a16 16 0 0 1 14 8l-14 8zM36 20a16 16 0 0 1-8 14l-8-14zM20 36a16 16 0 0 1-14-8l14-8zM4 20a16 16 0 0 1 8-14l8 14z"/><circle cx="20" cy="20" r="3" class="cvsu__mint-rim"/></svg>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="cvsu__content">
+    <div class="cvsu__card" data-cvsu-card>
+      <span class="cvsu__seal" data-cvsu-seal aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M3.5 6.5h17v11h-17z"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>
+      </span>
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="cvsu__title cvsu__title--{{ block.settings.heading_size }}" data-cvsu-heading {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+            {%- endif -%}
+          {%- when 'paragraph' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="cvsu__text cvsu__text--{{ block.settings.text_style }}" data-cvsu-fade {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- endif -%}
+          {%- when 'email_form' -%}
+            <div class="cvsu__form-wrap" data-cvsu-form-wrap {{ block.shopify_attributes }}>
+              {%- form 'customer', id: form_id, class: 'cvsu-form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                {%- if form.posted_successfully? -%}
+                  <div class="cvsu-done" data-cvsu-done>
+                    <span class="cvsu-done__mark" data-cvsu-postmark aria-hidden="true">
+                      <svg viewBox="0 0 120 120" focusable="false">
+                        <circle cx="60" cy="60" r="52"/><circle cx="60" cy="60" r="42"/>
+                        <path d="M14 52h92M14 68h92"/>
+                      </svg>
+                      <span class="cvsu-done__word">{{ block.settings.postmark_text | escape }}</span>
+                    </span>
+                    <p class="cvsu-done__msg" id="{{ form_id }}-success" role="status" tabindex="-1">{{ 'general.newsletter.confirmation' | t }}</p>
+                  </div>
+                {%- else -%}
+                  <label class="cvsu-form__label" for="{{ form_id }}-email">{{ 'general.newsletter.label' | t }}</label>
+                  <div class="cvsu-form__row">
+                    <input
+                      class="cvsu-form__input"
+                      id="{{ form_id }}-email"
+                      type="email"
+                      name="contact[email]"
+                      value="{{ form.email }}"
+                      placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                      autocomplete="email"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      required
+                      aria-required="true"
+                      {%- if form.errors %}
+                        aria-invalid="true"
+                        aria-describedby="{{ form_id }}-error"
+                        autofocus
+                      {%- endif %}
+                    >
+                    <button type="submit" class="cvsu-form__btn" data-cvsu-btn>
+                      {%- liquid
+                        assign btn_label = block.settings.button_label
+                        if btn_label == blank
+                          assign btn_label = 'general.newsletter.submit' | t
+                        endif
+                      -%}
+                      <span class="cvsu-form__btn-label">{{ btn_label | escape }}</span>
+                      <svg class="cvsu-form__btn-arrow" data-cvsu-arrow viewBox="0 0 28 16" aria-hidden="true" focusable="false"><path d="M1 8h23M17 1l7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                  {%- if form.errors -%}
+                    <p class="cvsu-form__error" id="{{ form_id }}-error" role="alert">
+                      {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+                    </p>
+                  {%- endif -%}
+                  {%- if block.settings.fine_print != blank -%}
+                    <p class="cvsu-form__fine">{{ block.settings.fine_print | escape }}</p>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Email signup banner",
+  "tag": "div",
+  "disabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "header", "content": "Background" },
+    { "type": "checkbox", "id": "show_background_image", "label": "Show background", "info": "Without an image, a candy-stripe backdrop is used.", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "range", "id": "image_overlay_opacity", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Image overlay opacity", "default": 0 },
+    {
+      "type": "select", "id": "image_height", "label": "Banner height", "default": "medium",
+      "info": "Adapt to image works best with a background image.",
+      "options": [
+        { "value": "adapt-image", "label": "Adapt to image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ]
+    },
+    { "type": "header", "content": "Card" },
+    {
+      "type": "select", "id": "desktop_content_position", "label": "Desktop card position", "default": "middle-center",
+      "options": [
+        { "value": "top-left", "label": "Top left" },
+        { "value": "top-center", "label": "Top center" },
+        { "value": "top-right", "label": "Top right" },
+        { "value": "middle-left", "label": "Middle left" },
+        { "value": "middle-center", "label": "Middle center" },
+        { "value": "middle-right", "label": "Middle right" },
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_text_box", "label": "Show envelope card on desktop", "default": true },
+    {
+      "type": "select", "id": "desktop_content_alignment", "label": "Desktop text alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select", "id": "box_tone", "label": "Card color", "default": "paper",
+      "options": [
+        { "value": "paper", "label": "Paper" },
+        { "value": "ticket", "label": "Ticket gold" },
+        { "value": "cocoa", "label": "Cocoa" }
+      ]
+    },
+    { "type": "header", "content": "Mobile layout" },
+    {
+      "type": "select", "id": "mobile_content_alignment", "label": "Mobile text alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_text_below", "label": "Show card below image on mobile", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Italic words are set in the script face — use it for one short flourish.", "default": "Letters from the <em>sweet shop</em>" },
+        {
+          "type": "select", "id": "heading_size", "label": "Heading size", "default": "h1",
+          "options": [
+            { "value": "h2", "label": "Small" },
+            { "value": "h1", "label": "Medium" },
+            { "value": "h0", "label": "Large" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "name": "Paragraph",
+      "limit": 1,
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>New designs and restocks, posted straight to your inbox.</p>" },
+        {
+          "type": "select", "id": "text_style", "label": "Text style", "default": "body",
+          "options": [
+            { "value": "body", "label": "Body" },
+            { "value": "subtitle", "label": "Subtitle" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "email_form",
+      "name": "Email form",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "button_label", "label": "Button label", "info": "Leave blank to use the theme's default text." },
+        { "type": "text", "id": "fine_print", "label": "Fine print", "default": "Unsubscribe any time." },
+        { "type": "text", "id": "postmark_text", "label": "Postmark word", "info": "Stamped on the card after signing up.", "default": "Posted" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Email signup banner",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "paragraph" },
+        { "type": "email_form" }
+      ]
+    }
+  ]
+}
+{% endschema %}

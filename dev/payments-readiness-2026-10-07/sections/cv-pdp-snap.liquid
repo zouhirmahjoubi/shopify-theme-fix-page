@@ -1,0 +1,132 @@
+{%- comment -%}
+  Casify product page: counter snapshots.
+  A gallery band for right under the main product images: this product's own
+  photos pinned with a clothespin (KIE set piece assets/pdp-home-clothespin.webp)
+  on a length of twine, a pull-quote of shop copy (not attributed to any named
+  customer — no review is invented here), and three facts read from this
+  product and the store's live pack settings: how many phones it is made for,
+  how many cases are in its pack, and that pack's real discount. Hidden when
+  the product has fewer than three photos, same rule as cv-pdp-reel.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pics = 0
+  for media in product.media
+    if media.media_type == 'image' or media.preview_image
+      assign pics = pics | plus: 1
+    endif
+  endfor
+  assign shown = pics | at_most: section.settings.limit
+
+  assign models = 0
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    assign fv = option.values.first | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'samsung'
+      assign models = option.values.size
+    endif
+  endfor
+-%}
+
+{%- if shown >= 3 -%}
+  <section class="cvw cvw-snap" data-cvw-snap aria-labelledby="cvwSnapTitle-{{ section.id }}">
+    <div class="cvp__inner cvw-snap__grid">
+      <div class="cvw-snap__gallery">
+        <div class="cvw-head">
+          <h2 class="cvp__h2" id="cvwSnapTitle-{{ section.id }}" data-cvw-split>{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+        </div>
+
+        <div class="cvw-snap__rail">
+          <button type="button" class="cvw-snap__nav is-prev" data-cvw-snap-nav="-1" aria-label="{{ section.settings.prev_label | escape }}">
+            {%- render 'cv-icon', name: 'arrow-right', size: 18 -%}
+          </button>
+
+          <div class="cvw-snap__viewport" data-cvw-snap-viewport tabindex="0" role="region" aria-label="{{ product.title | escape }}: {{ shown }} photos">
+            <svg class="cvw-snap__line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path data-cvw-snap-line d="M0 5 Q 12 1, 25 5 T 50 5 T 75 5 T 100 5"/></svg>
+            <ol class="cvw-snap__strip" role="list" data-cvw-snap-strip>
+              {%- assign n = 0 -%}
+              {%- for media in product.media -%}
+                {%- if n < shown -%}
+                  {%- if media.media_type == 'image' or media.preview_image -%}
+                    {%- assign n = n | plus: 1 -%}
+                    {%- assign pic = media.preview_image | default: media -%}
+                    <li class="cvw-snap__frame" data-cvw-snap-frame style="--cv-i:{{ forloop.index0 }}">
+                      <img class="cvw-snap__pin" src="{{ 'pdp-home-clothespin.webp' | asset_url }}" width="992" height="264" alt="" loading="lazy" decoding="async">
+                      <figure class="cvw-snap__photo">
+                        {{ pic | image_url: width: 640 | image_tag: widths: '320, 480, 640', sizes: '(min-width: 990px) 280px, 62vw', loading: 'lazy', alt: pic.alt | default: product.title, class: 'cvw-snap__img' }}
+                      </figure>
+                    </li>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </ol>
+          </div>
+
+          <button type="button" class="cvw-snap__nav is-next" data-cvw-snap-nav="1" aria-label="{{ section.settings.next_label | escape }}">
+            {%- render 'cv-icon', name: 'arrow-right', size: 18 -%}
+          </button>
+        </div>
+      </div>
+
+      <div class="cvw-snap__aside">
+        {%- if section.settings.quote != blank -%}
+          <figure class="cvw-snap__quote" data-cvw-quote>
+            <span class="cvw-snap__quote-mark" aria-hidden="true">{%- render 'cv-icon', name: 'quote', size: 30 -%}</span>
+            <blockquote>{{ section.settings.quote }}</blockquote>
+          </figure>
+        {%- endif -%}
+
+        <ul class="cvw-snap__stats" role="list" data-cvw-snap-stats>
+          {%- if models > 0 -%}
+            <li class="cvw-snap__stat">
+              <span class="cvw-snap__stat-ico">{%- render 'cv-icon', name: 'device', size: 26, animate: true -%}</span>
+              <b>{{ models }}</b>
+              <span>{{ section.settings.models_label | escape }}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.pack_qty > 1 -%}
+            <li class="cvw-snap__stat">
+              <span class="cvw-snap__stat-ico">{%- render 'cv-icon', name: 'gift', size: 26, animate: true -%}</span>
+              <b>{{ section.settings.pack_qty }}</b>
+              <span>{{ section.settings.pack_label | escape }}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.pack_pct > 0 -%}
+            <li class="cvw-snap__stat">
+              <span class="cvw-snap__stat-ico">{%- render 'cv-icon', name: 'price-tag', size: 26, animate: true -%}</span>
+              <b>{{ section.settings.pack_pct }}%</b>
+              <span>{{ section.settings.pack_pct_label | escape }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: snapshots",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Straight off the counter" },
+    { "type": "text", "id": "lede", "label": "Intro", "default": "This case's own photos, pinned up like they came off the shop wall." },
+    { "type": "range", "id": "limit", "label": "Photos shown", "min": 3, "max": 8, "step": 1, "default": 5 },
+    { "type": "text", "id": "prev_label", "label": "Previous button label", "default": "Previous photo" },
+    { "type": "text", "id": "next_label", "label": "Next button label", "default": "Next photo" },
+    { "type": "header", "content": "Pull-quote", "info": "Shop copy, not a customer review — no name or star rating is attached." },
+    { "type": "richtext", "id": "quote", "label": "Quote", "default": "<p>Cut for your exact phone, not a size that's “close enough.” Slim in the hand, tough where it counts.</p>" },
+    { "type": "header", "content": "Facts", "info": "Every number here is read from this product or the pack settings below — nothing is invented." },
+    { "type": "text", "id": "models_label", "label": "Phones label", "default": "phone models made for" },
+    { "type": "number", "id": "pack_qty", "label": "Pack size", "default": 3 },
+    { "type": "text", "id": "pack_label", "label": "Pack size label", "default": "cases in this pack" },
+    { "type": "range", "id": "pack_pct", "label": "That pack's discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the automatic discount in Shopify admin. Set 0 to hide." },
+    { "type": "text", "id": "pack_pct_label", "label": "Discount label", "default": "off the pack, no code" }
+  ],
+  "presets": [{ "name": "Product: counter snapshots" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

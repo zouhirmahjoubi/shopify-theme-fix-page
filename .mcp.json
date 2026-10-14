@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "mosaic-motion": {
+      "type": "sse",
+      "url": "https://mcp.motion.so/mcp"
+    },
+    "motion": {
+      "type": "http",
+      "url": "https://mcp.motion.dev"
+    },
+    "motion-plus": {
+      "type": "http",
+      "url": "https://mcp.motion.dev/plus"
+    }
+  }
+}

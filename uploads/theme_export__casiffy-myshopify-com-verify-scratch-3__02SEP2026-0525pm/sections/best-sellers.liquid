@@ -1,0 +1,571 @@
+{%- comment -%}
+  Bestsellers shop grid — badge + icon-panel media + rating + price + CTA card,
+  in Casify's own candy/cocoa palette and existing icon set (no external images).
+{%- endcomment -%}
+<section class="shop-grid" data-cm-reveal>
+  <h2 class="cm-section-title"><small>{{ section.settings.eyebrow | default: 'Shop bestsellers' }}</small>{{ section.settings.heading | default: "Loved by 50,000+ iPhone owners" }}</h2>
+  <div class="shop-grid__list cm-stagger-cm">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign tone = block.settings.badge_tone | default: 'red'
+        assign panel = block.settings.panel_tone | default: 'cream'
+      -%}
+      {%- assign card_product = block.settings.product -%}
+      {%- assign card_variant = card_product.selected_or_first_available_variant | default: card_product.first_available_variant -%}
+      {%- assign card_has_product = false -%}
+      {%- if card_product != blank and card_variant != blank -%}
+        {%- assign card_has_product = true -%}
+      {%- endif -%}
+      <article class="shop-card{% if card_has_product %} shop-card--real{% endif %}" {{ block.shopify_attributes }} data-shop-card>
+        <a class="shop-card__media-link" href="{{ card_product.url | default: block.settings.button_link | default: '#' }}" aria-label="View {{ block.settings.title | default: card_product.title | escape }}">
+          <div class="shop-card__media shop-card__media--{{ panel }}">
+            {%- if block.settings.badge != blank -%}
+              <span class="cm-stamp shop-card__badge shop-card__badge--{{ tone }}">{{ block.settings.badge }}</span>
+            {%- endif -%}
+            {%- if card_has_product and card_product.featured_image -%}
+              <img class="shop-card__image" src="{{ card_product.featured_image | image_url: width: 600 }}" alt="{{ card_product.featured_image.alt | default: card_product.title | escape }}" width="300" height="225" loading="lazy">
+            {%- else -%}
+              <span class="shop-card__icon">
+                {%- case block.settings.icon -%}
+                  {%- when 'case' -%}{{ 'icon-phone-case.svg' | inline_asset_content }}
+                  {%- when 'magsafe' -%}{{ 'icon-magsafe.svg' | inline_asset_content }}
+                  {%- when 'candy' -%}{{ 'icon-candy-swirl.svg' | inline_asset_content }}
+                  {%- when 'ribbon' -%}{{ 'icon-ribbon.svg' | inline_asset_content }}
+                  {%- when 'sparkle' -%}{{ 'icon-sparkle.svg' | inline_asset_content }}
+                  {%- when 'drop' -%}{{ 'icon-drop.svg' | inline_asset_content }}
+                  {%- when 'anti-yellow' -%}{{ 'icon-anti-yellow.svg' | inline_asset_content }}
+                  {%- when 'leaf' -%}{{ 'icon-leaf.svg' | inline_asset_content }}
+                {%- endcase -%}
+              </span>
+            {%- endif -%}
+            {%- if block.settings.chip1_text != blank or block.settings.chip2_text != blank -%}
+              <div class="shop-card__chips">
+                {%- if block.settings.chip1_text != blank -%}
+                  <span class="shop-card__chip">{% render 'icon', name: block.settings.chip1_icon, size: 11 %}{{ block.settings.chip1_text }}</span>
+                {%- endif -%}
+                {%- if block.settings.chip2_text != blank -%}
+                  <span class="shop-card__chip">{% render 'icon', name: block.settings.chip2_icon, size: 11 %}{{ block.settings.chip2_text }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </a>
+        <div class="shop-card__body">
+          {%- if block.settings.rating != blank -%}
+            <div class="shop-card__rating">
+              <span class="shop-card__stars">
+                {%- for s in (1..block.settings.rating) -%}&#9733;{%- endfor -%}
+                {%- assign empty_stars = 5 | minus: block.settings.rating -%}
+                {%- for s in (1..empty_stars) -%}<span class="is-empty">&#9733;</span>{%- endfor -%}
+              </span>
+              {%- if block.settings.review_count != blank -%}<span class="shop-card__count">({{ block.settings.review_count }})</span>{%- endif -%}
+            </div>
+          {%- endif -%}
+          <h3 class="shop-card__title">{{ block.settings.title | default: card_product.title | escape }}</h3>
+          <p class="shop-card__desc">{{ block.settings.body }}</p>
+          <div class="shop-card__price">
+            {%- if card_has_product -%}
+              {{ card_product.price | money }}
+              {%- if card_product.compare_at_price and card_product.compare_at_price > card_product.price -%}
+                <s>{{ card_product.compare_at_price | money }}</s>
+              {%- elsif block.settings.compare != blank -%}
+                <s>${{ block.settings.compare }}</s>
+              {%- endif -%}
+            {%- else -%}
+              ${{ block.settings.price }}
+              {%- if block.settings.compare != blank -%} <s>${{ block.settings.compare }}</s>{%- endif -%}
+            {%- endif -%}
+          </div>
+          {%- if card_has_product -%}
+            <form method="post" action="{{ routes.cart_add_url }}" data-cart-add-form data-shop-quick-add class="shop-card__form">
+              <input type="hidden" name="id" value="{{ card_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="btn btn--block cm-press cm-add-btn shop-card__add{% if block.settings.tone == 'teal' %} btn--teal{% elsif block.settings.tone == 'ghost' %} btn--ghost{% endif %}"{% unless card_variant.available %} disabled{% endunless %}>
+                {% render 'icon', name: 'bag', size: 16 %}
+                <span>{% if card_variant.available %}Add to bag · {{ card_product.price | money }}{% else %}Sold out{% endif %}</span>
+              </button>
+            </form>
+            <a href="{{ card_product.url }}" class="shop-card__view-link">View details
+              {% render 'icon', name: 'arrow-right', size: 12 %}
+            </a>
+          {%- else -%}
+            <a href="{{ block.settings.button_link | default: '#' }}" class="btn btn--block cm-press{% if block.settings.tone == 'teal' %} btn--teal{% elsif block.settings.tone == 'ghost' %} btn--ghost{% endif %}">{{ block.settings.button_text | default: 'Shop Now' }}</a>
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+/* Bestsellers quick-add micro-animation: fires a bag-fly from the
+   clicked button the moment the user submits. cart.js owns the
+   real /cart/add fetch and the toast — this just provides the
+   immediate visual feedback that matches the PDP's addToBag(). */
+(function () {
+  if (window.CASIFY_BESTSELLERS_BOUND) return;
+  window.CASIFY_BESTSELLERS_BOUND = true;
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function flyFromBtn(btn) {
+    if (REDUCED || !btn) return;
+    var rect = btn.getBoundingClientRect();
+    var flyer = document.createElement('div');
+    flyer.className = 'cm-bag-fly';
+    flyer.style.left = (rect.left + rect.width / 2 - 24) + 'px';
+    flyer.style.top  = (rect.top  + rect.height / 2 - 24) + 'px';
+    flyer.innerHTML = '<svg viewBox="0 0 48 48" width="48" height="48"><path d="M14 16 h20 l-2 22 h-16 z M18 16 v-2 a6 6 0 0 1 12 0 v2" fill="#C4302B" stroke="#4A3324" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.body.appendChild(flyer);
+    setTimeout(function () { if (flyer.parentNode) flyer.parentNode.removeChild(flyer); }, 720);
+  }
+  function pulse(btn) {
+    if (!btn) return;
+    btn.classList.remove('is-flying'); void btn.offsetWidth; btn.classList.add('is-flying');
+    setTimeout(function () { btn.classList.remove('is-flying'); }, 700);
+  }
+
+  /* Capture phase so we run before cart.js — but cart.js still
+     preventDefault()s the form, so no duplicate request happens. */
+  document.querySelectorAll('form[data-shop-quick-add]').forEach(function (form) {
+    var btn = form.querySelector('button[type=submit]');
+    if (!btn) return;
+    form.addEventListener('submit', function () { pulse(btn); flyFromBtn(btn); }, true);
+  });
+})();
+</script>
+
+<style>
+  .shop-grid{max-width:var(--max);margin:24px auto;padding:0 24px}
+  .shop-grid__list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:880px){ .shop-grid__list{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:540px){ .shop-grid__list{grid-template-columns:1fr} }
+
+  .shop-card{
+    display:flex;flex-direction:column;
+    background:var(--cream-50);
+    border:1px solid var(--border-hairline);
+    border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow-xs);
+    transition:transform var(--duration-base) var(--ease-candy), box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .shop-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+
+  .shop-card__media{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .shop-card__media--cream{background:linear-gradient(160deg,var(--cream-200),var(--cream-100))}
+  .shop-card__media--teal{background:linear-gradient(160deg,var(--teal-200),var(--teal-100))}
+  .shop-card__media--gold{background:linear-gradient(160deg,var(--gold-300),var(--gold-200))}
+  .shop-card__media--cocoa{background:linear-gradient(160deg,var(--cocoa-700),var(--cocoa-600))}
+
+  .shop-card__media-link{display:block;position:relative;text-decoration:none;color:inherit}
+  .shop-card__image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform var(--duration-slow) var(--ease-out-soft)}
+  .shop-card:hover .shop-card__image{transform:scale(1.04)}
+
+  .shop-card__icon{width:34%;height:34%;color:var(--cocoa-400);opacity:.9;display:flex;align-items:center;justify-content:center}
+  .shop-card__icon svg{width:100%;height:100%;display:block}
+  .shop-card__media--cocoa .shop-card__icon{color:var(--cream-200)}
+
+  .shop-card__badge{position:absolute;top:10px;left:10px;z-index:1}
+  .shop-card__badge--red{background:var(--red-500);border-color:var(--red-700)}
+  .shop-card__badge--teal{background:var(--teal-500);border-color:var(--teal-600);color:var(--cream-50)}
+  .shop-card__badge--gold{background:var(--gold-400);border-color:var(--gold-500);color:var(--cocoa-700)}
+
+  .shop-card__chips{position:absolute;left:10px;right:10px;bottom:10px;display:flex;flex-wrap:wrap;gap:6px}
+  .shop-card__chip{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(253,249,241,.88);color:var(--cocoa-600);
+    font-family:var(--font-label);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;
+    padding:4px 8px;border-radius:999px;box-shadow:var(--shadow-sm);
+    white-space:nowrap;
+  }
+  .shop-card__media--cocoa .shop-card__chip{background:rgba(36,24,18,.65);color:var(--cream-100)}
+
+  .shop-card__body{display:flex;flex-direction:column;gap:6px;padding:14px}
+  .shop-card__rating{display:flex;align-items:center;gap:6px}
+  .shop-card__stars{color:var(--gold-500);font-size:13px;letter-spacing:1px}
+  .shop-card__stars .is-empty{opacity:.3}
+  .shop-card__count{font-family:var(--font-label);font-size:10.5px;color:var(--cocoa-400)}
+  .shop-card__title{font-family:var(--font-display);color:var(--red-600);font-size:17px;line-height:1.25;margin:0;
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .shop-card__desc{font-family:var(--font-body);color:var(--cocoa-500);font-size:13.5px;line-height:1.5;margin:0 0 4px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .shop-card__price{font-family:var(--font-display);color:var(--red-600);font-size:19px;font-weight:800}
+  .shop-card__price s{font-family:var(--font-body);color:var(--cocoa-400);font-size:14px;font-weight:400;margin-left:6px}
+  .shop-card__body .btn{margin-top:6px}
+
+  .shop-card__form{margin-top:6px;position:relative}
+  .shop-card__form .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .shop-card__form .btn svg{transition:transform var(--duration-base) var(--ease-candy)}
+  .shop-card__form .btn:hover svg{transform:translateY(-1px) rotate(-6deg)}
+
+  .shop-card__view-link{
+    display:inline-flex;align-items:center;gap:4px;align-self:flex-start;
+    margin-top:6px;
+    font-family:var(--font-label);font-size:10.5px;letter-spacing:var(--tracking-label);text-transform:uppercase;
+    color:var(--cocoa-500);text-decoration:none;
+    transition:color var(--duration-fast) var(--ease-standard), gap var(--duration-base) var(--ease-candy);
+  }
+  .shop-card__view-link:hover{color:var(--red-600);gap:8px}
+  .shop-card__view-link svg{transition:transform var(--duration-base) var(--ease-candy)}
+  .shop-card__view-link:hover svg{transform:translateX(2px)}
+
+  /* Quick-add bag-fly origin (cart.js triggers the .cm-bag-fly element) */
+  .shop-card__add.is-flying{animation:cm-card-pulse 600ms var(--ease-candy) 1}
+  @keyframes cm-card-pulse{
+    0%{transform:scale(1)}
+    40%{transform:scale(.96);box-shadow:0 0 0 6px rgba(196,48,43,.18)}
+    100%{transform:scale(1)}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .shop-card:hover{transform:none}
+    .shop-card:hover .shop-card__image{transform:none}
+    .shop-card__form .btn:hover svg,.shop-card__view-link:hover svg{transform:none}
+    .shop-card__add.is-flying{animation:none}
+  }
+
+  @media (max-width:540px){
+    .shop-card__icon{width:30%;height:30%}
+    .shop-card__title{font-size:16px}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Bestsellers grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by 50,000+ iPhone owners"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product (overrides manual title/price)",
+          "info": "Pick a real Shopify product to enable real Quick Add + product image. Leave blank to use the manual copy below."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "CandyStripe Classic Case"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Description",
+          "default": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "34"
+        },
+        {
+          "type": "text",
+          "id": "compare",
+          "label": "Compare price (optional)"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text (optional)",
+          "default": "Bestseller"
+        },
+        {
+          "type": "select",
+          "id": "badge_tone",
+          "label": "Badge colour",
+          "options": [
+            {
+              "value": "red",
+              "label": "Red"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            }
+          ],
+          "default": "red"
+        },
+        {
+          "type": "select",
+          "id": "panel_tone",
+          "label": "Media background",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "cocoa",
+              "label": "Cocoa (dark)"
+            }
+          ],
+          "default": "cream"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "case",
+              "label": "Phone case"
+            },
+            {
+              "value": "magsafe",
+              "label": "MagSafe"
+            },
+            {
+              "value": "candy",
+              "label": "Candy swirl"
+            },
+            {
+              "value": "ribbon",
+              "label": "Ribbon"
+            },
+            {
+              "value": "sparkle",
+              "label": "Sparkle"
+            },
+            {
+              "value": "drop",
+              "label": "Drop"
+            },
+            {
+              "value": "anti-yellow",
+              "label": "Anti-yellow"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            }
+          ],
+          "default": "case"
+        },
+        {
+          "type": "select",
+          "id": "chip1_icon",
+          "label": "Chip 1 icon",
+          "options": [
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            },
+            {
+              "value": "verified",
+              "label": "Verified"
+            }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "text",
+          "id": "chip1_text",
+          "label": "Chip 1 text",
+          "default": "6ft Drop Tested"
+        },
+        {
+          "type": "select",
+          "id": "chip2_icon",
+          "label": "Chip 2 icon",
+          "options": [
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            },
+            {
+              "value": "verified",
+              "label": "Verified"
+            }
+          ],
+          "default": "check"
+        },
+        {
+          "type": "text",
+          "id": "chip2_text",
+          "label": "Chip 2 text",
+          "default": "MagSafe Ready"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Stars"
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review count",
+          "default": "1,284"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "tone",
+          "label": "Button tone",
+          "info": "leave blank for red, 'teal' for teal, 'ghost' for cream"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Bestsellers grid",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "title": "CandyStripe Classic Case",
+            "body": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready.",
+            "price": "34",
+            "compare": "44",
+            "badge": "Bestseller",
+            "badge_tone": "red",
+            "panel_tone": "cream",
+            "icon": "candy",
+            "chip1_text": "6ft Drop Tested",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "12,482"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "MagSafe Wallet Case",
+            "body": "Snap-fit wallet with a flush N52 magnet ring. Holds three cards.",
+            "price": "42",
+            "compare": "52",
+            "badge": "Bestseller",
+            "badge_tone": "red",
+            "panel_tone": "teal",
+            "icon": "magsafe",
+            "chip1_text": "Snap-Fit Wallet",
+            "chip2_text": "Drop Tested",
+            "rating": 5,
+            "review_count": "8,930",
+            "tone": "teal"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Anti-Yellow Clear Case",
+            "body": "UV-stable resin stays clear for years — no yellowing, no cloudiness.",
+            "price": "36",
+            "badge": "New",
+            "badge_tone": "teal",
+            "panel_tone": "cocoa",
+            "icon": "anti-yellow",
+            "chip1_text": "Stays Crystal Clear",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "3,204"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Recycled Shell Case",
+            "body": "30% post-consumer polycarbonate. Same drop protection, lighter footprint.",
+            "price": "38",
+            "badge": "New Colors!",
+            "badge_tone": "gold",
+            "panel_tone": "cream",
+            "icon": "leaf",
+            "chip1_text": "30% Recycled",
+            "chip2_text": "Drop Tested",
+            "rating": 4,
+            "review_count": "1,865",
+            "tone": "ghost"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Ribbon Gift Bundle",
+            "body": "Case plus a hand-tied tin of sweets, wrapped and ready to gift.",
+            "price": "58",
+            "compare": "70",
+            "badge": "New Size!",
+            "badge_tone": "gold",
+            "panel_tone": "teal",
+            "icon": "ribbon",
+            "chip1_text": "Case + Sweet Tin",
+            "chip2_text": "Hand-Tied Bow",
+            "rating": 5,
+            "review_count": "962",
+            "tone": "teal"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "title": "Sparkle Edition Case",
+            "body": "Glitter-cast resin shell that catches the light without feeling cheap.",
+            "price": "39",
+            "badge": "New",
+            "badge_tone": "teal",
+            "panel_tone": "cream",
+            "icon": "sparkle",
+            "chip1_text": "Glitter-Cast Resin",
+            "chip2_text": "MagSafe Ready",
+            "rating": 5,
+            "review_count": "441"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

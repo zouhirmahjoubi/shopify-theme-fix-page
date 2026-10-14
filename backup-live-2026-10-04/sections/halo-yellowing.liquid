@@ -1,0 +1,88 @@
+<section class="halo-sec" id="halo-clarity">
+  <div class="halo-sec__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 02 — clarity over time' }}</span>
+    <h2>{{ section.settings.heading | default: "Drag the slider. Watch a normal clear case age." }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <p>{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="halo-ywrap">
+    <div class="halo-ybox">
+      <div class="halo-ygrid">
+        <div class="halo-yc">
+          <div class="halo-yc__frame">
+            <svg viewBox="0 0 120 220" aria-label="Typical clear TPU case sample">
+              <rect x="6" y="6" width="108" height="208" rx="24" fill="#E9ECF1" id="haloAgeShell" stroke="rgba(19,20,23,.16)"/>
+              <rect x="20" y="20" width="46" height="46" rx="14" fill="#1C1F28" opacity=".9"/>
+              <circle cx="60" cy="128" r="22" fill="none" stroke="#131417" stroke-opacity=".14" stroke-width="5" stroke-dasharray="4.6 3.4"/>
+            </svg>
+          </div>
+          <span class="halo-yc__tag">Sample A</span>
+          <h4>Typical clear TPU case</h4>
+          <p>The $12 one you replace every spring.</p>
+          <span class="halo-yc__verdict good" id="haloVerdictA">No visible change</span>
+        </div>
+        <div class="halo-yc">
+          <div class="halo-yc__frame">
+            <svg viewBox="0 0 120 220" aria-label="Casify Halo ClearGuard sample">
+              <rect x="6" y="6" width="108" height="208" rx="24" fill="#E9ECF1" stroke="rgba(19,20,23,.16)"/>
+              <rect x="20" y="20" width="46" height="46" rx="14" fill="#1C1F28" opacity=".9"/>
+              <circle cx="60" cy="128" r="22" fill="none" stroke="#131417" stroke-opacity=".14" stroke-width="5" stroke-dasharray="4.6 3.4"/>
+            </svg>
+          </div>
+          <span class="halo-yc__tag">Sample B</span>
+          <h4>Halo with ClearGuard™</h4>
+          <p>UV-stable PC, bonded top coat.</p>
+          <span class="halo-yc__verdict good">No visible change</span>
+        </div>
+      </div>
+
+      <div class="halo-scrub">
+        <div class="halo-scrub__hd">
+          <span class="tick">Time in chamber</span>
+          <span class="now" id="haloMonth">Month 0</span>
+        </div>
+        <input type="range" class="halo-slider" id="haloAge" min="0" max="36" step="1" value="0"
+               aria-label="Months of accelerated UV exposure" aria-valuetext="Month 0">
+        <div class="halo-scrub__ticks">
+          <span>0</span><span>9</span><span>18</span><span>27</span><span>36 mo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Yellowing scrubber",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tick_label",
+      "label": "Section tick",
+      "default": "Section 02 — clarity over time"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Drag the slider. Watch a normal clear case age."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halo — Yellowing scrubber",
+      "blocks": [],
+      "settings": {
+        "subheading": "<p>Both samples went into the same accelerated UV chamber. Same light, same heat, same skin-oil cycle. This is what came out.</p>"
+      }
+    }
+  ]
+}
+{% endschema %}

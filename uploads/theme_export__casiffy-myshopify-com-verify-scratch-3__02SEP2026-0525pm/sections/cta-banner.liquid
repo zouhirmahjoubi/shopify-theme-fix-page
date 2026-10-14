@@ -1,0 +1,19 @@
+<section class="cta-banner" data-cm-reveal>
+  <h2>{{ section.settings.heading_left | default: 'Two cases, ten tins,' }} <em>{{ section.settings.heading_em | default: 'one ribbon' }}</em></h2>
+  <p>{{ section.settings.body | default: 'Build a tin and case bundle — wrapped by hand, posted in a striped box.' }}</p>
+  <a href="{{ section.settings.button_link | default: '/collections/bundles' }}" class="btn cm-press">{{ section.settings.button_text | default: 'Build a gift →' }}</a>
+</section>
+
+{% schema %}
+{
+  "name": "CTA banner",
+  "settings": [
+    { "type": "text", "id": "heading_left", "label": "Heading (start)", "default": "Two cases, ten tins," },
+    { "type": "text", "id": "heading_em",   "label": "Heading (emphasis)", "default": "one ribbon" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Build a tin and case bundle — wrapped by hand, posted in a striped box." },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Build a gift →" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "CTA banner" }]
+}
+{% endschema %}

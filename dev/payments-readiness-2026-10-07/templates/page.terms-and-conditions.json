@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "header_badge": "badge-ai-terms",
+        "toc_label": "On this page",
+        "show_rules": true,
+        "rules_label": "Shop policies",
+        "rule_handles": "shipping-policy,return-policy,privacy-policy,terms-and-conditions",
+        "show_help": true,
+        "help_title": "Something here unclear?",
+        "help_body": "Write to the shop and ask.",
+        "help_url": "/pages/contact",
+        "help_cta": "Ask the shop",
+        "preview_content": "<div>\n  <p>Last updated: September 3, 2026</p>\n  <p>These Terms and Conditions (\"Terms\") govern your use of the Casify website and your purchase of products from us. By accessing our site or placing an order, you agree to these Terms.</p>\n\n  <h2>1. Use of Our Site</h2>\n  <p>You may use our site to browse and purchase products for personal, non-commercial use. You agree not to misuse the site, interfere with its operation, or attempt to access it using a method other than the interface we provide.</p>\n\n  <h2>2. Products &amp; Pricing</h2>\n  <p>We make reasonable efforts to display product colors, dimensions, and details accurately, but we don't guarantee your screen will display colors precisely. Prices are shown in USD and may change without notice. We reserve the right to correct pricing or listing errors, cancel affected orders, and refund any payment already made.</p>\n\n  <h2>3. Orders &amp; Payment</h2>\n  <p>When you place an order, you're making an offer to purchase, which we may accept or decline. Payments are processed using the payment methods displayed at checkout. We do not store your full payment card details.</p>\n\n  <h2>4. Returns &amp; Shipping</h2>\n  <p>Returns and shipping are governed by our <a href=\"/pages/return-policy\">Return Policy</a> and <a href=\"/pages/shipping-policy\">Shipping Policy</a>.</p>\n\n  <h2>5. Intellectual Property</h2>\n  <p>All content on this site — including text, graphics, logos, and images — is owned by or licensed to Casify and is protected by applicable intellectual property laws. You may not reproduce or use it without our written permission.</p>\n\n  <h2>6. Third-Party Links</h2>\n  <p>Our site may link to third-party websites we don't control. We aren't responsible for the content or practices of those sites.</p>\n\n  <h2>7. Limitation of Liability</h2>\n  <p>To the fullest extent permitted by law, Casify is not liable for any indirect, incidental, or consequential damages arising from your use of the site or products purchased through it, beyond the amount you paid for the relevant order.</p>\n\n  <h2>8. Governing Law</h2>\n  <p>These Terms are governed by the laws applicable in the jurisdiction where Casify operates, without regard to conflict-of-law principles.</p>\n\n  <h2>9. Changes to These Terms</h2>\n  <p>We may update these Terms from time to time. Changes take effect once posted on this page, so please check back periodically.</p>\n\n  <h2>10. Contact Us</h2>\n  <p>Questions about these Terms? Email <a href=\"mailto:zouhir.mahjoubi@zmdesign.me\">zouhir.mahjoubi@zmdesign.me</a> or write to us at centre sidi ghanem essaouira, 44000 essaouira, Morocco.</p>\n</div>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
