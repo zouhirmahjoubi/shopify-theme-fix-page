@@ -1,0 +1,1238 @@
+{
+  "title": "Merry Little Moments",
+  "status": "local-reference-checked",
+  "printifyVerified": false,
+  "artwork": {
+    "file": "bleed-master.png",
+    "width": 991,
+    "height": 1587,
+    "opaque": true,
+    "nativeResolution": true
+  },
+  "templateSource": "Local Casestry phone template collection and previous measured geometry. Must be matched to Printify before production.",
+  "textBoundsNormalized": [
+    0.27,
+    0.387,
+    0.75,
+    0.605
+  ],
+  "templates": [
+    {
+      "id": "17PM",
+      "label": "iPhone 17 Pro Max",
+      "brand": "Apple",
+      "template": "templates/17PM.png",
+      "preview": "previews/17PM.jpg",
+      "overlay": "overlays/17PM.jpg",
+      "print": "print/17PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        465,
+        239,
+        1283,
+        2154
+      ],
+      "camera": [
+        375,
+        239,
+        1373,
+        886
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 57.5,
+      "cameraClearancePx": 100.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "17P",
+      "label": "iPhone 17 Pro",
+      "brand": "Apple",
+      "template": "templates/17P.png",
+      "preview": "previews/17P.jpg",
+      "overlay": "overlays/17P.jpg",
+      "print": "print/17P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568,
+        1041,
+        1208.8,
+        1506.9
+      ],
+      "back": [
+        501,
+        318,
+        1247,
+        2075
+      ],
+      "camera": [
+        411,
+        318,
+        1337,
+        966
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 38.3,
+      "cameraClearancePx": 75,
+      "letteringLowered": true,
+      "warnings": []
+    },
+    {
+      "id": "17A",
+      "label": "iPhone 17 Air",
+      "brand": "Apple",
+      "template": "templates/17A.png",
+      "preview": "previews/17A.jpg",
+      "overlay": "overlays/17A.jpg",
+      "print": "print/17A.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        459,
+        283,
+        1290,
+        2137
+      ],
+      "camera": [
+        395,
+        283,
+        1354,
+        762
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 64.5,
+      "cameraClearancePx": 224.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "17",
+      "label": "iPhone 17",
+      "brand": "Apple",
+      "template": "templates/17.png",
+      "preview": "previews/17.jpg",
+      "overlay": "overlays/17.jpg",
+      "print": "print/17.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        504,
+        321,
+        1245,
+        2071
+      ],
+      "camera": [
+        414,
+        321,
+        877,
+        942
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 36.5,
+      "cameraClearancePx": 57,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "16E",
+      "label": "iPhone 16e",
+      "brand": "Apple",
+      "template": "templates/16E.png",
+      "preview": "previews/16E.jpg",
+      "overlay": "overlays/16E.jpg",
+      "print": "print/16E.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        470,
+        392,
+        1278,
+        2088
+      ],
+      "camera": [
+        511,
+        435,
+        842,
+        620
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 69.5,
+      "cameraClearancePx": 379,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "16PM",
+      "label": "iPhone 16 Pro Max",
+      "brand": "Apple",
+      "template": "templates/16PM.png",
+      "preview": "previews/16PM.jpg",
+      "overlay": "overlays/16PM.jpg",
+      "print": "print/16PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        436,
+        243,
+        1312,
+        2183
+      ],
+      "camera": [
+        377,
+        243,
+        997,
+        874
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 86.5,
+      "cameraClearancePx": 112.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "16P",
+      "label": "iPhone 16 Pro",
+      "brand": "Apple",
+      "template": "templates/16P.png",
+      "preview": "previews/16P.jpg",
+      "overlay": "overlays/16P.jpg",
+      "print": "print/16P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        472,
+        322,
+        1276,
+        2104
+      ],
+      "camera": [
+        413,
+        322,
+        1033,
+        953
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 67.5,
+      "cameraClearancePx": 46,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "16PL",
+      "label": "iPhone 16 Plus",
+      "brand": "Apple",
+      "template": "templates/16PL.png",
+      "preview": "previews/16PL.jpg",
+      "overlay": "overlays/16PL.jpg",
+      "print": "print/16PL.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        434,
+        254,
+        1315,
+        2171
+      ],
+      "camera": [
+        376,
+        254,
+        847,
+        866
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 89.5,
+      "cameraClearancePx": 120.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "16",
+      "label": "iPhone 16",
+      "brand": "Apple",
+      "template": "templates/16.png",
+      "preview": "previews/16.jpg",
+      "overlay": "overlays/16.jpg",
+      "print": "print/16.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        470,
+        332,
+        1279,
+        2093
+      ],
+      "camera": [
+        412,
+        332,
+        883,
+        944
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 70.5,
+      "cameraClearancePx": 55,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "15PM",
+      "label": "iPhone 15 Pro Max",
+      "brand": "Apple",
+      "template": "templates/15PM.png",
+      "preview": "previews/15PM.jpg",
+      "overlay": "overlays/15PM.jpg",
+      "print": "print/15PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        440,
+        272,
+        1309,
+        2166
+      ],
+      "camera": [
+        387,
+        272,
+        997,
+        888
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 83.5,
+      "cameraClearancePx": 98.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "15P",
+      "label": "iPhone 15 Pro",
+      "brand": "Apple",
+      "template": "templates/15P.png",
+      "preview": "previews/15P.jpg",
+      "overlay": "overlays/15P.jpg",
+      "print": "print/15P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568,
+        1041,
+        1208.8,
+        1506.9
+      ],
+      "back": [
+        476,
+        350,
+        1272,
+        2088
+      ],
+      "camera": [
+        423,
+        350,
+        1033,
+        967
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 63.3,
+      "cameraClearancePx": 74,
+      "letteringLowered": true,
+      "warnings": []
+    },
+    {
+      "id": "15PL",
+      "label": "iPhone 15 Plus",
+      "brand": "Apple",
+      "template": "templates/15PL.png",
+      "preview": "previews/15PL.jpg",
+      "overlay": "overlays/15PL.jpg",
+      "print": "print/15PL.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        433,
+        265,
+        1316,
+        2172
+      ],
+      "camera": [
+        381,
+        265,
+        909,
+        784
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 90.5,
+      "cameraClearancePx": 202.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "15",
+      "label": "iPhone 15",
+      "brand": "Apple",
+      "template": "templates/15.png",
+      "preview": "previews/15.jpg",
+      "overlay": "overlays/15.jpg",
+      "print": "print/15.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        469,
+        343,
+        1280,
+        2094
+      ],
+      "camera": [
+        417,
+        343,
+        945,
+        862
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 71.5,
+      "cameraClearancePx": 137,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "14PM",
+      "label": "iPhone 14 Pro Max",
+      "brand": "Apple",
+      "template": "templates/14PM.png",
+      "preview": "previews/14PM.jpg",
+      "overlay": "overlays/14PM.jpg",
+      "print": "print/14PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        433,
+        262,
+        1316,
+        2172
+      ],
+      "camera": [
+        387,
+        262,
+        986,
+        879
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 90.5,
+      "cameraClearancePx": 107.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "14P",
+      "label": "iPhone 14 Pro",
+      "brand": "Apple",
+      "template": "templates/14P.png",
+      "preview": "previews/14P.jpg",
+      "overlay": "overlays/14P.jpg",
+      "print": "print/14P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        470,
+        341,
+        1279,
+        2094
+      ],
+      "camera": [
+        424,
+        341,
+        1022,
+        957
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 70.5,
+      "cameraClearancePx": 42,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "14PL",
+      "label": "iPhone 14 Plus",
+      "brand": "Apple",
+      "template": "templates/14PL.png",
+      "preview": "previews/14PL.jpg",
+      "overlay": "overlays/14PL.jpg",
+      "print": "print/14PL.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.6,
+        986.6,
+        1225.5,
+        1476.4
+      ],
+      "back": [
+        430,
+        262,
+        1319,
+        2173
+      ],
+      "camera": [
+        380,
+        262,
+        895,
+        772
+      ],
+      "printArea": [
+        174,
+        117,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2247
+      ],
+      "minFaceClearancePx": 93.5,
+      "cameraClearancePx": 214.6,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "14",
+      "label": "iPhone 14",
+      "brand": "Apple",
+      "template": "templates/14.png",
+      "preview": "previews/14.jpg",
+      "overlay": "overlays/14.jpg",
+      "print": "print/14.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        568.2,
+        999,
+        1208.5,
+        1464.9
+      ],
+      "back": [
+        469,
+        345,
+        1280,
+        2090
+      ],
+      "camera": [
+        419,
+        345,
+        925,
+        847
+      ],
+      "printArea": [
+        208,
+        214,
+        1542,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 71.5,
+      "cameraClearancePx": 152,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "13PM",
+      "label": "iPhone 13 Pro Max",
+      "brand": "Apple",
+      "template": "templates/13PM.png",
+      "preview": "previews/13PM.jpg",
+      "overlay": "overlays/13PM.jpg",
+      "print": "print/13PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        540.3,
+        938.2,
+        1237.8,
+        1445.2
+      ],
+      "back": [
+        404,
+        262,
+        1344,
+        2198
+      ],
+      "camera": [
+        384,
+        262,
+        946,
+        837
+      ],
+      "printArea": [
+        174,
+        38,
+        1575,
+        2364
+      ],
+      "exportSize": [
+        1401,
+        2326
+      ],
+      "minFaceClearancePx": 106.3,
+      "cameraClearancePx": 101.2,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "13P",
+      "label": "iPhone 13 Pro",
+      "brand": "Apple",
+      "template": "templates/13P.png",
+      "preview": "previews/13P.jpg",
+      "overlay": "overlays/13P.jpg",
+      "print": "print/13P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        569,
+        1000.5,
+        1205.5,
+        1463.5
+      ],
+      "back": [
+        443,
+        345,
+        1305,
+        2115
+      ],
+      "camera": [
+        423,
+        345,
+        982,
+        919
+      ],
+      "printArea": [
+        211,
+        221,
+        1537,
+        2260
+      ],
+      "exportSize": [
+        1326,
+        2039
+      ],
+      "minFaceClearancePx": 99.5,
+      "cameraClearancePx": 81.5,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "13",
+      "label": "iPhone 13",
+      "brand": "Apple",
+      "template": "templates/13.png",
+      "preview": "previews/13.jpg",
+      "overlay": "overlays/13.jpg",
+      "print": "print/13.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        567.2,
+        999,
+        1207.5,
+        1464.9
+      ],
+      "back": [
+        443,
+        345,
+        1305,
+        2115
+      ],
+      "camera": [
+        423,
+        345,
+        876,
+        798
+      ],
+      "printArea": [
+        207,
+        214,
+        1541,
+        2267
+      ],
+      "exportSize": [
+        1334,
+        2053
+      ],
+      "minFaceClearancePx": 97.5,
+      "cameraClearancePx": 201,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "13M",
+      "label": "iPhone 13 Mini",
+      "brand": "Apple",
+      "template": "templates/13M.png",
+      "preview": "previews/13M.jpg",
+      "overlay": "overlays/13M.jpg",
+      "print": "print/13M.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        590.5,
+        1016.5,
+        1183.3,
+        1447.7
+      ],
+      "back": [
+        485,
+        435,
+        1263,
+        2026
+      ],
+      "camera": [
+        466,
+        435,
+        895,
+        864
+      ],
+      "printArea": [
+        257,
+        290,
+        1492,
+        2190
+      ],
+      "exportSize": [
+        1235,
+        1900
+      ],
+      "minFaceClearancePx": 79.8,
+      "cameraClearancePx": 152.5,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "12PM",
+      "label": "iPhone 12 Pro Max",
+      "brand": "Apple",
+      "template": "templates/12PM.png",
+      "preview": "previews/12PM.jpg",
+      "overlay": "overlays/12PM.jpg",
+      "print": "print/12PM.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        580.5,
+        1009,
+        1193,
+        1454.6
+      ],
+      "back": [
+        406,
+        265,
+        1342,
+        2196
+      ],
+      "camera": [
+        388,
+        265,
+        921,
+        827
+      ],
+      "printArea": [
+        236,
+        239,
+        1512,
+        2241
+      ],
+      "exportSize": [
+        1276,
+        2002
+      ],
+      "minFaceClearancePx": 149,
+      "cameraClearancePx": 182,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "12P",
+      "label": "iPhone 12 Pro",
+      "brand": "Apple",
+      "template": "templates/12P.png",
+      "preview": "previews/12P.jpg",
+      "overlay": "overlays/12P.jpg",
+      "print": "print/12P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        598.7,
+        1022.9,
+        1174.3,
+        1441.7
+      ],
+      "back": [
+        444,
+        348,
+        1304,
+        2114
+      ],
+      "camera": [
+        425,
+        348,
+        901,
+        849
+      ],
+      "printArea": [
+        275,
+        321,
+        1474,
+        2159
+      ],
+      "exportSize": [
+        1199,
+        1838
+      ],
+      "minFaceClearancePx": 129.8,
+      "cameraClearancePx": 173.9,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "12",
+      "label": "iPhone 12",
+      "brand": "Apple",
+      "template": "templates/12.png",
+      "preview": "previews/12.jpg",
+      "overlay": "overlays/12.jpg",
+      "print": "print/12.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        598.7,
+        1022.9,
+        1174.3,
+        1441.7
+      ],
+      "back": [
+        444,
+        348,
+        1304,
+        2114
+      ],
+      "camera": [
+        425,
+        348,
+        901,
+        849
+      ],
+      "printArea": [
+        275,
+        321,
+        1474,
+        2159
+      ],
+      "exportSize": [
+        1199,
+        1838
+      ],
+      "minFaceClearancePx": 129.8,
+      "cameraClearancePx": 173.9,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "12M",
+      "label": "iPhone 12 Mini",
+      "brand": "Apple",
+      "template": "templates/12M.png",
+      "preview": "previews/12M.jpg",
+      "overlay": "overlays/12M.jpg",
+      "print": "print/12M.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        618.1,
+        1038.2,
+        1153.3,
+        1427.5
+      ],
+      "back": [
+        488,
+        438,
+        1260,
+        2024
+      ],
+      "camera": [
+        469,
+        438,
+        893,
+        899
+      ],
+      "printArea": [
+        317,
+        411,
+        1432,
+        2069
+      ],
+      "exportSize": [
+        1115,
+        1658
+      ],
+      "minFaceClearancePx": 106.8,
+      "cameraClearancePx": 139.2,
+      "letteringLowered": false,
+      "warnings": []
+    },
+    {
+      "id": "S26U",
+      "label": "Galaxy S26 Ultra",
+      "brand": "Samsung",
+      "template": "templates/S26U.png",
+      "preview": "previews/S26U.jpg",
+      "overlay": "overlays/S26U.jpg",
+      "print": "print/S26U.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        509.5,
+        1122.2,
+        1270.3,
+        1675.5
+      ],
+      "back": [
+        423,
+        248,
+        1324,
+        2197
+      ],
+      "camera": [
+        387,
+        248,
+        933,
+        1082
+      ],
+      "printArea": [
+        202,
+        140,
+        1546,
+        2340
+      ],
+      "exportSize": [
+        1344,
+        2200
+      ],
+      "minFaceClearancePx": 53.8,
+      "cameraClearancePx": 40.2,
+      "letteringLowered": true,
+      "warnings": []
+    },
+    {
+      "id": "S26P",
+      "label": "Galaxy S26 Plus",
+      "brand": "Samsung",
+      "template": "templates/S26P.png",
+      "preview": "previews/S26P.jpg",
+      "overlay": "overlays/S26P.jpg",
+      "print": "print/S26P.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        546.3,
+        1055.1,
+        1230.3,
+        1552.6
+      ],
+      "back": [
+        435,
+        278,
+        1313,
+        2167
+      ],
+      "camera": [
+        400,
+        278,
+        826,
+        1015
+      ],
+      "printArea": [
+        214,
+        172,
+        1534,
+        2308
+      ],
+      "exportSize": [
+        1320,
+        2136
+      ],
+      "minFaceClearancePx": 82.8,
+      "cameraClearancePx": 40.1,
+      "letteringLowered": true,
+      "warnings": []
+    },
+    {
+      "id": "S26",
+      "label": "Galaxy S26",
+      "brand": "Samsung",
+      "template": "templates/S26.png",
+      "preview": "previews/S26.jpg",
+      "overlay": "overlays/S26.jpg",
+      "print": "print/S26.png",
+      "status": "reference-pass",
+      "note": "Local Casestry template geometry; pending exact Printify provider confirmation",
+      "textBounds": [
+        551.8,
+        1107,
+        1224.3,
+        1596
+      ],
+      "back": [
+        459,
+        331,
+        1289,
+        2113
+      ],
+      "camera": [
+        424,
+        331,
+        854,
+        1067
+      ],
+      "printArea": [
+        245,
+        239,
+        1503,
+        2241
+      ],
+      "exportSize": [
+        1258,
+        2002
+      ],
+      "minFaceClearancePx": 64.8,
+      "cameraClearancePx": 40,
+      "letteringLowered": true,
+      "warnings": []
+    }
+  ],
+  "checks": {
+    "total": 28,
+    "passed": 28,
+    "pendingProviderVerification": true,
+    "backgroundFullBleed": true,
+    "minimumFaceInsetPx": 24,
+    "cameraExclusionMarginPx": 36
+  },
+  "notes": [
+    "300 DPI export metadata does not increase native artwork resolution.",
+    "No guide lines are included in print PNG files.",
+    "Local reference checks do not confirm every Printify variant or provider."
+  ]
+}

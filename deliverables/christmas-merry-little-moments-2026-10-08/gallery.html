@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102c41">
+  <title>Merry little moments — Casify design & fit preview</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="gsap.min.js" defer></script>
+  <script src="gallery.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#fit-preview">Skip to fit preview</a>
+  <header class="site-header">
+    <a class="wordmark" href="#" aria-label="Casify Christmas design preview">Casify<span class="wordmark-dot" aria-hidden="true"></span></a>
+    <p class="header-caption">Christmas collection · 2026</p>
+    <a class="button button-dark" id="download-artwork" href="artwork.png" download="casify-merry-little-moments-artwork.png"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg>Download artwork</a>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Merry little <em>moments.</em></h1>
+      <div class="intro-copy"><p>A winter sky, evergreen boughs and a little Christmas sentiment. One design, ready to inspect on real phone templates.</p><button class="text-button" id="replay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9a8 8 0 1 1 1 9M4 3v6h6"/></svg>Replay reveal</button></div>
+    </section>
+    <section class="gallery" id="fit-preview" aria-label="Artwork and template fit preview">
+      <figure class="art-panel">
+        <div class="figure-heading"><h2>The artwork</h2><span id="artwork-dimensions">Original PNG</span></div>
+        <div class="art-stage"><div class="art-shadow" aria-hidden="true"></div><img id="artwork" src="artwork.png" alt="Merry little moments in cream lettering on a navy snowy sky, framed by evergreen branches, red berries and a winter forest." fetchpriority="high"></div>
+        <figcaption>Full, uncropped artwork. Keep the lettering and the winter scene clear of camera openings. <a href="bleed-master.png" download="casify-merry-little-moments-bleed-master.png">Download expanded master</a>.</figcaption>
+      </figure>
+      <div class="fit-panel">
+        <div class="figure-heading"><h2>Template fit</h2><span id="template-count">Real local templates</span></div>
+        <div class="controls">
+          <label for="template-select">Phone & case template</label>
+          <select id="template-select"><option value="iphone16pm">iPhone 16 Pro Max · Tough / MagSafe</option></select>
+          <div class="control-row"><label class="switch-label"><input type="checkbox" id="guides" checked><span class="switch" aria-hidden="true"></span><span>Template / safe guides</span></label><button class="text-button small" id="refresh-qa" title="Reload qa.json">Refresh checks<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9a8 8 0 1 1 1 9M4 3v6h6"/></svg></button></div>
+        </div>
+        <div class="template-stage" aria-busy="true"><div class="preview-loading" id="preview-loading">Loading template…</div><canvas id="fit-canvas" aria-label="Artwork preview with original phone template outlines"></canvas><img id="checked-preview" src="artwork.png" alt="Checked phone template preview" hidden><div class="stage-note" id="stage-note">Reference overlay · placement pending</div></div>
+        <div class="fit-status" id="fit-status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><div><strong id="status-title">Fit checks pending</strong><p id="status-detail">This is a reference overlay. Verified placement will appear when qa.json contains completed checks.</p></div></div>
+        <div class="preview-details"><span id="template-dimensions">Template dimensions loading</span><a id="open-template" href="templates/iphone16pm.png" target="_blank" rel="noopener">Open original template<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v14h14v-3M11 5h8v8M19 5 9 15"/></svg></a></div>
+      </div>
+    </section>
+    <section class="review-section" aria-labelledby="review-title">
+      <div class="review-heading"><h2 id="review-title">The production review</h2><p id="review-summary">No completed QA manifest has been loaded. Review each print sheet before publication.</p></div>
+      <div class="review-results" id="review-results"><p class="empty-note">Completed checks will appear here.</p></div>
+      <details class="manifest-editor"><summary>Inspect or edit the QA manifest<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="manifest-content"><p>Load qa.json automatically from this folder, or import a local manifest. Editing updates this preview; save a copy to keep your changes.</p><textarea id="manifest-json" rows="12" aria-label="QA manifest JSON" spellcheck="false" placeholder="QA manifest has not been loaded."></textarea><div class="manifest-actions"><label class="button button-light import-button" for="manifest-file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m-4 4 4-4 4 4M5 15v5h14v-5"/></svg>Import manifest<input type="file" id="manifest-file" accept="application/json,.json"></label><button class="button button-light" id="apply-manifest">Apply edits</button><button class="button button-dark" id="save-manifest">Save a copy</button></div><p id="manifest-message" class="manifest-message" role="status" aria-live="polite"></p></div></details>
+    </section>
+  </main>
+  <footer><p>Casify · Merry little moments</p><p>Real template guides · Original artwork · GSAP reveal</p></footer>
+</body>
+</html>
+

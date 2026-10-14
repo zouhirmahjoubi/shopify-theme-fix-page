@@ -1,0 +1,25 @@
+{% doc %}
+  Renders the product counter's optional blocks of one type in place
+  (sections/cv-product-counter.liquid). Kept out of the section so its
+  Liquid stays within Theme Check's complexity budget.
+
+  @param {object} blocks - section.blocks
+  @param {string} type - 'summary', 'google_rating', 'sales_note' or 'spec_meter'
+  @param {object} product - The product being shown.
+  @param {object} [variant] - The selected variant (summary).
+  @param {object} [settings] - The section's settings (summary).
+{% enddoc %}
+{%- for b in blocks -%}
+  {%- if b.type == type -%}
+    {%- case type -%}
+      {%- when 'summary' -%}
+        {%- render 'cv-product-summary', block: b, product: product, variant: variant, settings: settings -%}
+      {%- when 'google_rating' -%}
+        {%- render 'cv-google-rating', block: b -%}
+      {%- when 'sales_note' -%}
+        {%- render 'cv-sales-note', block: b, product: product -%}
+      {%- when 'spec_meter' -%}
+        {%- render 'cv-spec-meter', block: b, product: product -%}
+    {%- endcase -%}
+  {%- endif -%}
+{%- endfor -%}

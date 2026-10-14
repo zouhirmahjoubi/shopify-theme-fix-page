@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1024, initial-scale=1">
+  <title>إعلان ملحقة ابن سينا الإعدادية</title>
+  <style>
+    :root {
+      --teal: #005f59;
+      --teal-deep: #004b47;
+      --gold: #b87916;
+      --gold-soft: #d6ad58;
+      --ink: #183f3d;
+      --ivory: #fbf8ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 1024px;
+      height: 1536px;
+      overflow: hidden;
+      background: var(--ivory);
+    }
+
+    body {
+      font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .poster {
+      position: relative;
+      width: 1024px;
+      height: 1536px;
+      overflow: hidden;
+      background: url("ibn-sina-school-schedule-islamic-background-v2.png") center / 100% 100% no-repeat;
+    }
+
+    .masthead {
+      position: absolute;
+      top: 310px;
+      right: 115px;
+      left: 115px;
+      text-align: center;
+    }
+
+    .school-name {
+      margin: 0;
+      color: var(--teal-deep);
+      font-size: 43px;
+      font-weight: 800;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .school-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: 410px;
+      margin: 14px auto 13px;
+      color: var(--gold);
+    }
+
+    .school-rule::before,
+    .school-rule::after {
+      content: "";
+      height: 2px;
+      flex: 1;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .school-rule::after { transform: scaleX(-1); }
+
+    .school-rule span {
+      width: 11px;
+      height: 11px;
+      transform: rotate(45deg);
+      border: 2px solid var(--gold);
+      background: var(--ivory);
+    }
+
+    .announcement {
+      margin: 0;
+      color: var(--gold);
+      font-size: 86px;
+      font-weight: 900;
+      line-height: 1.05;
+      text-shadow: 0 3px 0 rgba(184, 121, 22, .10);
+    }
+
+    .message {
+      position: absolute;
+      top: 548px;
+      right: 116px;
+      left: 116px;
+      min-height: 174px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 48px 32px;
+      border-radius: 26px;
+      text-align: center;
+      background: rgba(255, 255, 255, .74);
+      border: 1px solid rgba(184, 121, 22, .28);
+      box-shadow: 0 10px 28px rgba(54, 47, 30, .07);
+    }
+
+    .message p {
+      margin: 0;
+      font-size: 35px;
+      font-weight: 700;
+      line-height: 1.82;
+      color: #244b48;
+    }
+
+    .message strong {
+      color: var(--teal);
+      font-weight: 900;
+      padding: 0 5px 3px;
+      border-bottom: 3px solid var(--gold-soft);
+    }
+
+    .schedule {
+      position: absolute;
+      top: 875px;
+      right: 94px;
+      left: 94px;
+      height: 360px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .90);
+      border: 1px solid rgba(0, 95, 89, .18);
+      box-shadow: 0 12px 28px rgba(44, 45, 34, .08);
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 1.26fr 1fr .90fr 1.08fr;
+      align-items: stretch;
+      direction: rtl;
+    }
+
+    .schedule-row > div {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px 8px;
+      border-left: 1px solid rgba(184, 121, 22, .30);
+    }
+
+    .schedule-row > div:last-child { border-left: 0; }
+
+    .schedule-head {
+      height: 73px;
+      color: #fffdf7;
+      background: linear-gradient(180deg, #087069, #005b55);
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .schedule-body {
+      height: 143px;
+      color: #254846;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.45;
+      border-bottom: 1px solid rgba(184, 121, 22, .36);
+    }
+
+    .schedule-body:last-child { border-bottom: 0; }
+
+    .schedule-body:nth-child(3) {
+      background: rgba(247, 241, 224, .64);
+    }
+
+    .period {
+      color: var(--teal-deep);
+      font-size: 27px;
+      font-weight: 900;
+    }
+
+    .time-cell,
+    .change-cell {
+      flex-direction: column;
+      gap: 3px;
+      white-space: nowrap;
+    }
+
+    .time {
+      display: inline-block;
+      direction: ltr;
+      unicode-bidi: isolate;
+      color: var(--teal-deep);
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: .5px;
+    }
+
+    .qualifier {
+      color: #496561;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .change-cell {
+      color: #765311;
+      font-size: 20px;
+    }
+
+    .old-time {
+      display: inline-block;
+      direction: ltr;
+      unicode-bidi: isolate;
+      min-width: 102px;
+      margin-top: 4px;
+      padding: 5px 11px 7px;
+      border-radius: 999px;
+      color: #785318;
+      background: #f4e5c0;
+      border: 1px solid #d4aa52;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      font-size: 27px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .footer-mark {
+      position: absolute;
+      top: 1403px;
+      right: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      opacity: .78;
+    }
+
+    .footer-mark i {
+      display: block;
+      width: 90px;
+      height: 1px;
+      background: rgba(255, 255, 255, .58);
+    }
+
+    .footer-mark b {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border: 1px solid #dcb96f;
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+  <main class="poster" aria-label="إعلان تغيير مواعيد الدخول والخروج بملحقة ابن سينا الإعدادية">
+    <header class="masthead">
+      <p class="school-name">ملحقة ابن سينا الإعدادية</p>
+      <div class="school-rule" aria-hidden="true"><span></span></div>
+      <h1 class="announcement">إعلان</h1>
+    </header>
+
+    <section class="message">
+      <p>بعد الرجوع إلى الساعة القانونية<br><strong>(توقيت غرينتش)</strong>، ستتغير مواعيد الدخول والخروج.</p>
+    </section>
+
+    <section class="schedule" aria-label="جدول المواعيد الجديدة">
+      <div class="schedule-row schedule-head">
+        <div>الفترة</div>
+        <div>موعد الدخول</div>
+        <div>التغيير</div>
+        <div>موعد الخروج</div>
+      </div>
+
+      <div class="schedule-row schedule-body">
+        <div class="period">الفترة<br>الصباحية</div>
+        <div class="time-cell"><span class="time">08:00</span><span class="qualifier">صباحاً</span></div>
+        <div class="change-cell"><span>عوض</span><span class="old-time">08:30</span></div>
+        <div class="time-cell"><span class="time">12:00</span><span class="qualifier">زوالاً</span></div>
+      </div>
+
+      <div class="schedule-row schedule-body">
+        <div class="period">الفترة<br>المسائية</div>
+        <div class="time-cell"><span class="time">13:30</span><span class="qualifier">زوالاً</span></div>
+        <div class="change-cell"><span>عوض</span><span class="old-time">14:30</span></div>
+        <div class="time-cell"><span class="time">17:30</span><span class="qualifier">مساءً</span></div>
+      </div>
+    </section>
+
+    <div class="footer-mark" aria-hidden="true"><i></i><b></b><i></i></div>
+  </main>
+</body>
+</html>

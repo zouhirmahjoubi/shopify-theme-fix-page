@@ -1,0 +1,31 @@
+{
+  "initial": {
+    "title": "Merry little moments — Casify design & fit preview",
+    "options": 28,
+    "status": "Local template check passed",
+    "overflow": false,
+    "gsap": "3.15.0",
+    "loadedManifest": true
+  },
+  "toggle": {
+    "guides": false,
+    "note": "Artwork placement · guides off",
+    "canvasVisible": false,
+    "imageVisible": true
+  },
+  "invalid": "Invalid manifest: Expected property name or '}' in JSON at position 1 (line 1 column 2)",
+  "mobileChecks": {
+    "overflow": false,
+    "artLoaded": true,
+    "templateOptions": 28,
+    "canvasSize": [
+      300,
+      150
+    ]
+  },
+  "reduced": {
+    "motionPreference": true,
+    "artTransform": "none"
+  },
+  "errors": []
+}

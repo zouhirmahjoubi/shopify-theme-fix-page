@@ -1,0 +1,267 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="720" height="1080" viewBox="0 0 720 1080"
+     lang="ar" xml:lang="ar" role="img"
+     aria-labelledby="poster-title poster-desc">
+  <title id="poster-title">إعلان تغيير مواعيد الدخول والخروج — ملحقة ابن سينا الإعدادية</title>
+  <desc id="poster-desc">إعلان باللغة العربية. الفترة الصباحية: الدخول الثامنة صباحاً والخروج الثانية عشرة زوالاً. الفترة المسائية: الدخول الواحدة والنصف زوالاً والخروج الخامسة والنصف مساءً.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#f8fcff"/>
+      <stop offset="1" stop-color="#eef7ff"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a67b7"/>
+      <stop offset="0.55" stop-color="#07559c"/>
+      <stop offset="1" stop-color="#043a77"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#063a74"/>
+      <stop offset="0.52" stop-color="#075aa6"/>
+      <stop offset="1" stop-color="#053c78"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe071"/>
+      <stop offset="0.45" stop-color="#f6c735"/>
+      <stop offset="1" stop-color="#dba817"/>
+    </linearGradient>
+    <linearGradient id="paleRow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f6fbff"/>
+      <stop offset="0.55" stop-color="#edf6ff"/>
+      <stop offset="1" stop-color="#e4f1ff"/>
+    </linearGradient>
+    <radialGradient id="sunGlow">
+      <stop offset="0" stop-color="#ffeb89" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffdd4f" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#043b75" flood-opacity="0.18"/>
+    </filter>
+    <filter id="tinyShadow" x="-20%" y="-30%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#043b75" flood-opacity="0.18"/>
+    </filter>
+
+    <pattern id="geo" width="66" height="66" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#8cbce0" stroke-width="2">
+        <path d="M33 1 43 18 63 15 56 33 65 50 44 48 33 65 22 48 1 51 10 33 2 15 23 18Z"/>
+        <path d="M33 12 40 25 54 23 48 34 54 45 40 42 33 54 26 42 12 45 18 34 12 23 26 25Z"/>
+      </g>
+    </pattern>
+    <mask id="fadeTopPattern">
+      <linearGradient id="fadeTop" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="white" stop-opacity="0.85"/>
+        <stop offset="1" stop-color="white" stop-opacity="0"/>
+      </linearGradient>
+      <rect width="250" height="360" fill="url(#fadeTop)"/>
+    </mask>
+    <mask id="fadeBottomPattern">
+      <linearGradient id="fadeBottom" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="white" stop-opacity="0.8"/>
+        <stop offset="1" stop-color="white" stop-opacity="0"/>
+      </linearGradient>
+      <rect width="250" height="360" fill="url(#fadeBottom)"/>
+    </mask>
+    <clipPath id="morningClip">
+      <rect x="28" y="470" width="664" height="250" rx="25"/>
+    </clipPath>
+    <clipPath id="eveningClip">
+      <rect x="28" y="742" width="664" height="250" rx="25"/>
+    </clipPath>
+
+    <style>
+      @font-face {
+        font-family: "Poster Arabic";
+        src: local("Dubai"), local("Dubai Medium"), local("Tahoma");
+      }
+      .ar { font-family: "Poster Arabic", "Dubai", "Tahoma", "Arial", sans-serif; direction: rtl; unicode-bidi: plaintext; }
+      .num { font-family: "Dubai", "Segoe UI", "Arial", sans-serif; direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+      .navy-text { fill: #06386f; }
+      .white-text { fill: #ffffff; }
+      .gold-stroke { stroke: #f2c431; }
+      .round-stroke { stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <!-- Background and ornamental corners -->
+  <rect width="720" height="1080" fill="url(#bg)"/>
+  <g opacity="0.28" aria-hidden="true">
+    <rect x="500" y="0" width="220" height="330" fill="url(#geo)" mask="url(#fadeTopPattern)"/>
+    <rect x="0" y="720" width="240" height="360" fill="url(#geo)" mask="url(#fadeBottomPattern)"/>
+  </g>
+  <g aria-hidden="true">
+    <path d="M0 0H204C139 21 72 55 0 121Z" fill="#07458b"/>
+    <path d="M0 0H183C118 18 58 47 0 102Z" fill="#0b68b8"/>
+    <path d="M0 70C55 35 110 12 177 0H203C128 27 65 58 0 116Z" fill="url(#gold)"/>
+    <path d="M720 1080H0V1065C135 1019 285 1027 412 1053 528 1077 623 1068 720 1024Z" fill="#063b78"/>
+    <path d="M720 1080H45C190 1035 307 1048 423 1068 536 1087 634 1065 720 1035Z" fill="#0965b3"/>
+    <path d="M720 1006V1030C624 1062 538 1069 435 1051 293 1026 163 1019 0 1061V1049C162 1007 296 1017 438 1041 543 1059 627 1044 720 1006Z" fill="url(#gold)"/>
+  </g>
+
+  <!-- School identity -->
+  <g id="school-identity" aria-label="ملحقة ابن سينا الإعدادية">
+    <g aria-hidden="true" transform="translate(0 3)">
+      <circle cx="360" cy="22" r="10" fill="#0a5ba4"/>
+      <circle cx="322" cy="47" r="9" fill="#0a5ba4"/>
+      <circle cx="398" cy="47" r="9" fill="#0a5ba4"/>
+      <path d="M300 89 338 53 360 72 382 53 420 89" fill="none" stroke="#0a5ba4" stroke-width="12" class="round-stroke"/>
+      <path d="M338 57V103M382 57V103M360 72V108" fill="none" stroke="#0a5ba4" stroke-width="9" class="round-stroke"/>
+      <path d="M410 79 429 98 461 64" fill="none" stroke="#0a5ba4" stroke-width="11" class="round-stroke"/>
+    </g>
+    <text id="school-name" x="360" y="145" text-anchor="middle" class="ar navy-text" font-size="27" font-weight="700">ملحقة ابن سينا الإعدادية</text>
+    <path d="M272 158H448" stroke="url(#gold)" stroke-width="4" stroke-linecap="round" aria-hidden="true"/>
+  </g>
+
+  <!-- Announcement ribbon -->
+  <g id="announcement" filter="url(#softShadow)">
+    <path d="M142 181H585Q621 181 629 211L637 244 648 230Q660 215 671 228L644 281Q637 302 608 307H151Q119 307 111 278L101 239 88 252Q75 266 63 252L90 201Q100 182 142 181Z" fill="url(#navy)" stroke="#f4c83a" stroke-width="7" class="round-stroke"/>
+    <text x="405" y="278" text-anchor="middle" class="ar white-text" font-size="82" font-weight="800">إعلان</text>
+
+    <!-- Vector megaphone -->
+    <g transform="translate(43 203) rotate(-10 74 44)" aria-hidden="true">
+      <path d="M40 35 92 11V75L40 54Z" fill="#ffffff" stroke="#063b78" stroke-width="7" class="round-stroke"/>
+      <path d="M24 31H43V59H24Q13 59 13 48V42Q13 31 24 31Z" fill="#0b66b4" stroke="#063b78" stroke-width="6"/>
+      <path d="M31 58 41 58 47 88H30L23 59Z" fill="#ffffff" stroke="#063b78" stroke-width="6" class="round-stroke"/>
+      <path d="M86 14Q102 20 102 43T86 73Z" fill="#f7c934" stroke="#063b78" stroke-width="6"/>
+      <path d="M109 15 124 2M113 39H134M109 65 126 78" fill="none" stroke="#f5c52e" stroke-width="8" class="round-stroke"/>
+    </g>
+    <g fill="none" stroke="#f5c52e" stroke-width="7" class="round-stroke" aria-hidden="true">
+      <path d="M607 219 622 202"/>
+      <path d="M616 246H638"/>
+      <path d="M607 272 624 287"/>
+    </g>
+  </g>
+
+  <!-- Notice copy -->
+  <g id="notice">
+    <rect x="28" y="333" width="664" height="116" rx="24" fill="#ffffff" fill-opacity="0.84" stroke="#e0ad20" stroke-width="3" filter="url(#tinyShadow)"/>
+    <text x="360" y="383" text-anchor="middle" class="ar navy-text" font-size="31" font-weight="700">بعد الرجوع إلى الساعة القانونية <tspan fill="#0a61ad">(توقيت غرينتش)</tspan></text>
+    <text x="360" y="428" text-anchor="middle" class="ar navy-text" font-size="34" font-weight="800">ستتغير مواعيد الدخول والخروج</text>
+  </g>
+
+  <!-- Morning card -->
+  <g id="morning-section" aria-label="الفترة الصباحية">
+    <rect x="28" y="470" width="664" height="250" rx="25" fill="#ffffff" stroke="#075396" stroke-width="3" filter="url(#tinyShadow)"/>
+    <g clip-path="url(#morningClip)">
+      <rect x="28" y="470" width="664" height="91" fill="url(#blue)"/>
+      <path d="M28 538Q115 590 262 556T692 543V562H28Z" fill="url(#gold)"/>
+      <path d="M28 548Q116 595 265 563T692 550V568H28Z" fill="#ffffff"/>
+    </g>
+    <text x="365" y="533" text-anchor="middle" class="ar white-text" font-size="50" font-weight="800">الفترة الصباحية</text>
+
+    <!-- Sun -->
+    <g transform="translate(616 514)" aria-hidden="true" class="round-stroke">
+      <circle r="38" fill="url(#sunGlow)"/>
+      <circle r="20" fill="#ffd447" stroke="#ffe986" stroke-width="2"/>
+      <g stroke="#ffd447" stroke-width="5">
+        <path d="M0-33V-43M0 33V43M-33 0H-43M33 0H43M-24-24-31-31M24 24 31 31M24-24 31-31M-24 24-31 31"/>
+      </g>
+    </g>
+
+    <!-- Rows -->
+    <rect x="169" y="574" width="506" height="58" rx="19" fill="url(#paleRow)"/>
+    <rect x="169" y="642" width="506" height="56" rx="19" fill="url(#paleRow)"/>
+
+    <text x="610" y="613" text-anchor="middle" class="ar navy-text" font-size="28" font-weight="700">موعد الدخول</text>
+    <rect x="414" y="581" width="125" height="44" rx="15" fill="#0960aa"/>
+    <text id="morning-entry-time" x="476.5" y="615" text-anchor="middle" class="num white-text" font-size="38" font-weight="800">08:00</text>
+    <text x="376" y="613" text-anchor="middle" class="ar navy-text" font-size="25" font-weight="700">صباحاً</text>
+    <text x="315" y="613" text-anchor="middle" class="ar navy-text" font-size="24" font-weight="600">عوض</text>
+    <rect x="181" y="584" width="103" height="40" rx="14" fill="#dcecff"/>
+    <text x="232.5" y="613" text-anchor="middle" class="num" fill="#0a5aa2" font-size="29" font-weight="800">08:30</text>
+
+    <text x="610" y="680" text-anchor="middle" class="ar navy-text" font-size="28" font-weight="700">موعد الخروج</text>
+    <rect x="414" y="648" width="125" height="44" rx="15" fill="#0960aa"/>
+    <text id="morning-exit-time" x="476.5" y="682" text-anchor="middle" class="num white-text" font-size="38" font-weight="800">12:00</text>
+    <text x="363" y="680" text-anchor="middle" class="ar navy-text" font-size="25" font-weight="700">زوالاً</text>
+
+    <!-- Morning clock + calendar -->
+    <g transform="translate(0 -1)" aria-hidden="true" class="round-stroke">
+      <circle cx="101" cy="618" r="43" fill="#ffffff" stroke="#e7b526" stroke-width="7"/>
+      <circle cx="101" cy="618" r="36" fill="#f7fbff" stroke="#07549a" stroke-width="4"/>
+      <g stroke="#07549a" stroke-width="3">
+        <path d="M101 586V592M101 644V650M69 618H75M127 618H133"/>
+      </g>
+      <path d="M101 618 101 597M101 618 119 608" fill="none" stroke="#07549a" stroke-width="5"/>
+      <circle cx="101" cy="618" r="4" fill="#f0bd2a"/>
+      <rect x="106" y="642" width="55" height="47" rx="8" fill="#ffffff" stroke="#07549a" stroke-width="5"/>
+      <path d="M106 656H161" stroke="#07549a" stroke-width="5"/>
+      <path d="M119 636V649M148 636V649" stroke="#07549a" stroke-width="6"/>
+      <g fill="#0b66b4">
+        <rect x="116" y="663" width="8" height="7" rx="1"/>
+        <rect x="129" y="663" width="8" height="7" rx="1"/>
+        <rect x="142" y="663" width="8" height="7" rx="1"/>
+        <rect x="116" y="676" width="8" height="7" rx="1"/>
+        <rect x="129" y="676" width="8" height="7" rx="1"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Evening card -->
+  <g id="evening-section" aria-label="الفترة المسائية">
+    <rect x="28" y="742" width="664" height="250" rx="25" fill="#ffffff" stroke="#075396" stroke-width="3" filter="url(#tinyShadow)"/>
+    <g clip-path="url(#eveningClip)">
+      <rect x="28" y="742" width="664" height="91" fill="url(#blue)"/>
+      <path d="M28 810Q115 862 262 828T692 815V834H28Z" fill="url(#gold)"/>
+      <path d="M28 820Q116 867 265 835T692 822V840H28Z" fill="#ffffff"/>
+    </g>
+    <text x="365" y="805" text-anchor="middle" class="ar white-text" font-size="50" font-weight="800">الفترة المسائية</text>
+
+    <!-- Crescent and stars -->
+    <g transform="translate(618 786)" aria-hidden="true">
+      <path d="M12-28A34 34 0 1 0 22 30 28 28 0 1 1 12-28Z" fill="#ffd447"/>
+      <path d="m23-27 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z" fill="#ffe66c"/>
+      <path d="m38-5 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" fill="#ffe66c"/>
+    </g>
+
+    <!-- Rows -->
+    <rect x="169" y="846" width="506" height="58" rx="19" fill="url(#paleRow)"/>
+    <rect x="169" y="914" width="506" height="56" rx="19" fill="url(#paleRow)"/>
+
+    <text x="610" y="885" text-anchor="middle" class="ar navy-text" font-size="28" font-weight="700">موعد الدخول</text>
+    <rect x="414" y="853" width="125" height="44" rx="15" fill="#0960aa"/>
+    <text id="evening-entry-time" x="476.5" y="887" text-anchor="middle" class="num white-text" font-size="38" font-weight="800">13:30</text>
+    <text x="376" y="885" text-anchor="middle" class="ar navy-text" font-size="25" font-weight="700">زوالاً</text>
+    <text x="315" y="885" text-anchor="middle" class="ar navy-text" font-size="24" font-weight="600">عوض</text>
+    <rect x="181" y="856" width="103" height="40" rx="14" fill="#dcecff"/>
+    <text x="232.5" y="885" text-anchor="middle" class="num" fill="#0a5aa2" font-size="29" font-weight="800">14:30</text>
+
+    <text x="610" y="952" text-anchor="middle" class="ar navy-text" font-size="28" font-weight="700">موعد الخروج</text>
+    <rect x="414" y="920" width="125" height="44" rx="15" fill="#0960aa"/>
+    <text id="evening-exit-time" x="476.5" y="954" text-anchor="middle" class="num white-text" font-size="38" font-weight="800">17:30</text>
+    <text x="363" y="952" text-anchor="middle" class="ar navy-text" font-size="25" font-weight="700">مساءً</text>
+
+    <!-- Evening clock + calendar -->
+    <g transform="translate(0 271)" aria-hidden="true" class="round-stroke">
+      <circle cx="101" cy="618" r="43" fill="#ffffff" stroke="#e7b526" stroke-width="7"/>
+      <circle cx="101" cy="618" r="36" fill="#f7fbff" stroke="#07549a" stroke-width="4"/>
+      <g stroke="#07549a" stroke-width="3">
+        <path d="M101 586V592M101 644V650M69 618H75M127 618H133"/>
+      </g>
+      <path d="M101 618 88 598M101 618 119 626" fill="none" stroke="#07549a" stroke-width="5"/>
+      <circle cx="101" cy="618" r="4" fill="#f0bd2a"/>
+      <rect x="106" y="642" width="55" height="47" rx="8" fill="#ffffff" stroke="#07549a" stroke-width="5"/>
+      <path d="M106 656H161" stroke="#07549a" stroke-width="5"/>
+      <path d="M119 636V649M148 636V649" stroke="#07549a" stroke-width="6"/>
+      <g fill="#0b66b4">
+        <rect x="116" y="663" width="8" height="7" rx="1"/>
+        <rect x="129" y="663" width="8" height="7" rx="1"/>
+        <rect x="142" y="663" width="8" height="7" rx="1"/>
+        <rect x="116" y="676" width="8" height="7" rx="1"/>
+        <rect x="129" y="676" width="8" height="7" rx="1"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Footer ornament -->
+  <g transform="translate(360 1018)" aria-hidden="true">
+    <path d="M-144 0H-38M38 0H144" stroke="url(#gold)" stroke-width="3" stroke-linecap="round"/>
+    <g fill="#07549a" transform="rotate(45)">
+      <rect x="-8" y="-8" width="16" height="16" rx="2"/>
+      <rect x="-25" y="-6" width="12" height="12" rx="2"/>
+      <rect x="13" y="-6" width="12" height="12" rx="2"/>
+    </g>
+    <circle r="4" fill="#f3c431"/>
+  </g>
+</svg>

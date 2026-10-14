@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1440" viewBox="0 0 1080 1440" role="img" aria-labelledby="title desc">
+  <title id="title">إعلان مواعيد الدخول والخروج بملحقة ابن سينا الإعدادية</title>
+  <desc id="desc">ملصق مدرسي عربي يوضح مواعيد الفترتين الصباحية والمسائية بعد الرجوع إلى الساعة القانونية</desc>
+
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="0.52" stop-color="#fff8ee"/>
+      <stop offset="1" stop-color="#f7f1e8"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#214f82"/>
+      <stop offset="1" stop-color="#132f5a"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#edf8ff"/>
+      <stop offset="1" stop-color="#cfe4f3"/>
+    </linearGradient>
+    <linearGradient id="blush" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8c8d4"/>
+      <stop offset="1" stop-color="#e99caf"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7d987"/>
+      <stop offset="1" stop-color="#d7ae4e"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dff2e8"/>
+      <stop offset="1" stop-color="#b9dccb"/>
+    </linearGradient>
+
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#79a9ca" stroke-width="1.4" opacity=".16"/>
+    </pattern>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2.1" fill="#fff" opacity=".35"/>
+    </pattern>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#173b68" flood-opacity=".17"/>
+    </filter>
+    <filter id="smallShadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#173b68" flood-opacity=".18"/>
+    </filter>
+    <filter id="titleShadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="2.5" flood-color="#10294b" flood-opacity=".28"/>
+    </filter>
+
+    <style>
+      .ar { font-family: "Dubai", "Segoe UI", Arial, sans-serif; }
+      .navy { fill: #173b68; }
+      .white { fill: #fffdf8; }
+      .label { font-size: 31px; font-weight: 700; fill: #173b68; }
+      .time { font-family: "Dubai", "Segoe UI", Arial, sans-serif; font-size: 39px; font-weight: 700; fill: #fffdf8; letter-spacing: .5px; }
+      .oldtime { font-family: "Dubai", "Segoe UI", Arial, sans-serif; font-size: 29px; font-weight: 700; fill: #173b68; letter-spacing: .4px; }
+      .qualifier { font-size: 27px; font-weight: 600; fill: #294f77; }
+      .stitch { fill: none; stroke: #6089ad; stroke-width: 2.2; stroke-dasharray: 9 10; stroke-linecap: round; opacity: .65; }
+      .doodle { fill: none; stroke: #4778a3; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .42; }
+    </style>
+  </defs>
+
+  <!-- paper and notebook background -->
+  <rect width="1080" height="1440" rx="34" fill="url(#paper)"/>
+  <rect x="18" y="18" width="1044" height="1404" rx="28" fill="url(#grid)"/>
+  <path d="M0 0H355C292 38 244 75 170 92C104 107 50 101 0 133Z" fill="#87b4d4" opacity=".88"/>
+  <path d="M0 0H289C230 27 166 58 98 64C59 68 26 65 0 72Z" fill="#173b68"/>
+  <path d="M1080 0H850C904 45 927 81 960 122C1001 173 1043 201 1080 211Z" fill="#f0bdcf" opacity=".82"/>
+  <path d="M1080 0H926C970 38 1014 84 1080 98Z" fill="#d9b45f" opacity=".92"/>
+
+  <!-- quiet academic doodles -->
+  <g aria-hidden="true">
+    <text x="70" y="182" class="ar" font-size="27" font-weight="600" fill="#4778a3" opacity=".43">a²+b²=c²</text>
+    <path d="M908 177l17-34 17 34 38 5-28 26 7 37-34-19-34 19 7-37-28-26z" fill="none" stroke="#e8a7b8" stroke-width="4" opacity=".48"/>
+    <path class="doodle" d="M60 450h63M91 419v63M944 441c12-22 44-17 44 9 0 22-44 47-44 47s-44-25-44-47c0-26 32-31 44-9z"/>
+    <path class="doodle" d="M58 1008h104M110 956v104M920 1008l25-52 25 52zM940 992h10"/>
+    <path d="M59 1258c58-34 112-26 153 14" fill="none" stroke="#e8a7b8" stroke-width="4" stroke-dasharray="8 12" stroke-linecap="round" opacity=".55"/>
+    <path d="M846 1260c64-34 120-19 174 24" fill="none" stroke="#79a9ca" stroke-width="4" stroke-dasharray="8 12" stroke-linecap="round" opacity=".55"/>
+    <circle cx="211" cy="1271" r="6" fill="#e8a7b8" opacity=".7"/>
+    <circle cx="842" cy="1262" r="6" fill="#79a9ca" opacity=".7"/>
+  </g>
+
+  <!-- school-name ribbon -->
+  <g filter="url(#smallShadow)">
+    <path d="M242 54H838L814 117H266Z" fill="#173b68"/>
+    <path d="M242 54l-58 29 70 28 12-57zM838 54l58 29-70 28-12-57z" fill="#d9b45f"/>
+    <path d="M242 54h596l-13 14H255z" fill="#315f90" opacity=".8"/>
+  </g>
+  <text x="540" y="95" class="ar white" font-size="33" font-weight="700" text-anchor="middle" direction="rtl">ملحقة ابن سينا الإعدادية</text>
+
+  <!-- main scalloped title label -->
+  <g filter="url(#shadow)">
+    <path d="M178 142
+             C178 123 197 113 215 122
+             C232 99 267 99 284 122
+             C304 102 337 107 348 132
+             H732
+             C743 107 776 102 796 122
+             C813 99 848 99 865 122
+             C883 113 902 123 902 142
+             C929 149 934 181 914 197
+             C935 216 924 249 897 253
+             C904 279 878 299 855 287
+             C842 310 808 312 791 292
+             H289
+             C272 312 238 310 225 287
+             C202 299 176 279 183 253
+             C156 249 145 216 166 197
+             C146 181 151 149 178 142Z" fill="#fffdf9" stroke="#aac8dd" stroke-width="5"/>
+    <path d="M205 151C230 120 268 132 287 150H793C812 132 850 120 875 151C901 163 900 188 884 201C901 219 890 242 866 247C872 268 848 281 828 271H252C232 281 208 268 214 247C190 242 179 219 196 201C180 188 179 163 205 151Z" class="stitch"/>
+  </g>
+  <text x="540" y="245" class="ar navy" font-size="111" font-weight="700" text-anchor="middle" direction="rtl" filter="url(#titleShadow)">إعلان</text>
+
+  <!-- megaphone sticker -->
+  <g transform="translate(95 194) rotate(-12)" filter="url(#smallShadow)" aria-hidden="true">
+    <path d="M16 35h43l66-30v78L59 54H16z" fill="#fffdf9" stroke="#173b68" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M125 5v78l24-9V14z" fill="url(#gold)" stroke="#173b68" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M40 55l10 46h31L64 55" fill="#8fb8d4" stroke="#173b68" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M162 24l23-12M166 44h28M162 63l23 13" fill="none" stroke="#d9b45f" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <!-- pencil sticker -->
+  <g transform="translate(925 171) rotate(15)" filter="url(#smallShadow)" aria-hidden="true">
+    <path d="M0 92L69 3l24 19-69 89-31 12z" fill="#f3cb63" stroke="#173b68" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M69 3l12-15 24 19-12 15z" fill="#e9a5b7" stroke="#173b68" stroke-width="5"/>
+    <path d="M-7 123L0 92l24 19z" fill="#f4e1c7" stroke="#173b68" stroke-width="5"/>
+    <path d="M-7 123l11-5-8-7z" fill="#173b68"/>
+  </g>
+
+  <!-- explanatory paper note -->
+  <g filter="url(#shadow)">
+    <rect x="104" y="337" width="872" height="179" rx="39" fill="#fffdf9" stroke="#d9b45f" stroke-width="4"/>
+    <rect x="121" y="354" width="838" height="145" rx="29" class="stitch"/>
+    <path d="M180 321h125l-8 44H172z" fill="#dbeaf3" opacity=".92" transform="rotate(-4 238 343)"/>
+    <path d="M775 321h125l8 44H783z" fill="#f7c9d4" opacity=".82" transform="rotate(4 838 343)"/>
+  </g>
+  <text x="540" y="407" class="ar navy" font-size="38" font-weight="700" text-anchor="middle" direction="rtl">بعد الرجوع إلى الساعة القانونية (توقيت غرينتش)،</text>
+  <text x="540" y="465" class="ar navy" font-size="43" font-weight="700" text-anchor="middle" direction="rtl">ستتغير مواعيد الدخول والخروج.</text>
+
+  <!-- morning schedule card -->
+  <g filter="url(#shadow)">
+    <rect x="70" y="550" width="940" height="314" rx="42" fill="#fffdf9" stroke="#173b68" stroke-width="5"/>
+    <path d="M70 592q0-42 42-42h856q42 0 42 42v72c-55 36-130 34-213 22-129-19-264-19-393 0-139 21-252 14-334-22z" fill="url(#navy)"/>
+    <path d="M70 650c85 48 203 55 338 34 126-19 259-19 386 0 83 13 159 13 216-22v17c-59 36-134 36-218 23-125-19-255-19-380 0-139 22-259 14-342-35z" fill="#d9b45f"/>
+  </g>
+  <text x="540" y="632" class="ar white" font-size="63" font-weight="700" text-anchor="middle" direction="rtl">الفترة الصباحية</text>
+
+  <!-- sun badge -->
+  <g transform="translate(892 588)" aria-hidden="true">
+    <circle r="27" fill="#f6d16f"/>
+    <g stroke="#f6d16f" stroke-width="6" stroke-linecap="round">
+      <path d="M0-43v-14M0 43v14M-43 0h-14M43 0h14M-30-30l-10-10M30 30l10 10M30-30l10-10M-30 30l-10 10"/>
+    </g>
+  </g>
+
+  <!-- morning clock illustration -->
+  <g transform="translate(166 756)" filter="url(#smallShadow)" aria-hidden="true">
+    <circle r="69" fill="#eef7fc" stroke="#173b68" stroke-width="7"/>
+    <circle r="54" fill="#fffdf9" stroke="#91bad5" stroke-width="3" stroke-dasharray="4 8"/>
+    <path d="M0-43v8M43 0h-8M0 43v-8M-43 0h8" stroke="#173b68" stroke-width="5" stroke-linecap="round"/>
+    <path d="M0 0l26-28M0 0l-27-13" stroke="#173b68" stroke-width="7" stroke-linecap="round"/>
+    <circle r="7" fill="#d9b45f"/>
+    <rect x="27" y="37" width="69" height="61" rx="12" fill="#8fb8d4" stroke="#173b68" stroke-width="6"/>
+    <path d="M40 50h43M42 67h11M62 67h11M82 67h2M42 84h11M62 84h11M82 84h2" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- morning rows -->
+  <rect x="275" y="708" width="674" height="63" rx="22" fill="#e9f3f9"/>
+  <text x="864" y="751" class="ar label" text-anchor="middle" direction="rtl">موعد الدخول:</text>
+  <rect x="551" y="716" width="171" height="48" rx="18" fill="#173b68"/>
+  <text x="636.5" y="751" class="time" text-anchor="middle" direction="ltr">08:00</text>
+  <text x="483" y="750" class="ar qualifier" font-size="23" text-anchor="middle" direction="rtl">صباحاً عوض</text>
+  <rect x="291" y="718" width="124" height="45" rx="17" fill="#f7d6df" stroke="#e5a0b3" stroke-width="2"/>
+  <text x="353" y="749" class="oldtime" text-anchor="middle" direction="ltr">08:30</text>
+
+  <rect x="275" y="781" width="674" height="63" rx="22" fill="#f4f0e9"/>
+  <text x="864" y="824" class="ar label" text-anchor="middle" direction="rtl">موعد الخروج:</text>
+  <rect x="551" y="789" width="171" height="48" rx="18" fill="#173b68"/>
+  <text x="636.5" y="824" class="time" text-anchor="middle" direction="ltr">12:00</text>
+  <text x="450" y="823" class="ar qualifier" text-anchor="middle" direction="rtl">زوالاً</text>
+
+  <!-- afternoon schedule card -->
+  <g filter="url(#shadow)">
+    <rect x="70" y="900" width="940" height="314" rx="42" fill="#fffdf9" stroke="#173b68" stroke-width="5"/>
+    <path d="M70 942q0-42 42-42h856q42 0 42 42v72c-55 36-130 34-213 22-129-19-264-19-393 0-139 21-252 14-334-22z" fill="url(#navy)"/>
+    <path d="M70 1000c85 48 203 55 338 34 126-19 259-19 386 0 83 13 159 13 216-22v17c-59 36-134 36-218 23-125-19-255-19-380 0-139 22-259 14-342-35z" fill="#d9b45f"/>
+  </g>
+  <text x="540" y="982" class="ar white" font-size="63" font-weight="700" text-anchor="middle" direction="rtl">الفترة المسائية</text>
+
+  <!-- moon badge -->
+  <g transform="translate(892 940)" aria-hidden="true">
+    <path d="M18-35A45 45 0 1 0 38 30A36 36 0 1 1 18-35Z" fill="#f6d16f"/>
+    <path d="M47-31l5 11 12 2-9 8 2 12-10-6-11 6 3-12-9-8 12-2z" fill="#fff4b8"/>
+  </g>
+
+  <!-- evening clock illustration -->
+  <g transform="translate(166 1106)" filter="url(#smallShadow)" aria-hidden="true">
+    <circle r="69" fill="#eef7fc" stroke="#173b68" stroke-width="7"/>
+    <circle r="54" fill="#fffdf9" stroke="#91bad5" stroke-width="3" stroke-dasharray="4 8"/>
+    <path d="M0-43v8M43 0h-8M0 43v-8M-43 0h8" stroke="#173b68" stroke-width="5" stroke-linecap="round"/>
+    <path d="M0 0l-25-30M0 0l31-15" stroke="#173b68" stroke-width="7" stroke-linecap="round"/>
+    <circle r="7" fill="#e8a7b8"/>
+    <path d="M47 46c12-22 44-17 44 9 0 21-44 45-44 45S3 76 3 55c0-26 32-31 44-9z" fill="#efb2c1" stroke="#173b68" stroke-width="5"/>
+  </g>
+
+  <!-- evening rows -->
+  <rect x="275" y="1058" width="674" height="63" rx="22" fill="#e9f3f9"/>
+  <text x="864" y="1101" class="ar label" text-anchor="middle" direction="rtl">موعد الدخول:</text>
+  <rect x="551" y="1066" width="171" height="48" rx="18" fill="#173b68"/>
+  <text x="636.5" y="1101" class="time" text-anchor="middle" direction="ltr">13:30</text>
+  <text x="483" y="1100" class="ar qualifier" font-size="23" text-anchor="middle" direction="rtl">زوالاً عوض</text>
+  <rect x="291" y="1068" width="124" height="45" rx="17" fill="#f7d6df" stroke="#e5a0b3" stroke-width="2"/>
+  <text x="353" y="1099" class="oldtime" text-anchor="middle" direction="ltr">14:30</text>
+
+  <rect x="275" y="1131" width="674" height="63" rx="22" fill="#f4f0e9"/>
+  <text x="864" y="1174" class="ar label" text-anchor="middle" direction="rtl">موعد الخروج:</text>
+  <rect x="551" y="1139" width="171" height="48" rx="18" fill="#173b68"/>
+  <text x="636.5" y="1174" class="time" text-anchor="middle" direction="ltr">17:30</text>
+  <text x="450" y="1173" class="ar qualifier" text-anchor="middle" direction="rtl">مساءً</text>
+
+  <!-- illustrated school-supplies footer -->
+  <g aria-hidden="true">
+    <!-- books -->
+    <g transform="translate(90 1304) rotate(-3)" filter="url(#smallShadow)">
+      <rect x="0" y="66" width="263" height="45" rx="13" fill="#173b68"/>
+      <path d="M20 82h207M20 95h180" stroke="#fff5df" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+      <rect x="27" y="27" width="249" height="45" rx="13" fill="#e8a7b8"/>
+      <path d="M47 43h194M47 56h165" stroke="#fff8ee" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+      <rect x="11" y="0" width="224" height="38" rx="12" fill="#8fb8d4"/>
+      <path d="M30 15h168M30 27h140" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>
+    </g>
+
+    <!-- open notebook -->
+    <g transform="translate(379 1289)" filter="url(#smallShadow)">
+      <path d="M0 24Q80-3 161 24V130Q80 106 0 130Z" fill="#fffdf9" stroke="#173b68" stroke-width="4"/>
+      <path d="M161 24Q242-3 322 24V130Q242 106 161 130Z" fill="#fffdf9" stroke="#173b68" stroke-width="4"/>
+      <path d="M161 25v105" stroke="#d9b45f" stroke-width="4"/>
+      <path d="M30 51h99M30 72h88M30 93h106M191 51h99M191 72h77M191 93h104" stroke="#92b5cd" stroke-width="3" stroke-linecap="round"/>
+      <path d="M52 20c12-12 20-12 32 0M104 20c12-12 20-12 32 0M186 20c12-12 20-12 32 0M238 20c12-12 20-12 32 0" fill="none" stroke="#d9b45f" stroke-width="4" stroke-linecap="round"/>
+      <path d="M232 43l12 25 28 4-20 19 5 27-25-13-25 13 5-27-20-19 28-4z" fill="#f5cbd5" stroke="#173b68" stroke-width="3" opacity=".8"/>
+    </g>
+
+    <!-- pencil cup -->
+    <g transform="translate(828 1273)" filter="url(#smallShadow)">
+      <path d="M39 5l15 91M82-5L75 96M121 8L96 100" stroke="#173b68" stroke-width="13" stroke-linecap="round"/>
+      <path d="M39 5l-3-18 9 16M82-5l5-17 2 18M121 8l8-16-1 19" fill="#f0c86a" stroke="#173b68" stroke-width="4"/>
+      <path d="M9 72h119l-14 101H23z" fill="#e8a7b8" stroke="#173b68" stroke-width="5"/>
+      <path d="M23 89h91M29 110h78M31 132h73M34 153h67" stroke="#fff8ee" stroke-width="4" stroke-dasharray="5 8" opacity=".85"/>
+      <path d="M44 113c9-16 32-12 32 6 0 15-32 32-32 32s-32-17-32-32c0-18 23-22 32-6z" fill="#fff0f4" opacity=".9"/>
+    </g>
+  </g>
+
+  <!-- lower decorative wave and stars -->
+  <path d="M0 1398c154-65 304-35 444 3 173 47 334 35 636-30v69H0z" fill="#8fb8d4" opacity=".85"/>
+  <path d="M0 1420c191-47 358-17 509 4 175 24 357 11 571-41v57H0z" fill="#173b68"/>
+  <g transform="translate(540 1275)" aria-hidden="true">
+    <path d="M0-14l5 9 10 5-10 5-5 9-5-9-10-5 10-5z" fill="#d9b45f"/>
+    <path d="M31-4l4 7 7 4-7 4-4 7-4-7-7-4 7-4z" fill="#e8a7b8"/>
+    <path d="M-31-4l4 7 7 4-7 4-4 7-4-7-7-4 7-4z" fill="#79a9ca"/>
+  </g>
+</svg>

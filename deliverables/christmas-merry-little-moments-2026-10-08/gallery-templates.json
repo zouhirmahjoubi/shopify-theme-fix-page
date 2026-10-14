@@ -1,0 +1,38 @@
+[
+  {
+    "source": "case_templates\\Apple\\Tough & MagSafe\\16PMT.png",
+    "template": "templates/iphone16pm.png",
+    "id": "iphone16pm",
+    "label": "iPhone 16 Pro Max · Tough / MagSafe"
+  },
+  {
+    "source": "case_templates\\Apple\\Tough & MagSafe\\16T.png",
+    "template": "templates/iphone16.png",
+    "id": "iphone16",
+    "label": "iPhone 16 · Tough / MagSafe"
+  },
+  {
+    "source": "case_templates\\Apple\\Tough & MagSafe\\13MT.png",
+    "template": "templates/iphone13mini.png",
+    "id": "iphone13mini",
+    "label": "iPhone 13 Mini · Tough / MagSafe"
+  },
+  {
+    "source": "case_templates\\Apple\\Tough & MagSafe\\17PMT.png",
+    "template": "templates/iphone17pm.png",
+    "id": "iphone17pm",
+    "label": "iPhone 17 Pro Max · Tough / MagSafe"
+  },
+  {
+    "source": "case_templates\\Samsung\\Tough\\S26UT.png",
+    "template": "templates/samsung26u.png",
+    "id": "samsung26u",
+    "label": "Samsung Galaxy S26 Ultra · Tough"
+  },
+  {
+    "source": "case_templates\\Samsung\\Tough\\S24T.png",
+    "template": "templates/samsung24.png",
+    "id": "samsung24",
+    "label": "Samsung Galaxy S24 · Tough"
+  }
+]
