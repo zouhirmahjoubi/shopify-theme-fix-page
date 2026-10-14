@@ -1,0 +1,24 @@
+{
+  "id": "p14-2-detail",
+  "productId": "gid://shopify/Product/10004108280053",
+  "status": "downloaded",
+  "startedAt": "2026-09-23T00:01:03.341Z",
+  "attempt": 2,
+  "history": [
+    {
+      "id": "p14-2-detail",
+      "productId": "gid://shopify/Product/10004108280053",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:50:46.779Z",
+      "taskId": "735d29ef6c17d3793fe6f1dc0d91a885",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:52:43.124Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "taskId": "fa45acb90a2113500696b0fc4b50fd5b",
+  "creditsConsumed": 10,
+  "updatedAt": "2026-09-23T00:02:57.321Z",
+  "path": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\brands\\casify-product-images-2026-09-22\\outputs\\p14-2-detail.png",
+  "url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/image_1790121695120_5ea5w2.png"
+}

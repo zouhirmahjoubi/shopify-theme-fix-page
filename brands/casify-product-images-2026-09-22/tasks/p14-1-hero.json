@@ -1,0 +1,34 @@
+{
+  "id": "p14-1-hero",
+  "productId": "gid://shopify/Product/10004108280053",
+  "model": "gpt-image-2-5-sunburst-image-to-image",
+  "status": "waiting",
+  "repairSubmitted": true,
+  "attempt": 3,
+  "startedAt": "2026-09-23T00:06:07.816Z",
+  "history": [
+    {
+      "id": "p14-1-hero",
+      "productId": "gid://shopify/Product/10004108280053",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:50:41.594Z",
+      "taskId": "6e3b41c9d78253e660a1c35a399fc744",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:52:42.648Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    },
+    {
+      "id": "p14-1-hero",
+      "productId": "gid://shopify/Product/10004108280053",
+      "status": "fail",
+      "startedAt": "2026-09-23T00:00:58.329Z",
+      "attempt": 2,
+      "taskId": "0e9805f9bdb96c7c0499ae9f182a0e98",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-23T00:01:21.715Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "reason": "Alternative GPT Image 2.5 route after two explicit provider failures with sufficient account credit",
+  "taskId": "02079e58a70476eb6720ce5d89dce251"
+}

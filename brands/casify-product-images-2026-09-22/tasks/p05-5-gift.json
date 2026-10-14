@@ -1,0 +1,24 @@
+{
+  "id": "p05-5-gift",
+  "productId": "gid://shopify/Product/10001768677621",
+  "status": "downloaded",
+  "startedAt": "2026-09-23T00:00:12.089Z",
+  "attempt": 2,
+  "history": [
+    {
+      "id": "p05-5-gift",
+      "productId": "gid://shopify/Product/10001768677621",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:43:20.001Z",
+      "taskId": "eeb92a2f5d0bcaabe891e700582acf18",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:47:47.048Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "taskId": "689a9fa524e2e30661994572067f4b24",
+  "creditsConsumed": 10,
+  "updatedAt": "2026-09-23T00:01:15.980Z",
+  "path": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\brands\\casify-product-images-2026-09-22\\outputs\\p05-5-gift.png",
+  "url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/image_1790121646897_cuddha.png"
+}

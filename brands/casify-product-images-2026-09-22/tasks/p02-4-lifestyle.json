@@ -1,0 +1,24 @@
+{
+  "id": "p02-4-lifestyle",
+  "productId": "gid://shopify/Product/10004107886837",
+  "status": "downloaded",
+  "startedAt": "2026-09-22T23:59:51.863Z",
+  "attempt": 2,
+  "history": [
+    {
+      "id": "p02-4-lifestyle",
+      "productId": "gid://shopify/Product/10004107886837",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:40:30.426Z",
+      "taskId": "8b3ca1b4c2567b3cc40303a86760ebc7",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:42:18.955Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "taskId": "dcf152483b2882739e4f71902a823fef",
+  "creditsConsumed": 10,
+  "updatedAt": "2026-09-23T00:01:05.820Z",
+  "path": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\brands\\casify-product-images-2026-09-22\\outputs\\p02-4-lifestyle.png",
+  "url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/image_1790121626514_qi96y2.png"
+}

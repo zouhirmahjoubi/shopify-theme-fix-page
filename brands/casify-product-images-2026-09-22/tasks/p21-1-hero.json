@@ -1,0 +1,24 @@
+{
+  "id": "p21-1-hero",
+  "productId": "gid://shopify/Product/9942185148661",
+  "model": "gpt-image-2-5-flare-image-to-image",
+  "status": "waiting",
+  "repairSubmitted": true,
+  "attempt": 2,
+  "startedAt": "2026-09-23T00:06:12.900Z",
+  "history": [
+    {
+      "id": "p21-1-hero",
+      "productId": "gid://shopify/Product/9942185148661",
+      "status": "downloaded",
+      "startedAt": "2026-09-22T23:53:45.213Z",
+      "taskId": "676b310510efb539772cb0cc3de7d8f8",
+      "creditsConsumed": 10,
+      "updatedAt": "2026-09-22T23:55:41.645Z",
+      "path": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\brands\\casify-product-images-2026-09-22\\outputs\\p21-1-hero.png",
+      "url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/image_1790121259404_mwa2ws.png"
+    }
+  ],
+  "reason": "Correct open-bottom magnetic arc",
+  "taskId": "81b550331adeba4111fc719d71583c8f"
+}

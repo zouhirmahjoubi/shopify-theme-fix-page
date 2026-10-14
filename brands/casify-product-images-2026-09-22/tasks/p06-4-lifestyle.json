@@ -1,0 +1,34 @@
+{
+  "id": "p06-4-lifestyle",
+  "productId": "gid://shopify/Product/10004108574965",
+  "model": "gpt-image-2-5-sunburst-image-to-image",
+  "status": "waiting",
+  "repairSubmitted": true,
+  "attempt": 3,
+  "startedAt": "2026-09-23T00:06:02.465Z",
+  "history": [
+    {
+      "id": "p06-4-lifestyle",
+      "productId": "gid://shopify/Product/10004108574965",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:43:40.555Z",
+      "taskId": "fb3b71d36a794a98a55362c5f5aff9d9",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:47:47.685Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    },
+    {
+      "id": "p06-4-lifestyle",
+      "productId": "gid://shopify/Product/10004108574965",
+      "status": "fail",
+      "startedAt": "2026-09-23T00:00:27.220Z",
+      "attempt": 2,
+      "taskId": "c6ad71cf7e97d9da12a74e514d0a3d2d",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-23T00:01:18.793Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "reason": "Alternative GPT Image 2.5 route after two explicit provider failures with sufficient account credit",
+  "taskId": "a80305cb2f4af03030e79c9f0ada1d2d"
+}

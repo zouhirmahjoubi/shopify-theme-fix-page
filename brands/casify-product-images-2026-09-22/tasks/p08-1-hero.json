@@ -1,0 +1,24 @@
+{
+  "id": "p08-1-hero",
+  "productId": "gid://shopify/Product/9942177513717",
+  "status": "downloaded",
+  "startedAt": "2026-09-23T00:00:37.373Z",
+  "attempt": 2,
+  "history": [
+    {
+      "id": "p08-1-hero",
+      "productId": "gid://shopify/Product/9942177513717",
+      "status": "fail",
+      "startedAt": "2026-09-22T23:48:02.177Z",
+      "taskId": "c75173cb35231422b17fe16a371bf4bc",
+      "creditsConsumed": 0,
+      "updatedAt": "2026-09-22T23:50:01.579Z",
+      "error": "Your balance is insufficient. Please top up your account."
+    }
+  ],
+  "taskId": "cdfc4b7cebea462e549d0b24768494a5",
+  "creditsConsumed": 10,
+  "updatedAt": "2026-09-23T00:02:57.330Z",
+  "path": "C:\\Users\\LENOVO\\Downloads\\Shopify Theme Fix & Page\\brands\\casify-product-images-2026-09-22\\outputs\\p08-1-hero.png",
+  "url": "https://tempfile.aiquickdraw.com/p/cdfc4b7cebea462e549d0b24768494a5_1_1790121695_6360.png"
+}
