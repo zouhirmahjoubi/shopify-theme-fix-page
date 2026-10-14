@@ -1,0 +1,31 @@
+{
+    "facebook_testimonials": {
+      "type": "facebook-testimonials",
+      "settings": {
+        "heading": "Seen on Facebook",
+        "accent_text": "From our community",
+        "surface": "cream",
+        "layout": "carousel",
+        "float_cards": true
+      },
+      "blocks": {
+        "post-1": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-2": {
+          "type": "post",
+          "settings": {}
+        },
+        "post-3": {
+          "type": "post",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "post-1",
+        "post-2",
+        "post-3"
+      ]
+    }
+}

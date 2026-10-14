@@ -1,0 +1,284 @@
+{%- comment -%}
+  Casify — showcase cards (Chrismass design system), redesigned.
+
+  Content is unchanged from the original build: three stamped-badge product
+  cards authored in the schema/preset defaults below rather than pulled from
+  real products, so it renders identically everywhere this section is added.
+  Every word, number, price and badge here is exactly what shipped before —
+  this pass only changes how the cards are built and how they move.
+
+  Cards are dealt onto the counter from one stack (staggered fan-out, each on
+  its own rotation), an optional merchant-selected product image opens like a
+  shop-window display, and the CTA borrows the header's enamel-sign language.
+  The badge lands with a rubber-stamp snap and the stars cascade. Hover tilts
+  the card toward the pointer. Motion: assets/cv-showcase-motion.js.
+  Styles: assets/cv-showcase.css (loads after theme.css, so it wins the
+  cascade on the shared .cv-showcase/.cv-show-card selectors it still uses
+  for the section/header shell — new card internals live under the cvsh-
+  prefix instead of fighting the old rules).
+{%- endcomment -%}
+{{ 'cv-showcase.css' | asset_url | stylesheet_tag }}
+
+<section class="cv-sec cv-showcase cvsh" data-cvsh data-section-id="{{ section.id }}">
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+    <div class="cv-row__hd" data-cv-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cv-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 data-cv-split>{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <ul class="cvsh__row" role="list" data-cvsh-row>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'card' -%}
+        {%- liquid
+          assign s = block.settings
+          assign badge_cls = 'is-ribbon'
+          if s.badge_style == 'pill'
+            assign badge_cls = 'is-pill'
+          endif
+          assign has_card_image = false
+          if s.image != blank
+            assign has_card_image = true
+            assign card_image_alt = s.image.alt | default: s.title
+          endif
+        -%}
+        <li class="cvsh-card cvsh-card--{{ s.panel_tone }}{% if has_card_image %} cvsh-card--has-image{% endif %}" data-cvsh-card style="--i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="cvsh-card__stage">
+            <span class="cvsh-card__ring" aria-hidden="true"></span>
+            {%- if has_card_image -%}
+              <figure class="cvsh-card__media cvsh-card__media--{{ s.image_fit | default: 'cover' }}" data-cvsh-media>
+                {{ s.image | image_url: width: 960 | image_tag:
+                  class: 'cvsh-card__image',
+                  loading: 'lazy',
+                  widths: '320, 480, 640, 800, 960',
+                  sizes: '(min-width: 900px) 30vw, (min-width: 560px) 70vw, calc(100vw - 40px)',
+                  alt: card_image_alt
+                }}
+                <span class="cvsh-card__glass" aria-hidden="true"></span>
+              </figure>
+            {%- endif -%}
+            {%- if s.badge_text != blank -%}
+              <span class="cvsh-card__badge cvsh-card__badge--{{ s.badge_tone }} {{ badge_cls }}" data-cvsh-badge>{{ s.badge_text | escape }}</span>
+            {%- endif -%}
+
+            {%- unless has_card_image -%}
+              <span class="cvsh-card__icon" data-cvsh-fallback-icon>
+                {%- render 'cv-icon', name: s.icon, size: 68, animate: true -%}
+              </span>
+            {%- endunless -%}
+
+            {%- if s.pill_1_text != blank or s.pill_2_text != blank -%}
+              <div class="cvsh-card__pills">
+                {%- if s.pill_1_text != blank -%}
+                  <span class="cvsh-card__pill">
+                    {%- render 'cv-icon', name: s.pill_1_icon, size: 12 -%}
+                    {{ s.pill_1_text | escape }}
+                  </span>
+                {%- endif -%}
+                {%- if s.pill_2_text != blank -%}
+                  <span class="cvsh-card__pill">
+                    {%- render 'cv-icon', name: s.pill_2_icon, size: 12 -%}
+                    {{ s.pill_2_text | escape }}
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="cvsh-card__body">
+            {%- if s.rating_count != blank -%}
+              <div class="cvsh-card__rating" data-cvsh-stars>
+                <span class="cvsh-stars">
+                  {%- for i in (1..5) -%}
+                    <svg class="cvsh-stars__star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg>
+                  {%- endfor -%}
+                </span>
+                <span>({{ s.rating_count | escape }})</span>
+              </div>
+            {%- endif -%}
+
+            <h3 class="cvsh-card__title">{{ s.title | escape }}</h3>
+            {%- if s.description != blank -%}
+              <p class="cvsh-card__desc">{{ s.description | escape }}</p>
+            {%- endif -%}
+
+            <div class="cvsh-card__price" data-cvsh-price>
+              <span class="cvsh-card__now">{{ s.price | escape }}</span>
+              {%- if s.compare_price != blank -%}
+                <s class="cvsh-card__was">{{ s.compare_price | escape }}</s>
+              {%- endif -%}
+            </div>
+
+            <a href="{{ s.button_url | default: routes.all_products_collection_url }}" class="cvsh-card__cta cvsh-sign-cta cvsh-sign-cta--{{ s.button_tone }}" data-cvsh-cta>
+              <svg class="cvsh-sign-cta__art" viewBox="0 0 320 60" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <defs>
+                  <clipPath id="cvsh-plaque-{{ section.id }}-{{ block.id }}">
+                    <path d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+                  </clipPath>
+                  <pattern id="cvsh-stripe-{{ section.id }}-{{ block.id }}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+                    <rect width="9" height="18" class="cvsh-sign-cta__stripe-light"/>
+                    <rect x="9" width="9" height="18" class="cvsh-sign-cta__stripe-dark"/>
+                  </pattern>
+                </defs>
+                <path class="cvsh-sign-cta__base" d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+                <g clip-path="url(#cvsh-plaque-{{ section.id }}-{{ block.id }})">
+                  <rect class="cvsh-sign-cta__stripes" x="4" y="3" width="58" height="54" fill="url(#cvsh-stripe-{{ section.id }}-{{ block.id }})"/>
+                  <path class="cvsh-sign-cta__shade" d="M4 43c67 6 220 3 312-12v26H4Z"/>
+                  <path class="cvsh-sign-cta__shine" data-cvsh-cta-shine d="M-48 1h30L4 59h-30Z"/>
+                </g>
+                <path class="cvsh-sign-cta__trim" d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+                <g class="cvsh-sign-cta__mint" data-cvsh-cta-mint transform="translate(31 30)">
+                  <circle r="15" class="cvsh-sign-cta__mint-rim"/>
+                  <circle r="11" class="cvsh-sign-cta__mint-paper"/>
+                  <path class="cvsh-sign-cta__mint-swish" d="M0-10c5 0 9 4 10 8-4-2-8-1-10 2-2-4-2-7 0-10Z"/>
+                  <path class="cvsh-sign-cta__mint-swish" d="M10 0c0 5-4 9-8 10 2-4 1-8-2-10 4-2 7-2 10 0Z"/>
+                  <path class="cvsh-sign-cta__mint-swish" d="M0 10c-5 0-9-4-10-8 4 2 8 1 10-2 2 4 2 7 0 10Z"/>
+                  <path class="cvsh-sign-cta__mint-swish" d="M-10 0c0-5 4-9 8-10-2 4-1 8 2 10-4 2-7 2-10 0Z"/>
+                  <circle r="2.5" class="cvsh-sign-cta__mint-center"/>
+                </g>
+              </svg>
+              <span class="cvsh-sign-cta__label">{{ s.button_label | escape }}</span>
+              <svg class="cvsh-sign-cta__arrow" data-cvsh-cta-arrow viewBox="0 0 28 16" aria-hidden="true" focusable="false">
+                <path d="M1 8h23M17 1l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Showcase cards",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Shop the range" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Fan favorites, built to last" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "select", "id": "panel_tone", "label": "Panel color", "default": "cream",
+          "options": [ { "value": "cream", "label": "Cream" }, { "value": "teal", "label": "Teal" }, { "value": "dark", "label": "Dark" } ] },
+        { "type": "select", "id": "icon", "label": "Icon", "default": "ring-dot",
+          "options": [
+            { "value": "ring-dot", "label": "Ring + dot" },
+            { "value": "magnet-ring", "label": "Magnet ring" },
+            { "value": "uv-sun", "label": "Sun / UV" },
+            { "value": "drop-shield", "label": "Drop shield" },
+            { "value": "no-yellow", "label": "No yellowing" },
+            { "value": "sparkle-clear", "label": "Sparkle" },
+            { "value": "precision-fit", "label": "Precision fit" }
+          ] },
+        { "type": "image_picker", "id": "image", "label": "Product image" },
+        { "type": "select", "id": "image_fit", "label": "Image fit", "default": "cover",
+          "options": [ { "value": "cover", "label": "Fill frame" }, { "value": "contain", "label": "Show full image" } ] },
+        { "type": "text", "id": "badge_text", "label": "Badge text", "default": "BESTSELLER" },
+        { "type": "select", "id": "badge_tone", "label": "Badge color", "default": "red",
+          "options": [ { "value": "red", "label": "Red" }, { "value": "dark", "label": "Dark" }, { "value": "teal", "label": "Teal" } ] },
+        { "type": "select", "id": "badge_style", "label": "Badge shape", "default": "ribbon",
+          "options": [ { "value": "ribbon", "label": "Ribbon (corner fold)" }, { "value": "pill", "label": "Pill" } ] },
+        { "type": "select", "id": "pill_1_icon", "label": "Feature 1 icon", "default": "drop-height",
+          "options": [ { "value": "drop-height", "label": "Drop height" }, { "value": "check", "label": "Check" }, { "value": "lock-secure", "label": "Lock" }, { "value": "precision-fit", "label": "Precision fit" } ] },
+        { "type": "text", "id": "pill_1_text", "label": "Feature 1 text", "default": "6FT DROP TESTED" },
+        { "type": "select", "id": "pill_2_icon", "label": "Feature 2 icon", "default": "check",
+          "options": [ { "value": "check", "label": "Check" }, { "value": "drop-height", "label": "Drop height" }, { "value": "lock-secure", "label": "Lock" }, { "value": "precision-fit", "label": "Precision fit" } ] },
+        { "type": "text", "id": "pill_2_text", "label": "Feature 2 text", "default": "MAGSAFE READY" },
+        { "type": "text", "id": "rating_count", "label": "Review count", "default": "12,482" },
+        { "type": "text", "id": "title", "label": "Title", "default": "CandyStripe Classic Case" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready." },
+        { "type": "text", "id": "price", "label": "Price", "default": "$34" },
+        { "type": "text", "id": "compare_price", "label": "Compare-at price", "default": "$44" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+        { "type": "select", "id": "button_tone", "label": "Button color", "default": "red",
+          "options": [ { "value": "red", "label": "Red" }, { "value": "teal", "label": "Teal" } ] },
+        { "type": "url", "id": "button_url", "label": "Button link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Showcase cards",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "panel_tone": "cream",
+            "icon": "ring-dot",
+            "badge_text": "BESTSELLER",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "pill_1_icon": "drop-height",
+            "pill_1_text": "6FT DROP TESTED",
+            "pill_2_icon": "check",
+            "pill_2_text": "MAGSAFE READY",
+            "rating_count": "12,482",
+            "title": "CandyStripe Classic Case",
+            "description": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready.",
+            "price": "$34",
+            "compare_price": "$44",
+            "button_label": "Shop now",
+            "button_tone": "red"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "panel_tone": "teal",
+            "icon": "magnet-ring",
+            "badge_text": "BESTSELLER",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "pill_1_icon": "lock-secure",
+            "pill_1_text": "SNAP-FIT WALLET",
+            "pill_2_icon": "check",
+            "pill_2_text": "DROP TESTED",
+            "rating_count": "8,930",
+            "title": "MagSafe Wallet Case",
+            "description": "Snap-fit wallet with a flush N52 magnet ring. Holds three cards.",
+            "price": "$42",
+            "compare_price": "$52",
+            "button_label": "Shop now",
+            "button_tone": "teal"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "panel_tone": "dark",
+            "icon": "uv-sun",
+            "badge_text": "NEW",
+            "badge_tone": "teal",
+            "badge_style": "pill",
+            "pill_1_icon": "precision-fit",
+            "pill_1_text": "STAYS CRYSTAL CLEAR",
+            "pill_2_icon": "check",
+            "pill_2_text": "MAGSAFE READY",
+            "rating_count": "3,204",
+            "title": "Anti-Yellow Clear Case",
+            "description": "UV-stable resin stays clear for years — no yellowing, no cloudiness.",
+            "price": "$36",
+            "compare_price": "",
+            "button_label": "Shop now",
+            "button_tone": "red"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

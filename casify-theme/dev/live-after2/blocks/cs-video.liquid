@@ -1,0 +1,149 @@
+{%- comment -%}
+  Block: CS Video (Chrismass design system)
+  A Shopify-hosted video for the "Ratings & reviews" section — e.g. a customer
+  video review. Rebuilt from Elixir's cs-video block: same settings, plus a
+  poster frame, reserved aspect ratio, caption and grid width.
+
+  Playback is progressive:
+    - without JS the video has native controls, so it can always be played;
+    - with JS (assets/casify-cs-video.js) click-to-play videos get a wax-seal
+      play button, and "autoplay" videos play muted only while on screen and
+      never for visitors who prefer reduced motion; autoplay without controls
+      gets a visible pause button.
+  Styles live with the other cs blocks in assets/casify-cs-blocks.css.
+{%- endcomment -%}
+
+{%- liquid
+  assign this = block.settings
+  assign video = this.video_shopify
+  assign label = this.description | default: 'Customer video'
+  assign ratio = 1.7778
+  if video != blank and video.aspect_ratio > 0
+    assign ratio = video.aspect_ratio
+  endif
+-%}
+
+{%- if video != blank -%}
+  <figure
+    class="csv csv--span-{{ this.grid_width }}{% if this.custom_height %} csv--fixed{% endif %}"
+    id="cs-video-{{ block.id }}"
+    data-csv
+    data-csp-item
+    data-csv-autoplay="{{ this.autoplay }}"
+    data-csv-controls="{{ this.show_controls }}"
+    style="--csv-pt: {{ this.padding_top }}px; --csv-pb: {{ this.padding_bottom }}px; --csv-pl: {{ this.padding_left }}px; --csv-pr: {{ this.padding_right }}px; --csv-radius: {{ this.video_radius }}px; --csv-ratio: {{ ratio }}; --csv-h: {{ this.video_height }}px; --csv-fit: {{ this.video_fit }};"
+    {{ block.shopify_attributes }}
+  >
+    <div class="csv__frame" data-csv-frame>
+      <video
+        class="csv__video"
+        data-csv-video
+        playsinline
+        controls
+        {% if this.autoplay %}muted{% endif %}
+        {% if this.loop %}loop{% endif %}
+        preload="none"
+        {% if video.preview_image %}poster="{{ video.preview_image | image_url: width: 1600 }}"{% endif %}
+        aria-label="{{ label | escape }}"
+      >
+        {%- for source in video.sources -%}
+          {%- liquid
+            assign include_source = true
+            if this.video_quality == 'high'
+              if source.width < 1280
+                assign include_source = false
+              endif
+            elsif this.video_quality == 'medium'
+              if source.width < 854 or source.width > 1920
+                assign include_source = false
+              endif
+            elsif this.video_quality == 'low'
+              if source.width > 854
+                assign include_source = false
+              endif
+            endif
+          -%}
+          {%- if include_source -%}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endif -%}
+        {%- endfor -%}
+      </video>
+      <span class="csv__glass" data-csv-glass aria-hidden="true"></span>
+
+      <button type="button" class="csv__play" data-csv-play aria-label="Play video: {{ label | escape }}" hidden>
+        <svg class="csv__ring" data-csv-ring viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+          <defs><path id="csv-ring-{{ block.id }}" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+          <text><textPath href="#csv-ring-{{ block.id }}" textLength="286">{{ this.seal_text | default: 'Play the video' | upcase | escape }} • {{ this.seal_text | default: 'Play the video' | upcase | escape }} •</textPath></text>
+        </svg>
+        <span class="csv__core" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>
+      </button>
+
+      <button type="button" class="csv__toggle" data-csv-toggle aria-pressed="false" hidden>
+        <svg class="csv__toggle-pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 3h2.5v10H4.5zM9 3h2.5v10H9z"/></svg>
+        <svg class="csv__toggle-play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 3l8 5-8 5z"/></svg>
+        <span class="csv__sr" data-csv-toggle-label>Pause video</span>
+      </button>
+    </div>
+
+    {%- if this.show_caption and this.description != blank -%}
+      <figcaption class="csv__caption" data-csv-caption>{{ this.description | escape }}</figcaption>
+    {%- endif -%}
+  </figure>
+{%- elsif request.design_mode -%}
+  <div class="csp-placeholder" {{ block.shopify_attributes }}>Upload a Shopify-hosted video to show this block.</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "CS Video",
+  "settings": [
+    { "type": "video", "id": "video_shopify", "label": "Shopify-hosted video" },
+    {
+      "type": "text", "id": "description", "label": "Video description",
+      "info": "Read by screen readers. Can also be shown as a caption.", "default": "Customer video"
+    },
+    { "type": "checkbox", "id": "show_caption", "label": "Show description as caption", "default": false },
+    {
+      "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": false,
+      "info": "Plays muted while on screen. Visitors who prefer reduced motion get a play button instead."
+    },
+    { "type": "checkbox", "id": "loop", "label": "Loop", "default": true },
+    { "type": "checkbox", "id": "show_controls", "label": "Show controls", "default": true },
+    { "type": "text", "id": "seal_text", "label": "Play-button ring text", "default": "Play the video" },
+    {
+      "type": "select", "id": "video_quality", "label": "Video quality", "default": "auto",
+      "options": [
+        { "label": "Auto", "value": "auto" },
+        { "label": "High", "value": "high" },
+        { "label": "Medium", "value": "medium" },
+        { "label": "Low", "value": "low" }
+      ]
+    },
+    { "type": "header", "content": "Size" },
+    {
+      "type": "select", "id": "grid_width", "label": "Width in the grid", "default": "one",
+      "options": [
+        { "label": "One column", "value": "one" },
+        { "label": "Two columns", "value": "two" },
+        { "label": "Full row", "value": "full" }
+      ]
+    },
+    { "type": "checkbox", "id": "custom_height", "label": "Custom height", "default": false, "info": "Otherwise the video keeps its own shape." },
+    { "type": "range", "id": "video_height", "label": "Video height", "min": 200, "max": 900, "step": 10, "unit": "px", "default": 400 },
+    {
+      "type": "select", "id": "video_fit", "label": "Video fit", "default": "cover",
+      "options": [
+        { "label": "Cover", "value": "cover" },
+        { "label": "Contain", "value": "contain" }
+      ]
+    },
+    { "type": "range", "id": "video_radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 14 },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_left", "label": "Left", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_right", "label": "Right", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "CS Video" }]
+}
+{% endschema %}

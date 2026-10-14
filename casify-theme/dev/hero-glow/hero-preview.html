@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-hero preview</title>
+<link rel="stylesheet" href="../../assets/theme.css">
+<link rel="stylesheet" href="../../assets/cv-hero-glow.css">
+<style>
+  body { max-width: 1160px; margin: 0 auto; padding: 0 24px; background: var(--surface-page); }
+  .swap-bar { position: sticky; top: 0; z-index: 20; display: flex; gap: 8px; padding: 10px 0; background: var(--surface-page); }
+  .swap-bar button { font: 12px monospace; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-hairline); background: var(--surface-card); cursor: pointer; }
+  .swap-bar button.is-active { background: var(--red-500); color: #fff; border-color: var(--red-500); }
+  .preset { display: none; }
+  .preset.is-active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="swap-bar">
+  <button data-preset="retro" class="is-active">Retro (default)</button>
+  <button data-preset="gift">Gift edition</button>
+  <button data-preset="retro-noglow">Retro, glow OFF</button>
+</div>
+
+<!-- ============ PRESET: retro (default) ============ -->
+<div class="preset is-active" data-preset-panel="retro">
+<section class="cv-hero cv-page-root">
+  <span class="cv-hero__glow" aria-hidden="true" data-cv-parallax="0.08"></span>
+  <div class="cv-hero__glow-3d" aria-hidden="true" data-cv-parallax="0.08" data-cv-hero-glow data-tint-hue="8" data-tint-amount="0.82" data-speed="0.5"></div>
+
+  <div class="cv-hero__inner">
+    <div class="cv-hero__copy">
+      <span class="cv-eyebrow" data-cv-reveal>Engineered protection</span>
+      <h1 class="cv-hero__title" data-cv-split>A clear case that survives a 12 ft drop</h1>
+      <div class="cv-hero__lede" data-cv-reveal><p>Cut from your phone's own CAD file. Holds 1,400 g on a magnet, stays clear for three years, and still fits your pocket.</p></div>
+
+      <div class="cv-rating cv-hero__rating" data-cv-reveal>
+        <span class="cv-rating__stars" aria-hidden="true">
+          <span class="cv-ico" style="width:15px;height:15px;color:currentColor"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg></span>
+          <span class="cv-ico" style="width:15px;height:15px;color:currentColor"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg></span>
+          <span class="cv-ico" style="width:15px;height:15px;color:currentColor"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg></span>
+          <span class="cv-ico" style="width:15px;height:15px;color:currentColor"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg></span>
+          <span class="cv-ico" style="width:15px;height:15px;color:currentColor"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg></span>
+        </span>
+        <strong>4.8</strong>
+        <span>12,480 verified reviews</span>
+      </div>
+
+      <div class="cv-hero__actions" data-cv-reveal>
+        <a class="cv-cta" href="#"><span class="cv-cta__shine" aria-hidden="true"></span>
+          <span class="cv-ico" style="width:18px;height:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 7.6h14.8l-1.1 12.8H5.7z"/><path d="M9 7.6V5.8a3 3 0 0 1 6 0v1.8"/></svg></span>
+          <span class="cv-cta__label">Find my model</span>
+        </a>
+        <a class="cv-cta cv-cta--ghost" href="#"><span>See the drop test</span>
+          <span class="cv-ico" style="width:15px;height:15px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 12h14.8"/><path d="M13.4 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+
+      <ul class="cv-hero__metrics" data-cv-reveal data-cv-stagger>
+        <li style="--cv-i:0"><b data-cv-count="12" data-cv-suffix="ft">0ft</b><span>drop tested</span></li>
+        <li style="--cv-i:1"><b data-cv-count="1400" data-cv-suffix="g">0g</b><span>magnet hold</span></li>
+        <li style="--cv-i:2"><b data-cv-count="2.8" data-cv-suffix="mm">0mm</b><span>back profile</span></li>
+        <li style="--cv-i:3"><b data-cv-count="36" data-cv-suffix="mo">0mo</b><span>stays clear</span></li>
+      </ul>
+    </div>
+
+    <div class="cv-hero__stage" data-cv-reveal="scale">
+      <span class="cv-hero__ring" aria-hidden="true"></span>
+      <div class="cv-hero__media" data-cv-tilt>
+        <video class="cv-hero__video" poster="../../assets/hero-retro-poster.jpg" autoplay muted loop playsinline aria-hidden="true" data-cv-video-reduced-motion="pause">
+          <source src="../../assets/hero-retro.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="cv-hero__badges" data-cv-stagger>
+        <span class="cv-hero__badge is-p1" data-cv-reveal="scale" style="--cv-i:0">
+          <span class="cv-ico" style="width:15px;height:15px;color:var(--red-500)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><rect x="9" y="2.5" width="6" height="10" rx="2"/><path d="M19 4.5v12"/><path d="M17 6.5l2-2 2 2M17 14.5l2 2 2-2"/></svg></span>
+          <span><b>12 ft</b><i>onto concrete</i></span>
+        </span>
+        <span class="cv-hero__badge is-p2" data-cv-reveal="scale" style="--cv-i:1">
+          <span class="cv-ico" style="width:15px;height:15px;color:var(--red-500)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8.4" stroke-dasharray="3.2 2.6"/><circle cx="12" cy="12" r="4.4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg></span>
+          <span><b>1,400 g</b><i>magnet hold</i></span>
+        </span>
+        <span class="cv-hero__badge is-p3" data-cv-reveal="scale" style="--cv-i:2">
+          <span class="cv-ico" style="width:15px;height:15px;color:var(--red-500)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" opacity=".16" stroke="none"/><path d="M5.9 18.1L18.1 5.9"/></svg></span>
+          <span><b>No yellowing</b><i>at 36 months</i></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <span class="cv-hero__cue" aria-hidden="true">
+    <span>Scroll — the whole case, measured</span>
+    <span class="cv-ico" style="width:16px;height:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.4l6 6 6-6"/></svg></span>
+  </span>
+</section>
+</div>
+
+<!-- ============ PRESET: gift edition ============ -->
+<div class="preset" data-preset-panel="gift">
+<section class="cv-hero cv-page-root">
+  <span class="cv-hero__glow" aria-hidden="true" data-cv-parallax="0.08"></span>
+  <div class="cv-hero__glow-3d" aria-hidden="true" data-cv-parallax="0.08" data-cv-hero-glow data-tint-hue="8" data-tint-amount="0.82" data-speed="0.5"></div>
+
+  <div class="cv-hero__inner">
+    <div class="cv-hero__copy">
+      <span class="cv-eyebrow" data-cv-reveal>Engineered protection</span>
+      <h1 class="cv-hero__title" data-cv-split>A gift they'll actually want to unwrap</h1>
+      <div class="cv-hero__lede" data-cv-reveal><p>The same drop-tested case, dressed for the season. Comes gift-boxed with a satin bow — no wrapping required.</p></div>
+
+      <div class="cv-rating cv-hero__rating" data-cv-reveal>
+        <span class="cv-rating__stars" aria-hidden="true">★★★★★</span>
+        <strong>4.8</strong>
+        <span>12,480 verified reviews</span>
+      </div>
+
+      <div class="cv-hero__actions" data-cv-reveal>
+        <a class="cv-cta" href="#"><span class="cv-cta__shine" aria-hidden="true"></span><span class="cv-cta__label">Shop gift edition</span></a>
+        <a class="cv-cta cv-cta--ghost" href="#"><span>See what's inside</span></a>
+      </div>
+
+      <ul class="cv-hero__metrics" data-cv-reveal data-cv-stagger>
+        <li style="--cv-i:0"><b data-cv-count="12" data-cv-suffix="ft">0ft</b><span>drop tested</span></li>
+        <li style="--cv-i:1"><b data-cv-count="1400" data-cv-suffix="g">0g</b><span>magnet hold</span></li>
+        <li style="--cv-i:2"><b data-cv-count="36" data-cv-suffix="mo">0mo</b><span>stays clear</span></li>
+      </ul>
+    </div>
+
+    <div class="cv-hero__stage" data-cv-reveal="scale">
+      <span class="cv-hero__ring" aria-hidden="true"></span>
+      <div class="cv-hero__media" data-cv-tilt>
+        <img src="../../assets/hero-gift-edition.jpg" alt="Casify gift edition case" width="1200" height="1200" loading="eager" fetchpriority="high" decoding="async">
+      </div>
+      <div class="cv-hero__badges" data-cv-stagger>
+        <span class="cv-hero__badge is-p1" data-cv-reveal="scale" style="--cv-i:0"><span><b>12 ft</b><i>onto concrete</i></span></span>
+        <span class="cv-hero__badge is-p2" data-cv-reveal="scale" style="--cv-i:1"><span><b>1,400 g</b><i>magnet hold</i></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ PRESET: retro, glow off ============ -->
+<div class="preset" data-preset-panel="retro-noglow">
+<section class="cv-hero cv-page-root">
+  <span class="cv-hero__glow" aria-hidden="true" data-cv-parallax="0.08"></span>
+  <div class="cv-hero__inner">
+    <div class="cv-hero__copy">
+      <span class="cv-eyebrow" data-cv-reveal>Engineered protection</span>
+      <h1 class="cv-hero__title" data-cv-split>A clear case that survives a 12 ft drop</h1>
+      <div class="cv-hero__lede" data-cv-reveal><p>Cut from your phone's own CAD file. Holds 1,400 g on a magnet, stays clear for three years, and still fits your pocket.</p></div>
+      <div class="cv-hero__actions" data-cv-reveal>
+        <a class="cv-cta" href="#"><span class="cv-cta__shine" aria-hidden="true"></span><span class="cv-cta__label">Find my model</span></a>
+      </div>
+    </div>
+    <div class="cv-hero__stage" data-cv-reveal="scale">
+      <span class="cv-hero__ring" aria-hidden="true"></span>
+      <div class="cv-hero__media" data-cv-tilt>
+        <img src="../../assets/hero-retro-poster.jpg" alt="" width="1200" height="1200">
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+  document.querySelectorAll('.swap-bar button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.swap-bar button').forEach(function (b) { b.classList.remove('is-active'); });
+      document.querySelectorAll('.preset').forEach(function (p) { p.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      document.querySelector('[data-preset-panel="' + btn.dataset.preset + '"]').classList.add('is-active');
+    });
+  });
+</script>
+<script src="../../assets/cv-motion.js"></script>
+<script src="../../assets/cv-hero-glow.js"></script>
+</body>
+</html>

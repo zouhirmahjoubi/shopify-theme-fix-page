@@ -1,0 +1,41 @@
+{
+  "title": "Choose the product page structure",
+  "question": "Three structures for the Casify product page, all in the candy-shop world you already have. Lock one to build, steer one, or re-roll.",
+  "options": [
+    {
+      "id": "order-slip",
+      "label": "The Order Slip",
+      "kicker": "THE ROLL",
+      "thesis": "Buying a case is filling in a candy-shop order slip: phone, style, how many, then the till.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["ruled order-pad paper", "rubber-stamped step numbers", "candy-stripe tape"],
+      "viewport": "Product photos in a scalloped shop-window frame on the left; a tall paper order slip on the right with lines 1 Your phone, 2 Style, 3 How many, and the red candy button with the live total at its foot.",
+      "risk": "A slip can feel slower than a one-tap buy box unless each line collapses to its answer once chosen.",
+      "comp": ".impeccable/mocks/decision/order-slip.webp"
+    },
+    {
+      "id": "shop-counter",
+      "label": "The Shop Counter",
+      "thesis": "The familiar two-column product page, built as a candy counter where every control is a counter object.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["marble counter", "brass hanging price tag", "glass-jar thumbnails"],
+      "viewport": "Sticky photo stage on the left with jar-lid thumbnails; on the right the title, a hanging brass price tag, style swatches, a model picker, three pack boxes, the candy button and a ribbon of service promises.",
+      "risk": "Closest to every Shopify product page; the world has to live in the details or it reads as a template.",
+      "comp": ".impeccable/mocks/decision/shop-counter.webp"
+    },
+    {
+      "id": "weigh-scale",
+      "label": "Weigh & Pay",
+      "thesis": "The pack deal is the show: a brass candy scale where adding cases tips the pan and the price per case drops.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["brass scale", "paper candy bags", "chalkboard price card"],
+      "viewport": "Photos top-left, model and style pickers top-right; beneath them a wide brass scale holding 1, 2 and 3 case bags, the chosen bag weighed down with its per-case price, and the add button on a chalkboard card.",
+      "risk": "Puts pack value ahead of fit; a visitor who wants one case can feel upsold.",
+      "comp": ".impeccable/mocks/decision/weigh-scale.webp"
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "canon": false,
+  "buildPath": { "value": "comp", "toggle": true }
+}

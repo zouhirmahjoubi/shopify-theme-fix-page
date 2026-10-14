@@ -1,0 +1,50 @@
+{%- comment -%}
+  Casify product page: product details.
+  Only the product's own facts: its description, and a "highlights" list the
+  merchant fills per product (metafield custom.highlights, a list of single
+  line text). With neither, the section renders nothing, so no product ever
+  shows copy that belongs to another case.
+  Imported supplier descriptions carry images with alt="undefined": that alt is
+  emptied (a screen reader would say "undefined") and the images lazy-load.
+{%- endcomment -%}
+{%- liquid
+  assign highlights = product.metafields.custom.highlights.value
+  assign has_description = false
+  if product.description != blank
+    assign has_description = true
+  endif
+-%}
+
+{%- if has_description or highlights != blank -%}
+  {{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+  <section class="cvp cvp-details" aria-labelledby="cvpDetailsTitle-{{ section.id }}">
+    <div class="cvp__inner cvp-details__grid">
+      <h2 class="cvp__h2" id="cvpDetailsTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      <div class="cvp-details__body">
+        {%- if highlights != blank -%}
+          <ul class="cvp-details__list" role="list">
+            {%- for line in highlights -%}
+              <li>{%- render 'cv-icon', name: 'check', size: 14 -%}<span>{{ line | escape }}</span></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if has_description -%}
+          <div class="cvp-details__rte rte">{{ product.description | replace: ' alt="undefined"', ' alt=""' | replace: '<img ', '<img loading="lazy" decoding="async" ' }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: details",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "On the label" },
+    { "type": "paragraph", "content": "Shows the product description, plus a highlights list from the product metafield custom.highlights (list of single line text). Hidden when a product has neither." }
+  ],
+  "presets": [{ "name": "Product: details" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

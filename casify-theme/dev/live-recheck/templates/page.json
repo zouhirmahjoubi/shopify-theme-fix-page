@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Support answers in under a business day, and can override anything on this page in your favour.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support"
+      }
+    },
+    "sales-note": {
+      "type": "cv-sales-note",
+      "settings": {
+        "style": "pill",
+        "count": 25,
+        "text": "[count] sold this week",
+        "round_to": "1",
+        "min_count": 5,
+        "tone": "gold"
+      }
+    },
+    "video-reviews": {
+      "type": "cv-page-video-reviews",
+      "blocks": {
+        "qa-1": {
+          "type": "review",
+          "settings": {
+            "mp4_url": "http://127.0.0.1:8899/pdp-ugc-snap-on.mp4",
+            "name": "QA Tester",
+            "stars": 5,
+            "title": "QA clip - not a real review",
+            "body": "Temporary QA review used to verify the page layout. Not published.",
+            "verified": true,
+            "date": "October 2026",
+            "phone": "iPhone 17 Pro",
+            "colour": "Red"
+          }
+        }
+      },
+      "block_order": [
+        "qa-1"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "sales-note",
+    "video-reviews"
+  ]
+}

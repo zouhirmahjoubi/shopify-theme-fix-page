@@ -1,0 +1,61 @@
+{%- comment -%}
+  Casify — slim trust strip in the Chrismass design system.
+
+  Sits directly under the header, above the hero, so every visitor sees the
+  real shipping/return/payment terms before scrolling. Values stay editable so
+  a merchant can update them without touching Liquid.
+{%- endcomment -%}
+
+<section class="cv-trustbar" data-cv-reveal>
+  {%- comment -%} Focusable so keyboard users can scroll the strip where it overflows on phones. {%- endcomment -%}
+  <ul class="cv-trustbar__list" tabindex="0" aria-label="Shop promises">
+    {%- for b in section.blocks -%}
+      <li class="cv-trustbar__item" {{ b.shopify_attributes }}>
+        <span class="cv-trustbar__ico">{%- render 'cv-icon', name: b.settings.icon, size: 20 -%}</span>
+        <span class="cv-trustbar__text">
+          <b>{{ b.settings.title | escape }}</b>
+          <i>{{ b.settings.body | escape }}</i>
+        </span>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Trust bar",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "truck-fast", "label": "Truck" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "warranty-seal", "label": "Warranty seal" },
+          { "value": "lock-secure", "label": "Lock" },
+          { "value": "drop-shield", "label": "Shield" },
+          { "value": "check", "label": "Check" },
+          { "value": "clock", "label": "Clock" }
+        ], "default": "truck-fast" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free shipping" },
+        { "type": "text", "id": "body", "label": "Sub-text", "default": "On every order" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Trust bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck-fast", "title": "Free shipping", "body": "On every order" } },
+        { "type": "item", "settings": { "icon": "returns", "title": "30-day returns", "body": "Prepaid label, no hassle" } },
+        { "type": "item", "settings": { "icon": "lock-secure", "title": "Secure checkout", "body": "100% safe & encrypted" } },
+        { "type": "item", "settings": { "icon": "clock", "title": "Fast dispatch", "body": "Ships in 1-3 business days" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

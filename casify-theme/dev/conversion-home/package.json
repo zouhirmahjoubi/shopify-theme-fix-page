@@ -1,0 +1,11 @@
+{
+  "name": "casify-conversion-home-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "devDependencies": {
+    "liquidjs": "^10.21.0"
+  }
+}

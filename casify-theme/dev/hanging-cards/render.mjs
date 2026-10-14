@@ -1,0 +1,20 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Liquid } from '../conversion-home/node_modules/liquidjs/dist/liquid.node.mjs';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const theme = resolve(here, '../..');
+const sectionPath = resolve(theme, 'sections/cv-hanging-cards.liquid');
+const source = (await readFile(sectionPath, 'utf8')).replace(/{% schema %}[\s\S]*?{% endschema %}/, '');
+const engine = new Liquid({ root: resolve(theme, 'snippets'), extname: '.liquid' });
+engine.registerFilter('asset_url', value => `/assets/${value}`);
+engine.registerFilter('stylesheet_tag', value => `<link rel="stylesheet" href="${value}">`);
+const template = JSON.parse(await readFile(resolve(theme, 'templates/page.about-us.json'), 'utf8'));
+const configured = template.sections.hanging_cards;
+const blocks = configured.block_order.map(id => ({ id, settings: configured.blocks[id].settings }));
+const section = { id: 'preview', settings: configured.settings, blocks };
+const markup = await engine.parseAndRender(source, { section });
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hanging cards preview</title><link rel="stylesheet" href="/assets/theme.css"></head><body>${markup}<script src="/assets/gsap.min.js"></script><script src="/assets/gsap-ScrollTrigger.min.js"></script><script src="/assets/gsap-init.js"></script><script src="/assets/cv-hanging-cards.js"></script></body></html>`;
+await writeFile(resolve(here, 'preview.html'), html);
+console.log(resolve(here, 'preview.html'));

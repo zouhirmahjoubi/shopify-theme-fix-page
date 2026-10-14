@@ -1,0 +1,161 @@
+{%- liquid
+  assign rating_value = 0
+  assign rating_count = 0
+  assign has_rating = false
+  if block.settings.source == 'manual'
+    assign rating_value = block.settings.manual_rating | plus: 0
+    if rating_value > 0
+      assign has_rating = true
+    endif
+  else
+    assign rating_product = block.settings.rating_product | default: product
+    assign rating_data = rating_product.metafields.reviews.rating.value
+    if rating_data != blank
+      assign scale_max = rating_data.scale_max | default: 5
+      if scale_max > 0
+        assign rating_value = rating_data.rating | times: 5.0 | divided_by: scale_max | at_least: 0 | at_most: 5
+        assign rating_count = rating_product.metafields.reviews.rating_count.value | default: 0
+        assign has_rating = true
+      endif
+    endif
+  endif
+  assign star_fill = rating_value | times: 20
+-%}
+
+{%- if has_rating and block.settings.layout == 'inline' -%}
+  {%- assign scroll_id = block.settings.scroll_id | strip | remove: '#' -%}
+  {%- capture inline_body -%}
+    <span class="csp-rating__stars" role="img" aria-label="Rating: {{ rating_value | round: 1 }} out of 5 stars">
+      {%- render 'cv-stars', fill: star_fill -%}
+    </span>
+    <strong class="csp-inline__score">{{ rating_value | round: 1 }}</strong>
+    {%- if rating_count > 0 or block.settings.label != blank -%}
+      <span class="csp-inline__detail">
+        {%- if rating_count > 0 -%}({{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}){%- endif -%}
+        {%- if block.settings.label != blank -%}{% if rating_count > 0 %} · {% endif %}{{ block.settings.label | escape }}{%- endif -%}
+      </span>
+    {%- endif -%}
+  {%- endcapture -%}
+  <div
+    class="csp-inline csp-inline--{{ block.settings.alignment }} csp-inline--{{ block.settings.inline_style | default: 'pill' }} csp-stars--{{ block.settings.empty_style }} csp-show--{{ block.settings.visibility | default: 'all' }}"
+    style="--csp-inline-size: {{ block.settings.inline_size | default: 18 }}px;"
+    data-csp-item
+    {{ block.shopify_attributes }}
+  >
+    {%- if scroll_id != blank -%}
+      <a class="csp-inline__body" href="#{{ scroll_id | escape }}">{{ inline_body }}</a>
+    {%- else -%}
+      <span class="csp-inline__body">{{ inline_body }}</span>
+    {%- endif -%}
+  </div>
+{%- elsif has_rating -%}
+  <div class="csp-rating csp-stars--{{ block.settings.empty_style }} csp-show--{{ block.settings.visibility | default: 'all' }}" data-csp-item {{ block.shopify_attributes }}>
+    <span class="csp-rating__score">{{ rating_value | round: 1 }} <small>/ 5</small></span>
+    <span class="csp-rating__stars" role="img" aria-label="Rating: {{ rating_value | round: 1 }} out of 5 stars">
+      {%- render 'cv-stars', fill: star_fill -%}
+    </span>
+    {%- if rating_count > 0 or block.settings.label != blank -%}
+      <span class="csp-rating__detail">
+        {%- if rating_count > 0 -%}
+          {{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}
+        {%- endif -%}
+        {%- if block.settings.label != blank -%}
+          {% if rating_count > 0 %}<span aria-hidden="true">·</span>{% endif %}
+          {{ block.settings.label | escape }}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+  </div>
+{%- elsif request.design_mode -%}
+  <div class="csp-placeholder" {{ block.shopify_attributes }}>Choose a product with review data, or enter a confirmed rating.</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Star rating",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Rating source",
+      "options": [
+        { "value": "product", "label": "Product review data" },
+        { "value": "manual", "label": "Manual rating" }
+      ],
+      "default": "product"
+    },
+    { "type": "product", "id": "rating_product", "label": "Product", "info": "Leave blank to use the current product on product pages." },
+    { "type": "range", "id": "manual_rating", "label": "Confirmed rating", "min": 0, "max": 5, "step": 0.1, "default": 0 },
+    { "type": "text", "id": "label", "label": "Optional source label" },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "card", "label": "Score card" },
+        { "value": "inline", "label": "Compact stars row" }
+      ],
+      "default": "card"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "start",
+      "visible_if": "{{ block.settings.layout == 'inline' }}"
+    },
+    {
+      "type": "select",
+      "id": "inline_style",
+      "label": "Row style",
+      "options": [
+        { "value": "pill", "label": "Cream pill" },
+        { "value": "plain", "label": "Plain (no background)" }
+      ],
+      "default": "pill",
+      "visible_if": "{{ block.settings.layout == 'inline' }}"
+    },
+    {
+      "type": "range",
+      "id": "inline_size",
+      "label": "Star size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18,
+      "info": "The score and review count scale with the stars.",
+      "visible_if": "{{ block.settings.layout == 'inline' }}"
+    },
+    {
+      "type": "select",
+      "id": "empty_style",
+      "label": "Empty stars",
+      "options": [
+        { "value": "full", "label": "Filled pale gold" },
+        { "value": "outlined", "label": "Outlined" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Display on",
+      "options": [
+        { "value": "all", "label": "All devices" },
+        { "value": "mobile", "label": "Mobile only" },
+        { "value": "desktop", "label": "Desktop only" }
+      ],
+      "default": "all"
+    },
+    { "type": "text", "id": "scroll_id", "label": "Scroll to section ID", "info": "Optional, compact row only. The row links to this section on the page, e.g. the reviews section's ID.", "visible_if": "{{ block.settings.layout == 'inline' }}" }
+  ],
+  "presets": [{ "name": "Star rating" }]
+}
+{% endschema %}

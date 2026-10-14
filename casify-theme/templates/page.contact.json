@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-contact",
+      "settings": {
+        "heading": "",
+        "answers_heading": "It may already be answered",
+        "form_heading": "Write to the shop",
+        "topic_label": "What is it about?",
+        "topics": "An order\nFit and phone model\nA return or exchange\nSomething else",
+        "submit_label": "Post the message",
+        "success_message": "Thank you. Your message is with the shop, and the reply will come to the email address you gave.",
+        "fine_print": "Your details are used to answer this message.",
+        "rail_heading": "Or reach the shop directly",
+        "show_phone": true,
+        "show_address": true,
+        "address_label": "Post"
+      },
+      "blocks": {
+        "a-track": { "type": "answer", "settings": { "page": "track-order", "icon": "precision-fit", "title": "Track an order", "text": "Where a parcel is on its way" } },
+        "a-returns": { "type": "answer", "settings": { "page": "return-policy", "icon": "returns", "title": "Returns and exchanges", "text": "How to send a case back" } },
+        "a-shipping": { "type": "answer", "settings": { "page": "shipping-policy", "icon": "truck-fast", "title": "Shipping", "text": "How orders are packed and sent" } },
+        "a-faqs": { "type": "answer", "settings": { "page": "faqs", "icon": "quote", "title": "Questions and answers", "text": "" } }
+      },
+      "block_order": ["a-track", "a-returns", "a-shipping", "a-faqs"]
+    }
+  },
+  "order": ["main"]
+}

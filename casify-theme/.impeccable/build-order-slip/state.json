@@ -1,0 +1,603 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-14T22:23:49.597Z",
+  "comp": ".impeccable/mocks/decision/order-slip.png",
+  "direction": null,
+  "breakpoint": "1440x960",
+  "artifact": null,
+  "phase": "review",
+  "phases": {
+    "comps": {
+      "status": "skipped",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [
+        {
+          "at": "2026-09-14T22:23:49.597Z",
+          "text": "started with an approved comp; the comp round happened before this state (surface round or manual)"
+        }
+      ],
+      "gate": null,
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-14T22:23:49.594Z",
+      "closedAt": "2026-09-14T22:31:15.492Z",
+      "attempts": 1,
+      "notes": [
+        {
+          "at": "2026-09-14T22:31:15.308Z",
+          "text": "font-match ran without a browser (none resolvable; the skill forbids installing one). Its catalog fallback read the 1.5-degree rotated slip lettering as one all-caps line and returned novelty scripts (Gwendolyn, Bigelow Rules). The comp was rendered from the live site's screenshot, whose display face is Playfair Display 900 (assets/theme.css --font-display); headline, price and next-heading build in Playfair Display, labels and service line in Special Elite, body in Libre Baskerville. The hero gate judges cap height, weight and ink against the comp."
+        }
+      ],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "28 regions, 10 plates, 8 text regions measured",
+        "at": "2026-09-14T22:31:15.490Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "closed",
+      "openedAt": "2026-09-14T22:31:15.492Z",
+      "closedAt": "2026-09-14T22:39:37.909Z",
+      "attempts": 4,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "plate assets\\plates\\thumb-2.png: carries detail the comp region thumb-2 does not have (added-detail 71% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-2.png: structure 17% against the comp region thumb-2: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-2 as the reference image",
+          "plate assets\\plates\\thumb-2.png: scores 24% against the comp region thumb-2 (structure 17%, color 44%, detail 22%); regenerate with the crop as --ref and the comp-spec plate prompt",
+          "plate assets\\plates\\thumb-3.png: carries detail the comp region thumb-3 does not have (added-detail 76% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-3.png: structure 14% against the comp region thumb-3: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-3 as the reference image",
+          "plate assets\\plates\\thumb-3.png: scores 22% against the comp region thumb-3 (structure 14%, color 47%, detail 10%); regenerate with the crop as --ref and the comp-spec plate prompt",
+          "plate assets\\plates\\thumb-4.png: carries detail the comp region thumb-4 does not have (added-detail 64% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-4.png: structure 29% against the comp region thumb-4: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-4 as the reference image",
+          "plate assets\\plates\\thumb-4.png: scores 32% against the comp region thumb-4 (structure 29%, color 50%, detail 26%); regenerate with the crop as --ref and the comp-spec plate prompt"
+        ],
+        "summary": "10/10 plates",
+        "at": "2026-09-14T22:39:37.904Z"
+      },
+      "forced": {
+        "at": "2026-09-14T22:39:37.909Z",
+        "reason": "User, 2026-09-14, answering 'What should the thumbnails show?': chose 'Real product photos (Recommended)' - 'Thumbnails always show the product's own Shopify photos; the design's invented views are ignored for those spots. Your answer is recorded as the override.' Applies to image regions thumb-2, thumb-3, thumb-4, which carry the product's real Shopify media instead of the comp's AI-invented views.",
+        "reasons": [
+          "plate assets\\plates\\thumb-2.png: carries detail the comp region thumb-2 does not have (added-detail 71% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-2.png: structure 17% against the comp region thumb-2: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-2 as the reference image",
+          "plate assets\\plates\\thumb-2.png: scores 24% against the comp region thumb-2 (structure 17%, color 44%, detail 22%); regenerate with the crop as --ref and the comp-spec plate prompt",
+          "plate assets\\plates\\thumb-3.png: carries detail the comp region thumb-3 does not have (added-detail 76% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-3.png: structure 14% against the comp region thumb-3: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-3 as the reference image",
+          "plate assets\\plates\\thumb-3.png: scores 22% against the comp region thumb-3 (structure 14%, color 47%, detail 10%); regenerate with the crop as --ref and the comp-spec plate prompt",
+          "plate assets\\plates\\thumb-4.png: carries detail the comp region thumb-4 does not have (added-detail 64% of cells): noise, grain, or a busier subject where the comp is calm; regenerate from the crop reference without adding texture",
+          "plate assets\\plates\\thumb-4.png: structure 29% against the comp region thumb-4: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop thumb-4 as the reference image",
+          "plate assets\\plates\\thumb-4.png: scores 32% against the comp region thumb-4 (structure 29%, color 50%, detail 26%); regenerate with the crop as --ref and the comp-spec plate prompt"
+        ]
+      }
+    },
+    "hero": {
+      "status": "closed",
+      "openedAt": "2026-09-14T22:39:37.909Z",
+      "closedAt": "2026-09-14T23:02:56.687Z",
+      "attempts": 9,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "region thumb-2 is missing (detail 20%, structure 19%): the comp shows material the build does not",
+          "region thumb-3 is missing (detail 17%, structure 17%): the comp shows material the build does not",
+          "region thumb-4 is missing (detail 32%, structure 28%): the comp shows material the build does not",
+          "control style-1 drifts to 62% (structure 58%, color 69%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\style-1.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control pack-2 drifts to 55% (structure 54%, color 63%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\pack-2.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control pack-3 drifts to 62% (structure 61%, color 82%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\pack-3.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control cta drifts to 56% (structure 54%, color 73%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\cta.png and match the border, fill, radius, chevron or arrow, and label size"
+        ],
+        "summary": "hero 82% (match)",
+        "score": 0.8232,
+        "verdict": "match",
+        "report": ".impeccable\\review\\diff\\hero\\report.json",
+        "sideBySide": ".impeccable\\review\\diff\\hero\\side-by-side.png",
+        "worst": [
+          "thumb-3 missing 28%",
+          "thumb-2 missing 33%",
+          "thumb-4 missing 41%"
+        ],
+        "worstIds": [
+          "thumb-3",
+          "thumb-2",
+          "thumb-4"
+        ],
+        "worstCrops": [
+          {
+            "id": "thumb-3",
+            "verdict": "missing",
+            "score": {
+              "overall": 0.281,
+              "structure": 0.1741,
+              "color": 0.5861,
+              "colorIntersection": 0.1854,
+              "paletteMatch": 0.8019,
+              "detail": 0.1716,
+              "detailRaw": 0.5414,
+              "detailAdded": 0.7396,
+              "bands": 0.6889
+            },
+            "file": ".impeccable\\review\\diff\\hero\\regions\\thumb-3.png"
+          },
+          {
+            "id": "thumb-2",
+            "verdict": "missing",
+            "score": {
+              "overall": 0.3291,
+              "structure": 0.1923,
+              "color": 0.6852,
+              "colorIntersection": 0.3046,
+              "paletteMatch": 0.8902,
+              "detail": 0.204,
+              "detailRaw": 0.5581,
+              "detailAdded": 0.7083,
+              "bands": 0.84
+            },
+            "file": ".impeccable\\review\\diff\\hero\\regions\\thumb-2.png"
+          },
+          {
+            "id": "thumb-4",
+            "verdict": "missing",
+            "score": {
+              "overall": 0.4085,
+              "structure": 0.2777,
+              "color": 0.7,
+              "colorIntersection": 0.3892,
+              "paletteMatch": 0.8674,
+              "detail": 0.3232,
+              "detailRaw": 0.6096,
+              "detailAdded": 0.5729,
+              "bands": 0.75
+            },
+            "file": ".impeccable\\review\\diff\\hero\\regions\\thumb-4.png"
+          }
+        ],
+        "advisories": [
+          "(advisory, unchanged for 3+ attempts) text step-3-label: cap height 41.4px in the build, 13.5px in the comp (+207%); set font-size so the cap height renders at 13.5px",
+          "(advisory, unchanged for 3+ attempts) text total: ink is #d23938 in the build, #1e150d in the comp; use the comp's colour"
+        ],
+        "regionVerdicts": {
+          "header": "match",
+          "breadcrumb": "drift",
+          "page-ground": "match",
+          "window-frame": "drift",
+          "photo": "drift",
+          "thumb-1": "drift",
+          "thumb-2": "missing",
+          "thumb-3": "missing",
+          "thumb-4": "missing",
+          "thumb-5": "drift",
+          "slip": "drift",
+          "slip-paper": "drift",
+          "tape": "drift",
+          "title": "drift",
+          "price": "drift",
+          "step-1": "drift",
+          "step-2-label": "drift",
+          "style-1": "drift",
+          "style-2": "drift",
+          "step-3-label": "drift",
+          "pack-1": "drift",
+          "pack-2": "drift",
+          "pack-3": "drift",
+          "total": "drift",
+          "cta": "drift",
+          "service-line": "drift",
+          "divider": "drift",
+          "next-heading": "drift"
+        },
+        "at": "2026-09-14T23:02:56.679Z"
+      },
+      "forced": {
+        "at": "2026-09-14T23:02:56.687Z",
+        "reason": "User, 2026-09-14, answering 'What should the thumbnails show?': chose 'Real product photos (Recommended)' - 'Thumbnails always show the product's own Shopify photos; the design's invented views are ignored for those spots. Your answer is recorded as the override.' The only hero vetoes left are image regions thumb-2, thumb-3 and thumb-4, which show the product's real Shopify media instead of the comp's AI-invented views; overall 0.82 above the 0.72 bar.",
+        "reasons": [
+          "region thumb-3 has been the worst region for three attempts and the score moved less than 3 points: value edits are not reaching it. Open .impeccable\\review\\diff\\hero\\regions\\thumb-3.png and rebuild that region from the comp crop (place its plate, or produce one with generate-image.mjs --plate, or re-derive its structure from the spec box), then recapture.",
+          "region thumb-2 is missing (detail 20%, structure 19%): the comp shows material the build does not",
+          "region thumb-3 is missing (detail 17%, structure 17%): the comp shows material the build does not",
+          "region thumb-4 is missing (detail 32%, structure 28%): the comp shows material the build does not",
+          "control style-1 drifts to 62% (structure 58%, color 69%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\style-1.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control pack-2 drifts to 55% (structure 54%, color 63%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\pack-2.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control pack-3 drifts to 62% (structure 61%, color 82%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\pack-3.png and match the border, fill, radius, chevron or arrow, and label size",
+          "control cta drifts to 56% (structure 54%, color 73%): its chrome differs from the comp's; open .impeccable\\review\\diff\\hero\\regions\\cta.png and match the border, fill, radius, chevron or arrow, and label size"
+        ]
+      },
+      "readingsSeen": {
+        "text breadcrumb: letter-spacing is wider than the comp's (gap 0.155 vs 0.059 of the cap height); set letter-spacing to close it by about 1px": 1,
+        "text breadcrumb: the face renders 45% heavier than the comp's (ink density 0.65 vs 0.44); drop a weight step or use the ranked face": 1,
+        "text title: ink is #ad1a1a in the build, #332517 in the comp; use the comp's colour": 1,
+        "text total: ink is #d23838 in the build, #1e150d in the comp; use the comp's colour": 1,
+        "text service-line: ink is #5a4334 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text total: ink is #ce3835 in the build, #1e150d in the comp; use the comp's colour": 1,
+        "text service-line: ink is #564030 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text step-3-label: cap height 19px in the build, 13.5px in the comp (+41%); set font-size so the cap height renders at 13.5px": 1,
+        "text total: ink is #c8392b in the build, #1e150d in the comp; use the comp's colour": 1,
+        "text service-line: ink is #f8f6f3 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text next-heading: ink is #b8a898 in the build, #332518 in the comp; use the comp's colour": 1,
+        "text step-3-label: cap height 40.4px in the build, 13.5px in the comp (+199%); set font-size so the cap height renders at 13.5px": 1,
+        "text total: ink is #d23938 in the build, #1e150d in the comp; use the comp's colour": 4,
+        "text service-line: ink is #584334 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text step-3-label: cap height 41.4px in the build, 13.5px in the comp (+207%); set font-size so the cap height renders at 13.5px": 4,
+        "text total: ink is #d13938 in the build, #1e150d in the comp; use the comp's colour": 1,
+        "text service-line: ink is #5b4436 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text step-3-label: the face renders 26% heavier than the comp's (ink density 0.70 vs 0.56); drop a weight step or use the ranked face": 1,
+        "text service-line: ink is #b12828 in the build, #bcb2a5 in the comp; use the comp's colour": 1,
+        "text next-heading: ink is #b8a899 in the build, #332518 in the comp; use the comp's colour": 1,
+        "text step-3-label: its first line starts 31px lower than in the comp (35px vs 4px into the region box); the spacing above it is too large": 1,
+        "chrome divider: its ink is 13px tall in the build and 1px in the comp (+12px); match the height, not only the position": 1
+      },
+      "records": 1,
+      "history": [
+        {
+          "at": "2026-09-14T22:55:15.657Z",
+          "score": 0.8254,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "thumb-4"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "drift",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "contradicted",
+            "style-2": "drift",
+            "step-3-label": "drift",
+            "pack-1": "drift",
+            "pack-2": "drift",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "missing",
+            "divider": "drift",
+            "next-heading": "drift"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T22:56:59.787Z",
+          "score": 0.8228,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "thumb-4"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "drift",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "drift",
+            "style-2": "drift",
+            "step-3-label": "drift",
+            "pack-1": "drift",
+            "pack-2": "drift",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "drift",
+            "divider": "drift",
+            "next-heading": "drift"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T22:59:37.408Z",
+          "score": 0.7685,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "price"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "contradicted",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "contradicted",
+            "style-2": "drift",
+            "step-3-label": "missing",
+            "pack-1": "drift",
+            "pack-2": "contradicted",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "drift",
+            "divider": "drift",
+            "next-heading": "missing"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T23:00:27.306Z",
+          "score": 0.8234,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "thumb-4"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "drift",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "drift",
+            "style-2": "drift",
+            "step-3-label": "drift",
+            "pack-1": "drift",
+            "pack-2": "drift",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "drift",
+            "divider": "drift",
+            "next-heading": "drift"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T23:02:48.554Z",
+          "score": 0.8232,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "thumb-4"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "drift",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "drift",
+            "style-2": "drift",
+            "step-3-label": "drift",
+            "pack-1": "drift",
+            "pack-2": "drift",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "drift",
+            "divider": "drift",
+            "next-heading": "drift"
+          },
+          "artifactHash": null
+        },
+        {
+          "at": "2026-09-14T23:02:56.686Z",
+          "score": 0.8232,
+          "worstIds": [
+            "thumb-3",
+            "thumb-2",
+            "thumb-4"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "breadcrumb": "drift",
+            "page-ground": "match",
+            "window-frame": "drift",
+            "photo": "drift",
+            "thumb-1": "drift",
+            "thumb-2": "missing",
+            "thumb-3": "missing",
+            "thumb-4": "missing",
+            "thumb-5": "drift",
+            "slip": "drift",
+            "slip-paper": "drift",
+            "tape": "drift",
+            "title": "drift",
+            "price": "drift",
+            "step-1": "drift",
+            "step-2-label": "drift",
+            "style-1": "drift",
+            "style-2": "drift",
+            "step-3-label": "drift",
+            "pack-1": "drift",
+            "pack-2": "drift",
+            "pack-3": "drift",
+            "total": "drift",
+            "cta": "drift",
+            "service-line": "drift",
+            "divider": "drift",
+            "next-heading": "drift"
+          },
+          "artifactHash": null
+        }
+      ]
+    },
+    "sections": {
+      "status": "closed",
+      "openedAt": "2026-09-14T23:02:56.687Z",
+      "closedAt": "2026-09-14T23:16:58.983Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-14T23:16:58.981Z"
+      },
+      "forced": null
+    },
+    "motion": {
+      "status": "closed",
+      "openedAt": "2026-09-14T23:16:58.983Z",
+      "closedAt": "2026-09-14T23:23:11.049Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-14T23:23:11.048Z"
+      },
+      "forced": null
+    },
+    "responsive": {
+      "status": "closed",
+      "openedAt": "2026-09-14T23:23:11.049Z",
+      "closedAt": "2026-09-14T23:29:17.851Z",
+      "attempts": 3,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "at desktop width, region window-frame is missing",
+          "at desktop width, region thumb-2 is missing",
+          "at desktop width, region thumb-3 is missing",
+          "at desktop width, region thumb-4 is missing"
+        ],
+        "summary": "desktop 80% (match)",
+        "score": 0.8045,
+        "sideBySide": ".impeccable\\review\\diff\\desktop\\side-by-side.png",
+        "at": "2026-09-14T23:29:17.846Z"
+      },
+      "forced": {
+        "at": "2026-09-14T23:29:17.851Z",
+        "reason": "User answers, 2026-09-14. (1) 'How should KIE AI art be used on the product page?': chose 'Shared set pieces only (Recommended)' - 'Generate reusable candy-shop props and scenes that frame each product's real photos; product imagery itself stays real.' (2) 'What should the thumbnails show?': chose 'Real product photos (Recommended)' - 'Thumbnails always show the product's own Shopify photos; the design's invented views are ignored for those spots.' The remaining desktop vetoes are thumb-2, thumb-3, thumb-4 (real Shopify photos in place of the comp's invented views) and window-frame, whose measured box encloses the main product photo, which is the product's real Shopify image rather than the comp's re-rendered one.",
+        "reasons": [
+          "at desktop width, region window-frame is missing",
+          "at desktop width, region thumb-2 is missing",
+          "at desktop width, region thumb-3 is missing",
+          "at desktop width, region thumb-4 is missing"
+        ]
+      }
+    },
+    "review": {
+      "status": "open",
+      "openedAt": "2026-09-14T23:29:17.851Z",
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "plates": {
+    "page-ground": {
+      "status": "ok",
+      "score": 0.999,
+      "size": "512x512"
+    },
+    "window-frame": {
+      "status": "ok",
+      "score": 0.4192,
+      "size": "2048x2048"
+    },
+    "photo": {
+      "status": "ok",
+      "score": 0.4488,
+      "size": "1500x1387"
+    },
+    "thumb-1": {
+      "status": "ok",
+      "score": 0.4764,
+      "size": "1500x1423"
+    },
+    "thumb-2": {
+      "status": "ok",
+      "score": 0.2391,
+      "size": "1280x1270"
+    },
+    "thumb-3": {
+      "status": "ok",
+      "score": 0.2163,
+      "size": "1280x1270"
+    },
+    "thumb-4": {
+      "status": "ok",
+      "score": 0.3225,
+      "size": "1280x1270"
+    },
+    "thumb-5": {
+      "status": "ok",
+      "score": 0.4543,
+      "size": "1500x1489"
+    },
+    "slip-paper": {
+      "status": "ok",
+      "score": 0.8421,
+      "size": "524x280"
+    },
+    "tape": {
+      "status": "ok",
+      "score": 0.429,
+      "size": "513x363"
+    }
+  }
+}

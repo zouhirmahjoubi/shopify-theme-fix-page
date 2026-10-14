@@ -1,0 +1,258 @@
+{{ 'best-product.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  assign model_oi = -1
+  assign style_oi = -1
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'model' or option_name contains 'phone' or option_name contains 'device'
+      assign model_oi = forloop.index0
+    elsif option_name contains 'style' or option_name contains 'color' or option_name contains 'colour'
+      assign style_oi = forloop.index0
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign first_value = option.values.first | downcase
+      if first_value contains 'iphone' or first_value contains 'galaxy' or first_value contains 'pixel' or first_value contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+  if style_oi == -1
+    for option in product.options_with_values
+      assign candidate_index = forloop.index0
+      if candidate_index != model_oi
+        assign style_oi = candidate_index
+        break
+      endif
+    endfor
+  endif
+  assign hero_alt = product.title | append: ' styled product illustration'
+  assign hero_src = 'best-case-in-hand.png' | asset_url
+  if section.settings.hero_image != blank
+    assign hero_src = section.settings.hero_image | image_url: width: 1200
+  endif
+  assign detail_src = 'best-case-detail.png' | asset_url
+  if section.settings.detail_image != blank
+    assign detail_src = section.settings.detail_image | image_url: width: 1200
+  endif
+  assign magnetic_src = 'best-case-magnetic.png' | asset_url
+  if section.settings.magnetic_image != blank
+    assign magnetic_src = section.settings.magnetic_image | image_url: width: 1200
+  endif
+-%}
+
+<section class="best-pdp" id="best-product-{{ section.id }}" data-best-product data-currency="{{ shop.currency | escape }}" data-cart-url="{{ routes.cart_add_url | escape }}">
+  <script type="application/json" data-best-variants>{{ product.variants | json }}</script>
+  <div class="best-pdp__awning" aria-hidden="true"></div>
+  <div class="best-pdp__layout">
+    <div class="best-pdp__buy-column">
+      <div class="best-gallery" data-best-gallery>
+        <div class="best-gallery__stage">
+          <img src="{{ hero_src }}" alt="{{ hero_alt | escape }}" width="900" height="1125" fetchpriority="high" data-best-main-image>
+          <div class="best-gallery__note" aria-hidden="true">Soft<br>Touch<br>Tech Fabric</div>
+          <div class="best-gallery__seal" aria-hidden="true"><span>BEST<br>SELLER</span></div>
+          <div class="best-gallery__facts">
+            <span>{% render 'icon', name: 'check', size: 18 %} Magnetic accessory ready</span>
+            <span>{% render 'icon', name: 'shield', size: 18 %} Raised camera edge</span>
+            <span>{% render 'icon', name: 'heart', size: 18 %} Woven texture</span>
+          </div>
+        </div>
+        <div class="best-gallery__rail-wrap">
+          <button class="best-gallery__arrow" type="button" aria-label="Previous image" data-best-gallery-prev>{% render 'icon', name: 'chevron-down', size: 18 %}</button>
+          <div class="best-gallery__rail" data-best-rail>
+            <button class="best-gallery__thumb is-active" type="button" aria-label="Show case in hand" aria-pressed="true" data-best-image="{{ hero_src }}" data-best-alt="{{ hero_alt | escape }}"><img src="{{ hero_src }}" alt="" width="92" height="92" loading="lazy"></button>
+            <button class="best-gallery__thumb" type="button" aria-label="Show camera and fabric detail" aria-pressed="false" data-best-image="{{ detail_src }}" data-best-alt="Close-up of woven case texture and camera edge"><img src="{{ detail_src }}" alt="" width="92" height="92" loading="lazy"></button>
+            <button class="best-gallery__thumb" type="button" aria-label="Show magnetic charger" aria-pressed="false" data-best-image="{{ magnetic_src }}" data-best-alt="Illustration of the case with a magnetic charger"><img src="{{ magnetic_src }}" alt="" width="92" height="92" loading="lazy"></button>
+            {%- for media in product.media limit: 5 -%}
+              {%- if media.media_type == 'image' -%}
+                <button class="best-gallery__thumb" type="button" aria-label="Show product photo {{ forloop.index }}" aria-pressed="false" data-best-image="{{ media.preview_image | image_url: width: 1200 }}" data-best-alt="{{ media.alt | default: product.title | escape }}"><img src="{{ media.preview_image | image_url: width: 180 }}" alt="" width="92" height="92" loading="lazy"></button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <button class="best-gallery__arrow best-gallery__arrow--next" type="button" aria-label="Next image" data-best-gallery-next>{% render 'icon', name: 'chevron-down', size: 18 %}</button>
+        </div>
+      </div>
+
+      <div class="best-buy" id="best-buy-{{ section.id }}">
+        <div class="best-buy__eyebrow">{{ section.settings.eyebrow | escape }}</div>
+        <h1>{{ section.settings.heading | default: product.title | escape }}</h1>
+        {% if rating != blank and rating_count > 0 %}
+          <a class="best-buy__rating" href="#best-faq-{{ section.id }}"><span class="best-buy__stars" aria-label="{{ rating.rating }} out of {{ rating.scale_max }} stars">★★★★★</span><strong>{{ rating.rating }}</strong><span>({{ rating_count }} reviews)</span></a>
+        {% endif %}
+        <div class="best-buy__price" aria-live="polite">
+          <strong data-best-price>{{ current_variant.price | money }}</strong>
+          <s data-best-compare {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>{{ current_variant.compare_at_price | money }}</s>
+          <span class="best-buy__save" data-best-save {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+        </div>
+        <p class="best-buy__intro">{{ section.settings.intro | escape }}</p>
+
+        <form class="best-form" method="post" action="{{ routes.cart_add_url }}" data-cart-add-form>
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-best-variant-id>
+          {%- if model_oi >= 0 -%}
+            {%- assign model_option = product.options_with_values[model_oi] -%}
+            <fieldset class="best-options best-options--models" data-best-option="{{ model_oi }}">
+              <legend><span class="best-options__step">1</span> Select your {{ model_option.name | escape }}</legend>
+              <div class="best-options__model-grid">
+                {%- for value in model_option.values -%}
+                  {%- assign selected_value = current_variant.options[model_oi] -%}
+                  <label class="best-model {% if forloop.index > 6 %}best-model--extra{% endif %}">
+                    <input type="radio" name="best-option-{{ model_oi }}" value="{{ value | escape }}" {% if value == selected_value %}checked{% endif %}>
+                    <span>{{ value | escape }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+              {%- if model_option.values.size > 6 -%}<button class="best-options__more" type="button" data-best-more-models aria-expanded="false">Show all {{ model_option.values.size }} models</button>{%- endif -%}
+              <p class="best-options__selection">{% render 'icon', name: 'phone', size: 18 %} Your selected model: <strong data-best-model-label>{{ current_variant.options[model_oi] | escape }}</strong>{% render 'icon', name: 'check', size: 17 %}</p>
+            </fieldset>
+          {%- endif -%}
+
+          {%- if style_oi >= 0 -%}
+            {%- assign style_option = product.options_with_values[style_oi] -%}
+            <fieldset class="best-options best-options--styles" data-best-option="{{ style_oi }}">
+              <legend><span class="best-options__step">2</span> Choose your {{ style_option.name | escape }} <strong data-best-style-label>{{ current_variant.options[style_oi] | escape }}</strong></legend>
+              <div class="best-options__style-grid">
+                {%- for value in style_option.values -%}
+                  {%- assign selected_value = current_variant.options[style_oi] -%}
+                  {%- assign swatch_image = product.featured_image -%}
+                  {%- for variant in product.variants -%}
+                    {%- assign swatch_value = variant.options[style_oi] -%}
+                    {%- if swatch_value == value and variant.featured_image != blank -%}{%- assign swatch_image = variant.featured_image -%}{%- break -%}{%- endif -%}
+                  {%- endfor -%}
+                  <label class="best-style">
+                    <input type="radio" name="best-option-{{ style_oi }}" value="{{ value | escape }}" {% if value == selected_value %}checked{% endif %}>
+                    <span class="best-style__photo">{% if swatch_image != blank %}<img src="{{ swatch_image | image_url: width: 180 }}" alt="" width="76" height="76" loading="lazy">{% else %}<img src="{{ detail_src }}" alt="" width="76" height="76" loading="lazy">{% endif %}</span>
+                    <span class="best-style__name">{{ value | escape }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endif -%}
+
+          {%- for option in product.options_with_values -%}
+            {%- assign option_index = forloop.index0 -%}
+            {%- if option_index != model_oi and option_index != style_oi -%}
+              <label class="best-options__select-label" for="best-extra-{{ section.id }}-{{ option_index }}">{{ option.name | escape }}</label>
+              <select id="best-extra-{{ section.id }}-{{ option_index }}" data-best-option="{{ option_index }}">
+                {%- for value in option.values -%}<option value="{{ value | escape }}" {% if value == current_variant.options[option_index] %}selected{% endif %}>{{ value | escape }}</option>{%- endfor -%}
+              </select>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="best-form__actions">
+            <div class="best-qty" aria-label="Quantity">
+              <button type="button" aria-label="Decrease quantity" data-best-decrease>{% render 'icon', name: 'minus', size: 16 %}</button>
+              <input type="number" name="quantity" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantity" data-best-quantity>
+              <button type="button" aria-label="Increase quantity" data-best-increase>{% render 'icon', name: 'plus', size: 16 %}</button>
+            </div>
+            <button class="best-button best-button--cart" type="submit" {% unless current_variant.available %}disabled{% endunless %} data-best-add>{% render 'icon', name: 'bag', size: 21 %}<span>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span></button>
+          </div>
+          <button class="best-button best-button--buy" type="button" {% unless current_variant.available %}disabled{% endunless %} data-best-buy>Buy Now <span data-best-buy-price>{{ current_variant.price | money }}</span></button>
+          <p class="best-form__error" role="alert" data-best-error hidden></p>
+        </form>
+        <div class="best-service">
+          <div>{% render 'icon', name: 'truck', size: 23 %}<span>Free shipping</span></div>
+          <div>{% render 'icon', name: 'return', size: 23 %}<span>30-day returns</span></div>
+          <div>{% render 'icon', name: 'bag', size: 23 %}<span>Ships in 1–3 business days</span></div>
+          <div>{% render 'icon', name: 'shield', size: 23 %}<span>Secure checkout</span></div>
+        </div>
+        <div class="best-proof"><span class="best-proof__stars">★★★★★</span><span>Made for your everyday</span><span class="best-proof__pill">Casify</span></div>
+        {% if product.media.size > 0 %}
+          <div class="best-real">
+            <h2>Real details, real style <span aria-hidden="true">♥</span></h2>
+            <div class="best-real__rail">
+              {%- for media in product.media limit: 4 -%}
+                {%- if media.media_type == 'image' -%}<img src="{{ media.preview_image | image_url: width: 460 }}" alt="{{ media.alt | default: product.title | escape }}" width="190" height="190" loading="lazy">{%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="best-pdp__story-column">
+      <section class="best-story best-story--love" aria-labelledby="best-love-{{ section.id }}">
+        <h2 id="best-love-{{ section.id }}">Why You’ll Love It <span aria-hidden="true">♥</span></h2>
+        <div class="best-love-grid">
+          <article class="best-love-card"><img src="{{ magnetic_src }}" alt="Magnetic charger aligned with the case" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_one | escape }}</h3><p>{{ section.settings.benefit_one_copy | escape }}</p></article>
+          <article class="best-love-card"><img src="{{ detail_src }}" alt="Close-up of the woven case texture" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_two | escape }}</h3><p>{{ section.settings.benefit_two_copy | escape }}</p></article>
+          <article class="best-love-card"><img src="{{ hero_src }}" alt="Case held in a hand" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_three | escape }}</h3><p>{{ section.settings.benefit_three_copy | escape }}</p></article>
+        </div>
+      </section>
+
+      <section class="best-story best-story--fit" aria-labelledby="best-fit-{{ section.id }}">
+        <h2 id="best-fit-{{ section.id }}">Made for your iPhone</h2><p>Thoughtful details for the perfect fit.</p>
+        <div class="best-feature-photo"><img src="{{ detail_src }}" alt="Close-up view of the woven case around the camera and side button" width="900" height="510" loading="lazy"><span class="best-callout best-callout--camera">Raised camera edge</span><span class="best-callout best-callout--buttons">Responsive buttons</span><span class="best-callout best-callout--finish">Soft-touch finish</span></div>
+      </section>
+
+      <section class="best-story best-story--magnetic" aria-labelledby="best-magnet-{{ section.id }}">
+        <h2 id="best-magnet-{{ section.id }}">Magnetic Power</h2><p>Snap on. Stay on. Compatible with magnetic accessories.</p>
+        <div class="best-magnet-photo"><img src="{{ magnetic_src }}" alt="Illustration of magnetic charger attached to case" width="900" height="650" loading="lazy"><canvas class="best-magnet-photo__canvas" aria-hidden="true" data-best-magnet-canvas></canvas><ul><li>MagSafe charger</li><li>Magnetic wallet</li><li>Car mount</li><li>Power bank</li></ul></div>
+      </section>
+
+      <div class="best-detail-grid">
+        <section class="best-mini-card"><h2>Drop Protection</h2><p>Built to handle everyday bumps.</p><img src="{{ hero_src }}" alt="Protective case held in hand" width="420" height="310" loading="lazy"></section>
+        <section class="best-mini-card"><h2>Premium Material</h2><p>High-quality woven fabric with a soft, comfortable grip.</p><img src="{{ detail_src }}" alt="Macro view of woven fabric texture" width="420" height="310" loading="lazy"></section>
+      </div>
+
+      <section class="best-story best-story--colors" aria-labelledby="best-colors-{{ section.id }}">
+        <h2 id="best-colors-{{ section.id }}">All Colors</h2><p>Find your perfect style.</p>
+        <div class="best-color-rail">
+          {%- if style_oi >= 0 -%}
+            {%- assign style_option = product.options_with_values[style_oi] -%}
+            {%- for value in style_option.values -%}
+              {%- assign lineup_image = product.featured_image -%}
+              {%- for variant in product.variants -%}{%- assign lineup_value = variant.options[style_oi] -%}{%- if lineup_value == value and variant.featured_image != blank -%}{%- assign lineup_image = variant.featured_image -%}{%- break -%}{%- endif -%}{%- endfor -%}
+              {%- assign lineup_src = 'best-case-in-hand.png' | asset_url -%}
+              {%- if lineup_image != blank -%}{%- assign lineup_src = lineup_image | image_url: width: 260 -%}{%- endif -%}
+              <div><img src="{{ lineup_src }}" alt="{{ value | escape }}" width="130" height="170" loading="lazy"><span>{{ value | escape }}</span></div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for media in product.media limit: 8 -%}{%- if media.media_type == 'image' -%}<div><img src="{{ media.preview_image | image_url: width: 260 }}" alt="{{ media.alt | default: product.title | escape }}" width="130" height="170" loading="lazy"></div>{%- endif -%}{%- endfor -%}
+          {%- endif -%}
+        </div>
+      </section>
+
+      <section class="best-story best-story--compare" aria-labelledby="best-compare-{{ section.id }}">
+        <h2 id="best-compare-{{ section.id }}">Casify vs Others</h2>
+        <div class="best-compare"><div class="best-compare__product"><img src="{{ hero_src }}" alt="Woven case illustration" width="170" height="220" loading="lazy"><div><h3>Casify<br>Tech Fabric</h3><ul><li>Woven texture</li><li>Magnetic accessory design</li><li>Raised camera edge</li><li>Multiple styles</li><li>30-day returns</li></ul></div></div><div class="best-compare__other"><h3>What to check</h3><ul><li>Material and feel</li><li>Accessory fit</li><li>Camera protection</li><li>Available styles</li><li>Returns policy</li></ul></div></div>
+      </section>
+
+      <div class="best-bottom-grid">
+        <section class="best-faq" id="best-faq-{{ section.id }}" aria-labelledby="best-faq-heading-{{ section.id }}"><h2 id="best-faq-heading-{{ section.id }}">Frequently Asked Questions</h2><details><summary>Is this case compatible with MagSafe?</summary><p>Choose a model and check the product details for magnetic accessory compatibility.</p></details><details><summary>Will it protect my iPhone if I drop it?</summary><p>The raised edges and fitted shell are designed for everyday protection. No case can prevent every type of damage.</p></details><details><summary>What is the case made of?</summary><p>The case has a woven-look outer texture. Check the product details for the exact materials of your selected style.</p></details><details><summary>How long does shipping take?</summary><p>Orders dispatch in 1–3 business days. Delivery time depends on your destination.</p></details><details><summary>What is your return policy?</summary><p>You can return an eligible order within 30 days. See the store’s return policy for details.</p></details></section>
+        <aside class="best-endcap"><h2>Ready to Upgrade<br>Your iPhone?</h2><div><img src="{{ hero_src }}" alt="Woven case illustration" width="110" height="150" loading="lazy"><strong data-best-end-price>{{ current_variant.price | money }}</strong></div><a href="#best-buy-{{ section.id }}">Choose yours {% render 'icon', name: 'arrow-right', size: 17 %}</a><p>Free shipping · 30-day returns</p></aside>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="module" src="{{ 'best-product.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Best product page",
+  "tag": "section",
+  "class": "best-product-section",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (optional)" },
+    { "type": "image_picker", "id": "detail_image", "label": "Fabric and camera detail (optional)" },
+    { "type": "image_picker", "id": "magnetic_image", "label": "Magnetic accessory image (optional)" },
+    { "type": "paragraph", "content": "The bundled case scenes are illustrative. Replace them and confirm product-specific claims before assigning this template to a live product." },
+    { "type": "text", "id": "eyebrow", "label": "Small product label", "default": "CASIFY CASES" },
+    { "type": "text", "id": "heading", "label": "Heading override (leave blank for product title)" },
+    { "type": "textarea", "id": "intro", "label": "Short description", "default": "Premium woven texture. Strong magnetic connection. Everyday protection for your iPhone." },
+    { "type": "text", "id": "benefit_one", "label": "First benefit", "default": "Strong Magnetic Attachment" },
+    { "type": "textarea", "id": "benefit_one_copy", "label": "First benefit copy", "default": "Works perfectly with MagSafe chargers and accessories." },
+    { "type": "text", "id": "benefit_two", "label": "Second benefit", "default": "Premium Woven Texture" },
+    { "type": "textarea", "id": "benefit_two_copy", "label": "Second benefit copy", "default": "Soft-touch feel with a modern, stylish look." },
+    { "type": "text", "id": "benefit_three", "label": "Third benefit", "default": "Everyday Protection" },
+    { "type": "textarea", "id": "benefit_three_copy", "label": "Third benefit copy", "default": "Raised edges keep your screen and camera safe." }
+  ],
+  "presets": [{ "name": "Best product page" }]
+}
+{% endschema %}

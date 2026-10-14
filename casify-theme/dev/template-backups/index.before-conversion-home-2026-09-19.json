@@ -1,0 +1,603 @@
+{
+  "sections": {
+    "trust_bar": {
+      "type": "cv-trust-bar",
+      "blocks": {
+        "t-0": {
+          "type": "item",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "On every order"
+          }
+        },
+        "t-1": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "Prepaid label, no hassle"
+          }
+        },
+        "t-2": {
+          "type": "item",
+          "settings": {
+            "icon": "lock-secure",
+            "title": "Secure checkout",
+            "body": "100% safe & encrypted"
+          }
+        },
+        "t-3": {
+          "type": "item",
+          "settings": {
+            "icon": "clock",
+            "title": "Fast dispatch",
+            "body": "Ships in 1-3 business days"
+          }
+        }
+      },
+      "block_order": [
+        "t-0",
+        "t-1",
+        "t-2",
+        "t-3"
+      ]
+    },
+    "hero": {
+      "type": "casify-hero",
+      "settings": {
+        "heading_line1": "Meet your iPhone 18 fit.",
+        "heading_accent": "Make it unmistakably yours.",
+        "subheading": "<p>Real case designs, sized to the model in your hand — with free shipping on every order.</p>",
+        "cta_label": "Shop iPhone 18 cases",
+        "cta_url": "/collections/all",
+        "selector_label": "Choose a featured fit",
+        "show_video": true,
+        "enable_3d": true,
+        "trust_1": "Free shipping",
+        "trust_1_note": "Every order",
+        "trust_2": "30-day returns",
+        "trust_2_note": "Time to decide",
+        "trust_3": "Fast dispatch",
+        "trust_3_note": "1–3 business days",
+        "state1_label": "iPhone 18 Pro",
+        "state1_title": "The Pro fit, chosen exactly.",
+        "state1_body": "Select iPhone 18 Pro from the real model list on the case you love.",
+        "state1_short": "Exact-model fit",
+        "state2_label": "iPhone 18 Pro Max",
+        "state2_title": "More screen. No fit guesswork.",
+        "state2_body": "Choose the larger Pro Max fit before it reaches your bag.",
+        "state2_short": "Larger-frame fit",
+        "state3_label": "Mix & match",
+        "state3_title": "Two looks. One smarter total.",
+        "state3_body": "Mix models and styles: save 18% on 2 cases or 31% on 3.",
+        "state3_short": "Save 18% / 31%"
+      }
+    },
+    "spotlight": {
+      "type": "cv-spotlight",
+      "settings": {
+        "eyebrow": "Now in the shop",
+        "heading": "Protection you forget is even there",
+        "subheading": "<p>Cut from your phone's own CAD file, so it disappears in your pocket &mdash; sized to your exact model, not a generic fit.</p>",
+        "cta_label": "Find my model",
+        "cta_url": "/collections/all",
+        "count_collection": "frontpage"
+      }
+    },
+    "orbit": {
+      "type": "cv-orbit",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "Section 3D — the turntable",
+        "heading": "The collection, in 3D",
+        "subheading": "<p>Watch it turn, or drag to spin. Every case comes with the same shop promises.</p>",
+        "link_label": "View all",
+        "limit": 6,
+        "hold": 3.5,
+        "perk_shipping": "Free shipping",
+        "perk_shipping_note": "On every order",
+        "perk_returns": "30-day returns",
+        "perk_returns_note": "Changed your mind? Send it back",
+        "perk_dispatch": "Ships in 1–3 days",
+        "perk_dispatch_note": "Business days, from order",
+        "perk_checkout": "Secure checkout",
+        "perk_checkout_note": "Encrypted by Shopify",
+        "show_packs": true,
+        "pack_2_pct": 18,
+        "pack_3_pct": 31
+      }
+    },
+    "shop": {
+      "type": "cv-collection-row",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "Best sellers",
+        "heading": "Most protected this month",
+        "subheading": "<p>One mould per model. Pick the phone and the fit is exact.</p>",
+        "link_label": "View all",
+        "limit": 4
+      }
+    },
+    "showcase": {
+      "type": "cv-showcase",
+      "settings": {
+        "eyebrow": "Shop the range",
+        "heading": "Fan favorites, built to last",
+        "subheading": "<p>Three of the most-loved fits, ready to ship today.</p>"
+      },
+      "blocks": {
+        "card-0": {
+          "type": "card",
+          "settings": {
+            "panel_tone": "cream",
+            "icon": "ring-dot",
+            "badge_text": "BESTSELLER",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "pill_1_icon": "drop-height",
+            "pill_1_text": "6FT DROP TESTED",
+            "pill_2_icon": "check",
+            "pill_2_text": "MAGSAFE READY",
+            "rating_count": "12,482",
+            "title": "CandyStripe Classic Case",
+            "description": "Screen-printed candy stripes under a UV-cured top coat. MagSafe ready.",
+            "price": "$34",
+            "compare_price": "$44",
+            "button_label": "Shop now",
+            "button_tone": "red",
+            "button_url": "/collections/all"
+          }
+        },
+        "card-1": {
+          "type": "card",
+          "settings": {
+            "panel_tone": "teal",
+            "icon": "magnet-ring",
+            "badge_text": "BESTSELLER",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "pill_1_icon": "lock-secure",
+            "pill_1_text": "SNAP-FIT WALLET",
+            "pill_2_icon": "check",
+            "pill_2_text": "DROP TESTED",
+            "rating_count": "8,930",
+            "title": "MagSafe Wallet Case",
+            "description": "Snap-fit wallet with a flush N52 magnet ring. Holds three cards.",
+            "price": "$42",
+            "compare_price": "$52",
+            "button_label": "Shop now",
+            "button_tone": "teal",
+            "button_url": "/collections/all"
+          }
+        },
+        "card-2": {
+          "type": "card",
+          "settings": {
+            "panel_tone": "dark",
+            "icon": "uv-sun",
+            "badge_text": "NEW",
+            "badge_tone": "teal",
+            "badge_style": "pill",
+            "pill_1_icon": "precision-fit",
+            "pill_1_text": "STAYS CRYSTAL CLEAR",
+            "pill_2_icon": "check",
+            "pill_2_text": "MAGSAFE READY",
+            "rating_count": "3,204",
+            "title": "Anti-Yellow Clear Case",
+            "description": "UV-stable resin stays clear for years — no yellowing, no cloudiness.",
+            "price": "$36",
+            "compare_price": "",
+            "button_label": "Shop now",
+            "button_tone": "red",
+            "button_url": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "card-0",
+        "card-1",
+        "card-2"
+      ]
+    },
+    "value": {
+      "type": "cv-value-stack",
+      "settings": {
+        "eyebrow": "Section 01 — why it wins",
+        "heading": "Three things every other case gets wrong",
+        "subheading": "<p>Not adjectives. Three measurements, each one taken in a lab and published in full.</p>",
+        "benefits_heading": "Everything else you get",
+        "proof_eyebrow": "Measured, not claimed",
+        "proof_heading": "Drop height before the phone was damaged",
+        "proof_footnote": "Independent lab, 26 drops per unit onto concrete, MIL-STD-810G 516.6."
+      },
+      "blocks": {
+        "fix-0": {
+          "type": "fix",
+          "settings": {
+            "icon": "honeycomb",
+            "metric_value": "12",
+            "metric_unit": "ft",
+            "problem": "It cracks on the first real drop",
+            "body": "<p>Slim usually means solid plastic corners that pass the shock straight into the frame. These corners are a honeycomb of collapsing air cells — they crush, absorb, and spring back. 26 drops onto concrete from 12 feet, no phone damage.</p>",
+            "them_title": "Typical slim case",
+            "them_label": "6–8 ft",
+            "us_title": "Casify",
+            "us_label": "12 ft"
+          }
+        },
+        "fix-1": {
+          "type": "fix",
+          "settings": {
+            "icon": "magnet-ring",
+            "metric_value": "1400",
+            "metric_unit": "g",
+            "problem": "The magnet lets go when you need it",
+            "body": "<p>\"MagSafe compatible\" is a sticker, not a spec. We publish pull force. Eighteen N52 magnets in a full ring hold 1,400 g, so your phone stays on the vent mount over a speed bump — and still charges at the full Qi2 25W.</p>",
+            "them_title": "Category average",
+            "them_label": "800–900 g",
+            "us_title": "Casify",
+            "us_label": "1,400 g"
+          }
+        },
+        "fix-2": {
+          "type": "fix",
+          "settings": {
+            "icon": "no-yellow",
+            "metric_value": "36",
+            "metric_unit": "mo",
+            "problem": "Clear turns yellow by month four",
+            "body": "<p>Cheap TPU oxidises under UV and skin oil — that's why your last clear case looked like an old fingernail. This back is UV-stable polycarbonate with a bonded top coat: no measurable colour shift after the equivalent of three years outdoors.</p>",
+            "them_title": "Standard TPU",
+            "them_label": "Yellow by month 4",
+            "us_title": "Casify",
+            "us_label": "No shift at 36 mo"
+          }
+        },
+        "ben-0": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wireless-charge",
+            "title": "Qi2 25W charging",
+            "body": "Full-speed wireless charging with the case on — no adapter, no guessing."
+          }
+        },
+        "ben-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "camera-lip",
+            "title": "Raised camera lip",
+            "body": "1.4 mm of rim means the lens sits clear of the table face-down."
+          }
+        },
+        "ben-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "button-click",
+            "title": "Buttons that still click",
+            "body": "Harder-durometer covers moulded in, so they never go mushy."
+          }
+        },
+        "ben-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "precision-fit",
+            "title": "Cut from the CAD file",
+            "body": "One mould per model — no universal shells, no loose corners."
+          }
+        },
+        "ben-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle-clear",
+            "title": "Anti-fingerprint coat",
+            "body": "Wipes clean and keeps an even finish after months in a pocket."
+          }
+        },
+        "ben-5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "90 days to decide",
+            "body": "Any reason, prepaid label, refunded as soon as it's scanned."
+          }
+        },
+        "bar-0": {
+          "type": "bar",
+          "settings": {
+            "name": "Casify",
+            "value": "12.0 ft",
+            "pct": 100,
+            "highlight": true
+          }
+        },
+        "bar-1": {
+          "type": "bar",
+          "settings": {
+            "name": "Rugged bulk case",
+            "value": "10.5 ft",
+            "pct": 88
+          }
+        },
+        "bar-2": {
+          "type": "bar",
+          "settings": {
+            "name": "Designer clear case",
+            "value": "7.2 ft",
+            "pct": 60
+          }
+        },
+        "bar-3": {
+          "type": "bar",
+          "settings": {
+            "name": "Slim hard shell",
+            "value": "5.1 ft",
+            "pct": 42
+          }
+        },
+        "bar-4": {
+          "type": "bar",
+          "settings": {
+            "name": "Marketplace case",
+            "value": "2.9 ft",
+            "pct": 24
+          }
+        },
+        "bar-5": {
+          "type": "bar",
+          "settings": {
+            "name": "No case",
+            "value": "0.9 ft",
+            "pct": 8
+          }
+        }
+      },
+      "block_order": [
+        "fix-0",
+        "fix-1",
+        "fix-2",
+        "ben-0",
+        "ben-1",
+        "ben-2",
+        "ben-3",
+        "ben-4",
+        "ben-5",
+        "bar-0",
+        "bar-1",
+        "bar-2",
+        "bar-3",
+        "bar-4",
+        "bar-5"
+      ]
+    },
+    "ugc": {
+      "type": "cv-ugc",
+      "settings": {
+        "eyebrow": "Section 03 — your clips",
+        "heading": "Your case, on camera",
+        "subheading": "<p>Videos from real customers go up here once people send them in.</p>",
+        "hint": "Tap any clip for sound",
+        "cta_label": "Find my model",
+        "empty_heading": "No customer clips yet",
+        "empty_text": "Filmed an unboxing or your case out and about? Send it to us through the contact page."
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "iphone": {
+      "type": "cv-collection-row",
+      "settings": {
+        "collection": "iphone",
+        "eyebrow": "Cut for your model",
+        "heading": "Every iPhone we make",
+        "subheading": "<p>If your model is listed, there is a mould for it. If it isn't, we haven't made it yet.</p>",
+        "link_label": "See all iPhone",
+        "limit": 4
+      }
+    },
+    "social": {
+      "type": "cv-social-proof",
+      "settings": {
+        "heading": "The proof, as it arrives",
+        "intro": "A live record of published customer feedback. Nothing on this board is pre-filled or manually scored.",
+        "enable_3d": true,
+        "empty_heading": "No published reviews yet",
+        "empty_text": "The first customer review will set the score — not us.",
+        "ledger_empty_text": "Customer notes will appear here automatically as they are published.",
+        "source_note": "No sample quotes. No imported press logos. Just the live record.",
+        "thank_you_heading": "Thank you.",
+        "thank_you_text": "For helping us build the record one honest review at a time.",
+        "badge_heading": "Source checked",
+        "badge_text": "Live Shopify review data"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "comparison": {
+      "type": "cv-compare",
+      "settings": {
+        "heading": "Put it next to what you almost bought",
+        "subheading": "<p>Same test, same lab, same day. Only the case changed.</p>",
+        "stage_label": "Three specimens · one test bench",
+        "row_label": "Measured",
+        "our_label": "Our pick",
+        "footnote": "Rival figures measured in-house on retail units bought at full price.",
+        "cta_label": "Find my model",
+        "cta_url": "/collections/all"
+      },
+      "blocks": {
+        "col-casify": { "type": "col", "settings": { "name": "Casify", "note": "$39", "is_us": true } },
+        "col-designer": { "type": "col", "settings": { "name": "Designer clear", "note": "$65+", "is_us": false } },
+        "col-rugged": { "type": "col", "settings": { "name": "Rugged bulk", "note": "$55", "is_us": false } },
+        "row-drop": { "type": "row", "settings": { "label": "Drop height before damage", "icon": "drop-height", "cell_1": "12 ft", "kind_1": "val", "cell_2": "7.2 ft", "kind_2": "val", "cell_3": "10.5 ft", "kind_3": "val" } },
+        "row-magnet": { "type": "row", "settings": { "label": "Magnet pull force", "icon": "magnet-ring", "cell_1": "1,400 g", "kind_1": "val", "cell_2": "850 g", "kind_2": "val", "cell_3": "1,100 g", "kind_3": "val" } },
+        "row-thickness": { "type": "row", "settings": { "label": "Back thickness", "icon": "ruler", "cell_1": "2.8 mm", "kind_1": "val", "cell_2": "3.1 mm", "kind_2": "val", "cell_3": "6.4 mm", "kind_3": "val" } },
+        "row-weight": { "type": "row", "settings": { "label": "Added weight", "icon": "device", "cell_1": "24 g", "kind_1": "val", "cell_2": "31 g", "kind_2": "val", "cell_3": "78 g", "kind_3": "val" } },
+        "row-clarity": { "type": "row", "settings": { "label": "Still clear at 36 months", "icon": "no-yellow", "cell_1": "No shift", "kind_1": "yes", "cell_2": "Yellow by month 4", "kind_2": "no", "cell_3": "Opaque", "kind_3": "no" } },
+        "row-charge": { "type": "row", "settings": { "label": "Qi2 25W through the case", "icon": "wireless-charge", "cell_1": "Full speed", "kind_1": "yes", "cell_2": "Full speed", "kind_2": "yes", "cell_3": "Slowed", "kind_3": "no" } },
+        "row-data": { "type": "row", "settings": { "label": "Publishes its lab data", "icon": "lab", "cell_1": "Yes", "kind_1": "yes", "cell_2": "No", "kind_2": "no", "cell_3": "No", "kind_3": "no" } },
+        "row-screen": { "type": "row", "settings": { "label": "Pays for your screen", "icon": "warranty-seal", "cell_1": "Up to $200", "kind_1": "yes", "cell_2": "No", "kind_2": "no", "cell_3": "No", "kind_3": "no" } },
+        "row-returns": { "type": "row", "settings": { "label": "Returns window", "icon": "returns", "cell_1": "90 days", "kind_1": "yes", "cell_2": "30 days", "kind_2": "val", "cell_3": "30 days", "kind_3": "val" } }
+      },
+      "block_order": [
+        "col-casify",
+        "col-designer",
+        "col-rugged",
+        "row-drop",
+        "row-magnet",
+        "row-thickness",
+        "row-weight",
+        "row-clarity",
+        "row-charge",
+        "row-data",
+        "row-screen",
+        "row-returns"
+      ]
+    },
+    "risk": {
+      "type": "cv-guarantee",
+      "settings": {
+        "guard_eyebrow": "Section 06 — zero risk",
+        "guard_heading": "Every reason not to buy, removed",
+        "faq_eyebrow": "Still deciding?",
+        "faq_heading": "The questions we actually get asked",
+        "closer_eyebrow": "One case, one decision",
+        "closer_heading": "Protect it before you need to",
+        "closer_body": "<p>A screen repair costs more than five of these. Pick your model and it ships today.</p>",
+        "closer_cta": "Find my model",
+        "closer_url": "/collections/all"
+      },
+      "blocks": {
+        "g-0": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "returns",
+            "title": "90 days to change your mind",
+            "body": "Use it, drop it, decide it's not for you — prepaid label, full refund."
+          }
+        },
+        "g-1": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "warranty-seal",
+            "title": "The Screen Promise",
+            "body": "Crack your screen with the case on and we cover the repair, up to $200."
+          }
+        },
+        "g-2": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "drop-shield",
+            "title": "2-year case warranty",
+            "body": "Yellowing, delamination, a magnet that weakens — replaced, not argued about."
+          }
+        },
+        "g-3": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Out the door in 24h",
+            "body": "Order before 2pm CT on a business day and it ships the same day from Austin."
+          }
+        },
+        "faq-0": {
+          "type": "faq",
+          "settings": {
+            "question": "Will it fit my exact model?",
+            "default_open": true,
+            "answer": "<p>Each case is cut from that phone's own CAD file — one mould per model, not a universal shell. Pick your model and the fit is exact: no gaps at the camera, no rattle, no covered mic.</p>"
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Does wireless charging still work?",
+            "answer": "<p>Yes, at full speed. The magnet ring is aligned to the MagSafe spec and passes Qi2 25W, MagSafe, and standard Qi. You don't need to take the case off to charge, mount, or use a wallet.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Is it really going to stay clear?",
+            "answer": "<p>The back is UV-stable polycarbonate with a bonded top coat, not soft TPU. In accelerated testing equivalent to three years outdoors we measured no perceptible colour shift. If yours yellows inside two years, the warranty covers it.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "How thick does it actually feel?",
+            "answer": "<p>2.8 mm across the back and 3.4 mm at the rail, adding about 24 g — thinner than a stack of three credit cards. It still slides into a pocket, and the grip texture means it doesn't slip out of your hand.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I ordered the wrong model?",
+            "answer": "<p>Message support with your order number and we'll send the right one with a prepaid label for the first. No restocking fee, and you don't pay shipping twice.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "Why is a multi-pack cheaper per case?",
+            "answer": "<p>Same case, one shipment. Packing and shipping two or three together costs us less than three separate orders, so the saving goes to you. Most people keep one on the phone and one in a bag or car.</p>"
+          }
+        },
+        "note-0": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Free shipping over $45"
+          }
+        },
+        "note-1": {
+          "type": "closer_note",
+          "settings": {
+            "text": "90-day returns, prepaid"
+          }
+        },
+        "note-2": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Ships in 24 hours"
+          }
+        },
+        "note-3": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Secure checkout"
+          }
+        }
+      },
+      "block_order": [
+        "g-0",
+        "g-1",
+        "g-2",
+        "g-3",
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "note-0",
+        "note-1",
+        "note-2",
+        "note-3"
+      ]
+    }
+  },
+  "order": [
+    "trust_bar",
+    "hero",
+    "spotlight",
+    "orbit",
+    "shop",
+    "showcase",
+    "value",
+    "ugc",
+    "iphone",
+    "social",
+    "comparison",
+    "risk"
+  ]
+}

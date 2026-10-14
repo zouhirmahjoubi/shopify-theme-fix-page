@@ -1,0 +1,126 @@
+/* =========================================================================
+   Casify product page: delivery estimate (sections/cv-pdp-delivery.liquid).
+   A paper ticket: the arrival date up top, a perforation, then the order's
+   stops along a little road. This file is the finished static state; dates,
+   countdown and motion come from cv-pdp-delivery.js.
+   ========================================================================= */
+
+.cvdl {
+  --cvdl-bg: var(--cream-100);
+  padding: calc(var(--cvdl-pt, 24px) * .75) 0 calc(var(--cvdl-pb, 24px) * .75);
+  background: var(--cvdl-bg);
+  color: var(--cocoa-600);
+}
+@media (min-width: 750px) { .cvdl { padding: var(--cvdl-pt, 24px) 0 var(--cvdl-pb, 24px); } }
+.cvdl--tone-inset { --cvdl-bg: var(--cream-200); }
+.cvdl--tone-paper { --cvdl-bg: var(--cream-50); }
+
+.cvdl__inner { max-width: var(--max, 1160px); margin: 0 auto; padding: 0 24px; }
+
+.cvdl__ticket {
+  position: relative; max-width: 820px; margin: 0 auto;
+  padding: 22px clamp(18px, 3vw, 30px) 18px;
+  border-radius: 14px; background: var(--cream-50);
+  box-shadow: 0 1px 0 rgba(255, 253, 248, .8) inset, 0 0 0 1px rgba(74, 51, 36, .09), 0 18px 34px -24px rgba(51, 35, 26, .45);
+}
+.cvdl--tone-paper .cvdl__ticket { background: var(--cream-100); }
+.cvdl__ticket::before {
+  content: ""; position: absolute; inset: 6px; border-radius: 9px; pointer-events: none;
+  border: 1px dashed rgba(74, 51, 36, .22);
+}
+
+/* ---- header ------------------------------------------------------------- */
+.cvdl__hd { position: relative; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.cvdl__kicker {
+  margin: 0; font-family: var(--font-label); font-size: 11.5px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--cocoa-400);
+}
+.cvdl__arrive { margin: 0; display: grid; gap: 2px; justify-items: center; }
+.cvdl__arrive-label {
+  font-family: var(--font-label); font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--red-600);
+}
+.cvdl__arrive-date {
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 3.4vw, 36px);
+  line-height: 1.1; letter-spacing: -.015em; color: var(--cocoa-700);
+}
+.cvdl__cutoff {
+  display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 0;
+  padding: 6px 14px; border-radius: 999px;
+  /* Deepened teal: --teal-600 on --teal-100 is only 4.0:1; this is 5.5:1. */
+  background: var(--teal-100); color: #426563;
+  font: 13px/1.35 var(--font-body);
+}
+.cvdl__cutoff[hidden] { display: none; }
+.cvdl__cutoff svg { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cvdl__cutoff b { display: inline-block; font-family: var(--font-label); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--cocoa-700); }
+
+/* ---- perforation + track ---------------------------------------------------- */
+.cvdl__track {
+  position: relative; margin-top: 18px; padding-top: 20px;
+  border-top: 1.5px dashed rgba(74, 51, 36, .3);
+}
+/* Ticket notches at both ends of the perforation. */
+.cvdl__track::before, .cvdl__track::after {
+  content: ""; position: absolute; top: -10px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--cvdl-bg); box-shadow: inset 0 0 0 1px rgba(74, 51, 36, .09);
+}
+.cvdl__track::before { left: calc(-1 * clamp(18px, 3vw, 30px) - 9px); }
+.cvdl__track::after { right: calc(-1 * clamp(18px, 3vw, 30px) - 9px); }
+
+.cvdl__route {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(var(--cvdl-stops, 3), minmax(0, 1fr)); gap: 8px;
+  margin: 0; padding: 0; list-style: none;
+}
+.cvdl-stop { display: grid; justify-items: center; align-content: start; gap: 6px; text-align: center; min-width: 0; }
+.cvdl-stop__icon {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+  background: var(--cream-100); color: var(--cocoa-600);
+  box-shadow: 0 0 0 2px var(--cocoa-500), 0 0 0 6px var(--cream-50);
+}
+.cvdl-stop__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cvdl-stop--last .cvdl-stop__icon {
+  background: radial-gradient(circle at 35% 30%, var(--red-400), var(--red-500) 48%, var(--red-700));
+  color: var(--cream-50); box-shadow: 0 0 0 2px var(--gold-400), 0 0 0 6px var(--cream-50), 0 8px 14px -8px rgba(126, 26, 23, .7);
+}
+.cvdl-stop__title {
+  margin-top: 4px; font-family: var(--font-label); font-size: 11px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--cocoa-400);
+}
+.cvdl-stop__date { font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1.25; color: var(--cocoa-700); }
+
+/* The road runs from the first stop's centre to the last stop's. */
+.cvdl__road {
+  position: absolute; z-index: 0; top: calc(20px + 23px - 1.5px); height: 3px; border-radius: 3px;
+  left: calc(100% / var(--cvdl-stops, 3) / 2); right: calc(100% / var(--cvdl-stops, 3) / 2);
+  background: repeating-linear-gradient(90deg, rgba(74, 51, 36, .3) 0 8px, transparent 8px 14px);
+}
+.cvdl__road-fill {
+  position: absolute; inset: 0; border-radius: inherit; transform-origin: 0 50%;
+  background: repeating-linear-gradient(90deg, var(--red-500) 0 8px, var(--red-400) 8px 14px);
+}
+/* The parcel only appears while it travels (cv-pdp-delivery.js). */
+.cvdl__parcel {
+  position: absolute; z-index: 2; top: calc(20px + 23px - 30px); left: 0;
+  width: 26px; height: 26px; margin-left: -13px; opacity: 0; visibility: hidden; pointer-events: none;
+}
+.cvdl__parcel svg { width: 100%; height: 100%; }
+.cvdl__parcel-box { fill: #C9A06A; stroke: var(--cocoa-600); stroke-width: 1.6; stroke-linejoin: round; }
+.cvdl__parcel-edge { fill: none; stroke: var(--cocoa-600); stroke-width: 1.4; stroke-linejoin: round; }
+
+.cvdl__note {
+  margin: 16px 0 0; text-align: center;
+  font-family: var(--font-label); font-size: 11px; letter-spacing: .06em; color: var(--cocoa-400);
+}
+
+@media (max-width: 749px) {
+  .cvdl__inner { padding: 0 16px; }
+  .cvdl-stop__icon { width: 40px; height: 40px; }
+  .cvdl-stop__icon svg { width: 19px; height: 19px; }
+  .cvdl__road { top: calc(20px + 20px - 1.5px); }
+  .cvdl__parcel { top: calc(20px + 20px - 28px); }
+  .cvdl-stop__title { font-size: 10px; letter-spacing: .06em; }
+  .cvdl-stop__date { font-size: 13px; }
+  .cvdl__cutoff { font-size: 12px; }
+}

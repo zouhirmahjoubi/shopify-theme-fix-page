@@ -1,0 +1,8 @@
+{
+  "asset": "cv-customer-experience-plaque.webp",
+  "source": "OpenAI built-in image generation",
+  "use_case": "stylized-concept",
+  "created_for": "Product customer experience section",
+  "prompt": "Create a transparent 1920s candy-shop paper-cut plaque in candy red, deep red, aged gold, cream, and muted teal. Keep the center open for HTML review tickets. Use tactile painted card stock and subtle enamel wear. No text, numbers, stars, logos, people, products, phones, screenshots, review cards, speech bubbles, or watermark.",
+  "constraints": "Decorative backdrop only; all ratings, reviews, and service facts remain live HTML sourced from supplied store truth."
+}

@@ -1,0 +1,553 @@
+{%- comment -%}
+  Casify — "3D phone scan" (home page).
+
+  A scroll story after Codegrid's three.js scroll animation (the Silencio
+  "scanner" piece): two iPhones float over the opening headline, tumble end
+  over end as the page scrolls, and are rung through a pinned scanner. They
+  spin once, a beam passes over them and ticks off the fit check (cameras,
+  buttons, port) as it reaches each, they drop into the scanner and the
+  ticket is stamped. Then the fitting room: the three iPhone 18 bodies stand
+  in a row at true relative size, the shopper picks theirs, it steps forward,
+  a case slides on, and the cases cut for that phone are dealt out with a
+  link to each one's product page, already set to that phone.
+
+  With the 3D case set to "Printed design", every phone wears a printed case
+  the whole way: the scanned pair start in artworks 1 and 2 and turn into 3
+  and 4 halfway through the tumble (while their backs face away), and the
+  fitting-room phones wear 1, 2 and 3.
+
+  The phones and cases are built from primitives in assets/cv-phone-scan.js
+  (no model file to load or license). "iPhone 18 Pro" / "Pro Max" follow the
+  design that shipped in September 2026 (full-width camera plateau, back
+  colour-matched to the aluminium). "iPhone 18" follows the reported design
+  for its spring 2027 launch (unchanged from iPhone 17: two cameras in a
+  vertical pill).
+
+  Honest data only. snippets/cvps-fit-match.liquid reads which of the three
+  phones each product's phone-model option names; the counts, "from" prices
+  and cards come from that, the cards' prices and compare-at prices are the
+  linked variant's own. Nothing is chosen for the shopper: the cards and the
+  shop button appear only after they pick a model (the cards' ?variant= links
+  carry that choice to the product page). The default tags are the confirmed
+  service facts; the store rating is the merchant-supplied Trustpilot and
+  Google figure, labelled as a store rating.
+
+  Scripts: assets/cv-phone-scan.js is a module loaded from layout/theme.liquid
+  after the GSAP bundle. It imports three.js only when WebGL works and motion
+  is allowed, then switches the section to its tall scroll layout (.is-3d).
+  In 3D the display text (headline, statement, model number, fitting-room
+  heading) is drawn by three.js as solid letters cut from the brand face
+  (glyph outlines in assets/cv-phone-scan-type.js) and laid over the HTML,
+  which stays in the page, transparent, for readers and search. Behind the
+  copy a second canvas draws the room: tape measures, candy sprinkles and,
+  for the scan, a cutting mat.
+  Without that (no JS, no WebGL, reduced motion) this markup is a compact
+  static layout with a still of the two phones (assets/cv-phone-scan-duo.webp,
+  rendered from the same 3D models in the default colours); the model picker
+  still works there, through CSS :has().
+{%- endcomment -%}
+{{ 'cv-phone-scan.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign p1_label = section.settings.phone_1_label | default: 'iPhone 18'
+  assign p2_label = section.settings.phone_2_label | default: 'iPhone 18 Pro Max'
+  assign p1_body = section.settings.phone_1_body | default: 'iphone-18'
+  assign p2_body = section.settings.phone_2_body | default: 'iphone-18-pro-max'
+  assign p1_color = section.settings.phone_1_color | default: '#9fb8b1' | append: ''
+  assign p2_color = section.settings.phone_2_color | default: '#5b1f2a' | append: ''
+  assign p1_url = section.settings.phone_1_url | default: routes.all_products_collection_url
+  assign p2_url = section.settings.phone_2_url | default: routes.all_products_collection_url
+  assign other_url = section.settings.other_url | default: routes.all_products_collection_url
+
+  # The fitting room's three phones, in snippets/cvps-fit-match.liquid's order.
+  assign m_keys = 'iphone-18,iphone-18-pro,iphone-18-pro-max' | split: ','
+  assign m_names = 'iPhone 18,iPhone 18 Pro,iPhone 18 Pro Max' | split: ','
+  assign m_colors = '#9fb8b1,#d6d3cc,#5b1f2a' | split: ','
+
+  # Counts and lowest prices over the whole catalogue. collections.all returns
+  # up to 50 products per page; past 50 products they cover the first 50.
+  assign n0 = 0
+  assign n1 = 0
+  assign n2 = 0
+  assign f0 = 0
+  assign f1 = 0
+  assign f2 = 0
+  for product in collections.all.products
+    capture fit
+      render 'cvps-fit-match', product: product
+    endcapture
+    assign parts = fit | strip | split: ';'
+    for k in (0..2)
+      assign pair = parts[k] | split: ','
+      assign pr = pair[0] | plus: 0
+      if pr == 0
+        continue
+      endif
+      case k
+        when 0
+          assign n0 = n0 | plus: 1
+          if f0 == 0 or pr < f0
+            assign f0 = pr
+          endif
+        when 1
+          assign n1 = n1 | plus: 1
+          if f1 == 0 or pr < f1
+            assign f1 = pr
+          endif
+        else
+          assign n2 = n2 | plus: 1
+          if f2 == 0 or pr < f2
+            assign f2 = pr
+          endif
+      endcase
+    endfor
+  endfor
+
+  # Up to three cards per phone, from the chosen collection (best sellers,
+  # say) or the whole catalogue, in that collection's order, one per design:
+  # a design sold as several case types shows once per phone. The design is
+  # the title before " Phone Case", without a trailing " Christmas".
+  assign card_src = collections.all.products
+  if section.settings.fit_collection != blank
+    assign card_src = section.settings.fit_collection.products
+  endif
+  assign c0 = ''
+  assign c1 = ''
+  assign c2 = ''
+  assign k0 = 0
+  assign k1 = 0
+  assign k2 = 0
+  assign seen0 = '|'
+  assign seen1 = '|'
+  assign seen2 = '|'
+  for product in card_src
+    if k0 >= 3 and k1 >= 3 and k2 >= 3
+      break
+    endif
+    assign design = product.title | split: ' Phone Case' | first | split: ' Christmas' | first | strip | downcase
+    assign design_key = '|' | append: design | append: '|'
+    capture fit
+      render 'cvps-fit-match', product: product
+    endcapture
+    assign parts = fit | strip | split: ';'
+    for k in (0..2)
+      assign pair = parts[k] | split: ','
+      assign pr = pair[0] | plus: 0
+      if pr == 0
+        continue
+      endif
+      case k
+        when 0
+          assign kc = k0
+          assign seen_k = seen0
+        when 1
+          assign kc = k1
+          assign seen_k = seen1
+        else
+          assign kc = k2
+          assign seen_k = seen2
+      endcase
+      if kc >= 3 or seen_k contains design_key
+        continue
+      endif
+      assign vid = pair[1] | plus: 0
+      assign cv = nil
+      for variant in product.variants
+        if variant.id == vid
+          assign cv = variant
+          break
+        endif
+      endfor
+      if cv == nil
+        continue
+      endif
+      assign cimg = cv.featured_image | default: product.featured_image
+      assign c_title = product.title | escape
+      assign c_price = cv.price | money
+      capture card
+        echo '<li class="cvps__card" data-cvps-card><a class="cvps__card-link" href="' | append: product.url | append: '?variant=' | append: cv.id | append: '">'
+        echo '<span class="cvps__card-media">'
+        if cimg
+          echo cimg | image_url: width: 320 | image_tag: loading: 'lazy', widths: '160,240,320', sizes: '(min-width: 990px) 132px, 112px', alt: '', class: 'cvps__card-img'
+        endif
+        echo '</span><span class="cvps__card-title">' | append: c_title | append: '</span><span class="cvps__card-price">' | append: c_price
+        if cv.compare_at_price > cv.price
+          assign c_compare = cv.compare_at_price | money
+          echo ' <s>' | append: c_compare | append: '</s>'
+        endif
+        echo '</span></a></li>'
+      endcapture
+      case k
+        when 0
+          assign c0 = c0 | append: card
+          assign k0 = k0 | plus: 1
+          assign seen0 = seen0 | append: design | append: '|'
+        when 1
+          assign c1 = c1 | append: card
+          assign k1 = k1 | plus: 1
+          assign seen1 = seen1 | append: design | append: '|'
+        else
+          assign c2 = c2 | append: card
+          assign k2 = k2 | plus: 1
+          assign seen2 = seen2 | append: design | append: '|'
+      endcase
+    endfor
+  endfor
+
+  assign store_rating = section.settings.store_rating | strip
+  assign store_count = section.settings.store_rating_count | strip
+  assign show_rating = false
+  if section.settings.show_store_rating and store_rating != blank and store_count != blank
+    assign show_rating = true
+    assign store_fill = store_rating | plus: 0 | times: 20 | at_most: 100
+  endif
+-%}
+
+<section class="cvps" id="cvps-{{ section.id }}" data-cvps aria-labelledby="cvps-title-{{ section.id }}">
+  {%- comment -%} The room behind the copy (tapes, sprinkles, cutting mat): sticky, under the panels; empty until the module mounts. {%- endcomment -%}
+  <div class="cvps__backdrop" data-cvps-backdrop aria-hidden="true"></div>
+  {%- comment -%} The 3D layer: sticky for the whole section once the module mounts (empty until then). {%- endcomment -%}
+  <div class="cvps__stage" data-cvps-stage aria-hidden="true">
+    <div class="cvps__beam" data-cvps-beam><i></i></div>
+  </div>
+
+  <header class="cvps__panel cvps__hero" data-cvps-hero>
+    <h2 class="cvps__title" id="cvps-title-{{ section.id }}">
+      {%- if section.settings.heading_1 != blank -%}
+        <span class="cvps__line"><span data-cvps-rise>{{ section.settings.heading_1 | escape }}</span></span>
+      {%- endif -%}
+      {%- if section.settings.heading_2 != blank -%}
+        <span class="cvps__line"><span data-cvps-rise>{{ section.settings.heading_2 | escape }}</span></span>
+      {%- endif -%}
+    </h2>
+    <img class="cvps__still"
+      src="{{ 'cv-phone-scan-duo.webp' | asset_url }}"
+      width="1200" height="1369" loading="lazy" decoding="async"
+      alt="{{ p1_label | escape }} and {{ p2_label | escape }}">
+    <div class="cvps__hero-foot">
+      {%- if section.settings.kicker != blank -%}
+        <p class="cvps__kicker" data-cvps-fade>{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
+      <div class="cvps__hero-mid">
+        {%- if section.settings.hero_cta != blank -%}
+          <a class="cvps__jump" href="#cvps-fit-{{ section.id }}" data-cvps-jump data-cvps-fade>
+            <span>{{ section.settings.hero_cta | escape }}</span>
+            {%- render 'cv-icon', name: 'chevron-down', size: 15 -%}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.lede != blank -%}
+          <p class="cvps__lede" data-cvps-fade>{{ section.settings.lede | escape }}</p>
+        {%- endif -%}
+      </div>
+      <button class="cvps__pause" type="button" data-cvps-pause aria-pressed="false" hidden>
+        <span class="cvps__pause-icon is-pause">{%- render 'cv-icon', name: 'pause', size: 12 -%}</span>
+        <span class="cvps__pause-icon is-play">{%- render 'cv-icon', name: 'play', size: 12 -%}</span>
+        <span data-cvps-pause-label>Pause motion</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="cvps__panel cvps__info" data-cvps-info>
+    <ul class="cvps__tags" role="list">
+      <li>{{ p1_label | escape }}</li>
+      <li>{{ p2_label | escape }}</li>
+      {%- if section.settings.tag_1 != blank -%}<li>{{ section.settings.tag_1 | escape }}</li>{%- endif -%}
+      {%- if section.settings.tag_2 != blank -%}<li>{{ section.settings.tag_2 | escape }}</li>{%- endif -%}
+    </ul>
+    {%- if section.settings.statement != blank -%}
+      <p class="cvps__statement" data-cvps-statement>{{ section.settings.statement | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="cvps__panel cvps__scanner" data-cvps-scanner>
+    <div class="cvps__scan-head">
+      <p class="cvps__id"><span class="cvps__id-label">Model</span><span class="cvps__id-value" data-cvps-id>{{ section.settings.scan_id | escape }}</span></p>
+      {%- if section.settings.scan_text != blank -%}
+        <p class="cvps__scan-text">{{ section.settings.scan_text | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.show_checks -%}
+        {%- comment -%} The fit check. In 3D each line sits level with that part of the phones and ticks as the beam reaches it. {%- endcomment -%}
+        <ul class="cvps__checks" role="list" aria-label="Fit check" data-cvps-checks>
+          <li class="cvps__check" data-cvps-check="camera"><span class="cvps__check-box">{%- render 'cv-icon', name: 'check', size: 12 -%}</span><span>Cameras</span></li>
+          <li class="cvps__check" data-cvps-check="buttons"><span class="cvps__check-box">{%- render 'cv-icon', name: 'check', size: 12 -%}</span><span>Buttons</span></li>
+          <li class="cvps__check" data-cvps-check="port"><span class="cvps__check-box">{%- render 'cv-icon', name: 'check', size: 12 -%}</span><span>Port</span></li>
+        </ul>
+      {%- endif -%}
+    </div>
+    <div class="cvps__frame" data-cvps-frame aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="cvps__scan-foot">
+      {%- comment -%} 3D only: the beam's progress, counted as it passes. {%- endcomment -%}
+      <p class="cvps__readout" aria-hidden="true">
+        <span class="cvps__readout-label">Scan</span>
+        <span class="cvps__readout-bar"><i data-cvps-readout-bar></i></span>
+        <b data-cvps-readout>000%</b>
+      </p>
+      {%- if section.settings.stamp != blank -%}
+        <p class="cvps__stamp" data-cvps-stamp>
+          {%- render 'cv-icon', name: 'check', size: 14 -%}
+          <span>{{ section.settings.stamp | escape }}</span>
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%}
+    The fitting room. The radios drive what shows (CSS :has), with or without
+    the 3D layer; in 3D the phones stand in the slot and the module animates
+    each pick.
+  {%- endcomment -%}
+  <div class="cvps__panel cvps__fit" id="cvps-fit-{{ section.id }}" data-cvps-fit>
+    <div class="cvps__fit-head">
+      {%- if section.settings.fit_eyebrow != blank -%}
+        <p class="cvps__fit-eyebrow" data-cvps-fit-in>{{ section.settings.fit_eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.fit_heading != blank -%}
+        <h3 class="cvps__fit-title" data-cvps-fit-title>{{ section.settings.fit_heading | escape }}</h3>
+      {%- endif -%}
+      {%- if section.settings.closing != blank -%}
+        <p class="cvps__closing" data-cvps-fit-in>{{ section.settings.closing | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="cvps__fit-slot" data-cvps-slot aria-hidden="true">
+      <span class="cvps__snap" data-cvps-snap></span>
+      <span class="cvps__fit-drag">Drag to turn</span>
+    </div>
+
+    <div class="cvps__fit-body">
+      <fieldset class="cvps__models" data-cvps-models>
+        <legend class="cvps__models-legend">Your iPhone</legend>
+        {%- for key in m_keys -%}
+          {%- liquid
+            assign i = forloop.index0
+            assign m_label = m_names[i]
+            if key == p1_body
+              assign m_label = p1_label
+            elsif key == p2_body
+              assign m_label = p2_label
+            endif
+            case i
+              when 0
+                assign m_n = n0
+              when 1
+                assign m_n = n1
+              else
+                assign m_n = n2
+            endcase
+          -%}
+          <label class="cvps__model" data-cvps-model-chip>
+            <input class="cvps__model-input" type="radio" name="cvps-model-{{ section.id }}" value="{{ key }}" data-cvps-model>
+            <span class="cvps__model-face">
+              <span class="cvps__model-name">{{ m_label | escape }}</span>
+              <span class="cvps__model-count">
+                {%- if m_n > 0 -%}{{ m_n }} {% if m_n == 1 %}case{% else %}cases{% endif %}{%- else -%}None yet{%- endif -%}
+              </span>
+            </span>
+          </label>
+        {%- endfor -%}
+      </fieldset>
+
+      <p class="cvps__fit-hint">Pick yours to see the cases cut for it.</p>
+
+      {%- for key in m_keys -%}
+        {%- liquid
+          assign i = forloop.index0
+          assign m_label = m_names[i]
+          assign m_url = nil
+          if key == p1_body
+            assign m_label = p1_label
+            assign m_url = p1_url
+          elsif key == p2_body
+            assign m_label = p2_label
+            assign m_url = p2_url
+          endif
+          case i
+            when 0
+              assign m_n = n0
+              assign m_from = f0
+              assign m_cards = c0
+              assign m_url = section.settings.fit_18_url | default: m_url | default: p2_url
+            when 1
+              assign m_n = n1
+              assign m_from = f1
+              assign m_cards = c1
+              assign m_url = section.settings.fit_pro_url | default: m_url | default: p2_url
+            else
+              assign m_n = n2
+              assign m_from = f2
+              assign m_cards = c2
+              assign m_url = section.settings.fit_promax_url | default: m_url | default: p2_url
+          endcase
+        -%}
+        <div class="cvps__fit-panel" data-cvps-panel="{{ key }}">
+          {%- if m_n > 0 -%}
+            <p class="cvps__fit-count" data-cvps-status-text="{{ m_n }} {% if m_n == 1 %}case{% else %}cases{% endif %} cut for {{ m_label | escape }}, from {{ m_from | money_without_trailing_zeros | strip_html | escape }}">
+              <b data-cvps-count="{{ m_n }}">{{ m_n }}</b>
+              <span>{% if m_n == 1 %}case{% else %}cases{% endif %} cut for {{ m_label | escape }}</span>
+              <span class="cvps__fit-from">from {{ m_from | money }}</span>
+            </p>
+            {%- if m_cards != blank -%}
+              <ul class="cvps__cards" role="list">{{ m_cards }}</ul>
+            {%- endif -%}
+            <a class="cvps__fit-cta" href="{{ m_url }}" data-cvps-fit-cta>
+              <span>{{ section.settings.ticket_cta | default: 'Shop cases' | escape }} for {{ m_label | escape }}</span>
+              {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+            </a>
+          {%- else -%}
+            <p class="cvps__fit-count is-none" data-cvps-status-text="No cases listed for {{ m_label | escape }} yet">No cases listed for {{ m_label | escape }} yet.</p>
+            <a class="cvps__fit-cta" href="{{ other_url }}" data-cvps-fit-cta>
+              <span>Browse every case</span>
+              {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      <p class="cvps__sr" aria-live="polite" data-cvps-status></p>
+
+      <div class="cvps__fit-foot">
+        {%- if section.settings.other_label != blank -%}
+          <a class="cvps__other" href="{{ other_url }}">{{ section.settings.other_label | escape }}</a>
+        {%- endif -%}
+        {%- if show_rating -%}
+          <p class="cvps__rating" role="img" aria-label="{{ 'products.review_badges.aria_label' | t: rating: store_rating, count: store_count | escape }}">
+            <span class="cvps__stars" style="--cvps-fill: {{ store_fill }}%" aria-hidden="true">
+              <span class="cvps__stars-base">{%- for s in (1..5) -%}{%- render 'cv-icon', name: 'star', size: 13 -%}{%- endfor -%}</span>
+              <span class="cvps__stars-fill">{%- for s in (1..5) -%}{%- render 'cv-icon', name: 'star', size: 13 -%}{%- endfor -%}</span>
+            </span>
+            <b aria-hidden="true">{{ 'products.review_badges.score' | t: rating: store_rating }}</b>
+            <span aria-hidden="true">{{ 'products.review_badges.reviews' | t: count: store_count }} &middot; {{ 'products.review_badges.store_rating' | t | downcase }}, {{ 'products.review_badges.trustpilot' | t }} &amp; {{ 'products.review_badges.google' | t }}</span>
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-cvps-data>
+    {
+      "phones": [
+        { "label": {{ p1_label | json }}, "body": {{ p1_body | json }}, "color": {{ p1_color | json }} },
+        { "label": {{ p2_label | json }}, "body": {{ p2_body | json }}, "color": {{ p2_color | json }} }
+      ],
+      "fit": [
+        {%- for key in m_keys -%}
+          {%- liquid
+            assign m_color = m_colors[forloop.index0]
+            if key == p1_body
+              assign m_color = p1_color
+            elsif key == p2_body
+              assign m_color = p2_color
+            elsif section.settings.fit_third_color != blank
+              assign m_color = section.settings.fit_third_color | append: ''
+            endif
+          -%}
+          { "body": {{ key | json }}, "color": {{ m_color | json }} }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "case": {
+        "finish": {{ section.settings.case_finish | default: 'solid' | json }},
+        "color": {{ section.settings.case_color | default: '#c4302b' | append: '' | json }},
+        "prints": [
+          {%- assign sep = '' -%}
+          {%- for n in (1..4) -%}
+            {%- if n == 1 -%}
+              {%- assign art = section.settings.case_print -%}
+            {%- else -%}
+              {%- assign art_key = 'case_print_' | append: n -%}
+              {%- assign art = section.settings[art_key] -%}
+            {%- endif -%}
+            {%- if art != blank -%}{{ sep }}{{ art | image_url: width: 1024 | json }}{%- assign sep = ',' -%}{%- endif -%}
+          {%- endfor -%}
+        ]
+      },
+      "type": {{ 'cv-phone-scan-type.js' | asset_url | json }}
+    }
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "3D phone scan",
+  "tag": "div",
+  "class": "cvps-shell",
+  "settings": [
+    { "type": "paragraph", "content": "Two 3D iPhones float, tumble as the page scrolls and get scanned at a pinned counter, then the shopper picks their iPhone in the fitting room and a case slides on. With a printed 3D case, the phones wear it the whole way. Shoppers who prefer reduced motion, or whose browser has no WebGL, see a compact still version with the same model picker." },
+    { "type": "header", "content": "Opening" },
+    { "type": "text", "id": "heading_1", "label": "Heading, line 1", "default": "Made to" },
+    { "type": "text", "id": "heading_2", "label": "Heading, line 2", "default": "measure" },
+    { "type": "text", "id": "kicker", "label": "Line under the heading", "default": "Cases for iPhone 18 & iPhone 18 Pro Max" },
+    { "type": "text", "id": "lede", "label": "Small print", "default": "Scroll on and we'll size them up at the counter." },
+    { "type": "text", "id": "hero_cta", "label": "Skip-ahead button", "default": "Find my case", "info": "Jumps to the fitting room. Leave blank to hide it." },
+    { "type": "header", "content": "Middle" },
+    { "type": "paragraph", "content": "The two phone names are always the first tags. Only confirmed facts in the others; leave one blank to hide it." },
+    { "type": "text", "id": "tag_1", "label": "Tag 3", "default": "Free shipping" },
+    { "type": "text", "id": "tag_2", "label": "Tag 4", "default": "30-day returns" },
+    { "type": "textarea", "id": "statement", "label": "Statement", "default": "One mould per model. Pick your iPhone and the fit is exact: cameras, buttons and ports right where they belong." },
+    { "type": "header", "content": "Scanner" },
+    { "type": "text", "id": "scan_id", "label": "Model number", "default": "Nº 18" },
+    { "type": "text", "id": "scan_text", "label": "Scanner note", "default": "Two new iPhones on the counter. One quick scan finds the cases cut for each." },
+    { "type": "checkbox", "id": "show_checks", "label": "Show the fit check", "default": true, "info": "Cameras, Buttons, Port: each ticks as the beam passes it." },
+    { "type": "text", "id": "stamp", "label": "Stamp after the scan", "default": "Fit found" },
+    { "type": "header", "content": "Fitting room" },
+    { "type": "paragraph", "content": "iPhone 18, 18 Pro and 18 Pro Max stand side by side. Each shows how many products list it in their phone-model option. Once a shopper picks one, up to three of those products appear, each linking to its product page with that phone already chosen." },
+    { "type": "text", "id": "fit_eyebrow", "label": "Small heading", "default": "The fitting room" },
+    { "type": "text", "id": "fit_heading", "label": "Heading", "default": "Which one's yours?" },
+    { "type": "textarea", "id": "closing", "label": "Line under the heading", "default": "Your iPhone, sized up. Pick your model and see every case made for it." },
+    { "type": "collection", "id": "fit_collection", "label": "Show cases from", "info": "Optional, e.g. best sellers. The cards follow this collection's order. Blank uses the whole catalogue." },
+    { "type": "text", "id": "ticket_cta", "label": "Button", "default": "Shop cases", "info": "Followed by the phone, e.g. \"Shop cases for iPhone 18 Pro\"." },
+    { "type": "url", "id": "fit_18_url", "label": "iPhone 18 button link", "info": "Blank uses the matching phone's link below, otherwise Phone 2's." },
+    { "type": "url", "id": "fit_pro_url", "label": "iPhone 18 Pro button link", "info": "Blank uses the matching phone's link below, otherwise Phone 2's." },
+    { "type": "url", "id": "fit_promax_url", "label": "iPhone 18 Pro Max button link", "info": "Blank uses the matching phone's link below, otherwise Phone 2's." },
+    { "type": "text", "id": "other_label", "label": "Other phones link", "default": "Different phone? Browse every case" },
+    { "type": "url", "id": "other_url", "label": "Other phones link target", "info": "Defaults to all products." },
+    { "type": "color", "id": "fit_third_color", "label": "Third iPhone colour", "info": "The fitting-room iPhone that isn't Phone 1 or Phone 2 (iPhone 18 Pro by default). Blank keeps its silver. Phones 1 and 2 set their own colours below." },
+    {
+      "type": "select", "id": "case_finish", "label": "3D case",
+      "options": [
+        { "value": "solid", "label": "Solid colour" },
+        { "value": "clear", "label": "Clear" },
+        { "value": "print", "label": "Printed design" }
+      ],
+      "default": "solid",
+      "info": "Solid colour and Clear: the case that slides onto the picked phone. Printed design: every 3D phone wears the artwork below the whole way, scanner and fitting room included."
+    },
+    { "type": "color", "id": "case_color", "label": "3D case colour", "default": "#c4302b", "info": "Used when the 3D case is a solid colour, or a printed design with no artwork chosen." },
+    { "type": "image_picker", "id": "case_print", "label": "3D case artwork 1", "info": "For Printed design: a tough-case print file (portrait, about 2:3, as seen from the back, cameras top left). Phone 1 starts in artwork 1, Phone 2 in artwork 2; halfway through the tumble they turn into 3 and 4. The fitting room uses 1, 2 and 3. Fewer artworks repeat." },
+    { "type": "image_picker", "id": "case_print_2", "label": "3D case artwork 2" },
+    { "type": "image_picker", "id": "case_print_3", "label": "3D case artwork 3" },
+    { "type": "image_picker", "id": "case_print_4", "label": "3D case artwork 4" },
+    { "type": "checkbox", "id": "show_store_rating", "label": "Show store rating", "default": true },
+    { "type": "text", "id": "store_rating", "label": "Store rating (out of 5)", "default": "4.9" },
+    { "type": "text", "id": "store_rating_count", "label": "Store review count", "default": "952", "info": "Shown as the store's Trustpilot and Google rating, not a product rating." },
+    { "type": "header", "content": "Phone 1 (left)" },
+    { "type": "text", "id": "phone_1_label", "label": "Name", "default": "iPhone 18" },
+    {
+      "type": "select", "id": "phone_1_body", "label": "3D model",
+      "options": [
+        { "value": "iphone-18", "label": "iPhone 18 (two cameras)" },
+        { "value": "iphone-18-pro", "label": "iPhone 18 Pro (three cameras)" },
+        { "value": "iphone-18-pro-max", "label": "iPhone 18 Pro Max (three cameras, larger)" }
+      ],
+      "default": "iphone-18",
+      "info": "Its name, colour and link also apply to that model in the fitting room."
+    },
+    { "type": "color", "id": "phone_1_color", "label": "Colour", "default": "#9fb8b1" },
+    { "type": "url", "id": "phone_1_url", "label": "Shop link", "info": "Defaults to all products." },
+    { "type": "header", "content": "Phone 2 (right)" },
+    { "type": "text", "id": "phone_2_label", "label": "Name", "default": "iPhone 18 Pro Max" },
+    {
+      "type": "select", "id": "phone_2_body", "label": "3D model",
+      "options": [
+        { "value": "iphone-18", "label": "iPhone 18 (two cameras)" },
+        { "value": "iphone-18-pro", "label": "iPhone 18 Pro (three cameras)" },
+        { "value": "iphone-18-pro-max", "label": "iPhone 18 Pro Max (three cameras, larger)" }
+      ],
+      "default": "iphone-18-pro-max",
+      "info": "Its name, colour and link also apply to that model in the fitting room."
+    },
+    { "type": "color", "id": "phone_2_color", "label": "Colour", "default": "#5b1f2a", "info": "Burgundy is one of the four iPhone 18 Pro finishes." },
+    { "type": "url", "id": "phone_2_url", "label": "Shop link", "info": "Defaults to all products." }
+  ],
+  "presets": [{ "name": "3D phone scan" }]
+}
+{% endschema %}

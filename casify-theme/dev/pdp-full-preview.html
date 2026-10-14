@@ -1,0 +1,375 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Product page test</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}";</script>
+<script src="/assets/gsap.min.js" defer></script><script src="/assets/gsap-CustomEase.min.js" defer></script><script src="/assets/gsap-CustomBounce.min.js" defer></script><script src="/assets/gsap-CustomWiggle.min.js" defer></script><script src="/assets/gsap-DrawSVGPlugin.min.js" defer></script><script src="/assets/gsap-Flip.min.js" defer></script><script src="/assets/gsap-MotionPathPlugin.min.js" defer></script><script src="/assets/gsap-ScrollTrigger.min.js" defer></script><script src="/assets/gsap-ScrollToPlugin.min.js" defer></script><script src="/assets/gsap-SplitText.min.js" defer></script><script src="/assets/gsap-init.js" defer></script>
+</head><body class="template-product cv-tpl"><main id="MainContent"><link rel="stylesheet" href="/assets/cv-pdp-counter.css">
+<link rel="stylesheet" href="/assets/cv-pdp-extras.css">
+<script>
+  /* Hide the tag, photo tickets and meter until cv-pdp-counter-motion.js has set their start
+     states. Never under reduced motion, and never for long. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvc-pending');
+    setTimeout(function () { root.classList.remove('cvc-pending'); }, 1400);
+  })(document.documentElement);
+</script><section class="cvc" id="cvPdp" data-cv-pdp="counter"
+         data-variants="[{&#34;id&#34;:101,&#34;title&#34;:&#34;Russet Brown / iPhone 16&#34;,&#34;price&#34;:4999,&#34;compare_at_price&#34;:5999,&#34;available&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:20,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 16&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 16&#34;,&#34;featured_media&#34;:{&#34;id&#34;:11,&#34;alt&#34;:&#34;Sample case photo&#34;,&#34;preview_image&#34;:{&#34;src&#34;:&#34;/assets/footer-item-case.webp&#34;,&#34;alt&#34;:&#34;Sample case photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000},&#34;media_type&#34;:&#34;image&#34;},&#34;featured_image&#34;:{&#34;src&#34;:&#34;/assets/footer-item-case.webp&#34;,&#34;alt&#34;:&#34;Sample case photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000}},{&#34;id&#34;:102,&#34;title&#34;:&#34;Olive / iPhone 16&#34;,&#34;price&#34;:4499,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:20,&#34;options&#34;:[&#34;Olive&#34;,&#34;iPhone 16&#34;],&#34;option1&#34;:&#34;Olive&#34;,&#34;option2&#34;:&#34;iPhone 16&#34;,&#34;featured_media&#34;:{&#34;id&#34;:12,&#34;alt&#34;:&#34;Sample jar photo&#34;,&#34;preview_image&#34;:{&#34;src&#34;:&#34;/assets/footer-item-jar.webp&#34;,&#34;alt&#34;:&#34;Sample case photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000},&#34;media_type&#34;:&#34;image&#34;},&#34;featured_image&#34;:{&#34;src&#34;:&#34;/assets/footer-item-jar.webp&#34;,&#34;alt&#34;:&#34;Sample case photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000}}]"
+         data-current-options="[&#34;Russet Brown&#34;,&#34;iPhone 16&#34;]"
+         data-money-format="${{amount}}"
+         data-model-index="1"
+         data-max-pct="31"
+         data-compare-at-fallback="0"
+         style="--cvc-box: url('/assets/pdp-counter-box.webp'); --cvc-box-teal: url('/assets/pdp-counter-box-teal.webp');">
+  <div class="cvc__inner">
+    <nav class="cvc__crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span><a href="/collections/all">Cases</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Tech Fabric Magnetic Phone Case for iPhone</span>
+    </nav>
+
+    <div class="cvc__grid"><div class="cvc__gallery"><div class="cvc__photo-reel-shell">
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--vertical" aria-hidden="true">
+              <svg viewBox="0 0 24 320" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M12 7V313"/>
+                <path class="cvc__photo-reel-cream" d="M12 7V313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M12 7V313"/>
+              </svg>
+            </span>
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--horizontal" aria-hidden="true">
+              <svg viewBox="0 0 320 24" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M7 12H313"/>
+                <path class="cvc__photo-reel-cream" d="M7 12H313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M7 12H313"/>
+              </svg>
+            </span>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--start"
+              src="/assets/hero-sweet-wrapped-red.webp"
+              width="440"
+              height="212"
+              alt=""
+              loading="eager"
+              decoding="async"
+            ><div class="cvc__photo-reel" role="tablist" aria-label="Product photos"><button type="button" class="cvc__photo-ticket" id="cvcThumb-main-1" role="tab" data-cv-thumb
+                          aria-selected="true"
+                          aria-controls="cvcMedia-main"
+                          tabindex="0"
+                          aria-label="Photo 1 of 2"
+                          data-cv-full="/assets/footer-item-case.webp"
+                          data-cv-zoom="/assets/footer-item-case.webp">
+                    <span class="cvc__photo-ticket-card">
+                      <svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true" focusable="false">
+                        <path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-perf" d="M13 86H83"/>
+                      </svg>
+                      <span class="cvc__photo-ticket-image"><img src="/assets/footer-item-case.webp" alt=""></span>
+                      <span class="cvc__photo-ticket-no" aria-hidden="true">1</span>
+                    </span>
+                  </button><button type="button" class="cvc__photo-ticket" id="cvcThumb-main-2" role="tab" data-cv-thumb
+                          aria-selected="false"
+                          aria-controls="cvcMedia-main"
+                          tabindex="-1"
+                          aria-label="Photo 2 of 2"
+                          data-cv-full="/assets/footer-item-jar.webp"
+                          data-cv-zoom="/assets/footer-item-jar.webp">
+                    <span class="cvc__photo-ticket-card">
+                      <svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true" focusable="false">
+                        <path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-perf" d="M13 86H83"/>
+                      </svg>
+                      <span class="cvc__photo-ticket-image"><img src="/assets/footer-item-jar.webp" alt=""></span>
+                      <span class="cvc__photo-ticket-no" aria-hidden="true">2</span>
+                    </span>
+                  </button></div>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--end"
+              src="/assets/hero-sweet-wrapped-teal.webp"
+              width="440"
+              height="164"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            >
+          </div><div class="cvc__stage cvc__stage--awning-true" id="cvcMedia-main" role="tabpanel" aria-labelledby="cvcThumb-main-1"><div
+    class="cv-awning cv-awning--red"
+    data-cv-awning
+    data-stripes="16"
+    style="--cv-awning-ratio: 320 / 30;"
+    aria-hidden="true"
+  >
+    <svg class="cv-awning__flat" viewBox="0 0 320 30" focusable="false">
+      <defs>
+        <linearGradient id="cv-awning-shade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity=".16"/>
+          <stop offset=".45" stop-color="#000" stop-opacity="0"/>
+        </linearGradient>
+      </defs><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="0" y="0" width="20.4" height="18.6"/>
+          <path d="M0 18.5A10 10 0 0 0 20 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="20" y="0" width="20.4" height="18.6"/>
+          <path d="M20 18.5A10 10 0 0 0 40 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="40" y="0" width="20.4" height="18.6"/>
+          <path d="M40 18.5A10 10 0 0 0 60 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="60" y="0" width="20.4" height="18.6"/>
+          <path d="M60 18.5A10 10 0 0 0 80 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="80" y="0" width="20.4" height="18.6"/>
+          <path d="M80 18.5A10 10 0 0 0 100 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="100" y="0" width="20.4" height="18.6"/>
+          <path d="M100 18.5A10 10 0 0 0 120 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="120" y="0" width="20.4" height="18.6"/>
+          <path d="M120 18.5A10 10 0 0 0 140 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="140" y="0" width="20.4" height="18.6"/>
+          <path d="M140 18.5A10 10 0 0 0 160 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="160" y="0" width="20.4" height="18.6"/>
+          <path d="M160 18.5A10 10 0 0 0 180 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="180" y="0" width="20.4" height="18.6"/>
+          <path d="M180 18.5A10 10 0 0 0 200 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="200" y="0" width="20.4" height="18.6"/>
+          <path d="M200 18.5A10 10 0 0 0 220 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="220" y="0" width="20.4" height="18.6"/>
+          <path d="M220 18.5A10 10 0 0 0 240 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="240" y="0" width="20.4" height="18.6"/>
+          <path d="M240 18.5A10 10 0 0 0 260 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="260" y="0" width="20.4" height="18.6"/>
+          <path d="M260 18.5A10 10 0 0 0 280 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--a">
+          <rect x="280" y="0" width="20.4" height="18.6"/>
+          <path d="M280 18.5A10 10 0 0 0 300 18.5Z"/>
+        </g><g class="cv-awning__stripe cv-awning__stripe--b">
+          <rect x="300" y="0" width="20.4" height="18.6"/>
+          <path d="M300 18.5A10 10 0 0 0 320 18.5Z"/>
+        </g><rect class="cv-awning__shade" x="0" y="0" width="320" height="18.6" fill="url(#cv-awning-shade)"/>
+      <rect class="cv-awning__rod" x="0" y="0" width="320" height="1.6"/>
+    </svg><span class="cv-awning__hit" data-cv-awning-hit title="Scroll or swipe sideways to change the awning"></span></div><div
+    class="cv-ptag"
+    data-cv-ptag
+    data-price="4999"
+    data-was="5999"
+    data-money-format="${{amount}}"
+    data-save-label="Save"
+    aria-hidden="true"
+  >
+    <span class="cv-ptag__string"></span>
+    <span class="cv-ptag__card">
+      <span class="cv-ptag__hole"></span>
+      <strong class="cv-ptag__now" data-cv-ptag-now>$49.99</strong>
+      <s class="cv-ptag__was" data-cv-ptag-was>$59.99</s>
+      <span class="cv-ptag__save" data-cv-ptag-save>Save <span data-cv-ptag-save-value>$10.00</span>
+      </span>
+    </span>
+  </div><img src="/assets/footer-item-case.webp" alt="Sample case photo" class="cvc__photo" id="cvMainImage">
+            <button type="button" class="cvc__zoom" data-cvc-zoom-open aria-haspopup="dialog" aria-controls="cvcZoom-main"
+                    data-cv-zoom="/assets/footer-item-case.webp">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
+              <span>Tap to zoom</span>
+            </button></div>
+      </div><form class="cvc__box" id="cvAddForm" method="post" action="/cart/add">
+        <input type="hidden" name="id" id="cvVariantId" value="101">
+        <input type="hidden" name="quantity" id="cvQuantity" value="2"><p class="cvc__vendor">Casify Cases</p><p class="cvc__tag">
+          <img class="cvc__tag-plate" src="/assets/pdp-counter-tag.webp" width="360" height="414" alt="" loading="eager">
+          <span class="cvc__tag-price" aria-live="polite">
+            <span id="cvPriceNow"><span class="cvc__visually-hidden">Now: </span>$49.99</span>
+            <s id="cvPriceWas"><span class="cvc__visually-hidden">Compare at: </span>$59.99</s>
+          </span>
+          <span class="cvc__tag-sale" data-cv-tag-sale aria-hidden="true">
+            <svg viewBox="0 0 100 100" focusable="false">
+              <path d="M50 3 59 12 72 8 77 21 91 23 88 37 98 47 89 58 93 72 79 77 76 91 62 88 51 98 41 89 27 93 22 79 8 76 12 62 2 51 11 41 7 27 21 22 24 8 38 12Z"/>
+              <circle cx="50" cy="50" r="34"/>
+            </svg>
+            <span class="cvc__tag-sale-copy"><strong data-cv-discount-pct>17%</strong><small>off</small></span>
+          </span>
+        </p>
+
+        <h1 class="cvc__title">Tech Fabric Magnetic Phone Case for iPhone</h1><div class="cvc-sum" ><a class="cvc-sum__rating" href="#cvc-reviews">
+      <span class="cvc-sum__stars" aria-hidden="true"><span class="cv-stars " style="--fill: 98%;" aria-hidden="true">
+  <span class="cv-stars__row"><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg></span>
+  <span class="cv-stars__row cv-stars__row--fill"><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg><svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg></span>
+</span>
+</span>
+      <strong class="cvc-sum__score" aria-hidden="true">4.9</strong><span class="cvc-sum__count" aria-hidden="true">(952 reviews)</span><span class="cvc__visually-hidden">Store rating: 4.9 out of 5 from 952 reviews on Trustpilot and Google</span>
+    </a><p class="cvc-sum__price">
+      <span class="cvc-sum__now"><span class="cvc__visually-hidden">Now: </span><span data-cv-sum-now>$49.99</span></span>
+      <s class="cvc-sum__was" data-cv-sum-was-wrap><span class="cvc__visually-hidden">Compare at: </span><span data-cv-sum-was>$59.99</span></s>
+      <span class="cvc-sum__save" data-cv-sum-save>Save <span data-cv-sum-save-value>$10.00</span>
+      </span>
+    </p></div>
+<p class="cvc__price-saving cvc__price-saving--false" data-cv-price-proof aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13 13 20 4 11V4h7l9 9Z"/><circle cx="8.5" cy="8.5" r="1.25"/></svg>
+          <span>You save</span>
+          <strong data-cv-price-save>$10.00</strong>
+        </p><ul class="cvc__ribbon" role="list" data-cvc-benefits><li class="cvc__ribbon-item" data-cvc-benefit ><svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.5 6.5h10.5v9H2.5z"/><path d="M13 9.5h4.2l3.3 3.4v2.6H13z"/><circle cx="6.5" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></svg><span>Free shipping</span>
+                </li><li class="cvc__ribbon-item" data-cvc-benefit ><svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg><span>30-day returns</span>
+                </li><li class="cvc__ribbon-item" data-cvc-benefit ><svg data-cvc-benefit-icon viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7z"/><path d="m4 7 8 4.2L20 7"/><path d="M12 11.2v10"/><path d="m8 4.9 8 4.2"/></svg><span>Ships in 1-3 business days</span>
+                </li></ul><div
+            class="cvc__external-reviews"
+            role="group"
+            aria-label="Store rating: 4.9 out of 5 from 952 reviews on Trustpilot and Google"
+          >
+            <span class="cvc__external-label" aria-hidden="true">Store rating</span>
+            <span class="cvc__review-source cvc__review-source--trustpilot" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false">
+                <path d="m12 2.3 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 16.87l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z"/>
+              </svg>
+              <span>Trustpilot</span>
+            </span>
+            <span class="cvc__review-source cvc__review-source--google" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false">
+                <path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/>
+                <path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/>
+                <path fill="#fbbc05" d="M6.4 13.63A6 6 0 0 1 6.09 12c0-.57.11-1.12.31-1.63V7.52H3.06A9.96 9.96 0 0 0 2 12c0 1.61.38 3.14 1.06 4.48l3.34-2.85Z"/>
+                <path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/>
+              </svg>
+              <span>Google</span>
+            </span>
+            <span class="cvc__external-score" aria-hidden="true">
+              <strong>4.9 / 5</strong>
+              <span>952 reviews</span>
+            </span>
+          </div><p class="cvc__stock cvc__stock--pill" data-cvc-stock role="status" aria-atomic="true"
+           data-threshold=""
+           data-template=""
+           hidden>
+          <span class="cvc__stock-dot" aria-hidden="true"></span><span data-cvc-stock-text></span>
+        </p><div class="cvc__opt">
+              <p class="cvc__label" id="cvcOpt0-main">Style: <span class="cvc__label-value" data-cv-opt-out="0">Russet Brown</span></p>
+              <div class="cvc__swatches" role="radiogroup" aria-labelledby="cvcOpt0-main"><button type="button" class="cvc__swatch" role="radio"
+                          aria-checked="true"
+                          tabindex="0"
+                          aria-label="Russet Brown" title="Russet Brown"
+                          data-cv-option-index="0"
+                          data-cv-value="Russet Brown"
+                          data-cv-stock=""><img src="/assets/footer-item-case.webp" alt=""></button><button type="button" class="cvc__swatch" role="radio"
+                          aria-checked="false"
+                          tabindex="-1"
+                          aria-label="Olive" title="Olive"
+                          data-cv-option-index="0"
+                          data-cv-value="Olive"
+                          data-cv-stock=""><img src="/assets/footer-item-jar.webp" alt=""></button></div>
+            </div><div class="cvc__opt cvc__opt--model">
+            <label class="cvc__label" for="cvcModel-main">Model</label>
+            <span class="cvc__select">
+              <select id="cvcModel-main" name="options[Model]" data-cv-option-index="1" data-sold-suffix=" (sold out)"><option value="iPhone 16" selected>iPhone 16</option></select>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div><div class="cvc__packs" role="radiogroup" aria-label="How many cases"><button type="button" class="cvc__pack" role="radio" data-cv-pack
+                        aria-checked="false"
+                        tabindex="-1"
+                        data-cv-qty="1"
+                        data-cv-discount="0"
+                        ><span class="cvc__pack-name">1 case</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$49.99</span>
+                </button><button type="button" class="cvc__pack" role="radio" data-cv-pack
+                        aria-checked="true"
+                        tabindex="0"
+                        data-cv-qty="2"
+                        data-cv-discount="18"
+                        ><span class="cvc__flag">Save 18%</span><span class="cvc__pack-name">2 cases</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$40.99<small> each</small></span>
+                </button><button type="button" class="cvc__pack cvc__pack--teal" role="radio" data-cv-pack
+                        aria-checked="false"
+                        tabindex="-1"
+                        data-cv-qty="3"
+                        data-cv-discount="31"
+                        ><span class="cvc__flag">Best value</span><span class="cvc__pack-name">3 cases</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$34.49<small> each</small></span>
+                </button></div><div class="cvc__savings">
+              <span class="cvc__meter" aria-hidden="true"><span class="cvc__meter-fill" data-cv-savings-fill style="width: 58%;"></span></span>
+              <p class="cvc__savings-text" data-cv-savings aria-live="polite"
+                 data-template-save="[qty] cases saves you [amount] vs buying singly"
+                 data-template-next="Choose [qty] cases to save [pct]% on each">2 cases saves you $18.00 vs buying singly</p>
+            </div><div class="cvc__buttons">
+          <button type="submit" class="cvc__add" id="cvAddBtn">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <span id="cvCtaLabel" data-label-default="Add to bag">Add to bag</span>
+            <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal">$81.98</span></span>
+          </button><button type="button" class="cvc__buy" data-cv-buy-now>
+              <span data-cv-buy-label data-label-default="Buy now">Buy now</span>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+            </button></div>
+        <p class="cvc__status" id="cvStatus" role="status" aria-live="polite"></p><p class="cvc__shipby" data-cvc-ship-by data-max-days="3"
+             data-template="Order today, ships by [date]">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.3V12l3 1.9"/></svg>
+            <span data-cvc-ship-by-text>Ships in 1-3 business days</span>
+          </p><div class="cvc__accs">
+  <details class="cvc__acc">
+    <summary class="cvc__acc-q">
+      <span>Details</span>
+      <span class="cvc__acc-mark" aria-hidden="true"></span>
+    </summary>
+    <div class="cvc__acc-a"><p>Layout sample description.</p></div>
+  </details><details class="cvc__acc">
+      <summary class="cvc__acc-q">
+        <span>Shipping &amp; returns</span>
+        <span class="cvc__acc-mark" aria-hidden="true"></span>
+      </summary>
+      <div class="cvc__acc-a"><p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p></div>
+    </details></div>
+</form>
+    </div>
+  </div><dialog class="cvc-zoom" id="cvcZoom-main" aria-label="Tech Fabric Magnetic Phone Case for iPhone: photos" data-cvc-zoom>
+      <div class="cvc-zoom__frame" data-cvc-zoom-frame>
+        <img
+          class="cvc-zoom__img"
+          src="/assets/footer-item-case.webp"
+          alt="Sample case photo"
+          width="1000"
+          height="1000"
+          loading="lazy"
+          data-cvc-zoom-img
+        >
+      </div>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button><button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button><p class="cvc-zoom__count" data-cvc-zoom-count aria-live="polite"></p>
+    </dialog><div class="cvc-sticky" id="cvSticky" aria-hidden="true"><span class="cvc-sticky__pic"><img src="/assets/footer-item-case.webp" alt=""></span><div class="cvc-sticky__info">
+      <span class="cvc-sticky__name">Tech Fabric Magnetic Phone Case for iPhone</span>
+      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>Russet Brown / iPhone 16</span> · <b id="cvStickyTotal">$81.98</b></span>
+    </div>
+    <div class="cvc-sticky__buttons">
+      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" tabindex="-1">Add to bag</button><button type="button" class="cvc-sticky__buy" data-cv-buy-now tabindex="-1">Buy now</button></div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Tech Fabric Magnetic Phone Case for iPhone","image": "https:/assets/footer-item-case.webp","description": "Layout sample description.",
+  "brand": { "@type": "Brand", "name": "Casify" },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": ,
+    "lowPrice": 0,
+    "highPrice": 0,
+    "offerCount": 2,
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+</main>
+<script type="module" src="/assets/cv-awning.js"></script>
+<script type="module" src="/assets/cv-price-tag.js"></script>
+<script src="/assets/cv-product.js" defer></script>
+<script src="/assets/cv-pdp-counter.js" defer></script>
+<script src="/assets/cv-pdp-counter-motion.js" defer></script>
+</body></html>

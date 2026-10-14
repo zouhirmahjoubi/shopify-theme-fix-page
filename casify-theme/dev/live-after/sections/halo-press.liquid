@@ -1,0 +1,81 @@
+<div class="halo-press" data-halo-reveal>
+  <div class="halo-press__track">
+    {%- for block in section.blocks -%}
+      <span {{ block.shopify_attributes }}>{{ block.settings.name | escape }}</span>
+    {%- endfor -%}
+    {%- for block in section.blocks -%}
+      <span {{ block.shopify_attributes }}>{{ block.settings.name | escape }}</span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Halo — Press marquee",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "outlet",
+      "name": "Outlet",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Outlet name",
+          "default": "WIRED"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Halo — Press marquee",
+      "blocks": [
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "WIRED"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "The Verge"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "Tom's Guide"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "Engadget"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "GQ"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "Fast Company"
+          }
+        },
+        {
+          "type": "outlet",
+          "settings": {
+            "name": "MKBHD"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

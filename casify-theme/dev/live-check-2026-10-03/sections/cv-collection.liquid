@@ -1,0 +1,278 @@
+{%- comment -%}
+  Casify: collection page, "The aisle".
+
+  A candy-shop aisle sign (KIE plate) hangs over the collection's own title
+  and description. Beside it the pack meter shows what the bag's case count
+  earns from the store's pack discounts. Below: Shopify's own storefront
+  filters in a drawer with live counts and removable chips, real sort, the
+  product grid and pagination. Filters, sort and pages update in place
+  through the Section Rendering API, with ordinary links and a submit button
+  as the no-script path.
+
+  Cards with more than one variant open a quick pick (colour and phone) that
+  adds the exact variant, so nothing is added with a guessed phone model.
+
+  Filters appear once they are set up in Shopify admin (Search & Discovery >
+  Filters); a "phone model" filter is the one shoppers here need most.
+
+  Behaviour + motion: assets/cv-pages.js. Styles: assets/cv-pages.css.
+{%- endcomment -%}
+{{ 'cv-badges.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pages.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign has_filters = false
+  assign active_count = 0
+  for f in collection.filters
+    if f.type == 'price_range'
+      assign has_filters = true
+      if f.min_value.value != nil or f.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    elsif f.values.size > 0
+      assign has_filters = true
+      assign active_count = active_count | plus: f.active_values.size
+    endif
+  endfor
+  assign sort_current = collection.sort_by | default: collection.default_sort_by
+  assign clear_url = collection.url
+  if collection.sort_by != blank
+    assign clear_url = collection.url | append: '?sort_by=' | append: collection.sort_by
+  endif
+  assign noun_one = section.settings.noun_one | default: 'product'
+  assign noun_many = section.settings.noun_many | default: 'products'
+-%}
+
+{%- paginate collection.products by section.settings.per_page -%}
+<div class="cv-page-root cvl" data-cvl data-section-id="{{ section.id }}" data-url="{{ collection.url }}">
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ routes.collections_url }}">Collections</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current" aria-current="page">{{ collection.title | escape }}</span>
+  </nav>
+
+  {%- comment -%} ---------- The aisle sign + pack meter ---------- {%- endcomment -%}
+  <header class="cvl__hd{% unless section.settings.show_packs %} cvl__hd--solo{% endunless %}">
+    <div class="cvl__sign-wrap">
+      <div class="cvl__sign" data-cv-sign>
+        <img class="cvl__sign-plate" src="{{ 'pages-aisle-sign.webp' | asset_url }}" width="900" height="655" alt="" fetchpriority="high">
+        <h1 class="cvl__title"><span>{{ collection.title | escape }}</span></h1>
+      </div>
+      {%- if collection.description != blank -%}
+        <div class="cvl__desc rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.show_packs -%}
+      {%- render 'cv-pack-meter', sid: section.id, pack2: section.settings.pack_2_pct, pack3: section.settings.pack_3_pct, heading: section.settings.pack_heading -%}
+    {%- endif -%}
+  </header>
+
+  {%- comment -%} ---------- Toolbar, filter drawer, chips: one form ---------- {%- endcomment -%}
+  <form class="cvl__form" id="cvlForm-{{ section.id }}" action="{{ collection.url }}" method="get" data-cvl-form>
+    <div class="cvl__bar">
+      {%- if has_filters -%}
+        <button type="button" class="cvl__filter-btn" data-cvl-open aria-haspopup="dialog" aria-controls="cvlDrawer-{{ section.id }}">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>
+          <span>Filter</span>
+          <span class="cvl__badge" data-cvl-swap="badge"{% if active_count == 0 %} hidden{% endif %}>{{ active_count }}</span>
+        </button>
+      {%- endif -%}
+
+      <p class="cvl__count" data-cvl-swap="count" aria-live="polite">
+        <b>{{ collection.products_count }}</b> {% if collection.products_count == 1 %}{{ noun_one | escape }}{% else %}{{ noun_many | escape }}{% endif %}
+      </p>
+
+      {%- if section.settings.show_sort -%}
+        <label class="cvl__sort">
+          <span>Sort</span>
+          <span class="cvl__select">
+            <select name="sort_by" data-cvl-sort>
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}"{% if option.value == sort_current %} selected{% endif %}>{{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </label>
+        <noscript><button type="submit" class="cvl__apply-inline">Apply</button></noscript>
+      {%- endif -%}
+    </div>
+
+    {%- if has_filters -%}
+      <dialog class="cvl__drawer" id="cvlDrawer-{{ section.id }}" aria-labelledby="cvlDrawerTitle-{{ section.id }}" data-cvl-drawer>
+        <div class="cvl__drawer-hd">
+          <h2 class="cvl__drawer-title" id="cvlDrawerTitle-{{ section.id }}">Filter</h2>
+          <button type="button" class="cvl__close" data-cvl-close aria-label="Close filters">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <div class="cvl__groups" data-cvl-swap="groups">
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == 'price_range' or filter.values.size > 0 -%}
+              {%- liquid
+                assign group_active = filter.active_values.size
+                if filter.type == 'price_range'
+                  assign group_active = 0
+                  if filter.min_value.value != nil or filter.max_value.value != nil
+                    assign group_active = 1
+                  endif
+                endif
+              -%}
+              <details class="cvl__group" data-cvl-group="{{ filter.param_name | escape }}"{% if group_active > 0 or forloop.first %} open{% endif %}>
+                <summary class="cvl__group-q">
+                  <span>{{ filter.label | escape }}</span>
+                  {%- if group_active > 0 -%}<span class="cvl__group-n">{{ group_active }}</span>{%- endif -%}
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </summary>
+                <div class="cvl__group-a">
+                  {%- case filter.type -%}
+                    {%- when 'price_range' -%}
+                      <div class="cvl__price">
+                        <label>
+                          <span>From</span>
+                          <span class="cvl__money"><i>{{ cart.currency.symbol }}</i><input type="number" inputmode="decimal" name="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="0"{% if filter.min_value.value %} value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}></span>
+                        </label>
+                        <label>
+                          <span>To</span>
+                          <span class="cvl__money"><i>{{ cart.currency.symbol }}</i><input type="number" inputmode="decimal" name="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"{% if filter.max_value.value %} value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}></span>
+                        </label>
+                      </div>
+                    {%- else -%}
+                      <ul class="cvl__checks" role="list">
+                        {%- for value in filter.values -%}
+                          {%- assign dead = false -%}
+                          {%- if value.count == 0 and value.active == false -%}{%- assign dead = true -%}{%- endif -%}
+                          <li>
+                            <label class="cvl__check{% if dead %} is-dead{% endif %}">
+                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% endif %}{% if dead %} disabled{% endif %}>
+                              <span class="cvl__tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+                              <span class="cvl__check-label">{{ value.label | escape }}</span>
+                              <span class="cvl__check-n">{{ value.count }}</span>
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <div class="cvl__drawer-ft">
+          <a class="cvl__clear" href="{{ clear_url }}" data-cvl-link>Clear all</a>
+          <button type="submit" class="cvl__apply" data-cvl-swap="apply" data-cvl-apply>Show {{ collection.products_count }} {% if collection.products_count == 1 %}{{ noun_one | escape }}{% else %}{{ noun_many | escape }}{% endif %}</button>
+        </div>
+      </dialog>
+    {%- endif -%}
+  </form>
+
+  <div data-cvl-swap="chips">
+    {%- if active_count > 0 -%}
+      <ul class="cvl__chips" role="list" aria-label="Filters in use">
+        {%- for filter in collection.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              <li>
+                <a class="cvl__chip" href="{{ filter.url_to_remove }}" data-cvl-link>
+                  <span>{{ filter.min_value.value | default: 0 | money }} to {{ filter.max_value.value | default: filter.range_max | money }}</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                  <span class="cvl__vh">Remove filter</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- else -%}
+            {%- for value in filter.active_values -%}
+              <li>
+                <a class="cvl__chip" href="{{ value.url_to_remove }}" data-cvl-link>
+                  <span>{{ value.label | escape }}</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                  <span class="cvl__vh">Remove {{ filter.label | escape }} filter</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <li><a class="cvl__chip cvl__chip--clear" href="{{ clear_url }}" data-cvl-link>Clear all</a></li>
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ---------- The grid ---------- {%- endcomment -%}
+  <div class="cvl__results" data-cvl-swap="results">
+    {%- if collection.products.size > 0 -%}
+      <ul class="cvl__grid" role="list">
+        {%- for product in collection.products -%}
+          <li class="cvl__cell" data-cvl-cell="{{ product.id }}">
+            {%- render 'cv-card', product: product, index: forloop.index0, quick_pick: section.settings.quick_pick -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="cv-pager" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a class="cv-pager__step is-prev" href="{{ paginate.previous.url }}" rel="prev" data-cvl-link>
+              {%- render 'cv-icon', name: 'chevron-down', size: 16 -%}<span>Previous</span>
+            </a>
+          {%- endif -%}
+          <span class="cv-pager__pages">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a class="cv-pager__n" href="{{ part.url }}" data-cvl-link>{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="cv-pager__n is-current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span class="cv-pager__n is-gap">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+          {%- if paginate.next -%}
+            <a class="cv-pager__step is-next" href="{{ paginate.next.url }}" rel="next" data-cvl-link>
+              <span>Next</span>{%- render 'cv-icon', name: 'chevron-down', size: 16 -%}
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- elsif active_count > 0 -%}
+      <div class="cvl__empty">
+        <h2>{{ section.settings.no_match_title | default: 'Nothing matches those filters' | escape }}</h2>
+        <p>{{ section.settings.no_match_body | default: 'Take one off and more cases come back.' | escape }}</p>
+        <a class="cvl__chip cvl__chip--clear" href="{{ clear_url }}" data-cvl-link>Clear all filters</a>
+      </div>
+    {%- else -%}
+      <div class="cvl__empty">
+        <h2>{{ section.settings.empty_title | default: 'Nothing on this shelf yet' | escape }}</h2>
+        <p>{{ section.settings.empty_body | default: 'Every case in the shop is one tap away.' | escape }}</p>
+        <a class="cvl__chip cvl__chip--clear" href="{{ routes.all_products_collection_url }}">See every case</a>
+      </div>
+    {%- endif -%}
+  </div>
+  {%- comment -%} The quick pick dialog itself is rendered once per page by layout/theme.liquid when a card asks for it. {%- endcomment -%}
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection: the aisle",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "show_sort", "label": "Show sort", "default": true },
+    { "type": "checkbox", "id": "quick_pick", "label": "Quick pick on cards", "default": true, "info": "Cards with more than one variant ask for colour and phone before adding, instead of adding the first variant." },
+    { "type": "text", "id": "noun_one", "label": "Count word, one", "default": "product" },
+    { "type": "text", "id": "noun_many", "label": "Count word, many", "default": "products" },
+    { "type": "header", "content": "Pack meter" },
+    { "type": "checkbox", "id": "show_packs", "label": "Show the pack meter", "default": true },
+    { "type": "text", "id": "pack_heading", "label": "Heading", "default": "Mix a pack" },
+    { "type": "range", "id": "pack_2_pct", "label": "2 cases: discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 18, "info": "Must match the automatic discount in Shopify admin > Discounts." },
+    { "type": "range", "id": "pack_3_pct", "label": "3 cases: discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the automatic discount in Shopify admin > Discounts." },
+    { "type": "header", "content": "Empty states" },
+    { "type": "text", "id": "no_match_title", "label": "No filter matches: title", "default": "Nothing matches those filters" },
+    { "type": "text", "id": "no_match_body", "label": "No filter matches: text", "default": "Take one off and more cases come back." },
+    { "type": "text", "id": "empty_title", "label": "Empty collection: title", "default": "Nothing on this shelf yet" },
+    { "type": "text", "id": "empty_body", "label": "Empty collection: text", "default": "Every case in the shop is one tap away." }
+  ],
+  "presets": [{ "name": "Collection: the aisle" }]
+}
+{% endschema %}

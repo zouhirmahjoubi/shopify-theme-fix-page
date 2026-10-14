@@ -1,0 +1,413 @@
+{{ 'casify-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_id = 'CasifyStoryHero-' | append: section.id
+  assign featured_product = section.settings.featured_product
+  assign heading_fallback = 'sections.casify_hero.heading' | t
+  assign supporting_text_fallback = 'sections.casify_hero.supporting_text' | t
+  assign cta_label_fallback = 'sections.casify_hero.shop_cases' | t
+  assign details_label_fallback = 'sections.casify_hero.view_details' | t
+  assign heading = section.settings.heading | default: heading_fallback | escape
+  assign supporting_text = section.settings.supporting_text | default: supporting_text_fallback | escape
+  assign cta_label = section.settings.cta_label | default: cta_label_fallback | escape
+  assign details_label = section.settings.details_label | default: details_label_fallback | escape
+  assign model_1_value = section.settings.model_1_value | default: 'iPhone 18 Pro 17 Pro' | strip
+  assign model_2_value = section.settings.model_2_value | default: 'iPhone 18 Pro Max 17 Pro Max' | strip
+  assign model_1_label = section.settings.model_1_label | default: 'iPhone 18 Pro'
+  assign model_2_label = section.settings.model_2_label | default: 'iPhone 18 Pro Max'
+  assign color_option_name = section.settings.color_option_name | default: 'Color' | strip | downcase
+  assign model_option_name = section.settings.model_option_name | default: 'Applicable model' | strip | downcase
+  assign model_option_index = 0
+  assign color_option_index = 0
+  assign model_option_found = false
+  assign color_option_found = false
+  assign color_option = false
+
+  if featured_product != blank
+    for option in featured_product.options_with_values
+      assign normalized_option_name = option.name | strip | downcase
+      if normalized_option_name == model_option_name
+        assign model_option_index = forloop.index0
+        assign model_option_found = true
+      endif
+      if normalized_option_name == color_option_name
+        assign color_option_index = forloop.index0
+        assign color_option_found = true
+        assign color_option = option
+      endif
+    endfor
+  endif
+
+  assign model_1_available_variant = false
+  assign model_2_available_variant = false
+  assign model_1_any_variant = false
+  assign model_2_any_variant = false
+  assign model_1_variant = false
+  assign model_2_variant = false
+  assign model_1_color = blank
+  assign model_2_color = blank
+  assign model_1_available = false
+  assign model_2_available = false
+  assign mapped_variants = false
+
+  if featured_product != blank and model_option_found
+    assign model_option_number = model_option_index | plus: 1
+    assign model_option_key = 'option' | append: model_option_number
+    assign model_1_variants = featured_product.variants | where: model_option_key, model_1_value
+    assign model_2_variants = featured_product.variants | where: model_option_key, model_2_value
+    assign mapped_variants = model_1_variants | concat: model_2_variants
+    for variant in mapped_variants
+      assign variant_model = variant.options[model_option_index]
+      if variant_model == model_1_value
+        if model_1_any_variant == false
+          assign model_1_any_variant = variant
+        endif
+        if model_1_available_variant == false and variant.available
+          assign model_1_available_variant = variant
+        endif
+      elsif variant_model == model_2_value
+        if model_2_any_variant == false
+          assign model_2_any_variant = variant
+        endif
+        if model_2_available_variant == false and variant.available
+          assign model_2_available_variant = variant
+        endif
+      endif
+    endfor
+
+    if model_1_available_variant != false
+      assign model_1_variant = model_1_available_variant
+      assign model_1_available = true
+    elsif model_1_any_variant != false
+      assign model_1_variant = model_1_any_variant
+    endif
+
+    if model_1_variant != false and color_option_found
+      assign model_1_color = model_1_variant.options[color_option_index]
+    endif
+
+    for variant in mapped_variants
+      assign variant_model = variant.options[model_option_index]
+      assign variant_color = blank
+      if color_option_found
+        assign variant_color = variant.options[color_option_index]
+      endif
+      if model_2_variant == false and variant.available and variant_model == model_2_value
+        if model_1_color == blank or variant_color != model_1_color
+          assign model_2_variant = variant
+        endif
+      endif
+    endfor
+
+    if model_2_variant == false
+      assign model_2_variant = model_2_available_variant
+    endif
+    if model_2_variant != false
+      assign model_2_available = true
+    elsif model_2_any_variant != false
+      assign model_2_variant = model_2_any_variant
+    endif
+
+    if model_2_variant != false and color_option_found
+      assign model_2_color = model_2_variant.options[color_option_index]
+    endif
+  endif
+
+  assign selected_variant = false
+  assign selected_model_value = blank
+  assign selected_model_label = blank
+  assign selected_color = blank
+  assign selected_variant_available = false
+
+  if model_1_available_variant != false
+    assign selected_variant = model_1_available_variant
+    assign selected_model_value = model_1_value
+    assign selected_model_label = model_1_label
+    assign selected_variant_available = true
+  elsif model_2_available_variant != false
+    assign selected_variant = model_2_available_variant
+    assign selected_model_value = model_2_value
+    assign selected_model_label = model_2_label
+    assign selected_variant_available = true
+  elsif model_1_any_variant != false
+    assign selected_variant = model_1_any_variant
+    assign selected_model_value = model_1_value
+    assign selected_model_label = model_1_label
+  elsif model_2_any_variant != false
+    assign selected_variant = model_2_any_variant
+    assign selected_model_value = model_2_value
+    assign selected_model_label = model_2_label
+  endif
+
+  if selected_variant != false and color_option_found
+    assign selected_color = selected_variant.options[color_option_index]
+  endif
+
+  if selected_model_value == model_2_value
+    assign model_2_variant = selected_variant
+    assign model_2_color = selected_color
+  endif
+
+  assign model_1_alt = model_1_label
+  if model_1_color != blank
+    assign model_1_alt = model_1_label | append: ', ' | append: model_1_color
+  endif
+  assign model_2_alt = model_2_label
+  if model_2_color != blank
+    assign model_2_alt = model_2_label | append: ', ' | append: model_2_color
+  endif
+
+  assign cta_url = section.settings.fallback_cta_url | default: routes.all_products_collection_url
+  assign details_url = cta_url
+  if featured_product != blank
+    assign details_url = featured_product.url
+  endif
+  if selected_variant != false and featured_product != blank
+    assign variant_query = '?variant=' | append: selected_variant.id
+    assign cta_url = featured_product.url | append: variant_query
+  endif
+-%}
+
+<section
+  id="{{ hero_id }}"
+  class="csh"
+  data-casify-story-hero
+  data-intro-enabled="{{ section.settings.enable_intro }}"
+  data-selected-model="{{ selected_model_value | escape }}"
+  data-selected-color="{{ selected_color | escape }}"
+  data-label-shop="{{ cta_label }}"
+  data-label-details="{{ 'sections.casify_hero.view_details' | t | escape }}"
+  data-label-image-error="{{ 'sections.casify_hero.image_unavailable' | t | escape }}"
+  data-status-unavailable="{{ 'sections.casify_hero.unavailable' | t | escape }}"
+  data-label-pause="{{ 'sections.casify_hero.pause' | t | escape }}"
+  data-label-resume="{{ 'sections.casify_hero.resume' | t | escape }}"
+  data-status-playing="{{ 'sections.casify_hero.motion_playing' | t | escape }}"
+  data-status-paused="{{ 'sections.casify_hero.motion_paused' | t | escape }}"
+  data-status-skipped="{{ 'sections.casify_hero.motion_skipped' | t | escape }}"
+  data-status-complete="{{ 'sections.casify_hero.motion_complete' | t | escape }}"
+>
+  <div class="csh__shell">
+    <div class="csh__copy">
+      <h1 class="csh__heading">{{ heading }}</h1>
+      <p class="csh__supporting">{{ supporting_text }}</p>
+
+      <div class="csh__shopping" data-csh-shopping>
+        <fieldset class="csh__fieldset">
+          <legend>{{ 'sections.casify_hero.choose_model' | t }}</legend>
+          <div class="csh__segmented">
+            <button class="csh__model{% if selected_model_value == model_1_value %} is-selected{% endif %}" type="button" aria-pressed="{% if selected_model_value == model_1_value %}true{% else %}false{% endif %}" data-csh-model="{{ model_1_value | escape }}"{% unless model_1_available %} disabled{% endunless %}>
+              <span>{{ model_1_label | escape }}</span>
+              <small>{{ 'sections.casify_hero.pro_size' | t }}</small>
+            </button>
+            <button class="csh__model{% if selected_model_value == model_2_value %} is-selected{% endif %}" type="button" aria-pressed="{% if selected_model_value == model_2_value %}true{% else %}false{% endif %}" data-csh-model="{{ model_2_value | escape }}"{% unless model_2_available %} disabled{% endunless %}>
+              <span>{{ model_2_label | escape }}</span>
+              <small>{{ 'sections.casify_hero.pro_max_size' | t }}</small>
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset class="csh__fieldset csh__fieldset--colors">
+          <legend>
+            {{ 'sections.casify_hero.choose_color' | t }}
+            <strong data-csh-selected-color>{{ selected_color | escape }}</strong>
+          </legend>
+          <div class="csh__colors">
+            {%- if color_option != false -%}
+              {%- for value in color_option.values -%}
+                {%- liquid
+                  assign color_name = value.name | default: value
+                  assign color_handle = color_name | handleize
+                  assign color_available = false
+                  for variant in mapped_variants
+                    if variant.available and variant.options[model_option_index] == selected_model_value and variant.options[color_option_index] == color_name
+                      assign color_available = true
+                      break
+                    endif
+                  endfor
+                  assign swatch_color = '#8a5a3c'
+                  case color_handle
+                    when 'black'
+                      assign swatch_color = '#252225'
+                    when 'silver'
+                      assign swatch_color = '#c8c5be'
+                    when 'white'
+                      assign swatch_color = '#f7f4ee'
+                    when 'red'
+                      assign swatch_color = '#c4302b'
+                    when 'blue'
+                      assign swatch_color = '#4e7c7b'
+                    when 'green'
+                      assign swatch_color = '#6c9e75'
+                    when 'pink'
+                      assign swatch_color = '#d98f9d'
+                    when 'purple'
+                      assign swatch_color = '#8b78b8'
+                  endcase
+                -%}
+                <button
+                  class="csh__color{% if color_name == selected_color %} is-selected{% endif %}"
+                  type="button"
+                  aria-label="{{ color_name | escape }}"
+                  aria-pressed="{% if color_name == selected_color %}true{% else %}false{% endif %}"
+                  data-csh-color="{{ color_name | escape }}"
+                  style="--csh-swatch: {{ swatch_color }}"
+                  {% unless color_available %}disabled{% endunless %}
+                >
+                  <span aria-hidden="true"></span>
+                  <small>{{ color_name | escape }}</small>
+                </button>
+              {%- endfor -%}
+            {%- else -%}
+              <span class="csh__color-note">{% if request.design_mode %}{{ 'sections.casify_hero.choose_product' | t }}{% else %}{{ 'sections.casify_hero.unavailable' | t }}{% endif %}</span>
+            {%- endif -%}
+          </div>
+        </fieldset>
+
+        <div class="csh__actions">
+          <a class="csh__cta" href="{{ cta_url | escape }}" data-csh-cta>
+            <span>{% if selected_variant != false and selected_variant_available == false %}{{ 'sections.casify_hero.view_details' | t }}{% else %}{{ cta_label }}{% endif %}</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="csh__details" href="{{ details_url | escape }}" data-csh-details>{{ details_label }}</a>
+        </div>
+
+        {%- if section.settings.show_service_facts -%}
+          <ul class="csh__facts" aria-label="{{ 'sections.casify_hero.service_facts' | t | escape }}">
+            <li><strong>{{ section.settings.fact_1_title | escape }}</strong><span>{{ section.settings.fact_1_text | escape }}</span></li>
+            <li><strong>{{ section.settings.fact_2_title | escape }}</strong><span>{{ section.settings.fact_2_text | escape }}</span></li>
+            <li><strong>{{ section.settings.fact_3_title | escape }}</strong><span>{{ section.settings.fact_3_text | escape }}</span></li>
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="csh__visual">
+      <div class="csh__stage" data-csh-stage>
+        <span class="csh__awning" aria-hidden="true"></span>
+        <span class="csh__ribbon" data-csh-ribbon aria-hidden="true"></span>
+        <span class="csh__coin" aria-hidden="true">C</span>
+
+        {%- if model_1_variant != false or model_2_variant != false -%}
+          <div class="csh__product-set" data-csh-product-set>
+            {%- if model_1_variant != false -%}
+            <figure class="csh__device csh__device--one{% if selected_model_value == model_1_value %} is-front{% else %} is-back{% endif %}" data-csh-device data-model="{{ model_1_value | escape }}">
+              {%- assign model_1_image = model_1_variant.featured_image -%}
+              {%- if model_1_image != blank -%}
+                {{ model_1_image | image_url: width: 1400 | image_tag: widths: '420, 640, 900, 1200, 1400', sizes: '(min-width: 900px) 31vw, 60vw', class: 'csh__product-image', alt: model_1_alt, loading: 'eager', fetchpriority: 'high' }}
+              {%- else -%}
+                <p class="csh__image-placeholder">{{ 'sections.casify_hero.image_unavailable' | t }}</p>
+              {%- endif -%}
+              <figcaption>{{ model_1_label | escape }}</figcaption>
+            </figure>
+            {%- endif -%}
+            {%- if model_2_variant != false -%}
+            <figure class="csh__device csh__device--two{% if selected_model_value == model_2_value %} is-front{% else %} is-back{% endif %}" data-csh-device data-model="{{ model_2_value | escape }}">
+              {%- assign model_2_image = model_2_variant.featured_image -%}
+              {%- if model_2_image != blank -%}
+                {{ model_2_image | image_url: width: 1400 | image_tag: widths: '420, 640, 900, 1200, 1400', sizes: '(min-width: 900px) 27vw, 54vw', class: 'csh__product-image', alt: model_2_alt, loading: 'eager' }}
+              {%- else -%}
+                <p class="csh__image-placeholder">{{ 'sections.casify_hero.image_unavailable' | t }}</p>
+              {%- endif -%}
+              <figcaption>{{ model_2_label | escape }}</figcaption>
+            </figure>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="csh__empty">
+            {%- if request.design_mode -%}
+              {{ 'product-1' | placeholder_svg_tag: 'csh__placeholder' }}
+              <p>{{ 'sections.casify_hero.choose_product' | t }}</p>
+            {%- else -%}
+              <p>{{ 'sections.casify_hero.unavailable' | t }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if model_1_variant != false and model_2_variant != false -%}
+          <p class="csh__range-note">{{ 'sections.casify_hero.sold_separately' | t }}</p>
+        {%- endif -%}
+
+        <div class="csh__motion" data-csh-motion-controls hidden aria-label="{{ 'sections.casify_hero.motion_controls' | t | escape }}">
+          <button type="button" data-csh-pause disabled>
+            <svg class="csh__pause-icon" viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M5.5 4.5v9M12.5 4.5v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg class="csh__play-icon" viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="m6 4.5 7 4.5-7 4.5Z" fill="currentColor"/></svg>
+            <span data-csh-pause-label>{{ 'sections.casify_hero.pause' | t }}</span>
+          </button>
+          <button type="button" data-csh-skip disabled>{{ 'sections.casify_hero.skip' | t }}</button>
+          <button type="button" data-csh-replay>{{ 'sections.casify_hero.replay' | t }}</button>
+        </div>
+      </div>
+
+      <p class="csh__selection" aria-live="polite">
+        <span>{% if selected_variant != false %}{{ 'sections.casify_hero.selected' | t }}{% else %}{{ 'sections.casify_hero.unavailable' | t }}{% endif %}</span>
+        <strong data-csh-selected-model>{{ selected_model_label | escape }}</strong>
+        {% if selected_color != blank %}<i aria-hidden="true">·</i>{% endif %}
+        <strong data-csh-selected-color-copy>{{ selected_color | escape }}</strong>
+        {% if selected_variant != false and selected_variant_available == false %}<span>{{ 'sections.casify_hero.selection_sold_out' | t }}</span>{% endif %}
+      </p>
+      <p class="csh__status visually-hidden" data-csh-status aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div hidden data-csh-variants>
+    {%- if featured_product != blank and model_option_found -%}
+      {%- for variant in mapped_variants -%}
+        {%- liquid
+          assign variant_model = variant.options[model_option_index]
+          assign variant_color = blank
+          if color_option_found
+            assign variant_color = variant.options[color_option_index]
+          endif
+          assign variant_image = variant.featured_image
+        -%}
+        {%- if variant_model == model_1_value or variant_model == model_2_value -%}
+          <span
+            data-csh-variant
+            data-id="{{ variant.id }}"
+            data-model="{{ variant_model | escape }}"
+            data-color="{{ variant_color | escape }}"
+            data-available="{{ variant.available }}"
+            data-url="{{ featured_product.url | escape }}?variant={{ variant.id }}"
+            data-image="{% if variant_image != blank %}{{ variant_image | image_url: width: 1400 | escape }}{% endif %}"
+          ></span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'casify-hero.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Casify storyboard hero",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "featured_product", "label": "Featured case product" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your iPhone. Your colour." },
+    { "type": "text", "id": "supporting_text", "label": "Supporting text", "default": "Cases for iPhone 18 Pro and Pro Max." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Shop cases" },
+    { "type": "text", "id": "details_label", "label": "Secondary link", "default": "View details" },
+    { "type": "url", "id": "fallback_cta_url", "label": "Fallback shopping link" },
+    { "type": "checkbox", "id": "enable_intro", "label": "Enable the one-time storyboard intro", "default": true },
+    { "type": "header", "content": "Product option mapping" },
+    { "type": "text", "id": "model_option_name", "label": "Model option name", "default": "Applicable model" },
+    { "type": "text", "id": "color_option_name", "label": "Colour option name", "default": "Color" },
+    { "type": "text", "id": "model_1_value", "label": "Pro option value", "default": "iPhone 18 Pro 17 Pro" },
+    { "type": "text", "id": "model_1_label", "label": "Pro display label", "default": "iPhone 18 Pro" },
+    { "type": "text", "id": "model_2_value", "label": "Pro Max option value", "default": "iPhone 18 Pro Max 17 Pro Max" },
+    { "type": "text", "id": "model_2_label", "label": "Pro Max display label", "default": "iPhone 18 Pro Max" },
+    { "type": "header", "content": "Confirmed service facts" },
+    { "type": "checkbox", "id": "show_service_facts", "label": "Show service facts", "default": true },
+    { "type": "text", "id": "fact_1_title", "label": "Fact 1 heading", "default": "Free shipping" },
+    { "type": "text", "id": "fact_1_text", "label": "Fact 1 detail", "default": "Every order" },
+    { "type": "text", "id": "fact_2_title", "label": "Fact 2 heading", "default": "30-day returns" },
+    { "type": "text", "id": "fact_2_text", "label": "Fact 2 detail", "default": "Time to decide" },
+    { "type": "text", "id": "fact_3_title", "label": "Fact 3 heading", "default": "Fast dispatch" },
+    { "type": "text", "id": "fact_3_text", "label": "Fact 3 detail", "default": "1-3 business days" }
+  ],
+  "presets": [
+    { "name": "Casify storyboard hero" }
+  ]
+}
+{% endschema %}

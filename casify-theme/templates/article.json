@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-article",
+      "settings": { "show_reading_time": true, "show_comments": true }
+    }
+  },
+  "order": ["main"]
+}

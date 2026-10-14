@@ -1,0 +1,188 @@
+/* Us vs. them — sections/cv-vs.liquid. This file is the finished state;
+ * cv-vs.js only animates into it and swaps the flat VS badge for a 3D token. */
+
+.cvvs {
+  overflow-x: clip; /* rows and pictures slide in from beyond the edges */
+  padding: clamp(64px, 8vw, 112px) 0;
+  background: var(--cream-100);
+  color: var(--cocoa-700);
+}
+.cvvs--white { background: var(--white, #fffdf8); }
+.cvvs--teal { background: var(--teal-100); }
+.cvvs__inner { width: min(calc(100% - 40px), 760px); margin-inline: auto; }
+
+/* ---- Heading ---- */
+.cvvs__header { margin-bottom: clamp(26px, 4vw, 40px); text-align: center; }
+.cvvs__eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 13px 5px;
+  border-radius: 8px;
+  background: var(--red-500);
+  color: var(--cream-50);
+  font: 700 .7rem/1.2 var(--font-label);
+  letter-spacing: .08em;
+  text-transform: lowercase;
+  box-shadow: 0 3px 0 var(--red-700);
+}
+.cvvs__title { margin: 0; color: var(--cocoa-700); font: 800 clamp(2rem, 4.6vw, 3.4rem)/1.06 var(--font-display); letter-spacing: -.03em; text-wrap: balance; }
+.cvvs__sub { margin: 12px auto 0; max-width: 52ch; color: var(--cocoa-600); font: 1rem/1.6 var(--font-body); }
+
+/* ---- Pictures + token ---- */
+.cvvs__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(14px, 3vw, 28px);
+  margin-bottom: clamp(26px, 4vw, 38px);
+}
+.cvvs__pic { margin: 0; min-width: 0; }
+.cvvs__frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(74,51,36,.2);
+  border-radius: 22px;
+  background: var(--cream-200);
+  box-shadow: 0 14px 30px rgba(51,35,26,.14);
+}
+.cvvs__pic--us .cvvs__frame { border: 3px solid var(--red-500); }
+.cvvs__frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cvvs__art {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--red-500);
+  background: repeating-linear-gradient(135deg, var(--cream-200) 0 14px, var(--cream-100) 14px 28px);
+}
+.cvvs__art--them { color: var(--cocoa-400); background: var(--cream-200); }
+.cvvs__sticker {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  padding: 7px 11px 6px;
+  border: 2px dashed var(--cream-50);
+  border-radius: 999px;
+  background: var(--red-500);
+  color: var(--cream-50);
+  font: 700 .68rem/1.2 var(--font-label);
+  letter-spacing: .04em;
+  transform: rotate(-6deg);
+  box-shadow: 0 4px 10px rgba(51,35,26,.25);
+}
+.cvvs__label { margin-top: 10px; color: var(--red-600); font: 800 1.05rem/1.2 var(--font-display); text-align: center; }
+.cvvs__label--them { color: var(--cocoa-500); }
+
+.cvvs__token {
+  position: absolute;
+  z-index: 3;
+  top: calc((100% - 34px) / 2);
+  left: 50%;
+  width: clamp(78px, 13vw, 112px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cvvs__token canvas { display: block; width: 100% !important; height: 100% !important; }
+.cvvs__token-flat {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--cream-50);
+  border-radius: 50%;
+  background: repeating-conic-gradient(var(--red-500) 0 30deg, var(--red-600) 30deg 60deg);
+  color: var(--cream-50);
+  font: 900 clamp(1.3rem, 2.6vw, 1.8rem)/1 var(--font-display);
+  text-shadow: 0 2px 0 var(--red-700);
+  box-shadow: 0 8px 18px rgba(51,35,26,.3);
+}
+.cvvs__token.is-3d .cvvs__token-flat { display: none; }
+
+/* ---- Rows ---- */
+.cvvs__rows { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.cvvs__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; }
+.cvvs__side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 10px 14px;
+  font: 1rem/1.3 var(--font-body);
+}
+.cvvs__side--us {
+  justify-content: flex-end;
+  border-radius: 999px 10px 10px 999px;
+  background: linear-gradient(100deg, var(--red-600), var(--red-500));
+  color: var(--cream-50);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: right;
+  box-shadow: inset 0 1px rgba(255,255,255,.25), 0 4px 10px rgba(168,35,31,.22);
+}
+.cvvs__side--them {
+  justify-content: flex-start;
+  border-radius: 10px 999px 999px 10px;
+  background: var(--cream-50);
+  border: 1px solid rgba(74,51,36,.14);
+  color: var(--cocoa-600);
+}
+.cvvs__text { min-width: 0; overflow-wrap: anywhere; }
+.cvvs__mark { flex: none; width: 26px; height: 26px; overflow: visible; }
+.cvvs__mark circle { stroke: none; }
+.cvvs__mark path { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.cvvs__mark--check circle { fill: var(--cream-50); }
+.cvvs__mark--check path { stroke: var(--red-600); }
+.cvvs__mark--cross circle { fill: var(--cocoa-700); }
+.cvvs__mark--cross path { stroke: var(--cream-50); }
+
+.cvvs__row--draft { display: block; }
+.cvvs__draft { display: block; padding: 16px; border: 1px dashed var(--border-dashed, rgba(74,51,36,.45)); border-radius: 12px; color: var(--cocoa-500); font: .85rem/1.5 var(--font-body); text-align: center; }
+
+/* ---- Foot ---- */
+.cvvs__foot { margin-top: clamp(24px, 4vw, 36px); text-align: center; }
+.cvvs__note { margin: 0 auto 20px; max-width: 48ch; color: var(--red-600); font: 1.05rem/1.55 var(--font-body); }
+.cvvs__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(100%, 460px);
+  min-height: 56px;
+  padding: 14px 24px;
+  border: 1px solid var(--cocoa-700);
+  border-radius: 14px;
+  background: var(--cocoa-700);
+  color: var(--cream-50);
+  font: 700 .85rem/1.2 var(--font-label);
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: 0 5px 0 var(--red-600);
+  transition: transform var(--duration-fast) ease-out, box-shadow var(--duration-fast) ease-out;
+}
+.cvvs__cta:hover { color: var(--cream-50); transform: translateY(2px); box-shadow: 0 3px 0 var(--red-600); }
+.cvvs__cta:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 4px; }
+.cvvs__fine { margin: 14px 0 0; color: var(--cocoa-500); font: .82rem/1.5 var(--font-body); }
+
+.cvvs__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 599px) {
+  .cvvs__inner { width: calc(100% - 28px); }
+  .cvvs__side { gap: 8px; min-height: 52px; padding: 8px 10px; font-size: .86rem; }
+  .cvvs__mark { width: 22px; height: 22px; }
+  .cvvs__frame { border-radius: 16px; }
+  .cvvs__sticker { top: 8px; left: 8px; font-size: .6rem; }
+}
+
+/* theme.css caps every h2 on small phones with !important; opt out like .cvsr__title. */
+@media (max-width: 420px) {
+  .cvvs .cvvs__title { font-size: clamp(2rem, 4.6vw, 3.4rem) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvvs__cta { transition: none; }
+  .cvvs__cta:hover { transform: none; }
+}

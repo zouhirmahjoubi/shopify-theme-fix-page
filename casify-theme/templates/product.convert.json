@@ -1,0 +1,611 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-product-counter",
+      "settings": {
+        "crumb_label": "Cases",
+        "vendor_suffix": "Cases",
+        "zoom_label": "Tap to zoom",
+        "compare_price_fallback": "59.99",
+        "show_rating": true,
+        "reviews_anchor": "cvc-reviews",
+        "empty_rating_text": "+1000 Happy Customer",
+        "empty_rating_link": "Write the first",
+        "show_external_review_badges": true,
+        "external_review_rating": "4.9",
+        "external_review_count": "952",
+        "option_label": "Style",
+        "model_label": "Model",
+        "packs_label": "How many cases",
+        "savings_text": "[qty] cases saves you [amount] vs buying singly",
+        "savings_next_text": "Choose [qty] cases to save [pct]% on each",
+        "cta_label": "Add to bag",
+        "show_buy_now": true,
+        "buy_label": "Buy now",
+        "sticky_cta": "Add to bag",
+        "dispatch_max": 3,
+        "ship_by_text": "Order today, ships by [date]",
+        "ship_by_fallback": "Ships in 1-3 business days",
+        "details_label": "Details",
+        "brand_label": "Brand",
+        "shipping_label": "Shipping & returns",
+        "shipping_text": "<p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p>"
+      },
+      "blocks": {
+        "tier-1": {
+          "type": "tier",
+          "settings": {
+            "qty": 1,
+            "discount_pct": 0,
+            "name": "1 case",
+            "flag_label": "",
+            "accent": "red",
+            "default_checked": false
+          }
+        },
+        "tier-2": {
+          "type": "tier",
+          "settings": {
+            "qty": 2,
+            "discount_pct": 18,
+            "name": "2 cases",
+            "flag_label": "Save 18%",
+            "accent": "red",
+            "default_checked": true
+          }
+        },
+        "tier-3": {
+          "type": "tier",
+          "settings": {
+            "qty": 3,
+            "discount_pct": 31,
+            "name": "3 cases",
+            "flag_label": "Best value",
+            "accent": "teal",
+            "default_checked": false
+          }
+        },
+        "svc-ship": {
+          "type": "service",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping"
+          }
+        },
+        "svc-returns": {
+          "type": "service",
+          "settings": {
+            "icon": "returns",
+            "text": "30-day returns"
+          }
+        },
+        "svc-dispatch": {
+          "type": "service",
+          "settings": {
+            "icon": "box",
+            "text": "Ships in 1-3 business days"
+          }
+        },
+        "google-rating": {
+          "type": "google_rating",
+          "settings": {}
+        },
+        "sales-note": {
+          "type": "sales_note",
+          "settings": {
+            "style": "pill",
+            "metafield": "custom.sold_recently",
+            "text": "[count] sold this week",
+            "round_to": "1",
+            "min_count": 5,
+            "tone": "gold"
+          }
+        }
+      },
+      "block_order": [
+        "tier-1",
+        "tier-2",
+        "tier-3",
+        "svc-ship",
+        "svc-returns",
+        "svc-dispatch",
+        "google-rating",
+        "sales-note"
+      ]
+    },
+    "clips": {
+      "type": "cv-pdp-ugc",
+      "settings": {
+        "heading": "Three clips from the counter",
+        "lede": "Short clips of this case being handled: the snap, the turn in your hand, the everyday.",
+        "cta_label": "Back to the case",
+        "open_label": "Open this clip large",
+        "play_label": "Play this clip",
+        "pause_label": "Pause this clip",
+        "close_label": "Close"
+      },
+      "blocks": {
+        "c-snap": {
+          "type": "clip",
+          "settings": {
+            "asset": "pdp-ugc-snap-on.mp4",
+            "poster_asset": "pdp-ugc-snap-on-poster.webp",
+            "caption": "Snapping it on"
+          }
+        },
+        "c-hand": {
+          "type": "clip",
+          "settings": {
+            "asset": "pdp-ugc-in-hand.mp4",
+            "poster_asset": "pdp-ugc-in-hand-poster.webp",
+            "caption": "In the hand"
+          }
+        },
+        "c-table": {
+          "type": "clip",
+          "settings": {
+            "asset": "pdp-ugc-on-table.mp4",
+            "poster_asset": "pdp-ugc-on-table-poster.webp",
+            "caption": "On the table"
+          }
+        }
+      },
+      "block_order": [
+        "c-snap",
+        "c-hand",
+        "c-table"
+      ]
+    },
+    "snap": {
+      "type": "cv-pdp-snap",
+      "settings": {
+        "heading": "Straight off the counter",
+        "lede": "This case's own photos, pinned up like they came off the shop wall.",
+        "limit": 5,
+        "prev_label": "Previous photo",
+        "next_label": "Next photo",
+        "quote": "<p>Cut for your exact phone, not a size that’s “close enough.” Slim in the hand, tough where it counts.</p>",
+        "models_label": "phone models made for",
+        "pack_qty": 3,
+        "pack_label": "cases in this pack",
+        "pack_pct": 31,
+        "pack_pct_label": "off the pack, no code"
+      }
+    },
+    "trust": {
+      "type": "cv-pdp-trust",
+      "settings": {
+        "heading": "Secure checkout, encrypted payment",
+        "pay_label": "Accepted payment methods"
+      }
+    },
+    "set": {
+      "type": "cv-pdp-set",
+      "settings": {
+        "heading": "Complete the set",
+        "heading_related": "Add another case",
+        "lede": "",
+        "limit": 3,
+        "add_label": "Add",
+        "added_label": "In your bag",
+        "fit_label": "For your [model]",
+        "choose_label": "Choose your model"
+      }
+    },
+    "ribbon": {
+      "type": "cv-pdp-ribbon",
+      "settings": {
+        "label": "Casify at a glance"
+      },
+      "blocks": {
+        "r-brand": {
+          "type": "item",
+          "settings": {
+            "icon": "device",
+            "title": "iPhone & Samsung cases",
+            "body": "each made for its own list of phones"
+          }
+        },
+        "r-packs": {
+          "type": "item",
+          "settings": {
+            "icon": "bow",
+            "title": "Packs of 2 and 3",
+            "body": "save 18% or 31% on each case"
+          }
+        },
+        "r-est": {
+          "type": "item",
+          "settings": {
+            "icon": "lollipop",
+            "title": "Est. 1920",
+            "body": "the candy-shop counter, online"
+          }
+        }
+      },
+      "block_order": [
+        "r-brand",
+        "r-packs",
+        "r-est"
+      ]
+    },
+    "spotlight": {
+      "type": "cv-pdp-spotlight",
+      "settings": {
+        "heading": "The case, under glass",
+        "lede": "A closer look before you choose. Every number here is read from this case.",
+        "cta_label": "Choose my phone",
+        "media_index": 1,
+        "models_unit": "phone models",
+        "styles_label": "styles",
+        "pack_qty": 3,
+        "pack_pct": 31,
+        "pack_label": "off in a [qty]-pack",
+        "each_label": "each"
+      }
+    },
+    "fit": {
+      "type": "cv-pdp-fit",
+      "settings": {
+        "heading": "Made for your exact model",
+        "subheading": "These are the iPhone and Samsung models this case is made for. Choose yours and we'll set it on the counter.",
+        "search_label": "Find your phone",
+        "search_placeholder": "e.g. iPhone 16 Pro or Galaxy S24",
+        "empty_text": "This case isn't made for that phone.",
+        "empty_link": "See every case"
+      }
+    },
+    "compare": {
+      "type": "cv-pdp-compare",
+      "settings": {
+        "heading": "Put the packs side by side",
+        "lede": "Same case, same phone. Only the number of jars on the counter changes.",
+        "each_label": "Price per case",
+        "total_label": "You pay",
+        "save_label": "You save",
+        "none_label": "Full price",
+        "yes_label": "Included",
+        "choose_label": "Choose [name]",
+        "footnote": "Prices for the phone and style chosen above. Pack discounts are applied automatically at checkout."
+      },
+      "blocks": {
+        "p-1": {
+          "type": "pack",
+          "settings": {
+            "qty": 1,
+            "pct": 0,
+            "name": "1 case",
+            "flag": "",
+            "jar": "small",
+            "highlight": false
+          }
+        },
+        "p-2": {
+          "type": "pack",
+          "settings": {
+            "qty": 2,
+            "pct": 18,
+            "name": "2 cases",
+            "flag": "Save 18%",
+            "jar": "medium",
+            "highlight": true
+          }
+        },
+        "p-3": {
+          "type": "pack",
+          "settings": {
+            "qty": 3,
+            "pct": 31,
+            "name": "3 cases",
+            "flag": "Best value",
+            "jar": "large",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "p-1",
+        "p-2",
+        "p-3"
+      ]
+    },
+    "journey": {
+      "type": "cv-pdp-journey",
+      "settings": {
+        "heading": "From our counter to your door",
+        "lede": "What happens after you choose, one stop at a time. Scroll to ride along."
+      },
+      "blocks": {
+        "s-1": {
+          "type": "stop",
+          "settings": {
+            "metric": "[models]",
+            "unit": "phone models",
+            "title": "Pick your exact phone",
+            "body": "Every phone this case is made for is on the list. Choose yours and it's the case cut for that phone."
+          }
+        },
+        "s-2": {
+          "type": "stop",
+          "settings": {
+            "metric": "31%",
+            "unit": "off each in a 3-pack",
+            "title": "Choose your pack",
+            "body": "One case, or two or three at 18% or 31% off each. The saving comes off automatically at checkout."
+          }
+        },
+        "s-3": {
+          "type": "stop",
+          "settings": {
+            "metric": "1-3",
+            "unit": "business days",
+            "title": "Packed at the counter",
+            "body": "Your order leaves the shop within 1 to 3 business days of ordering."
+          }
+        },
+        "s-4": {
+          "type": "stop",
+          "settings": {
+            "metric": "Free",
+            "unit": "shipping",
+            "title": "On its way to you",
+            "body": "Shipping is free on every order, with no minimum."
+          }
+        },
+        "s-5": {
+          "type": "stop",
+          "settings": {
+            "metric": "30",
+            "unit": "days to decide",
+            "title": "At your door",
+            "body": "Not the one? You have 30 days to send it back."
+          }
+        }
+      },
+      "block_order": [
+        "s-1",
+        "s-2",
+        "s-3",
+        "s-4",
+        "s-5"
+      ]
+    },
+    "reviews": {
+      "type": "cv-pdp-reviews",
+      "settings": {
+        "heading": "What shoppers say",
+        "anchor": "cvc-reviews",
+        "empty_heading": "No reviews yet",
+        "empty_text": "Bought this case? Your review goes up on this board.",
+        "write_label": "Write the first review"
+      }
+    },
+    "showcase": {
+      "type": "cv-pdp-showcase",
+      "settings": {
+        "collection": "frontpage",
+        "heading": "Three more from the counter",
+        "lede": "Real cases from the shop, each cut for its own list of phones.",
+        "cta_label": "See the case",
+        "sale_label": "On sale",
+        "link_label": ""
+      }
+    },
+    "details": {
+      "type": "cv-pdp-details",
+      "settings": {
+        "heading": "On the label"
+      }
+    },
+    "guarantee": {
+      "type": "cv-pdp-guarantee",
+      "settings": {
+        "faq_heading": "Questions at the counter",
+        "close_heading": "Ready at the counter",
+        "close_cta": "Back to the counter"
+      },
+      "blocks": {
+        "g-ship": {
+          "type": "promise",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "on every order, with no minimum"
+          }
+        },
+        "g-returns": {
+          "type": "promise",
+          "settings": {
+            "icon": "returns",
+            "title": "30-day returns",
+            "body": "change your mind within 30 days"
+          }
+        },
+        "g-dispatch": {
+          "type": "promise",
+          "settings": {
+            "icon": "clock",
+            "title": "Ships in 1-3 business days",
+            "body": "counted from the day you order"
+          }
+        },
+        "g-packs": {
+          "type": "promise",
+          "settings": {
+            "icon": "price-tag",
+            "title": "Pack savings at checkout",
+            "body": "18% off each with 2 cases, 31% with 3"
+          }
+        },
+        "q-ship": {
+          "type": "faq",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders leave us within 1 to 3 business days, and shipping is free.</p>",
+            "default_open": true
+          }
+        },
+        "q-returns": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I send it back?",
+            "answer": "<p>Yes. You have 30 days to return it.</p>",
+            "default_open": false
+          }
+        },
+        "q-packs": {
+          "type": "faq",
+          "settings": {
+            "question": "How do pack prices work?",
+            "answer": "<p>With 2 cases in your bag each one is 18% off, and with 3 or more each one is 31% off. The saving comes off automatically at checkout, so the total on your button is what the cases cost, before any tax.</p>",
+            "default_open": false
+          }
+        },
+        "q-model": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I check my phone model?",
+            "answer": "<p>On an iPhone, open Settings, then General, then About, and look for Model Name. On a Samsung, open Settings, then About phone.</p>",
+            "default_open": false
+          }
+        },
+        "q-fit": {
+          "type": "faq",
+          "settings": {
+            "question": "Will it fit my phone?",
+            "answer": "<p>Pick your phone in the Model list. It only shows the models this case is made for.</p>",
+            "default_open": false
+          }
+        },
+        "q-buy": {
+          "type": "faq",
+          "settings": {
+            "question": "What does Buy now do?",
+            "answer": "<p>It puts the case and pack you chose in your bag and takes you straight to checkout. Add to bag keeps you shopping instead.</p>",
+            "default_open": false
+          }
+        }
+      },
+      "block_order": [
+        "q-ship",
+        "q-returns",
+        "q-packs",
+        "q-buy",
+        "q-model",
+        "q-fit",
+        "g-ship",
+        "g-returns",
+        "g-dispatch",
+        "g-packs"
+      ]
+    },
+    "delivery": {
+      "type": "cv-pdp-delivery",
+      "blocks": {
+        "ordered": {
+          "type": "step",
+          "settings": {
+            "title": "Ordered",
+            "icon": "bag",
+            "min_days": 0,
+            "max_days": 0
+          }
+        },
+        "dispatch": {
+          "type": "step",
+          "settings": {
+            "title": "Leaves our shop",
+            "icon": "shop",
+            "min_days": 1,
+            "max_days": 3
+          }
+        },
+        "door": {
+          "type": "step",
+          "settings": {
+            "title": "At your door",
+            "icon": "home"
+          }
+        }
+      },
+      "block_order": [
+        "ordered",
+        "dispatch",
+        "door"
+      ],
+      "settings": {}
+    },
+    "before_after": {
+      "type": "cv-pdp-before-after",
+      "blocks": {
+        "comparison_1": {
+          "type": "comparison",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "comparison_1"
+      ],
+      "settings": {}
+    },
+    "ratings_reviews": {
+      "type": "cs-customer-proof",
+      "settings": {
+        "eyebrow": "From our customers",
+        "heading": "Customer reviews",
+        "desktop_columns": "list",
+        "heading_align": "center",
+        "surface": "white"
+      },
+      "blocks": {
+        "rating": {
+          "type": "cs-rating",
+          "settings": {
+            "source": "product",
+            "layout": "inline",
+            "alignment": "center",
+            "inline_style": "pill",
+            "empty_style": "full"
+          }
+        },
+        "review-1": {
+          "type": "cs-review",
+          "settings": {}
+        },
+        "review-2": {
+          "type": "cs-review",
+          "settings": {}
+        },
+        "review-3": {
+          "type": "cs-review",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "rating",
+        "review-1",
+        "review-2",
+        "review-3"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "delivery",
+    "clips",
+    "snap",
+    "trust",
+    "set",
+    "ribbon",
+    "spotlight",
+    "fit",
+    "before_after",
+    "compare",
+    "journey",
+    "reviews",
+    "ratings_reviews",
+    "showcase",
+    "details",
+    "guarantee"
+  ]
+}

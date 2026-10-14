@@ -1,0 +1,84 @@
+{%- comment -%}
+  Casify product page: "Made for your exact model".
+  Lists the product's real phone-model option values on an order pad with a
+  search box. Choosing one sets it on the order slip (assets/cv-pdp-story.js
+  clicks the matching slip button) and brings the slip back into view.
+  Renders nothing when the product has no phone-model option.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+  assign model_oi = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+      assign model_oi = forloop.index0
+      break
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign fv = option.values.first | downcase
+      if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if model_oi >= 0 -%}
+  {%- assign model_option = product.options_with_values[model_oi] -%}
+  <section class="cvp cvp-fit" data-cvp-fit data-option-index="{{ model_oi }}" aria-labelledby="cvpFitTitle-{{ section.id }}"
+           style="--cvs-paper: url('{{ 'pdp-slip-paper.png' | asset_url }}');">
+    <div class="cvp__inner">
+      <div class="cvp-fit__head">
+        <h2 class="cvp__h2" id="cvpFitTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="cvp__lede">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="cvp-pad cvp-fit__pad">
+        <div class="cvp-fit__tools">
+          <label class="cvp-fit__search">
+            <span class="cvp__label">{{ section.settings.search_label | escape }}</span>
+            <input class="cvp-fit__input" type="search" data-cvp-fit-filter autocomplete="off"
+                   placeholder="{{ section.settings.search_placeholder | escape }}" aria-controls="cvpFitList-{{ section.id }}">
+          </label>
+          <p class="cvp-fit__count" data-cvp-fit-count aria-live="polite">{{ model_option.values.size }} {% if model_option.values.size == 1 %}model{% else %}models{% endif %}</p>
+        </div>
+        <ul class="cvp-fit__list" id="cvpFitList-{{ section.id }}" role="list">
+          {%- for value in model_option.values -%}
+            <li>
+              <button type="button" class="cvp-fit__model" data-cvp-model="{{ value | escape }}"
+                      aria-pressed="{% if cvar.options[model_oi] == value %}true{% else %}false{% endif %}">{{ value | escape }}</button>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <p class="cvp-fit__empty" data-cvp-fit-empty hidden>
+          {{ section.settings.empty_text | escape }}
+          <a href="{{ routes.all_products_collection_url }}">{{ section.settings.empty_link | escape }}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: fit list",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Made for your exact model" },
+    { "type": "text", "id": "subheading", "label": "Sub-heading", "default": "These are the phones this case is made for. Choose yours and we'll put it on your slip." },
+    { "type": "text", "id": "search_label", "label": "Search label", "default": "Find your phone" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "e.g. iPhone 16 Pro" },
+    { "type": "text", "id": "empty_text", "label": "No match text", "default": "This case isn't made for that phone." },
+    { "type": "text", "id": "empty_link", "label": "No match link", "default": "See every case" }
+  ],
+  "presets": [{ "name": "Product: fit list" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

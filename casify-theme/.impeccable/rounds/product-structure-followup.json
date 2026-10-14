@@ -1,0 +1,30 @@
+{
+  "title": "Build 1 and 2: which way?",
+  "question": "You picked The Order Slip and The Shop Counter. Build them as two product templates you can assign per product, or merge them into one page?",
+  "followup": true,
+  "options": [
+    {
+      "id": "two-templates",
+      "label": "Both, as two templates",
+      "thesis": "The Order Slip becomes the default product template; The Shop Counter becomes the second template, assignable per product in Shopify.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["order-pad slip", "marble counter", "shared cart logic"],
+      "viewport": "Each template keeps its own first viewport exactly as comped; both share the same variant, pack and add-to-bag behaviour underneath.",
+      "risk": "Twice the build and review work, and two layouts to keep in step when the store changes.",
+      "comp": ".impeccable/mocks/decision/order-slip.webp"
+    },
+    {
+      "id": "combined",
+      "label": "One page, combined",
+      "thesis": "The Order Slip's numbered flow, dressed with the Shop Counter's hanging price tag, jar-lid thumbnails and candy-box packs.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["order-pad slip", "brass price tag", "candy-box pack tiers"],
+      "viewport": "Photo stage with jar-lid thumbnails on the left; the paper slip on the right with the brass tag, lines 1 Your phone, 2 Style, 3 How many as candy boxes, and the red button with the total.",
+      "risk": "A merge can blur both ideas; the slip must stay the one structure and the counter pieces only its parts.",
+      "comp": ".impeccable/mocks/decision/shop-counter.webp"
+    }
+  ],
+  "reroll": false,
+  "steer": true,
+  "canon": false
+}

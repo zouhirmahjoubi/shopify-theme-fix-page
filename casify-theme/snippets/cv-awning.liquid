@@ -1,0 +1,53 @@
+{% doc %}
+  Scalloped shop awning hung across the top of the main product photo
+  (sections/cv-product-counter.liquid, "Main image awning" settings).
+  The inline SVG is the finished awning; assets/cv-awning.js swaps it for a
+  three.js fabric canopy (pleats, breeze, gusts) driven by GSAP when WebGL
+  and motion are available. Proportions follow the stripe count, so the
+  scallops stay round at any width.
+
+  @param {boolean} show - Section setting; renders nothing when false.
+  @param {number} [stripes] - Number of stripes (even), default 16.
+  @param {string} [tone] - 'red' or 'teal' (the colour it starts in).
+  @param {boolean} [swipe] - Sideways scroll / swipe over the awning switches red <-> teal.
+{% enddoc %}
+{%- if show -%}
+  {%- liquid
+    assign n = stripes | default: 16 | at_least: 6 | at_most: 30
+    assign n = n | divided_by: 2 | times: 2
+    assign vb_w = n | times: 20
+    assign last = n | minus: 1
+  -%}
+  <div
+    class="cv-awning cv-awning--{{ tone | default: 'red' }}"
+    data-cv-awning
+    data-stripes="{{ n }}"
+    style="--cv-awning-ratio: {{ vb_w }} / 30;"
+    aria-hidden="true"
+  >
+    <svg class="cv-awning__flat" viewBox="0 0 {{ vb_w }} 30" focusable="false">
+      <defs>
+        <linearGradient id="cv-awning-shade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity=".16"/>
+          <stop offset=".45" stop-color="#000" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      {%- for i in (0..last) -%}
+        {%- liquid
+          assign x = i | times: 20
+          assign x2 = x | plus: 20
+          assign odd = i | modulo: 2
+        -%}
+        <g class="cv-awning__stripe cv-awning__stripe--{% if odd == 0 %}a{% else %}b{% endif %}">
+          <rect x="{{ x }}" y="0" width="20.4" height="18.6"/>
+          <path d="M{{ x }} 18.5A10 10 0 0 0 {{ x2 }} 18.5Z"/>
+        </g>
+      {%- endfor -%}
+      <rect class="cv-awning__shade" x="0" y="0" width="{{ vb_w }}" height="18.6" fill="url(#cv-awning-shade)"/>
+      <rect class="cv-awning__rod" x="0" y="0" width="{{ vb_w }}" height="1.6"/>
+    </svg>
+    {%- if swipe -%}
+      <span class="cv-awning__hit" data-cv-awning-hit title="{{ 'products.awning.swipe_hint' | t | escape }}"></span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

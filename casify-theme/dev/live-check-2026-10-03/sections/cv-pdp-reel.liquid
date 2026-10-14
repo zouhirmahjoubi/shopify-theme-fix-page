@@ -1,0 +1,68 @@
+{%- comment -%}
+  Casify product page: the photo reel (the home customer-clips section, rebuilt).
+  The home page showed customer videos that do not exist yet; this shows what
+  does: the product's own photos, set on a film strip. On wide screens
+  assets/cv-pdp-home-motion.js pins the section and scrolls the strip
+  sideways with the page; everywhere else the strip scrolls and snaps by hand.
+  Hidden when the product has fewer than three photos.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign pics = 0
+  for media in product.media
+    if media.media_type == 'image' or media.preview_image
+      assign pics = pics | plus: 1
+    endif
+  endfor
+  assign shown = pics | at_most: section.settings.limit
+-%}
+
+{%- if shown >= 3 -%}
+  <section class="cvw cvw-reel" data-cvw-reel aria-labelledby="cvwReelTitle-{{ section.id }}">
+    <div class="cvp__inner cvw-reel__head">
+      <h2 class="cvp__h2" id="cvwReelTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      <div class="cvw-reel__aside">
+        {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+        <p class="cvw-reel__count" aria-hidden="true"><b data-cvw-reel-now>1</b><span>/</span>{{ shown }}</p>
+      </div>
+    </div>
+
+    <div class="cvw-reel__viewport" data-cvw-reel-viewport tabindex="0" role="region" aria-label="{{ product.title | escape }}: {{ shown }} photos, scroll sideways">
+      <ol class="cvw-reel__strip" role="list" data-cvw-reel-strip>
+        {%- assign n = 0 -%}
+        {%- for media in product.media -%}
+          {%- if n < shown -%}
+            {%- if media.media_type == 'image' or media.preview_image -%}
+              {%- assign n = n | plus: 1 -%}
+              {%- assign pic = media.preview_image | default: media -%}
+              <li class="cvw-reel__frame" data-cvw-reel-frame>
+                <figure class="cvw-reel__figure">
+                  <span class="cvw-reel__pic">
+                    {{ pic | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 420px, 72vw', loading: 'lazy', alt: pic.alt | default: product.title, class: 'cvw-reel__img' }}
+                  </span>
+                  <figcaption class="cvw-reel__cap">{{ n }} / {{ shown }}</figcaption>
+                </figure>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: photo reel",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The case in its own photos" },
+    { "type": "text", "id": "lede", "label": "Intro", "default": "Every frame on this strip is one of this product's own photos. Scroll to run the reel." },
+    { "type": "range", "id": "limit", "label": "Photos", "min": 3, "max": 16, "step": 1, "default": 10 }
+  ],
+  "presets": [{ "name": "Product: photo reel" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

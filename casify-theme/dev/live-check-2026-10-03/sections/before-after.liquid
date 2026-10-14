@@ -1,0 +1,220 @@
+{%- comment -%}
+  Before / After — draggable comparison slider(s).
+  Each block is one comparison. Works with mouse, touch and keyboard
+  (a native range input drives the slider, so it's accessible by default).
+{%- endcomment -%}
+
+{%- assign sid = section.id -%}
+
+<style>
+  #ba-{{ sid }} {
+    --ba-bg: {{ section.settings.bg }};
+    --ba-text: {{ section.settings.text }};
+    --ba-muted: {{ section.settings.text | color_modify: 'alpha', 0.65 }};
+    --ba-handle: {{ section.settings.handle }};
+    background: var(--ba-bg);
+    color: var(--ba-text);
+    padding: {{ section.settings.pad_top }}px 0 {{ section.settings.pad_bottom }}px;
+  }
+  #ba-{{ sid }} .ba-wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  #ba-{{ sid }} .ba-head { text-align: center; margin-bottom: 36px; }
+  #ba-{{ sid }} .ba-head h2 { margin: 0 0 8px; font-size: clamp(26px, 3.4vw, 40px); line-height: 1.15; color: inherit; }
+  #ba-{{ sid }} .ba-head p { margin: 0 auto; max-width: 620px; color: var(--ba-muted); line-height: 1.6; }
+
+  #ba-{{ sid }} .ba-grid {
+    display: grid; gap: 28px;
+    grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+  }
+  #ba-{{ sid }} .ba-item { display: flex; flex-direction: column; gap: 14px; }
+
+  #ba-{{ sid }} .ba {
+    --pos: {{ section.settings.start }}%;
+    position: relative; overflow: hidden; border-radius: {{ section.settings.radius }}px;
+    aspect-ratio: {{ section.settings.ratio }}; user-select: none; touch-action: pan-y;
+    background: #ddd;
+  }
+  #ba-{{ sid }} .ba img, #ba-{{ sid }} .ba svg.placeholder-svg {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none;
+  }
+  #ba-{{ sid }} .ba-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+
+  #ba-{{ sid }} .ba-label {
+    position: absolute; top: 14px; padding: 6px 12px; border-radius: 999px;
+    background: rgba(0,0,0,.55); color: #fff; font-size: 12px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase; backdrop-filter: blur(4px);
+    pointer-events: none; transition: opacity .2s;
+  }
+  #ba-{{ sid }} .ba-label--before { left: 14px; }
+  #ba-{{ sid }} .ba-label--after { right: 14px; }
+
+  #ba-{{ sid }} .ba-line {
+    position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; transform: translateX(-50%);
+    background: var(--ba-handle); pointer-events: none; box-shadow: 0 0 8px rgba(0,0,0,.25);
+  }
+  #ba-{{ sid }} .ba-knob {
+    position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; border-radius: 50%;
+    transform: translate(-50%, -50%); background: var(--ba-handle); color: #111;
+    display: grid; place-items: center; box-shadow: 0 4px 16px rgba(0,0,0,.3);
+    transition: transform .15s;
+  }
+  #ba-{{ sid }} .ba.is-dragging .ba-knob { transform: translate(-50%, -50%) scale(1.1); }
+
+  /* Native range input sits on top: handles keyboard + screen readers */
+  #ba-{{ sid }} .ba-range {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+    opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none;
+  }
+  #ba-{{ sid }} .ba-range:focus-visible + .ba-line .ba-knob { outline: 3px solid #4d90fe; outline-offset: 3px; }
+
+  #ba-{{ sid }} .ba-caption h3 { margin: 0 0 4px; font-size: 18px; color: inherit; }
+  #ba-{{ sid }} .ba-caption p { margin: 0; color: var(--ba-muted); line-height: 1.55; font-size: 15px; }
+
+  @media (max-width: 749px) {
+    #ba-{{ sid }} .ba-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section id="ba-{{ sid }}" class="ba-section">
+  <div class="ba-wrap">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="ba-head">
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ba-grid">
+      {%- for block in section.blocks -%}
+        <div class="ba-item" {{ block.shopify_attributes }}>
+          <div class="ba" data-ba>
+            {%- comment -%} After image = base layer {%- endcomment -%}
+            {%- if block.settings.after != blank -%}
+              {{ block.settings.after | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '(min-width: 750px) 50vw, 100vw', alt: block.settings.after_label }}
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+
+            {%- comment -%} Before image = clipped top layer {%- endcomment -%}
+            <div class="ba-before">
+              {%- if block.settings.before != blank -%}
+                {{ block.settings.before | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1600', sizes: '(min-width: 750px) 50vw, 100vw', alt: block.settings.before_label }}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.before_label != blank -%}<span class="ba-label ba-label--before">{{ block.settings.before_label }}</span>{%- endif -%}
+            {%- if block.settings.after_label != blank -%}<span class="ba-label ba-label--after">{{ block.settings.after_label }}</span>{%- endif -%}
+
+            <input class="ba-range" type="range" min="0" max="100" step="0.5"
+              value="{{ section.settings.start }}"
+              aria-label="Drag to compare {{ block.settings.before_label | default: 'before' }} and {{ block.settings.after_label | default: 'after' }}">
+            <div class="ba-line">
+              <span class="ba-knob" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6"/><path d="m15 6 6 6-6 6"/></svg>
+              </span>
+            </div>
+          </div>
+
+          {%- if block.settings.title != blank or block.settings.text != blank -%}
+            <div class="ba-caption">
+              {%- if block.settings.title != blank -%}<h3>{{ block.settings.title }}</h3>{%- endif -%}
+              {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('ba-{{ sid }}');
+    if (!root) return;
+    root.querySelectorAll('[data-ba]').forEach(function (el) {
+      var range = el.querySelector('.ba-range');
+      var labels = el.querySelectorAll('.ba-label');
+      function set(v) {
+        v = Math.max(0, Math.min(100, v));
+        el.style.setProperty('--pos', v + '%');
+        range.value = v;
+        // Fade labels when the handle covers them
+        if (labels[0]) labels[0].style.opacity = v < 15 ? 0 : 1;
+        if (labels[1]) labels[1].style.opacity = v > 85 ? 0 : 1;
+      }
+      range.addEventListener('input', function () { set(parseFloat(range.value)); });
+
+      // Pointer drag for smooth tracking anywhere on the image
+      function fromEvent(e) {
+        var r = el.getBoundingClientRect();
+        return ((e.clientX - r.left) / r.width) * 100;
+      }
+      el.addEventListener('pointerdown', function (e) {
+        el.classList.add('is-dragging');
+        el.setPointerCapture(e.pointerId);
+        set(fromEvent(e));
+      });
+      el.addEventListener('pointermove', function (e) {
+        if (el.classList.contains('is-dragging')) set(fromEvent(e));
+      });
+      ['pointerup', 'pointercancel'].forEach(function (t) {
+        el.addEventListener(t, function () { el.classList.remove('is-dragging'); });
+      });
+
+      set(parseFloat(range.value));
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Before / After",
+  "tag": "div",
+  "class": "section-before-after",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "See the difference" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Drag the slider to compare the results." },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 1, "max": 3, "step": 1, "default": 1 },
+    {
+      "type": "select", "id": "ratio", "label": "Image ratio", "default": "16 / 9",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 3", "label": "Landscape 4:3" },
+        { "value": "16 / 9", "label": "Wide 16:9" },
+        { "value": "3 / 4", "label": "Portrait 3:4" }
+      ]
+    },
+    { "type": "range", "id": "start", "label": "Starting position", "min": 10, "max": 90, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "handle", "label": "Slider handle", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison",
+      "settings": [
+        { "type": "image_picker", "id": "before", "label": "Before image" },
+        { "type": "image_picker", "id": "after", "label": "After image" },
+        { "type": "text", "id": "before_label", "label": "Before label", "default": "Before" },
+        { "type": "text", "id": "after_label", "label": "After label", "default": "After" },
+        { "type": "text", "id": "title", "label": "Caption title" },
+        { "type": "textarea", "id": "text", "label": "Caption text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before / After",
+      "blocks": [ { "type": "comparison" } ]
+    }
+  ]
+}
+{% endschema %}

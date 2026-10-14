@@ -1,0 +1,84 @@
+{%- comment -%}
+  The Shop Counter's case features (sections/cv-product-counter.liquid, "Case feature"
+  blocks): up to six tiles, each an icon over a short line, on a paper card under the
+  ship-by line.
+
+  A tile shows only on products that back it up. Its keywords are looked for in this
+  product's own title, product type, vendor and option values (not its description or
+  tags, which are free text). A product tagged with the block's tag always shows it, and
+  one tagged no-<tag> never does. Nothing renders when no tile matches.
+
+  Motion: assets/cv-case-features.js (GSAP entrance, a three.js scene per tile). The SVGs
+  are the still fallback and stay for reduced motion or no WebGL.
+
+  Usage: {% render 'cv-case-features', blocks: section.blocks, product: product, title: section.settings.features_title %}
+{%- endcomment -%}
+{%- liquid
+  assign cvcf_hay = product.title | append: ' ' | append: product.type | append: ' ' | append: product.vendor
+  for option in product.options_with_values
+    for value in option.values
+      assign cvcf_hay = cvcf_hay | append: ' ' | append: value
+    endfor
+  endfor
+  assign cvcf_hay = cvcf_hay | downcase
+  assign cvcf_tags = product.tags | join: '|' | downcase | prepend: '|' | append: '|'
+  assign cvcf_count = 0
+-%}
+{%- capture cvcf_items -%}
+  {%- for block in blocks -%}
+    {%- if block.type != 'feature' or block.settings.label == blank -%}{%- continue -%}{%- endif -%}
+    {%- liquid
+      assign cvcf_show = false
+      assign cvcf_words = block.settings.keywords | downcase | strip
+      if cvcf_words == blank
+        assign cvcf_show = true
+      else
+        assign cvcf_words = cvcf_words | split: ','
+        for word in cvcf_words
+          assign cvcf_word = word | strip
+          if cvcf_word != blank and cvcf_hay contains cvcf_word
+            assign cvcf_show = true
+            break
+          endif
+        endfor
+      endif
+
+      assign cvcf_tag = block.settings.tag | downcase | strip
+      if cvcf_tag != blank
+        assign cvcf_on = '|' | append: cvcf_tag | append: '|'
+        assign cvcf_off = '|no-' | append: cvcf_tag | append: '|'
+        if cvcf_tags contains cvcf_on
+          assign cvcf_show = true
+        endif
+        if cvcf_tags contains cvcf_off
+          assign cvcf_show = false
+        endif
+      endif
+    -%}
+    {%- if cvcf_show == false or cvcf_count >= 6 -%}{%- continue -%}{%- endif -%}
+    {%- assign cvcf_count = cvcf_count | plus: 1 -%}
+    {%- assign cvcf_icon = block.settings.icon | default: 'drop' -%}
+    <li class="cvcf__item" data-cvcf-item="{{ cvcf_icon }}" {{ block.shopify_attributes }}>
+      <span class="cvcf__art" data-cvcf-art aria-hidden="true">{%- render 'cv-case-feature-icon', icon: cvcf_icon -%}</span>
+      <span class="cvcf__text">{{ block.settings.label | escape }}</span>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if cvcf_count > 0 -%}
+  {{ 'cv-case-features.css' | asset_url | stylesheet_tag }}
+  <script>
+    /* Hide the tiles until cv-case-features.js has set their start states. Never under
+       reduced motion, and never for long. */
+    (function (root) {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      root.classList.add('cvcf-pending');
+      setTimeout(function () { root.classList.remove('cvcf-pending'); }, 1400);
+    })(document.documentElement);
+  </script>
+  <div class="cvcf cvcf--n{{ cvcf_count }}" data-cvcf>
+    {%- if title != blank -%}
+      <p class="cvcf__title"><span>{{ title | escape }}</span></p>
+    {%- endif -%}
+    <ul class="cvcf__list" role="list">{{ cvcf_items }}</ul>
+  </div>
+{%- endif -%}

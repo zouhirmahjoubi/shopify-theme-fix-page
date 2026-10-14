@@ -1,0 +1,109 @@
+{% doc %}
+  Summary under the product title ("summary" block in sections/cv-product-counter.liquid):
+  stars · rating · (count reviews), then price · compare-at · Save, then a one-line pitch.
+
+  Every number is live: the rating comes from the product's own review metafields or
+  the section's store rating (Trustpilot + Google), and the prices from the selected
+  variant — cv-product.js keeps them in step when the shopper changes variant.
+
+  @param {object} block - The summary block.
+  @param {object} product - The product being shown.
+  @param {object} variant - The selected variant.
+  @param {object} settings - The section's settings (store rating, reviews anchor).
+{% enddoc %}
+{%- liquid
+  assign source = block.settings.rating_source | default: 'auto'
+
+  assign rating_value = 0
+  assign rating_count = ''
+  assign rating_is_store = false
+
+  assign p_rating = product.metafields.reviews.rating.value
+  assign p_count = product.metafields.reviews.rating_count.value | default: 0
+  if source != 'store' and p_rating != blank and p_count > 0
+    assign p_max = p_rating.scale_max | default: 5
+    assign rating_value = p_rating.rating | times: 5.0 | divided_by: p_max
+    assign rating_count = p_count
+  endif
+  if rating_value == 0 and source != 'product'
+    assign store_rating = settings.external_review_rating | strip | replace: ',', '.' | plus: 0
+    if store_rating > 0
+      assign rating_value = store_rating | at_most: 5
+      assign rating_count = settings.external_review_count | strip
+      assign rating_is_store = true
+    endif
+  endif
+  assign rating_shown = rating_value | round: 1
+  assign star_fill = rating_value | times: 20
+
+  comment
+    Only the variant's real compare-at price: the struck-through price and the
+    saving must be a price the product actually sold at, never a fallback.
+  endcomment
+  assign was_price = variant.compare_at_price | default: 0
+  assign has_was = false
+  if was_price > variant.price
+    assign has_was = true
+    assign saving = was_price | minus: variant.price
+    assign saving_pct = saving | times: 100.0 | divided_by: was_price | round
+  endif
+
+  assign pitch = ''
+  assign pitch_here = true
+  if block.settings.pitch_products.size > 0
+    assign pitch_here = false
+    for p in block.settings.pitch_products
+      if p.id == product.id
+        assign pitch_here = true
+        break
+      endif
+    endfor
+  endif
+  if pitch_here
+    assign pitch = block.settings.tagline
+  endif
+  assign key_parts = block.settings.tagline_metafield | strip | split: '.'
+  if key_parts.size == 2
+    assign pitch_ns = key_parts[0]
+    assign pitch_key = key_parts[1]
+    assign pitch_field = product.metafields[pitch_ns][pitch_key].value
+    if pitch_field != blank
+      assign pitch = pitch_field
+    endif
+  endif
+  assign anchor = settings.reviews_anchor | default: 'cvc-reviews' | remove: '#'
+-%}
+<div class="cvc-sum" {{ block.shopify_attributes }}>
+  {%- if rating_value > 0 -%}
+    <a class="cvc-sum__rating" href="#{{ anchor | escape }}">
+      <span class="cvc-sum__stars" aria-hidden="true">{%- render 'cv-stars', fill: star_fill -%}</span>
+      <strong class="cvc-sum__score" aria-hidden="true">{{ rating_shown }}</strong>
+      {%- if rating_count != blank -%}
+        <span class="cvc-sum__count" aria-hidden="true">({{ rating_count }} {{ 'products.product_summary.reviews' | t }})</span>
+      {%- endif -%}
+      <span class="cvc__visually-hidden">
+        {%- if rating_is_store -%}
+          {{ 'products.review_badges.aria_label' | t: rating: rating_shown, count: rating_count }}
+        {%- else -%}
+          {{ 'products.product_summary.rating_label' | t: rating: rating_shown, count: rating_count }}
+        {%- endif -%}
+      </span>
+    </a>
+  {%- endif -%}
+
+  {%- if block.settings.show_price -%}
+    <p class="cvc-sum__price">
+      <span class="cvc-sum__now"><span class="cvc__visually-hidden">{{ 'products.price_offer.now' | t }}: </span><span data-cv-sum-now>{{ variant.price | money }}</span></span>
+      <s class="cvc-sum__was" data-cv-sum-was-wrap{% unless has_was %} hidden{% endunless %}><span class="cvc__visually-hidden">{{ 'products.price_offer.compare_at' | t }}: </span><span data-cv-sum-was>{%- if has_was -%}{{ was_price | money }}{%- endif -%}</span></s>
+      <span class="cvc-sum__save" data-cv-sum-save{% if block.settings.save_style == 'percent' %} data-percent{% endif %}{% unless has_was %} hidden{% endunless %}>
+        {{- 'products.product_summary.save' | t }} <span data-cv-sum-save-value>
+          {%- if has_was -%}{%- if block.settings.save_style == 'percent' -%}{{ saving_pct }}%{%- else -%}{{ saving | money }}{%- endif -%}{%- endif -%}
+        </span>
+      </span>
+    </p>
+  {%- endif -%}
+
+  {%- if pitch != blank -%}
+    <p class="cvc-sum__pitch">{{ pitch | escape }}</p>
+  {%- endif -%}
+</div>

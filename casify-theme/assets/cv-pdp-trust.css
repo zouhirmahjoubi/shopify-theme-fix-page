@@ -1,0 +1,31 @@
+/* =========================================================================
+   Casify: product page secure-checkout bar (sections/cv-pdp-trust.liquid).
+   A slim, single-line strip — not a full cvw section moment — so it never
+   competes with the ribbon or the spotlight either side of it.
+   Motion lives in cv-pdp-home-motion.js; this file is the finished state.
+   ========================================================================= */
+
+.cvw.cvw-trust { padding-block: 20px; }
+.cvw-trust__inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 12px 28px;
+}
+
+.cvw-trust__line {
+  display: inline-flex; align-items: center; gap: 9px; margin: 0;
+  font-family: var(--font-label); font-weight: 700; font-size: 13px; letter-spacing: .02em;
+  color: var(--cvw-ink);
+}
+.cvw-trust__lock { display: inline-flex; color: var(--cvw-red); }
+
+.cvw-trust__pay { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.cvw-trust__pay li { display: block; }
+.cvw-trust__pay-icon { display: block; width: 36px; height: 23px; border-radius: 4px; box-shadow: 0 0 0 1px var(--cvw-rule); }
+
+.cvw-trust__app:empty { display: none; }
+
+@media (max-width: 699px) {
+  .cvw.cvw-trust { padding-block: 16px; }
+  .cvw-trust__inner { justify-content: flex-start; gap: 10px 16px; }
+  .cvw-trust__line { font-size: 12px; }
+}

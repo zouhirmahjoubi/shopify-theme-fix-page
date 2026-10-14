@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone scan — model check</title>
+<style>
+  html, body { margin: 0; background: #FBF3E4; font: 12px/1.4 "Courier New", monospace; color: #4A3324; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  figure { margin: 0; position: relative; }
+  figcaption { position: absolute; left: 8px; top: 6px; }
+  canvas { display: block; width: 100%; height: auto; }
+  #still { display: none; }
+</style>
+</head>
+<body>
+<!-- Views of the procedural phones from assets/cv-phone-scan.js.
+     ?still=1 renders only the transparent opening-pose still used as the
+     no-WebGL fallback (assets/cv-phone-scan-duo.webp). -->
+<div class="grid" id="grid"></div>
+<canvas id="still" width="1600" height="1200"></canvas>
+<script type="module">
+  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+  import { buildPhone, buildCase, caseMaterial, studioEnvironment, addLights, castShadows } from '../../assets/cv-phone-scan.js';
+
+  const q = new URLSearchParams(location.search);
+  const c1 = q.get('c1') || '#9fb8b1';
+  const c2 = q.get('c2') || '#5b1f2a';
+  const b1 = q.get('b1') || 'iphone-18';
+  const b2 = q.get('b2') || 'iphone-18-pro-max';
+  const still = q.get('still') === '1';
+  // ?cases=clear|solid: the fitting-room case on each body (cc= solid colour).
+  const cases = q.get('cases');
+  const cc = q.get('cc') || '#c4302b';
+
+  function makeRenderer(canvas, w, h) {
+    const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+    r.setPixelRatio(1);
+    r.setSize(w, h, false);
+    r.setClearColor(0x000000, 0);
+    r.outputColorSpace = THREE.SRGBColorSpace;
+    r.toneMapping = THREE.NeutralToneMapping;
+    r.toneMappingExposure = 1.02;
+    return r;
+  }
+  function makeScene(r) {
+    const scene = new THREE.Scene();
+    scene.environment = studioEnvironment(THREE, r);
+    addLights(THREE, scene, r);
+    return scene;
+  }
+  const keep = (x) => x;
+
+  const views = [
+    { name: 'pro max back', body: b2, color: c2, rot: [0, Math.PI, 0], dist: 4.6 },
+    { name: 'pro max front', body: b2, color: c2, rot: [0, 0, 0], dist: 4.6 },
+    { name: 'pro max 3/4 back', body: b2, color: c2, rot: [0.25, Math.PI - 0.6, 0.08], dist: 4.6 },
+    { name: 'iphone 18 back', body: b1, color: c1, rot: [0, Math.PI, 0], dist: 4.6 },
+    { name: 'iphone 18 3/4 back', body: b1, color: c1, rot: [0.25, Math.PI + 0.6, -0.08], dist: 4.6 },
+    { name: 'pro max bottom edge', body: b2, color: c2, rot: [-1.25, Math.PI - 0.35, 0], dist: 4.6 },
+    { name: 'pro max camera close', body: b2, color: c2, rot: [0.18, Math.PI - 0.35, 0], dist: 1.9, look: [-0.12, 0.7, 0] },
+    { name: 'iphone 18 camera close', body: b1, color: c1, rot: [0.18, Math.PI + 0.35, 0], dist: 1.9, look: [-0.22, 0.6, 0] },
+    { name: 'pro max side (buttons)', body: b2, color: c2, rot: [0, Math.PI / 2 - 0.25, 0], dist: 4.6 }
+  ];
+
+  if (cases) {
+    views.length = 0;
+    const bodies = [['iphone-18', c1], ['iphone-18-pro', '#d6d3cc'], ['iphone-18-pro-max', c2]];
+    bodies.forEach(([body, color]) => {
+      views.push({ name: body + ' case 3/4 back', body, color, rot: [0.1, Math.PI + 0.45, 0], dist: 4.6, withCase: true });
+      views.push({ name: body + ' case camera', body, color, rot: [0.25, Math.PI - 0.5, 0], dist: 2.2, look: [0, 0.6, 0], withCase: true });
+      views.push({ name: body + ' case side', body, color, rot: [0, Math.PI / 2 - 0.35, 0], dist: 4.6, withCase: true });
+    });
+  }
+
+  if (still) {
+    // The still for the compact layout: a looser overlap than the live
+    // opening (K0 in cv-phone-scan.js), so both phones read in one image.
+    const k = Number(q.get('k')) || 1; // resolution multiplier for the exported still
+    const canvas = document.getElementById('still');
+    canvas.width = 1600 * k;
+    canvas.height = 1200 * k;
+    canvas.style.display = 'block';
+    const r = makeRenderer(canvas, 1600 * k, 1200 * k);
+    const scene = makeScene(r);
+    const A = buildPhone(THREE, b1, c1, keep);
+    const B = buildPhone(THREE, b2, c2, keep);
+    A.group.position.set(-0.43, -0.07, -0.45); A.group.rotation.set(0, Math.PI + 0.44, 0.15); A.group.scale.setScalar(1.08);
+    B.group.position.set(0.41, 0.05, 0.25); B.group.rotation.set(0, Math.PI - 0.34, -0.11); B.group.scale.setScalar(1.08);
+    castShadows(A.group); castShadows(B.group);
+    scene.add(A.group, B.group);
+    const cam = new THREE.PerspectiveCamera(26, 1600 / 1200, 0.5, 60);
+    cam.position.set(0, 0, 8.6); cam.lookAt(0, 0, 0);
+    r.render(scene, cam);
+    window.__stillReady = true;
+  } else {
+    const grid = document.getElementById('grid');
+    for (const v of views) {
+      const fig = document.createElement('figure');
+      const canvas = document.createElement('canvas');
+      const cap = document.createElement('figcaption');
+      cap.textContent = v.name;
+      fig.append(canvas, cap);
+      grid.append(fig);
+      const r = makeRenderer(canvas, 640, 640);
+      const scene = makeScene(r);
+      const p = buildPhone(THREE, v.body, v.color, keep);
+      p.group.rotation.set(...v.rot);
+      castShadows(p.group);
+      if (v.withCase) p.group.add(buildCase(THREE, v.body, caseMaterial(THREE, cases, cc), keep));
+      scene.add(p.group);
+      const cam = new THREE.PerspectiveCamera(26, 1, 0.3, 60);
+      const look = new THREE.Vector3(...(v.look || [0, 0, 0]));
+      cam.position.set(look.x, look.y, look.z + v.dist);
+      cam.lookAt(look);
+      r.render(scene, cam);
+    }
+    window.__viewsReady = true;
+  }
+</script>
+</body>
+</html>

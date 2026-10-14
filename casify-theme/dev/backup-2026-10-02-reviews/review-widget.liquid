@@ -1,0 +1,291 @@
+{%- comment -%}
+  Review Widget — rating summary + review grid with "load more".
+  Each review is a block. Summary numbers are computed from the blocks
+  unless you override them in section settings.
+{%- endcomment -%}
+
+{%- liquid
+  assign sid = section.id
+  assign total = 0
+  assign count = 0
+  assign c5 = 0
+  assign c4 = 0
+  assign c3 = 0
+  assign c2 = 0
+  assign c1 = 0
+  for block in section.blocks
+    assign total = total | plus: block.settings.rating
+    assign count = count | plus: 1
+    case block.settings.rating
+      when 5
+        assign c5 = c5 | plus: 1
+      when 4
+        assign c4 = c4 | plus: 1
+      when 3
+        assign c3 = c3 | plus: 1
+      when 2
+        assign c2 = c2 | plus: 1
+      else
+        assign c1 = c1 | plus: 1
+    endcase
+  endfor
+
+  if count > 0
+    assign avg = total | times: 1.0 | divided_by: count | round: 1
+  else
+    assign avg = 0
+  endif
+  if section.settings.override_avg != blank
+    assign avg = section.settings.override_avg
+  endif
+  assign display_count = count
+  if section.settings.override_count != blank
+    assign display_count = section.settings.override_count
+  endif
+  assign avg_pct = avg | times: 20
+-%}
+
+<style>
+  #rw-{{ sid }} {
+    --rw-bg: {{ section.settings.bg }};
+    --rw-card: {{ section.settings.card_bg }};
+    --rw-text: {{ section.settings.text }};
+    --rw-muted: {{ section.settings.text | color_modify: 'alpha', 0.65 }};
+    --rw-line: {{ section.settings.text | color_modify: 'alpha', 0.12 }};
+    --rw-star: {{ section.settings.star }};
+    --rw-accent: {{ section.settings.accent }};
+    background: var(--rw-bg);
+    color: var(--rw-text);
+    padding: {{ section.settings.pad_top }}px 0 {{ section.settings.pad_bottom }}px;
+  }
+  #rw-{{ sid }} .rw-wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  #rw-{{ sid }} .rw-head { text-align: center; margin-bottom: 36px; }
+  #rw-{{ sid }} .rw-head h2 { margin: 0 0 8px; font-size: clamp(26px, 3.4vw, 40px); line-height: 1.15; color: inherit; }
+  #rw-{{ sid }} .rw-head p { margin: 0; color: var(--rw-muted); }
+
+  #rw-{{ sid }} .rw-summary {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 40px; align-items: center;
+    background: var(--rw-card); border: 1px solid var(--rw-line); border-radius: 16px;
+    padding: 28px 32px; margin-bottom: 32px;
+  }
+  #rw-{{ sid }} .rw-score { text-align: center; }
+  #rw-{{ sid }} .rw-score b { display: block; font-size: 52px; line-height: 1; font-weight: 700; }
+  #rw-{{ sid }} .rw-score small { display: block; margin-top: 8px; color: var(--rw-muted); font-size: 14px; }
+
+  #rw-{{ sid }} .rw-stars { position: relative; display: inline-block; font-size: 20px; line-height: 1; letter-spacing: 2px; }
+  #rw-{{ sid }} .rw-stars::before { content: "★★★★★"; color: var(--rw-line); }
+  #rw-{{ sid }} .rw-stars span { position: absolute; inset: 0 auto 0 0; overflow: hidden; white-space: nowrap; color: var(--rw-star); }
+  #rw-{{ sid }} .rw-stars span::before { content: "★★★★★"; }
+  #rw-{{ sid }} .rw-stars--sm { font-size: 15px; }
+
+  #rw-{{ sid }} .rw-bars { display: grid; gap: 8px; max-width: 420px; width: 100%; }
+  #rw-{{ sid }} .rw-bar { display: grid; grid-template-columns: 34px 1fr 32px; gap: 10px; align-items: center; font-size: 14px; }
+  #rw-{{ sid }} .rw-bar i { height: 8px; border-radius: 99px; background: var(--rw-line); overflow: hidden; display: block; }
+  #rw-{{ sid }} .rw-bar i em { display: block; height: 100%; background: var(--rw-star); border-radius: inherit; }
+  #rw-{{ sid }} .rw-bar span:last-child { text-align: right; color: var(--rw-muted); }
+
+  #rw-{{ sid }} .rw-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 13px 24px; border-radius: 999px; border: 0; cursor: pointer;
+    background: var(--rw-accent); color: {{ section.settings.accent_text }};
+    font: inherit; font-weight: 600; text-decoration: none; transition: transform .15s, opacity .15s;
+  }
+  #rw-{{ sid }} .rw-btn:hover { transform: translateY(-1px); opacity: .92; }
+  #rw-{{ sid }} .rw-btn--ghost { background: transparent; color: var(--rw-text); border: 1px solid var(--rw-line); }
+
+  #rw-{{ sid }} .rw-grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+  }
+  #rw-{{ sid }} .rw-card {
+    background: var(--rw-card); border: 1px solid var(--rw-line); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 12px;
+  }
+  #rw-{{ sid }} .rw-card[hidden] { display: none; }
+  #rw-{{ sid }} .rw-card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  #rw-{{ sid }} .rw-date { font-size: 13px; color: var(--rw-muted); }
+  #rw-{{ sid }} .rw-card h3 { margin: 0; font-size: 17px; line-height: 1.3; color: inherit; }
+  #rw-{{ sid }} .rw-card p { margin: 0; line-height: 1.6; color: var(--rw-muted); font-size: 15px; }
+  #rw-{{ sid }} .rw-photo { border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; }
+  #rw-{{ sid }} .rw-photo img, #rw-{{ sid }} .rw-photo svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #rw-{{ sid }} .rw-author { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 8px; font-size: 14px; }
+  #rw-{{ sid }} .rw-avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    background: var(--rw-accent); color: {{ section.settings.accent_text }}; font-weight: 700; font-size: 14px;
+  }
+  #rw-{{ sid }} .rw-verified { display: inline-flex; align-items: center; gap: 4px; color: #1a8f4c; font-size: 12px; font-weight: 600; }
+  #rw-{{ sid }} .rw-more { text-align: center; margin-top: 32px; }
+
+  @media (max-width: 989px) {
+    #rw-{{ sid }} .rw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #rw-{{ sid }} .rw-summary { grid-template-columns: auto 1fr; }
+    #rw-{{ sid }} .rw-summary .rw-cta { grid-column: 1 / -1; text-align: center; }
+  }
+  @media (max-width: 599px) {
+    #rw-{{ sid }} .rw-grid { grid-template-columns: 1fr; }
+    #rw-{{ sid }} .rw-summary { grid-template-columns: 1fr; gap: 24px; padding: 24px 20px; justify-items: center; }
+  }
+</style>
+
+<section id="rw-{{ sid }}" class="rw" data-per-page="{{ section.settings.per_page }}">
+  <div class="rw-wrap">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="rw-head">
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_summary -%}
+      <div class="rw-summary">
+        <div class="rw-score">
+          <b>{{ avg }}</b>
+          <div class="rw-stars" aria-label="{{ avg }} out of 5 stars"><span style="width: {{ avg_pct }}%"></span></div>
+          <small>Based on {{ display_count }} reviews</small>
+        </div>
+
+        <div class="rw-bars">
+          {%- assign counts = c5 | append: ',' | append: c4 | append: ',' | append: c3 | append: ',' | append: c2 | append: ',' | append: c1 | split: ',' -%}
+          {%- for n in counts -%}
+            {%- assign stars = 6 | minus: forloop.index -%}
+            {%- assign n_int = n | plus: 0 -%}
+            {%- if count > 0 -%}
+              {%- assign pct = n_int | times: 100.0 | divided_by: count | round -%}
+            {%- else -%}
+              {%- assign pct = 0 -%}
+            {%- endif -%}
+            <div class="rw-bar">
+              <span>{{ stars }} ★</span>
+              <i><em style="width: {{ pct }}%"></em></i>
+              <span>{{ n_int }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.cta_label != blank -%}
+          <div class="rw-cta">
+            <a class="rw-btn" href="{{ section.settings.cta_link | default: '#' }}">{{ section.settings.cta_label }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="rw-grid">
+      {%- for block in section.blocks -%}
+        {%- assign r_pct = block.settings.rating | times: 20 -%}
+        <article class="rw-card" {{ block.shopify_attributes }}>
+          <div class="rw-card-top">
+            <div class="rw-stars rw-stars--sm" aria-label="{{ block.settings.rating }} out of 5 stars"><span style="width: {{ r_pct }}%"></span></div>
+            {%- if block.settings.date != blank -%}<span class="rw-date">{{ block.settings.date }}</span>{%- endif -%}
+          </div>
+
+          {%- if block.settings.title != blank -%}<h3>{{ block.settings.title }}</h3>{%- endif -%}
+          {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+
+          {%- if block.settings.image != blank -%}
+            <div class="rw-photo">
+              {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 990px) 33vw, 100vw' }}
+            </div>
+          {%- endif -%}
+
+          <div class="rw-author">
+            <span class="rw-avatar" aria-hidden="true">{{ block.settings.author | slice: 0 | upcase }}</span>
+            <div>
+              <strong>{{ block.settings.author }}</strong>
+              {%- if block.settings.verified -%}
+                <div class="rw-verified">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  Verified buyer
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.blocks.size > section.settings.per_page -%}
+      <div class="rw-more">
+        <button type="button" class="rw-btn rw-btn--ghost" data-rw-more>{{ section.settings.more_label }}</button>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('rw-{{ sid }}');
+    if (!root) return;
+    var per = parseInt(root.dataset.perPage, 10) || 6;
+    var cards = root.querySelectorAll('.rw-card');
+    var btn = root.querySelector('[data-rw-more]');
+    // In the theme editor, show everything so every block is editable.
+    if (window.Shopify && Shopify.designMode) { if (btn) btn.parentNode.remove(); return; }
+    var shown = per;
+    function render() {
+      cards.forEach(function (c, i) { c.hidden = i >= shown; });
+      if (btn && shown >= cards.length) btn.parentNode.remove();
+    }
+    render();
+    if (btn) btn.addEventListener('click', function () { shown += per; render(); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Review widget",
+  "tag": "div",
+  "class": "section-review-widget",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What our customers say" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Real reviews from real people" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true },
+    { "type": "text", "id": "override_avg", "label": "Override average rating", "info": "Leave empty to calculate from reviews. Example: 4.8" },
+    { "type": "text", "id": "override_count", "label": "Override review count", "info": "Leave empty to count review blocks. Example: 2,431" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Write a review" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "per_page", "label": "Reviews shown before \"Load more\"", "min": 3, "max": 24, "step": 1, "default": 6 },
+    { "type": "text", "id": "more_label", "label": "Load more label", "default": "Load more reviews" },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f7f7f5" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "star", "label": "Stars", "default": "#f5a623" },
+    { "type": "color", "id": "accent", "label": "Accent / button", "default": "#111111" },
+    { "type": "color", "id": "accent_text", "label": "Accent text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "author", "label": "Name", "default": "Sarah M." },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Title", "default": "Absolutely love it" },
+        { "type": "textarea", "id": "text", "label": "Review", "default": "Great quality, fast shipping and it looks even better in person. Would definitely buy again." },
+        { "type": "text", "id": "date", "label": "Date", "default": "2 weeks ago" },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": true },
+        { "type": "image_picker", "id": "image", "label": "Photo (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review widget",
+      "blocks": [
+        { "type": "review", "settings": { "author": "Sarah M.", "rating": 5, "title": "Absolutely love it", "text": "Great quality, fast shipping and it looks even better in person. Would definitely buy again." } },
+        { "type": "review", "settings": { "author": "James K.", "rating": 5, "title": "Perfect fit", "text": "Fits perfectly and feels premium. Already ordered a second one as a gift." } },
+        { "type": "review", "settings": { "author": "Lina R.", "rating": 4, "title": "Very happy", "text": "Really nice product. Shipping took a couple of extra days but it was worth the wait." } },
+        { "type": "review", "settings": { "author": "Omar B.", "rating": 5, "title": "Best purchase this year", "text": "The quality blew me away. Customer support was quick and friendly too." } },
+        { "type": "review", "settings": { "author": "Emma T.", "rating": 5, "title": "Exactly as pictured", "text": "Colors are vibrant and the finish is flawless. Highly recommend." } },
+        { "type": "review", "settings": { "author": "Noah P.", "rating": 4, "title": "Solid and stylish", "text": "Sturdy, looks great, and the packaging was lovely." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

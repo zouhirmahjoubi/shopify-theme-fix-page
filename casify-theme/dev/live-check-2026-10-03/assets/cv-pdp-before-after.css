@@ -1,0 +1,126 @@
+/* =========================================================================
+   Casify product page: before & after (sections/cv-pdp-before-after.liquid).
+   Two photos stacked in a paper-matted frame; the "before" photo is clipped
+   to --pos. A red enamel knob rides the divider. The finished static state
+   (.cvba--static) shows the divider at its start position without a knob;
+   cv-pdp-before-after.js enables dragging, keyboard and tabs.
+   ========================================================================= */
+
+.cvba {
+  --cvba-ink: var(--cocoa-700);
+  --cvba-body: var(--cocoa-600);
+  --cvba-accent: var(--red-500);
+  padding: calc(var(--cvba-pt, 56px) * .75) 0 calc(var(--cvba-pb, 56px) * .75);
+  color: var(--cvba-body);
+}
+@media (min-width: 750px) { .cvba { padding: var(--cvba-pt, 56px) 0 var(--cvba-pb, 56px); } }
+.cvba--tone-inset { background: var(--cream-200); }
+.cvba--tone-cocoa { --cvba-ink: var(--cream-50); --cvba-body: var(--cream-200); --cvba-accent: var(--gold-400); background: var(--cocoa-700); }
+
+.cvba__inner { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* ---- header ------------------------------------------------------------- */
+.cvba__hd { display: grid; justify-items: center; gap: 10px; margin-bottom: 24px; text-align: center; }
+.cvba__title {
+  margin: 0; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(30px, 4.2vw, 50px); line-height: 1.04; letter-spacing: -.025em;
+  color: var(--cvba-ink); text-wrap: balance;
+}
+.cvba__title em { font-family: var(--font-script); font-style: normal; font-weight: 400; font-size: 1.2em; letter-spacing: 0; color: var(--cvba-accent); }
+.cvba__lede { font: 15.5px/1.6 var(--font-body); color: var(--cvba-body); }
+.cvba__lede p { margin: 0; }
+
+/* ---- tabs --------------------------------------------------------------- */
+.cvba__tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 20px; }
+.cvba__tabs[hidden] { display: none; }
+.cvba__tab {
+  min-height: 44px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--cocoa-500); background: transparent; color: var(--cvba-ink);
+  font-family: var(--font-label); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  transition: background var(--duration-base, 240ms) var(--ease-standard, ease), color var(--duration-base, 240ms) var(--ease-standard, ease), border-color var(--duration-base, 240ms);
+}
+.cvba--tone-cocoa .cvba__tab { border-color: var(--gold-300); }
+.cvba__tab[aria-selected="true"] {
+  background: var(--red-500); border-color: var(--red-500); color: var(--cream-50);
+  box-shadow: inset 0 -3px 0 var(--red-700);
+}
+.cvba__tab:focus-visible { outline: 3px solid var(--focus-ring, #4E7C7B); outline-offset: 3px; }
+
+/* ---- comparison ----------------------------------------------------------- */
+.cvba__panels { display: grid; gap: 28px; }
+.cvba-cmp { margin: 0; display: grid; gap: 12px; }
+.cvba-cmp[hidden] { display: none; }
+.cvba-cmp__frame {
+  position: relative; overflow: hidden; isolation: isolate;
+  aspect-ratio: var(--ratio, 1.25); max-height: 78vh; margin: 7px;
+  border-radius: 14px; background: var(--cream-200);
+  box-shadow: 0 0 0 6px var(--cream-50), 0 0 0 7px rgba(74, 51, 36, .12), 0 26px 46px -28px rgba(51, 35, 26, .55);
+  user-select: none; -webkit-user-select: none;
+}
+.cvba-cmp__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.cvba-cmp__before {
+  position: absolute; inset: 0; z-index: 1;
+  clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+}
+
+.cvba-cmp__label {
+  position: absolute; z-index: 3; top: 14px; padding: 6px 12px; border-radius: 6px;
+  background: rgba(253, 249, 241, .92); color: var(--cocoa-700);
+  font-family: var(--font-label); font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: var(--shadow-diecut); pointer-events: none;
+}
+.cvba-cmp__label:empty { display: none; }
+.cvba-cmp__label--before { left: 14px; }
+.cvba-cmp__label--after { right: 14px; }
+
+.cvba-cmp__line {
+  position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--pos, 50%);
+  width: 3px; margin-left: -1.5px; background: var(--cream-50);
+  box-shadow: 0 0 0 1px rgba(51, 35, 26, .18), 0 0 12px rgba(28, 19, 13, .35);
+  pointer-events: none;
+}
+.cvba-cmp__knob {
+  position: absolute; z-index: 3; top: 50%; left: var(--pos, 50%);
+  display: grid; place-items: center; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--red-400), var(--red-500) 48%, var(--red-700));
+  box-shadow: 0 0 0 3px var(--gold-400), 0 0 0 6px rgba(253, 249, 241, .85), 0 12px 22px -8px rgba(28, 19, 13, .6);
+  color: var(--cream-50); pointer-events: none;
+}
+.cvba-cmp__knob svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The real control: a full-size, invisible range input on top. */
+.cvba-cmp__range {
+  position: absolute; z-index: 4; inset: 0; width: 100%; height: 100%; margin: 0;
+  opacity: 0; cursor: ew-resize; touch-action: pan-y; -webkit-appearance: none; appearance: none; background: none;
+}
+.cvba-cmp__range[hidden] { display: none; }
+.cvba-cmp__frame:has(.cvba-cmp__range:focus-visible) .cvba-cmp__knob {
+  outline: 3px solid var(--cream-50); outline-offset: 4px;
+  box-shadow: 0 0 0 3px var(--gold-400), 0 0 0 9px var(--focus-ring, #4E7C7B);
+}
+
+/* Static (no JS): a plain divider at the start position — no knob to grab. */
+.cvba--static .cvba-cmp__knob { display: none; }
+
+.cvba-cmp__caption {
+  margin: 0 7px; text-align: center; color: var(--cvba-body);
+  font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+}
+.cvba__draft {
+  padding: 22px; border-radius: 14px; text-align: center;
+  border: 1.5px dashed var(--border-dashed, rgba(74, 51, 36, .45));
+  font-family: var(--font-label); font-size: 12px; color: var(--cocoa-400);
+}
+
+@media (max-width: 749px) {
+  .cvba__inner { padding: 0 16px; }
+  .cvba-cmp__knob { width: 46px; height: 46px; margin: -23px 0 0 -23px; }
+  .cvba-cmp__label { top: 10px; font-size: 10.5px; padding: 5px 9px; }
+  .cvba-cmp__label--before { left: 10px; }
+  .cvba-cmp__label--after { right: 10px; }
+}
+/* theme.css caps every h2 on small phones with !important; opt out like .halo-closer h2. */
+@media (max-width: 420px) {
+  .cvba .cvba__title { font-size: clamp(28px, 8vw, 34px) !important; }
+}
+@media (prefers-reduced-motion: reduce) { .cvba__tab { transition: none; } }

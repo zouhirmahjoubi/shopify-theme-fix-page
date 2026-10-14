@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-footer preview</title>
+<script>if (window.location.search.indexOf('qa=1') !== -1) document.documentElement.classList.add('qa-footer');</script>
+<link rel="stylesheet" href="../../assets/theme.css">
+<link rel="stylesheet" href="../../assets/cv-header.css"><!-- casify-sign styles -->
+<link rel="stylesheet" href="../../assets/cv-footer.css">
+<style>
+  .cm-icon svg { width: 100%; height: 100%; }
+  .pv-page { max-width: 1160px; margin: 0 auto; padding: 56px 24px 80px; }
+  .pv-page h1 { font: 900 clamp(34px, 5vw, 60px)/1.05 var(--font-display); color: var(--red-600); max-width: 16ch; }
+  .pv-page p { max-width: 60ch; margin-top: 16px; line-height: 1.7; }
+  .pv-block { height: 1400px; margin-top: 40px; border-radius: 16px; background: var(--cream-50); border: 1px solid var(--border-hairline); }
+  .pv-tools { position: fixed; left: 16px; bottom: 16px; z-index: 200; display: flex; gap: 8px; }
+  .pv-tools button { font: 12px monospace; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--cocoa-600); background: var(--cream-50); cursor: pointer; }
+  .qa-footer .pv-page, .qa-footer .pv-tools { display: none; }
+</style>
+</head>
+<body>
+
+<main id="MainContent" role="main" tabindex="-1" class="pv-page">
+  <h1>Footer preview</h1>
+  <p>Scroll down: the scallops drop, the sign swings in on its cords, columns cascade, the shop items hop onto the shelf. "Back to top" spins the peppermint on the way up.</p>
+  <div class="pv-block"></div>
+</main>
+
+<!-- Mirrors the rendered output of sections/footer.liquid inside Shopify's section wrapper. -->
+<div id="shopify-section-footer" class="shopify-section shopify-section-group-footer-group">
+<div class="cvf" data-cv-footer>
+  <div class="stripes cvf-stripes" aria-hidden="true">
+    <span class="cvf-stripes__valance"><span class="cvf-stripes__scallops"></span></span>
+  </div>
+
+  <footer class="cvf-footer">
+    <div class="cvf-sign">
+      <img class="cvf-sign__img" src="../../assets/footer-thank-you-sign.webp" width="900" height="470" alt="Thank you — come again soon!" loading="lazy" decoding="async">
+    </div>
+
+    <div class="footer__inner cvf-ledger" data-cvf-ledger>
+      <div class="cvf-brand">
+        <a href="#" class="casify-logo casify-logo--dark" aria-label="Casify home">
+          <span class="casify-sign" style="--sign-h:51px;--mint:32px">
+            <span class="casify-sign__mint casify-sign__mint--red"><img src="../../assets/header-peppermint-red.png" width="32" height="32" alt=""></span>
+            <img class="casify-sign__plaque" src="../../assets/header-sign-plaque.png" width="144" height="51" alt="">
+            <span class="casify-sign__mint casify-sign__mint--teal"><img src="../../assets/header-peppermint-teal.png" width="32" height="32" alt=""></span>
+          </span>
+        </a>
+        <p class="cvf-blurb">An old-fashioned candy shop, online. Tins, cases, ribbons — wrapped by hand since 1920.</p>
+
+        <form method="post" action="#" id="cvf-newsletter" class="cvf-news" onsubmit="return false">
+          <label class="cvf-news__label" for="cvf-news-email-footer">Join the sweet list</label>
+          <div class="cvf-news__row">
+            <input class="cvf-news__input" id="cvf-news-email-footer" type="email" name="contact[email]" placeholder="you@example.com" autocomplete="email" required>
+            <button type="submit" class="cvf-news__btn"><span>Join</span></button>
+          </div>
+        </form>
+
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><span class="cm-icon cm-icon--mono" style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></span></a>
+          <a href="#" aria-label="TikTok"><span class="cm-icon cm-icon--mono" style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3v3a4 4 0 0 0 4 4v3a7 7 0 0 1-4-1.3V15a6 6 0 1 1-6-6v3a3 3 0 1 0 3 3V3z"/></svg></span></a>
+          <a href="#" aria-label="Email"><span class="cm-icon cm-icon--mono" style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Samsung</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#">Gift edition</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Shipping policy</a></li>
+          <li><a href="#">Return policy</a></li>
+          <li><a href="#">Track order</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li>1100 Congress Ave, Austin, TX 78701</li>
+          <li><a href="#">hello@casify.shop</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cvf-shelf" aria-hidden="true">
+      <img class="cvf-shelf__item" src="../../assets/footer-item-jar.webp" width="158" height="240" alt="" loading="lazy" decoding="async">
+      <img class="cvf-shelf__item" src="../../assets/footer-item-gumball.webp" width="133" height="240" alt="" loading="lazy" decoding="async">
+      <img class="cvf-shelf__item" src="../../assets/footer-item-gift.webp" width="143" height="240" alt="" loading="lazy" decoding="async">
+      <img class="cvf-shelf__item" src="../../assets/footer-item-case.webp" width="121" height="240" alt="" loading="lazy" decoding="async">
+      <img class="cvf-shelf__item" src="../../assets/footer-item-bag.webp" width="147" height="240" alt="" loading="lazy" decoding="async">
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; 2026 casify</span>
+      <span>Not affiliated with Apple, Samsung or Google. MagSafe is a trademark of Apple Inc.</span>
+      <ul class="cvf-pay" aria-label="Payment methods">
+        <li><svg class="cvf-pay__icon" viewBox="0 0 38 24" role="img" aria-label="Visa"><rect width="38" height="24" rx="3" fill="#fff"/><text x="19" y="16" font-size="9" font-family="Arial" font-weight="700" text-anchor="middle" fill="#1a1f71">VISA</text></svg></li>
+        <li><svg class="cvf-pay__icon" viewBox="0 0 38 24" role="img" aria-label="Mastercard"><rect width="38" height="24" rx="3" fill="#fff"/><circle cx="15" cy="12" r="7" fill="#eb001b"/><circle cx="23" cy="12" r="7" fill="#f79e1b" fill-opacity=".85"/></svg></li>
+        <li><svg class="cvf-pay__icon" viewBox="0 0 38 24" role="img" aria-label="Shop Pay"><rect width="38" height="24" rx="3" fill="#5a31f4"/><text x="19" y="16" font-size="8" font-family="Arial" font-weight="700" text-anchor="middle" fill="#fff">shop</text></svg></li>
+      </ul>
+      <button type="button" class="cvf-top" data-cvf-top>
+        <img src="../../assets/header-peppermint-red.png" width="30" height="30" alt="" loading="lazy">
+        <span>Back to top</span>
+      </button>
+    </div>
+  </footer>
+</div>
+</div>
+
+<div class="pv-tools">
+  <button type="button" id="pvJump">Jump to footer</button>
+</div>
+<script>
+  document.getElementById('pvJump').addEventListener('click', function () {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+  });
+  if (window.location.hash === '#shopify-section-footer') {
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.setTimeout(function () {
+      window.scrollTo(0, document.getElementById('shopify-section-footer').offsetTop);
+    });
+  }
+</script>
+<script src="../../assets/gsap.min.js"></script>
+<script src="../../assets/gsap-CustomEase.min.js"></script>
+<script src="../../assets/gsap-CustomWiggle.min.js"></script>
+<script src="../../assets/gsap-ScrollTrigger.min.js"></script>
+<script src="../../assets/gsap-ScrollToPlugin.min.js"></script>
+<script src="../../assets/gsap-init.js"></script>
+<script src="../../assets/cv-footer.js"></script>
+</body>
+</html>

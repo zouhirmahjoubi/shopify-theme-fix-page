@@ -1,0 +1,142 @@
+{%- comment -%}
+  Casify — search results in the Chrismass design system.
+
+  The field is the hero: oversized, focused on load when the page is empty,
+  and carrying the query back so people can edit rather than retype. Product
+  hits render as real cards; article and page hits get their own compact row
+  so the grid does not pretend everything is a product.
+{%- endcomment -%}
+
+{{ 'cv-badges.css' | asset_url | stylesheet_tag }}
+
+{%- paginate search.results by section.settings.per_page -%}
+<div class="cv-page-root cv-search">
+
+  <header class="cv-search__hd" data-cv-reveal>
+    <img class="cv-doc__badge" data-cv-reveal="scale" src="{{ 'badge-ai-search.png' | asset_url }}" alt="" width="88" height="88" loading="lazy" aria-hidden="true">
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Find your model' | escape }}</span>
+    {%- render 'cv-candy-divider' -%}
+    <h1 data-cv-split>
+      {%- if search.performed -%}
+        {{ section.settings.results_heading | default: 'Results' | escape }}
+      {%- else -%}
+        {{ section.settings.heading | default: 'What are you looking for?' | escape }}
+      {%- endif -%}
+    </h1>
+  </header>
+
+  <form class="cv-search__form" action="{{ routes.search_url }}" method="get" role="search" data-cv-reveal>
+    <span class="cv-search__ico" aria-hidden="true">{%- render 'cv-icon', name: 'precision-fit', size: 18 -%}</span>
+    <input type="search"
+           id="cvSearchInput"
+           name="q"
+           value="{{ search.terms | escape }}"
+           placeholder="{{ section.settings.placeholder | default: 'Try “iPhone 17 Pro” or “clear case”' | escape }}"
+           autocomplete="off"
+           {% unless search.performed %}autofocus{% endunless %}>
+    <input type="hidden" name="options[prefix]" value="last">
+    <button type="submit" class="cv-search__go" aria-label="Search">
+      <span>Search</span>
+      {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+    </button>
+  </form>
+
+  {%- if section.settings.suggestions != blank and search.performed == false -%}
+    <div class="cv-search__chips" data-cv-reveal data-cv-stagger>
+      {%- assign chips = section.settings.suggestions | split: ',' -%}
+      {%- for chip in chips -%}
+        {%- assign term = chip | strip -%}
+        {%- if term != blank -%}
+          <a class="cv-search__chip" href="{{ routes.search_url }}?q={{ term | url_encode }}">{{ term | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if search.performed -%}
+    {%- if search.results_count > 0 -%}
+      <p class="cv-search__count" data-cv-reveal>
+        <b data-cv-count="{{ search.results_count }}">0</b>
+        <span>{% if search.results_count == 1 %}result{% else %}results{% endif %} for “{{ search.terms | escape }}”</span>
+      </p>
+
+      <div class="cv-grid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- render 'cv-card', product: item, index: forloop.index0, quick_pick: true -%}
+          {%- else -%}
+            <a class="cv-hit" href="{{ item.url }}" data-cv-reveal style="--cv-i:{{ forloop.index0 }}">
+              <span class="cv-hit__kind">
+                {%- if item.object_type == 'article' -%}
+                  {%- render 'cv-icon', name: 'quote', size: 13 -%} Article
+                {%- else -%}
+                  {%- render 'cv-icon', name: 'ruler', size: 13 -%} Page
+                {%- endif -%}
+              </span>
+              <h3>{{ item.title | escape }}</h3>
+              {%- if item.content != blank -%}
+                <p>{{ item.content | strip_html | truncatewords: 22 }}</p>
+              {%- endif -%}
+              <span class="cv-hit__go">Read {%- render 'cv-icon', name: 'arrow-right', size: 13 -%}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="cv-pager" aria-label="Pagination" data-cv-reveal>
+          {%- if paginate.previous -%}
+            <a class="cv-pager__step is-prev" href="{{ paginate.previous.url }}" rel="prev">
+              {%- render 'cv-icon', name: 'chevron-down', size: 16 -%}<span>Previous</span>
+            </a>
+          {%- endif -%}
+          <span class="cv-pager__pages">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a class="cv-pager__n" href="{{ part.url }}">{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="cv-pager__n is-current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span class="cv-pager__n is-gap">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+          {%- if paginate.next -%}
+            <a class="cv-pager__step is-next" href="{{ paginate.next.url }}" rel="next">
+              <span>Next</span>{%- render 'cv-icon', name: 'chevron-down', size: 16 -%}
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+
+    {%- else -%}
+      <div class="cv-empty" data-cv-reveal>
+        <span class="cv-empty__ico">{%- render 'cv-icon', name: 'precision-fit', size: 40, animate: true -%}</span>
+        <h2>No match for “{{ search.terms | escape }}”</h2>
+        <p>{{ section.settings.empty_body | default: 'Check the spelling, or search by phone model — every case is listed under the model it was cut for.' | escape }}</p>
+        <a class="cv-cta cv-cta--closer" href="{{ routes.all_products_collection_url }}">
+          <span class="cv-cta__shine" aria-hidden="true"></span>
+          {%- render 'cv-icon', name: 'bag', size: 18 -%}
+          <span>Browse everything</span>
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Find your model" },
+    { "type": "text", "id": "heading", "label": "Heading (no search yet)", "default": "What are you looking for?" },
+    { "type": "text", "id": "results_heading", "label": "Heading (results)", "default": "Results" },
+    { "type": "text", "id": "placeholder", "label": "Field placeholder", "default": "Try “iPhone 17 Pro” or “clear case”" },
+    { "type": "text", "id": "suggestions", "label": "Suggested searches", "info": "Comma separated.", "default": "iPhone 17 Pro, Clear case, MagSafe, Galaxy S25, Screen protector" },
+    { "type": "range", "id": "per_page", "label": "Results per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "text", "id": "empty_body", "label": "Empty state body", "default": "Check the spelling, or search by phone model — every case is listed under the model it was cut for." }
+  ],
+  "presets": [{ "name": "Search" }]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{%- comment -%}
+  Casify — candy-motif scroll divider.
+  Lollipop / bow / lollipop flanked by fading rules, all pulled from the
+  existing animated icon library (snippets/cv-icon.liquid) — no new assets.
+  Drop between an eyebrow and heading, or between sections, as a garnish.
+  Usage: {% render 'cv-candy-divider' %}
+{%- endcomment -%}
+<div class="cv-divider" aria-hidden="true" data-cv-reveal="scale">
+  <span class="cv-divider__line"></span>
+  {%- render 'cv-icon', name: 'lollipop', size: 22, animate: true, class: 'cv-divider__ico' -%}
+  {%- render 'cv-icon', name: 'bow', size: 17, animate: true, class: 'cv-divider__ico cv-divider__ico--sm' -%}
+  {%- render 'cv-icon', name: 'lollipop', size: 22, animate: true, class: 'cv-divider__ico' -%}
+  <span class="cv-divider__line"></span>
+</div>

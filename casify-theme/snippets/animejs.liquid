@@ -1,0 +1,25 @@
+{%- doc -%}
+  Anime.js 4.5.0 — self-hosted builds from the official `animejs` npm package
+  (dist/bundles/). Docs: https://animejs.com/documentation
+
+  Two files in assets/:
+    anime.umd.min.js  deferred classic scripts; exposes the global `anime`
+                      e.g. const { animate, stagger } = anime;
+    anime.esm.min.js  module scripts; import it from another asset by
+                      relative path, which needs no tag in the layout:
+                      import { animate, stagger } from './anime.esm.min.js';
+
+  The layout renders this deferred UMD build in <head> when template content
+  (content_for_layout) contains data-anime, and always in the theme editor.
+  Consume the global from an external deferred script after this tag, or
+  inside a DOMContentLoaded listener. Inline classic scripts run before it.
+  Header/footer groups and dynamically fetched storefront sections do not
+  trigger this layout condition; those consumers can import the ESM asset.
+  Editor sections should initialize on shopify:section:load and revert their
+  animations on shopify:section:unload. Respect prefers-reduced-motion.
+  Full package license: assets/animejs-LICENSE.txt.
+
+  @example
+  {% render 'animejs' %}
+{%- enddoc -%}
+<script src="{{ 'anime.umd.min.js' | asset_url }}" defer></script>

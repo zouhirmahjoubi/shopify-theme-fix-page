@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-collection",
+      "settings": {
+        "per_page": 24,
+        "show_sort": true,
+        "quick_pick": true,
+        "noun_one": "product",
+        "noun_many": "products",
+        "show_packs": true,
+        "pack_heading": "Mix a pack",
+        "pack_2_pct": 18,
+        "pack_3_pct": 31,
+        "no_match_title": "Nothing matches those filters",
+        "no_match_body": "Take one off and more cases come back.",
+        "empty_title": "Nothing on this shelf yet",
+        "empty_body": "Every case in the shop is one tap away."
+      }
+    }
+  },
+  "order": ["main"]
+}

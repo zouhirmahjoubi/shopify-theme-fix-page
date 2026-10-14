@@ -1,0 +1,235 @@
+{%- comment -%}
+  Casify — header: striped awning with a running ticker, cocoa topbar, and the
+  sticky nav carrying the hanging shop sign (snippets/casify-logo.liquid).
+
+  Behaviour + GSAP motion: assets/cv-header.js (loaded from layout/theme.liquid,
+  after the GSAP bundle). Styles: assets/cv-header.css. The sign artwork was
+  generated with GPT Image 2.5 and cut out to assets/header-sign-plaque.png and
+  assets/header-peppermint-{red,teal}.png.
+{%- endcomment -%}
+{{ 'cv-header.css' | asset_url | stylesheet_tag }}
+<script>
+  /* Hide the pieces that animate in until cv-header.js has set their start
+     state, so they don't flash in place first. Never under reduced motion, and
+     never for long: if GSAP is slow or blocked the header simply shows. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvh-pending');
+    setTimeout(function () { root.classList.remove('cvh-pending'); }, 1200);
+  })(document.documentElement);
+</script>
+
+{%- liquid
+  assign ticker_text = section.settings.ticker_text | default: 'Est. 1920 · Free shipping · 30-day returns' | escape
+  assign header_menu_links = linklists[section.settings.menu].links
+  assign header_contact_links = header_menu_links | where: 'url', '/pages/contact'
+  assign header_menu_links = header_menu_links | reject: 'url', '/pages/contact'
+  assign header_menu_links = header_menu_links | concat: header_contact_links
+-%}
+<div class="awning cvh-awning" aria-hidden="true">
+  <span class="cvh-awning__shade"></span>
+  <span class="cvh-ticker" data-cvh-enter>
+    <span class="cvh-ticker__track">
+      {%- for i in (1..12) -%}<span>{{ ticker_text }} ·</span>{%- endfor -%}
+    </span>
+  </span>
+  <span class="cvh-awning__valance" data-cvh-enter><span class="cvh-awning__scallops"></span></span>
+</div>
+
+{%- if section.settings.topbar_enable -%}
+<div class="topbar">
+  <div class="topbar__inner">
+    <span data-cvh-enter>{{ section.settings.topbar_left | default: 'Ships in 1-3 business days' | escape }}</span>
+    {%- if section.settings.topbar_pill != blank -%}
+      <span class="pill" data-cvh-enter>{{ section.settings.topbar_pill | escape }}</span>
+    {%- endif -%}
+    <span data-cvh-enter>{{ section.settings.topbar_right | default: '30-day returns' | escape }}</span>
+  </div>
+</div>
+{%- endif -%}
+
+<header class="nav" data-section-id="{{ section.id }}" data-section-type="header" data-nav-fx="{{ section.settings.nav_style | default: 'spotlight' }}">
+  <div class="nav__inner">
+    <button type="button" class="iconbtn" data-mobile-menu-toggle aria-label="Menu" aria-controls="cm-mobile-nav" aria-expanded="false" data-cvh-enter>
+      {% render 'icon', name: 'menu', size: 22 %}
+    </button>
+
+    {% render 'casify-logo', variant: 'light', class: 'brand', enter: true %}
+
+    {%- if section.settings.menu -%}
+    <nav class="nav__links" aria-label="Primary">
+      {%- for link in header_menu_links -%}
+        {%- liquid
+          assign nav_icon = ''
+          case link.title
+            when 'Contact'
+              assign nav_icon = 'mail'
+            when 'iPhone'
+              assign nav_icon = 'device'
+            when 'Samsung'
+              assign nav_icon = 'device-notch'
+            when 'Collections'
+              assign nav_icon = 'grid'
+          endcase
+        -%}
+        <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %} class="cm-underline nav__link" data-cvh-enter>
+          {%- if nav_icon != '' -%}{%- render 'cv-icon', name: nav_icon, size: 15, animate: true -%}{%- endif -%}
+          <span>{{ link.title }}</span>
+        </a>
+      {%- endfor -%}
+    </nav>
+    {%- endif -%}
+
+    <div class="nav__spacer"></div>
+
+    <div class="nav__icons">
+      <button type="button" class="iconbtn" data-search-toggle aria-label="Search" aria-controls="cm-search-panel" aria-expanded="false" data-cvh-enter>{% render 'icon', name: 'search', size: 18 %}</button>
+      <a href="{{ routes.cart_url }}" class="iconbtn" id="bagBtn" data-cart-drawer-open aria-label="Cart, {{ cart.item_count }} items" data-cvh-enter>
+        {% render 'icon', name: 'bag', size: 18 %}
+        <span class="badge" id="bagBadge" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+  {%- if section.settings.menu -%}
+    {%- comment -%} Menu hover animation layer (setting "nav_style"; driven by cv-header.js). {%- endcomment -%}
+    <span class="cvh-fx" aria-hidden="true">
+      <svg class="cvh-fx__defs" width="0" height="0" focusable="false"><filter id="cvh-goo" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/><feColorMatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter></svg>
+      <span class="cvh-fx__spot"><span class="cvh-fx__beam"></span><span class="cvh-fx__lamp"></span></span>
+      <span class="cvh-fx__bubble"><span class="cvh-fx__bubble-ico"></span></span>
+      <span class="cvh-fx__goo"><span class="cvh-fx__goo-pill"></span><span class="cvh-fx__goo-drop"></span></span>
+      <span class="cvh-fx__dot"></span>
+    </span>
+  {%- endif -%}
+  <span class="cvh-progress" aria-hidden="true"><span class="cvh-progress__fill"></span></span>
+</header>
+
+<div id="cm-search-panel" class="cm-search-panel" aria-hidden="true">
+  <form action="{{ routes.search_url }}" method="get" role="search" class="cm-container" style="padding:16px 24px;display:flex;gap:10px" data-predictive-search-form data-predictive-url="{{ routes.predictive_search_url }}">
+    <span class="cm-input-shell" style="flex:1;position:relative">
+      {% render 'icon', name: 'search', size: 16 %}
+      <input class="cm-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search sweets, gifts, and flavours&hellip;" aria-label="Search" autocomplete="off" data-predictive-search-input role="combobox" aria-expanded="false" aria-controls="cm-predictive-search-results" aria-owns="cm-predictive-search-results" aria-autocomplete="list">
+    </span>
+    <input type="hidden" name="type" value="product">
+    <button type="submit" class="btn btn--ghost cm-press">Search</button>
+  </form>
+  <div id="cm-predictive-search-results" class="cm-predictive-results" data-predictive-search-results hidden aria-live="polite"></div>
+</div>
+
+<div id="cm-mobile-nav-scrim" class="cm-mobile-nav__scrim" data-mobile-menu-close aria-hidden="true"></div>
+<nav id="cm-mobile-nav" class="cm-mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile" aria-hidden="true">
+  <div class="cm-mobile-nav__head">
+    <div class="cm-mobile-nav__head-inner">
+      <h3>Menu</h3>
+      <button type="button" class="cm-mobile-nav__close" data-mobile-menu-close aria-label="Close menu">
+        {% render 'icon', name: 'close', size: 18 %}
+      </button>
+    </div>
+  </div>
+  <div class="cm-mobile-nav__body">
+    {%- if section.settings.menu -%}
+      {%- for link in header_menu_links -%}
+        {%- liquid
+          assign nav_icon = ''
+          case link.title
+            when 'Contact'
+              assign nav_icon = 'mail'
+            when 'iPhone'
+              assign nav_icon = 'device'
+            when 'Samsung'
+              assign nav_icon = 'device-notch'
+            when 'Collections'
+              assign nav_icon = 'grid'
+          endcase
+        -%}
+        <a href="{{ link.url }}" class="cm-mobile-nav__link">
+          {%- if nav_icon != '' -%}{%- render 'cv-icon', name: nav_icon, size: 18, animate: true -%}{%- endif -%}
+          <span>{{ link.title }}</span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</nav>
+
+<style>
+  .cm-skip-link{position:absolute;left:-9999px;top:0;padding:10px 16px;background:var(--cocoa-600);color:#fff;z-index:1000}
+  .cm-skip-link:focus{left:8px;top:8px}
+  .cm-underline{position:relative;padding-bottom:2px}
+  .cm-underline::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--red-500);transform:scaleX(0);transform-origin:0 50%;transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-underline:hover::after,.cm-underline[aria-current=page]::after{transform:scaleX(1)}
+  .nav__link{display:inline-flex;align-items:center;gap:6px}
+  .nav__link .cv-ico{color:var(--red-500)}
+  .cm-search-panel{display:none;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));border-bottom:1px solid var(--border-hairline)}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-search-panel{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }
+  .cm-search-panel.is-open{display:block}
+  .cm-input-shell{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border-hairline);border-radius:5px;padding:9px 12px;box-shadow:inset 0 1px 2px rgba(74,51,36,.10)}
+  .cm-input{border:none;outline:none;background:transparent;width:100%;font:14px var(--font-body);color:var(--cocoa-600)}
+  .cm-predictive-results{max-width:var(--max);margin:0 auto;padding:0 24px 20px;display:flex;flex-direction:column;gap:14px}
+  .cm-predictive-results[hidden]{display:none}
+  .cm-predictive-results__queries{display:flex;flex-wrap:wrap;gap:8px}
+  .cm-predictive-results__query{font:600 12px var(--font-body);color:var(--cocoa-600);background:var(--cream-50);border:1px solid var(--border-hairline);border-radius:999px;padding:6px 12px;text-decoration:none}
+  .cm-predictive-results__query:hover{border-color:var(--red-500);color:var(--red-600)}
+  .cm-predictive-results__query strong{color:var(--red-600)}
+  .cm-predictive-results__group{display:flex;flex-direction:column;gap:2px}
+  .cm-predictive-results__group--links{flex-direction:row;flex-wrap:wrap;gap:8px 18px}
+  .cm-predictive-results__item{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;padding:8px;border-radius:8px;text-decoration:none;transition:background var(--duration-fast) var(--ease-standard)}
+  .cm-predictive-results__item:hover{background:var(--cream-50)}
+  .cm-predictive-results__thumb{width:48px;height:48px;border-radius:6px;overflow:hidden;background:var(--cream-200);display:block}
+  .cm-predictive-results__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .cm-predictive-results__text{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .cm-predictive-results__text strong{font:600 14px var(--font-body);color:var(--cocoa-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-predictive-results__price{font:700 13px var(--font-display);color:var(--red-600)}
+  .cm-predictive-results__link{font:600 12px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .cm-predictive-results__link:hover{color:var(--red-600)}
+  .cm-predictive-results__link small{font-weight:400;color:var(--cocoa-400);text-transform:none;letter-spacing:0}
+  .cm-predictive-results__viewall{align-self:flex-start;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--red-600);text-decoration:underline;text-underline-offset:3px}
+  .cm-predictive-results__empty{font:14px var(--font-body);color:var(--cocoa-500);margin:0}
+  .cm-mobile-nav{display:none;position:fixed;inset:0 0 0 auto;width:min(340px,88vw);height:100%;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(100%);transition:transform var(--duration-base) var(--ease-out-soft)}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }
+  .cm-mobile-nav.is-open{display:block;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}
+  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-hairline);background-image:repeating-linear-gradient(90deg,var(--red-500) 0 18px,var(--cream-50) 18px 36px)}
+  .cm-mobile-nav__head-inner{background:var(--surface-card);padding:6px 12px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}
+  .cm-mobile-nav__head-inner h3{margin:0;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)}
+  .cm-mobile-nav__close{background:none;border:0;color:var(--cocoa-600);cursor:pointer;padding:4px;display:grid;place-items:center}
+  .cm-mobile-nav__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
+  .cm-mobile-nav__scrim.is-open{opacity:1;pointer-events:auto}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav__scrim{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)} }
+  .cart-drawer{position:fixed;top:0;right:0;height:100%;width:420px;max-width:92vw;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));box-shadow:none;z-index:95;display:flex;flex-direction:column;transform:translateX(100%);transition:transform var(--duration-base) var(--ease-out-soft),box-shadow var(--duration-base) var(--ease-standard)}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cart-drawer{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }
+  .cart-drawer.is-open{transform:translateX(0);box-shadow:var(--shadow-lifted)} /* closed, the shadow would spill onto the page's right edge */
+  .cart-drawer__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
+  .cart-drawer__scrim.is-open{opacity:1;pointer-events:auto}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cart-drawer__scrim{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)} }
+  .cart-drawer__head{padding:14px 18px;background-image:repeating-linear-gradient(90deg,var(--red-500) 0 18px,var(--cream-50) 18px 36px)}
+  .cart-drawer__head-inner{background:var(--surface-card);padding:8px 14px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;flex:1}
+  .cart-drawer__head-inner h3{margin:0;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)}
+  .cart-drawer__close{background:none;border:0;color:var(--cocoa-600);cursor:pointer;padding:4px;display:grid;place-items:center}
+  .cart-drawer__body{flex:1;overflow-y:auto;padding:18px}
+  .cart-drawer__footer{padding:18px;border-top:1px solid var(--border-hairline);background:var(--surface-card)}
+  .cm-scroll-lock{overflow:hidden}
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "cvh-root",
+  "settings": [
+    { "type": "text", "id": "ticker_text", "label": "Awning ticker text", "default": "Est. 1920 · Free shipping · 30-day returns", "info": "Scrolls along the striped awning. Speeds up briefly as shoppers scroll." },
+    { "type": "checkbox", "id": "topbar_enable", "label": "Show topbar", "default": true },
+    { "type": "text", "id": "topbar_left", "label": "Topbar left text", "default": "Ships in 1-3 business days" },
+    { "type": "text", "id": "topbar_pill", "label": "Topbar centre pill (optional)", "default": "★ EST. 1920 · Still on awning duty" },
+    { "type": "text", "id": "topbar_right", "label": "Topbar right text", "default": "30-day returns" },
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
+    {
+      "type": "select", "id": "nav_style", "label": "Menu hover animation", "default": "spotlight",
+      "options": [
+        { "value": "spotlight", "label": "Sliding spotlight" },
+        { "value": "bubble", "label": "Floating red bubble" },
+        { "value": "blob", "label": "Liquid blob" },
+        { "value": "none", "label": "None (underline only)" }
+      ],
+      "info": "Follows the hovered menu link on desktop and rests on the current page's link. Off for visitors who prefer reduced motion."
+    }
+  ],
+  "presets": [{ "name": "Header" }]
+}
+{% endschema %}

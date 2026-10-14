@@ -1,0 +1,52 @@
+{% doc %}
+  Real sales count ("sales_note" block in sections/cv-product-counter.liquid).
+  The number is the product's own metafield (namespace.key, editable on each
+  product in Shopify admin as "Sold this week" / "Total sold"), or, when that
+  is empty, the number typed into the block in the theme editor. Renders
+  nothing when there is no number or it is below the minimum.
+  Two looks: a pill with a blinking dot, or a rocket line with a pulsing number.
+
+  @param {object} block - The sales_note block.
+  @param {object} product - The product being shown.
+{% enddoc %}
+{%- liquid
+  assign key_parts = block.settings.metafield | strip | split: '.'
+  assign count = 0
+  if key_parts.size == 2
+    assign ns = key_parts[0]
+    assign key = key_parts[1]
+    assign count = product.metafields[ns][key].value | plus: 0
+  endif
+  if count == 0 and block.settings.count != blank
+    assign count = block.settings.count | plus: 0
+  endif
+  assign round_to = block.settings.round_to | plus: 0
+  assign shown = count
+  if round_to > 1 and count >= round_to
+    assign shown = count | divided_by: round_to | floor | times: round_to | append: '+'
+  endif
+  assign style = block.settings.style | default: 'pill'
+-%}
+{%- if count > 0 and count >= block.settings.min_count -%}
+  {%- capture number -%}<strong class="cvc__sold-count">{{ shown }}</strong>{%- endcapture -%}
+  {%- if style == 'rocket' -%}
+    <p class="cvc__sold" {{ block.shopify_attributes }}>
+      <svg class="cvc__sold-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M12 2.8c3.4 2.3 5 5.7 5 9.4 0 1.6-.3 3.1-.9 4.4H7.9c-.6-1.3-.9-2.8-.9-4.4 0-3.7 1.6-7.1 5-9.4Z" fill="var(--cream-50)"/>
+        <circle cx="12" cy="10" r="2" fill="var(--teal-100)"/>
+        <path d="M7.9 16.6 5 19.2l.4-4.3 2-1.8M16.1 16.6l2.9 2.6-.4-4.3-2-1.8" fill="var(--red-500)" stroke="var(--red-700)"/>
+        <path d="M10.3 16.6h3.4l-.6 3.4-1.1 1.4-1.1-1.4z" fill="var(--gold-400)" stroke="var(--gold-500)"/>
+      </svg>
+      <span>{{ block.settings.text | escape | replace: '[count]', number }}</span>
+    </p>
+  {%- else -%}
+    <p class="cvc__pill cvc__pill--{{ block.settings.tone }}" {{ block.shopify_attributes }}>
+      <span class="cvc__pill-dot" aria-hidden="true"></span>
+      <span>{{ block.settings.text | escape | replace: '[count]', number }}</span>
+    </p>
+  {%- endif -%}
+{%- elsif request.design_mode -%}
+  <p class="cvc__pill cvc__pill--hint" {{ block.shopify_attributes }}>
+    <span>{{ 'products.sales_note.editor_hint' | t: key: block.settings.metafield, min: block.settings.min_count }}</span>
+  </p>
+{%- endif -%}

@@ -1,0 +1,714 @@
+/* =========================================================================
+   Casify — 3D phone scan (sections/cv-phone-scan.liquid)
+
+   Without .is-3d this file is the finished, compact layout: no JS, no WebGL
+   or reduced motion. assets/cv-phone-scan.js adds .is-3d once three.js is
+   running: every panel becomes a full screen, the 3D stage sticks over them
+   for the whole section, and the scanner panel pins.
+   ========================================================================= */
+
+.cvps {
+  --cvps-frame-w: min(80vw, 640px);
+  --cvps-frame-h: min(62vh, 560px);
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  background: var(--cream-100);
+  color: var(--cocoa-700);
+}
+
+/* ---------- Stage and backdrop (3D only) ---------- */
+.cvps__stage,
+.cvps__backdrop { display: none; }
+.cvps__stage canvas,
+.cvps__backdrop canvas { display: block; width: 100%; height: 100%; }
+
+/* ---------- Panels: compact ---------- */
+.cvps__panel {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 40px), var(--max, 1160px));
+  margin-inline: auto;
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+/* Opening */
+.cvps__hero { display: grid; justify-items: center; text-align: center; padding-bottom: 8px; }
+.cvps__title {
+  margin: 0;
+  color: var(--cocoa-700);
+  font: 800 clamp(3.4rem, 12.5vw, 10.5rem)/.84 var(--font-display);
+  letter-spacing: -.05em;
+}
+.cvps__line { display: block; overflow: hidden; padding: .04em .08em .1em; margin: -.04em -.08em -.1em; }
+.cvps__line > span { display: inline-block; }
+.cvps__line + .cvps__line > span { color: var(--red-500); font-style: italic; font-weight: 700; letter-spacing: -.04em; }
+.cvps__still {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(620px, 94%);
+  height: auto;
+  margin: clamp(-150px, -11vw, -44px) auto 0;
+}
+.cvps__hero-foot { display: grid; justify-items: center; gap: 10px; margin-top: 10px; }
+.cvps__kicker {
+  margin: 0;
+  color: var(--red-600);
+  font: 700 .78rem/1.35 var(--font-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+.cvps__lede { margin: 0; max-width: 40ch; color: var(--cocoa-600); font: .95rem/1.6 var(--font-body); }
+.cvps__hero-mid { display: grid; justify-items: center; gap: 12px; }
+
+/* "Find my case": skips the story and lands in the fitting room */
+.cvps__jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 13px 22px 12px 24px;
+  border-radius: 999px;
+  background: var(--cocoa-700);
+  box-shadow: 0 2px 0 var(--black), var(--shadow-md);
+  color: var(--cream-50);
+  font: 700 .74rem/1 var(--font-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+}
+.cvps__jump:hover { background: var(--red-500); transform: translateY(-1px); }
+.cvps__jump:active { transform: translateY(1px); }
+.cvps__jump:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.cvps__jump .cv-ico { transition: transform var(--duration-base) var(--ease-candy); }
+.cvps__jump:hover .cv-ico { transform: translateY(3px); }
+
+.cvps__pause {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-hairline);
+  border-radius: 999px;
+  background: rgb(var(--glass-tint) / .72);
+  color: var(--cocoa-600);
+  font: 700 .66rem/1 var(--font-label);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+.cvps__pause[hidden] { display: none; }
+.cvps__pause:hover { border-color: var(--cocoa-600); color: var(--cocoa-700); }
+.cvps__pause:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.cvps__pause-icon { display: inline-flex; }
+.cvps__pause .is-play,
+.cvps__pause[aria-pressed="true"] .is-pause { display: none; }
+.cvps__pause[aria-pressed="true"] .is-play { display: inline-flex; }
+@media (pointer: coarse) { .cvps__pause { min-height: 44px; } }
+
+/* Middle */
+.cvps__info { display: grid; justify-items: center; gap: 22px; text-align: center; }
+.cvps__tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.cvps__tags li {
+  padding: 8px 13px 7px;
+  border: 1px dashed var(--border-dashed);
+  border-radius: 999px;
+  background: rgb(var(--glass-tint) / .7);
+  color: var(--cocoa-600);
+  font: 700 .68rem/1.2 var(--font-label);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.cvps__tags li:nth-child(-n+2) { border: 1.5px solid var(--cocoa-600); color: var(--cocoa-700); }
+.cvps__statement {
+  margin: 0;
+  max-width: 23ch;
+  color: var(--cocoa-700);
+  font: 800 clamp(1.75rem, 3.7vw, 3.2rem)/1.08 var(--font-display);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+/* Scanner: a shop ticket when compact */
+.cvps__scanner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 22px 32px;
+  width: min(calc(100% - 40px), 760px);
+  margin-block: clamp(24px, 4vw, 48px);
+  padding: clamp(22px, 3vw, 32px);
+  border: 1.5px dashed var(--border-dashed);
+  border-radius: 14px;
+  background: var(--cream-50);
+  box-shadow: var(--shadow-diecut);
+}
+.cvps__scan-head { display: grid; gap: 10px; }
+.cvps__id { margin: 0; color: var(--cocoa-700); font: 800 clamp(2.6rem, 5vw, 3.8rem)/.95 var(--font-display); letter-spacing: -.035em; }
+.cvps__id-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--cocoa-400);
+  font: 700 .66rem/1 var(--font-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+.cvps__scan-text { margin: 0; max-width: 34ch; color: var(--cocoa-600); font: .92rem/1.55 var(--font-body); }
+.cvps__frame { display: none; }
+.cvps__scan-foot { display: grid; justify-items: end; gap: 16px; }
+/* Scan readout (3D only): the beam's progress, counted up as it passes */
+.cvps__readout { display: none; }
+.cvps.is-3d .cvps__readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: var(--cocoa-600);
+  font: 700 .7rem/1 var(--font-label);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.cvps__readout-bar {
+  position: relative;
+  width: clamp(72px, 9vw, 128px);
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(74, 51, 36, .14);
+}
+.cvps__readout-bar i { position: absolute; inset: 0; border-radius: inherit; background: var(--red-500); transform: scaleX(0); transform-origin: left; }
+.cvps__readout b { min-width: 4.2ch; color: var(--cocoa-700); font: inherit; font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+.cvps__readout.is-done b { color: var(--red-600); }
+.cvps__stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 10px 17px 9px;
+  border: 2px solid var(--red-500);
+  border-radius: 999px;
+  background: rgb(var(--glass-tint) / .86);
+  box-shadow: inset 0 0 0 2px rgb(var(--glass-tint) / .9), inset 0 0 0 3.5px rgba(196, 48, 43, .35);
+  color: var(--red-600);
+  font: 700 .8rem/1 var(--font-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+}
+
+/* Fit check: a ticked list on the compact ticket; in 3D each line ticks as the beam passes */
+.cvps__checks { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 4px 0 0; padding: 0; list-style: none; }
+.cvps__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cocoa-400);
+  font: 700 .68rem/1.2 var(--font-label);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+.cvps__check-box {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px dashed var(--border-dashed);
+  border-radius: 5px;
+  color: var(--cream-50);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
+}
+.cvps:not(.is-3d) .cvps__check,
+.cvps__check.is-hit { color: var(--cocoa-700); }
+.cvps:not(.is-3d) .cvps__check-box,
+.cvps__check.is-hit .cvps__check-box { border-style: solid; border-color: var(--red-500); background: var(--red-500); }
+
+/* ---------- Fitting room ---------- */
+.cvps__fit { display: grid; justify-items: center; gap: clamp(20px, 2.6vw, 30px); text-align: center; }
+/* the skip-ahead link's plain anchor jump clears the sticky header (3D mode glides there itself) */
+.cvps:not(.is-3d) .cvps__fit { scroll-margin-top: 80px; }
+.cvps__fit-head { display: grid; justify-items: center; gap: 12px; }
+.cvps__fit-eyebrow {
+  margin: 0;
+  color: var(--red-600);
+  font: 700 .74rem/1.3 var(--font-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+.cvps__fit-title {
+  margin: 0;
+  color: var(--cocoa-700);
+  font: 800 clamp(2.5rem, 5.4vw, 4.8rem)/.98 var(--font-display);
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+/* SplitText's word masks (JS): room for descenders and the italic overhang */
+.cvps__fit-word-mask { padding: .02em .06em .18em; margin: -.02em -.06em -.18em; }
+.cvps__closing { margin: 0; max-width: 36ch; color: var(--cocoa-600); font: clamp(.95rem, 1.3vw, 1.08rem)/1.6 var(--font-body); text-wrap: pretty; }
+.cvps__fit-slot { display: none; }
+.cvps__fit-body { display: grid; justify-items: center; gap: 18px; width: 100%; max-width: 560px; }
+
+/* Model chips: radios dressed as price-board tiles */
+.cvps__models {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.cvps__models-legend,
+.cvps__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.cvps__model { position: relative; display: block; min-width: 0; cursor: pointer; }
+.cvps__model-input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.cvps__model-face {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  height: 100%;
+  min-height: 64px;
+  padding: 12px 8px 11px;
+  border: 1.5px solid var(--border-hairline);
+  border-radius: 12px;
+  background: var(--cream-50);
+  box-shadow: var(--shadow-diecut);
+  text-align: center;
+  transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), translate var(--duration-base) var(--ease-candy);
+}
+.cvps__model-name { color: var(--cocoa-700); font: 800 clamp(.92rem, 1.35vw, 1.1rem)/1.15 var(--font-display); letter-spacing: -.01em; }
+.cvps__model-count { color: var(--cocoa-400); font: 700 .62rem/1.2 var(--font-label); letter-spacing: .12em; text-transform: uppercase; }
+.cvps__model:hover .cvps__model-face { border-color: var(--cocoa-400); translate: 0 -2px; }
+.cvps__model-input:checked + .cvps__model-face {
+  border-color: var(--red-600);
+  background: var(--red-500);
+  box-shadow: 0 2px 0 var(--red-700), var(--shadow-md);
+}
+.cvps__model-input:checked + .cvps__model-face .cvps__model-name,
+.cvps__model-input:checked + .cvps__model-face .cvps__model-count { color: var(--cream-50); }
+.cvps__model-input:focus-visible + .cvps__model-face { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+
+.cvps__fit-hint { margin: 0; color: var(--cocoa-400); font: italic .9rem/1.5 var(--font-body); }
+
+/* One panel per model; only the picked one shows. Without :has() they all show, stacked. */
+.cvps__fit-panel { display: none; justify-items: center; gap: 16px; width: 100%; }
+.cvps__fit:has([value="iphone-18"]:checked) [data-cvps-panel="iphone-18"],
+.cvps__fit:has([value="iphone-18-pro"]:checked) [data-cvps-panel="iphone-18-pro"],
+.cvps__fit:has([value="iphone-18-pro-max"]:checked) [data-cvps-panel="iphone-18-pro-max"] { display: grid; }
+.cvps__fit:has(.cvps__model-input:checked) .cvps__fit-hint { display: none; }
+@supports not selector(:has(*)) {
+  .cvps__fit-panel { display: grid; }
+  .cvps__fit-hint { display: none; }
+}
+
+.cvps__fit-count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px 9px;
+  margin: 0;
+  color: var(--cocoa-600);
+  font: .98rem/1.4 var(--font-body);
+}
+.cvps__fit-count b { color: var(--red-500); font: 800 clamp(2.2rem, 3.4vw, 2.9rem)/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+.cvps__fit-count.is-none { font-style: italic; }
+.cvps__fit-from { color: var(--cocoa-400); font: 700 .68rem/1 var(--font-label); letter-spacing: .14em; text-transform: uppercase; }
+
+/* Cards: the first cases cut for the picked phone */
+.cvps__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; margin: 0; padding: 0; list-style: none; }
+.cvps__card { min-width: 0; }
+.cvps__card-link {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px;
+  height: 100%;
+  padding: 7px 7px 10px;
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  background: var(--cream-50);
+  box-shadow: var(--shadow-diecut);
+  color: var(--cocoa-700);
+  text-align: left;
+  text-decoration: none;
+  transition: translate var(--duration-base) var(--ease-candy), box-shadow var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
+}
+.cvps__card-link:hover { translate: 0 -3px; border-color: var(--cocoa-400); box-shadow: var(--shadow-diecut), var(--shadow-lg); }
+.cvps__card-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.cvps__card-media { display: block; aspect-ratio: 1; overflow: hidden; border-radius: 6px; background: var(--cream-200); }
+.cvps__card-img { display: block; width: 100%; height: 100%; object-fit: cover; transition: scale var(--duration-slow, .5s) var(--ease-out-soft); }
+.cvps__card-link:hover .cvps__card-img { scale: 1.05; }
+.cvps__card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  padding-inline: 2px;
+  font: 700 .74rem/1.3 var(--font-body);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.cvps__card-price { padding-inline: 2px; color: var(--red-600); font: 700 .74rem/1 var(--font-label); letter-spacing: .04em; }
+.cvps__card-price s { margin-left: 3px; color: var(--cocoa-400); font-weight: 400; }
+
+.cvps__fit-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 15px 26px 14px;
+  border-radius: 999px;
+  background: var(--red-500);
+  box-shadow: 0 2px 0 var(--red-700), var(--shadow-md);
+  color: var(--cream-50);
+  font: 700 .78rem/1.2 var(--font-label);
+  letter-spacing: .14em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard), translate var(--duration-fast) var(--ease-standard);
+}
+.cvps__fit-cta:hover { background: var(--red-600); translate: 0 -1px; }
+.cvps__fit-cta:active { translate: 0 1px; }
+.cvps__fit-cta:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.cvps__fit-cta .cv-ico { flex: none; transition: transform var(--duration-base) var(--ease-candy); }
+.cvps__fit-cta:hover .cv-ico { transform: translateX(4px); }
+
+.cvps__fit-foot { display: grid; justify-items: center; gap: 10px; }
+.cvps__other { color: var(--cocoa-600); font: .88rem/1.5 var(--font-body); text-decoration: underline; text-decoration-color: var(--border-dashed); text-underline-offset: 3px; }
+.cvps__other:hover { color: var(--red-600); text-decoration-color: currentColor; }
+.cvps__other:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.cvps__rating { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; margin: 0; color: var(--cocoa-600); font: .78rem/1.35 var(--font-body); }
+.cvps__rating b { color: var(--cocoa-700); font: 700 .78rem/1 var(--font-label); letter-spacing: .06em; }
+.cvps__stars { position: relative; display: inline-flex; }
+.cvps__stars-base,
+.cvps__stars-fill { display: flex; gap: 1px; }
+.cvps__stars-base { color: var(--cream-400); }
+.cvps__stars-fill { position: absolute; inset: 0 auto 0 0; width: var(--cvps-fill, 100%); overflow: hidden; color: var(--gold-500); }
+.cvps__snap,
+.cvps__fit-drag { display: none; }
+
+/* ---------- 3D layout ---------- */
+/* The room: under the panels (the stage draws above them). */
+.cvps.is-3d .cvps__backdrop {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100vh;
+  margin-bottom: -100vh;
+  pointer-events: none;
+}
+.cvps.is-3d .cvps__stage {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 100vh;
+  margin-bottom: -100vh;
+  pointer-events: none;
+}
+.cvps.is-3d .cvps__still { display: none; }
+.cvps.is-3d .cvps__panel { width: min(calc(100% - 40px), 1320px); min-height: 100vh; margin-block: 0; }
+
+/* Opening: the headline sits behind the phones, the small print along the bottom */
+.cvps.is-3d .cvps__hero {
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 92px 0 clamp(24px, 4.5vh, 46px);
+}
+.cvps.is-3d .cvps__title { font-size: clamp(4.2rem, 15vw, 15.5rem); }
+/* three.js draws the display text as solid letters at these exact spots;
+ * the HTML keeps the layout and stays readable to screen readers and search. */
+.cvps.is-3d .cvps__ghost { opacity: 0; }
+.cvps__base { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+/* SplitText's word masks (JS) on the smaller copy: room for descenders and italics */
+.cvps__wd-mask { padding: .06em .05em .14em; margin: -.06em -.05em -.14em; }
+/* Scanner number: SplitText flips its characters in (JS) */
+.cvps.is-3d .cvps__id-value { display: inline-block; perspective: 600px; }
+.cvps.is-3d .cvps__hero-foot {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  justify-items: stretch;
+  gap: 18px;
+  width: 100%;
+  margin: 0;
+}
+.cvps.is-3d .cvps__kicker { justify-self: start; max-width: 26ch; text-align: left; }
+.cvps.is-3d .cvps__hero-mid { justify-self: center; }
+.cvps.is-3d .cvps__pause { justify-self: end; }
+
+/* Middle: the phones part to either side of the statement */
+.cvps.is-3d .cvps__info { align-content: center; gap: 28px; padding-block: 12vh; }
+.cvps.is-3d .cvps__statement { max-width: 19ch; font-size: clamp(2rem, 4vw, 3.9rem); }
+
+/* Scanner: full screen; the frame is centred on the phones */
+.cvps.is-3d .cvps__scanner {
+  grid-template-columns: none;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  margin: 0 auto;
+  padding: 92px 0 clamp(24px, 5vh, 48px);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.cvps.is-3d .cvps__scan-head { display: flex; justify-content: space-between; align-items: start; gap: 24px; }
+/* Each side of the heading stays in the gutter beside the centred frame. */
+.cvps.is-3d .cvps__scan-head > * { max-width: calc((100% - var(--cvps-frame-w)) / 2 - 18px); }
+.cvps.is-3d .cvps__scan-text { max-width: min(28ch, calc((100% - var(--cvps-frame-w)) / 2 - 18px)); text-align: right; }
+.cvps.is-3d .cvps__scan-foot { grid-row: 3; display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+
+/* Fit check: a box the size of the frame; each line sits outside its left
+ * edge at the height of its part of the phones (--cvps-at, set by the JS),
+ * with a dashed lead-in to the frame. */
+.cvps.is-3d .cvps__checks {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: var(--cvps-frame-w);
+  max-width: none;
+  height: var(--cvps-frame-h);
+  margin: auto;
+  pointer-events: none;
+}
+.cvps.is-3d .cvps__check {
+  position: absolute;
+  top: calc(var(--cvps-at, .5) * 100%);
+  right: calc(100% + 6px);
+  width: 168px;
+  translate: 0 -50%;
+}
+/* the lead-in runs from the label to the frame; it fades once the frame folds (--cvps-lead, JS) */
+.cvps.is-3d .cvps__check::after {
+  content: "";
+  flex: 1;
+  min-width: 14px;
+  border-top: 1.5px dashed var(--border-dashed);
+  opacity: var(--cvps-lead, 1);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+.cvps.is-3d .cvps__check.is-hit::after { border-top-style: solid; border-color: var(--red-500); }
+/* Too little room beside the frame (and on narrow screens): stacked under it, opposite the scan readout. */
+.cvps.is-3d.cvps--checks-low .cvps__checks {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+  inset: auto 0 clamp(24px, 5vh, 48px) auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+.cvps.is-3d.cvps--checks-low .cvps__check { position: static; width: auto; translate: none; }
+.cvps.is-3d.cvps--checks-low .cvps__check::after { content: none; }
+.cvps.is-3d .cvps__frame {
+  --cvps-hit: var(--cocoa-700);
+  display: block;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--cvps-frame-w);
+  height: var(--cvps-frame-h);
+  border: 1.5px dashed rgba(74, 51, 36, .3);
+  border-radius: 26px;
+  pointer-events: none;
+}
+.cvps__frame i {
+  position: absolute;
+  width: clamp(26px, 3vw, 40px);
+  height: clamp(26px, 3vw, 40px);
+  border: 3px solid var(--cvps-hit);
+}
+.cvps__frame i:nth-child(1) { top: -9px; left: -9px; border-right: 0; border-bottom: 0; border-top-left-radius: 20px; }
+.cvps__frame i:nth-child(2) { top: -9px; right: -9px; border-left: 0; border-bottom: 0; border-top-right-radius: 20px; }
+.cvps__frame i:nth-child(3) { bottom: -9px; right: -9px; border-left: 0; border-top: 0; border-bottom-right-radius: 20px; }
+.cvps__frame i:nth-child(4) { bottom: -9px; left: -9px; border-right: 0; border-top: 0; border-bottom-left-radius: 20px; }
+
+/* The stamp lands where the frame folded away */
+.cvps.is-3d .cvps__stamp {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: max-content;
+  height: max-content;
+  margin: auto;
+  gap: 12px;
+  padding: 18px 30px 16px;
+  border-width: 3px;
+  font-size: clamp(1.05rem, 2.2vw, 1.6rem);
+  letter-spacing: .2em;
+  box-shadow: inset 0 0 0 3px rgb(var(--glass-tint) / .9), inset 0 0 0 5px rgba(196, 48, 43, .35), var(--shadow-md);
+}
+.cvps.is-3d .cvps__stamp .cv-ico { width: 22px !important; height: 22px !important; }
+
+/* The scan beam rides above the phones, inside the stage */
+.cvps__beam {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--cvps-frame-w);
+  height: var(--cvps-frame-h);
+  overflow: hidden;
+  border-radius: 26px;
+  visibility: hidden;
+}
+.cvps__beam i {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--red-500);
+  box-shadow: 0 0 10px 2px rgba(196, 48, 43, .55), 0 0 36px 9px rgba(196, 48, 43, .22);
+}
+.cvps__beam i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 90px;
+  background: linear-gradient(to top, rgba(196, 48, 43, .16), rgba(196, 48, 43, 0));
+}
+
+/* Fitting room: copy on the left, the 3D slot on the right; it scrolls
+ * normally (no pin) and the phones follow the slot. */
+.cvps.is-3d .cvps__fit {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "head slot" "body slot";
+  align-items: start;
+  justify-items: stretch;
+  column-gap: clamp(28px, 4.5vw, 72px);
+  row-gap: 24px;
+  padding-block: clamp(84px, 11vh, 120px) clamp(32px, 7vh, 72px);
+  text-align: left;
+}
+.cvps.is-3d .cvps__fit-head { grid-area: head; justify-items: start; align-self: end; }
+.cvps.is-3d .cvps__fit-body { grid-area: body; justify-items: start; max-width: 540px; }
+.cvps.is-3d .cvps__fit-panel { justify-items: start; }
+.cvps.is-3d .cvps__fit-count { justify-content: flex-start; }
+.cvps.is-3d .cvps__fit-foot { justify-items: start; }
+.cvps.is-3d .cvps__fit-slot {
+  grid-area: slot;
+  display: block;
+  position: relative;
+  align-self: stretch;
+  min-height: min(76vh, 720px);
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.cvps.is-3d .cvps__fit-slot.is-hover { cursor: pointer; }
+.cvps.is-3d.is-picked .cvps__fit-slot { cursor: grab; }
+.cvps.is-3d.is-picked .cvps__fit-slot.is-dragging { cursor: grabbing; }
+/* The ring that goes out behind the phone as its case seats */
+.cvps.is-3d .cvps__snap {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(70%, 62vh);
+  aspect-ratio: 1;
+  margin: calc(min(70%, 62vh) / -2) 0 0 calc(min(70%, 62vh) / -2);
+  border: 2px solid var(--red-500);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.cvps.is-3d .cvps__fit-drag {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 6px;
+  padding: 7px 13px 6px;
+  border: 1px dashed var(--border-dashed);
+  border-radius: 999px;
+  background: rgb(var(--glass-tint) / .8);
+  color: var(--cocoa-600);
+  font: 700 .62rem/1 var(--font-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-standard), translate var(--duration-base) var(--ease-standard);
+  pointer-events: none;
+}
+.cvps.is-3d.is-picked .cvps__fit-drag { opacity: 1; translate: -50% 0; transition-delay: 1.6s; }
+
+/* ---------- Narrow screens (portrait): JS uses the same 4:5 breakpoint ---------- */
+@media (max-aspect-ratio: 4/5) {
+  .cvps.is-3d .cvps__hero { grid-template-rows: auto minmax(0, 1fr) auto; align-items: start; padding-top: 84px; }
+  .cvps.is-3d .cvps__hero-foot { grid-row: 3; grid-template-columns: minmax(0, 1fr) auto; row-gap: 14px; }
+  .cvps.is-3d .cvps__hero-mid { grid-column: 1 / -1; grid-row: 1; }
+  .cvps.is-3d .cvps__lede { display: none; }
+  .cvps.is-3d .cvps__info { align-content: end; padding-block: 0 9vh; }
+  .cvps.is-3d .cvps__scan-head { display: grid; gap: 8px; }
+  .cvps.is-3d .cvps__scan-head > *,
+  .cvps.is-3d .cvps__scan-text { max-width: 34ch; text-align: left; }
+  .cvps.is-3d .cvps__fit {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "head" "slot" "body";
+    justify-items: center;
+    row-gap: 18px;
+    padding-top: 88px;
+    text-align: center;
+  }
+  .cvps.is-3d .cvps__fit-head,
+  .cvps.is-3d .cvps__fit-body,
+  .cvps.is-3d .cvps__fit-panel,
+  .cvps.is-3d .cvps__fit-foot { justify-items: center; }
+  .cvps.is-3d .cvps__fit-count { justify-content: center; }
+  .cvps.is-3d .cvps__fit-slot { width: 100%; min-height: clamp(260px, 40vh, 420px); }
+}
+
+@media (max-width: 640px) {
+  .cvps__scanner { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .cvps__scan-foot { display: flex; justify-content: space-between; align-items: end; }
+  .cvps.is-3d .cvps__kicker { font-size: .7rem; }
+  .cvps__model-face { min-height: 58px; padding-inline: 4px; }
+  .cvps__model-count { letter-spacing: .08em; }
+  .cvps__cards { gap: 8px; }
+  .cvps__card-title { font-size: .7rem; }
+  .cvps__fit-cta { width: 100%; padding-inline: 18px; }
+}
+
+/* theme.css caps every h2 on small phones with !important; opt out like .cvvs__title. */
+@media (max-width: 420px) {
+  .cvps .cvps__title { font-size: clamp(3.3rem, 18vw, 5.2rem) !important; }
+  .cvps.is-3d .cvps__title { font-size: clamp(3.6rem, 20.5vw, 6rem) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvps__jump,
+  .cvps__jump .cv-ico,
+  .cvps__model-face,
+  .cvps__card-link,
+  .cvps__card-img,
+  .cvps__fit-cta,
+  .cvps__fit-cta .cv-ico { transition: none; }
+  .cvps__jump:hover,
+  .cvps__model:hover .cvps__model-face,
+  .cvps__card-link:hover,
+  .cvps__fit-cta:hover { transform: none; translate: none; }
+  .cvps__jump:hover .cv-ico,
+  .cvps__fit-cta:hover .cv-ico { transform: none; }
+  .cvps__card-link:hover .cvps__card-img { scale: none; }
+}

@@ -1,0 +1,49 @@
+{%- comment -%}
+  Casify logo — drop this snippet in any section, header, footer, etc.
+  Usage:  {% render 'casify-logo', variant: 'light', class: 'brand', enter: true %}
+          {% render 'casify-logo', variant: 'dark', size: 32 %}
+  Params: variant  'light' (default) | 'dark' — only the fallback text colour
+          size     sign height = size × 1.6 px; omit to use the responsive
+                   header sizes from cv-header.css
+          class    extra classes on the link
+          enter    true in the header: marks the pieces cv-header.js animates in
+
+  With no merchant logo (Theme settings → Logo image) this renders the hanging
+  shop sign: a scalloped enamel plaque flanked by two peppermints, generated
+  with GPT Image 2.5 and cut out to assets/header-sign-plaque.png (720×255) and
+  assets/header-peppermint-{red,teal}.png. Kept as three images so the header
+  can swing the plaque and spin the mints independently; sizing and the
+  non-rotating gloss on the mints live in assets/cv-header.css.
+{%- endcomment -%}
+{%- assign v = variant | default: 'light' -%}
+{%- assign enter_attr = '' -%}
+{%- if enter -%}{%- assign enter_attr = ' data-cvh-enter' -%}{%- endif -%}
+<a href="{{ routes.root_url }}" class="casify-logo casify-logo--{{ v }}{% if class != blank %} {{ class }}{% endif %}" aria-label="{{ shop.name | default: 'Casify' | escape }} home">
+  {%- if settings.logo != blank -%}
+    {%- assign lh = settings.logo_height | default: 56 -%}
+    {%- assign lw = settings.logo.aspect_ratio | times: lh | round -%}
+    {%- assign src_w = lw | times: 2 -%}
+    <span class="casify-logo__img-wrap">
+      {{ settings.logo | image_url: width: src_w | image_tag: width: lw, height: lh, alt: shop.name, style: 'display:block', class: 'casify-logo__img' }}
+    </span>
+  {%- else -%}
+    {%- liquid
+      assign sign_h = 54
+      assign mint_px = 34
+      if size
+        assign sign_h = size | times: 1.6 | round
+        assign mint_px = size
+      endif
+      assign plaque_w = sign_h | times: 720 | divided_by: 255
+    -%}
+    <span class="casify-sign"{% if size %} style="--sign-h:{{ sign_h }}px;--mint:{{ mint_px }}px"{% endif %}>
+      <span class="casify-sign__mint casify-sign__mint--red"{{ enter_attr }}>
+        <img src="{{ 'header-peppermint-red.png' | asset_url }}" width="{{ mint_px }}" height="{{ mint_px }}" alt="" loading="eager">
+      </span>
+      <img class="casify-sign__plaque" src="{{ 'header-sign-plaque.png' | asset_url }}" width="{{ plaque_w }}" height="{{ sign_h }}" alt="" loading="eager" fetchpriority="high"{{ enter_attr }}>
+      <span class="casify-sign__mint casify-sign__mint--teal"{{ enter_attr }}>
+        <img src="{{ 'header-peppermint-teal.png' | asset_url }}" width="{{ mint_px }}" height="{{ mint_px }}" alt="" loading="eager">
+      </span>
+    </span>
+  {%- endif -%}
+</a>

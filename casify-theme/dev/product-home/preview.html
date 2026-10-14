@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop Counter + home sections preview</title>
+<link rel="stylesheet" href="../../assets/theme.css">
+<link rel="stylesheet" href="../../assets/cv-header.css">
+<link rel="stylesheet" href="../../assets/cv-pdp-counter.css">
+<link rel="stylesheet" href="../../assets/cv-pdp-extras.css">
+<link rel="stylesheet" href="../../assets/cv-pdp-story.css">
+<link rel="stylesheet" href="../../assets/cv-pdp-home.css">
+<style>
+  /* Harness only. url() in these custom properties resolves against assets/cv-pdp-counter.css, which uses them. */
+  body { background: #f6f3e6 url(../../assets/plates/page-ground.png) repeat; }
+  .cvc { --cvc-box: url(pdp-counter-box.webp); --cvc-box-teal: url(pdp-counter-box-teal.webp); }
+  .cvp { --cvs-paper: url(pdp-slip-paper.png); }
+  .nav__link{display:inline-flex;align-items:center;gap:6px}
+  .cm-icon svg,.cv-ico svg{width:100%;height:100%}
+  .cv-ico{display:inline-flex;width:var(--s,20px);height:var(--s,20px)}
+  /* ?plates=1: plates only, for the hero gate's first capture */
+  html.pv-plates .cvc__crumbs, html.pv-plates .cvc__vendor, html.pv-plates .cvc__tag-price, html.pv-plates .cvc__tag-sale, html.pv-plates .cvc__title,
+  html.pv-plates .cvc__price-saving,
+  html.pv-plates .cvc__rating, html.pv-plates .cvc__opt, html.pv-plates .cvc__pack > *, html.pv-plates .cvc__savings,
+  html.pv-plates .cvc__buttons, html.pv-plates .cvc__shipby, html.pv-plates .cvc__ribbon, html.pv-plates .cvc__accs,
+  html.pv-plates .cvc__zoom, html.pv-plates .cvp { visibility: hidden; }
+</style>
+<script>
+  if (/[?&]plates=1/.test(location.search)) document.documentElement.classList.add('pv-plates');
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvh-pending');
+    root.classList.add('cvc-pending');
+    setTimeout(function () { root.classList.remove('cvh-pending'); root.classList.remove('cvc-pending'); }, 1400);
+  })(document.documentElement);
+  /* Harness: no storefront. Cart calls resolve locally and "checkout" is a hash, so Buy now can be exercised. */
+  window.Shopify = { routes: { root: '#/' } };
+</script>
+</head>
+<body class="template-product cv-tpl">
+
+<div id="shopify-section-header" class="shopify-section shopify-section-group-header-group cvh-root">
+  <div class="awning cvh-awning" aria-hidden="true">
+    <span class="cvh-awning__shade"></span>
+    <span class="cvh-ticker" data-cvh-enter><span class="cvh-ticker__track"><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span><span>Est. 1920 · Free shipping · 30-day returns ·</span></span></span>
+    <span class="cvh-awning__valance" data-cvh-enter><span class="cvh-awning__scallops"></span></span>
+  </div>
+  <div class="topbar"><div class="topbar__inner"><span data-cvh-enter>Ships in 1-3 business days</span><span class="pill" data-cvh-enter>★ EST. 1920 · Still on awning duty</span><span data-cvh-enter>30-day returns</span></div></div>
+  <header class="nav" data-section-id="header" data-section-type="header">
+    <div class="nav__inner">
+      <button type="button" class="iconbtn" data-mobile-menu-toggle aria-label="Menu" data-cvh-enter><span class="cm-icon" style="width:22px;height:22px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></span></button>
+      <a href="#" class="casify-logo casify-logo--light brand" aria-label="Casify home">
+        <span class="casify-sign">
+          <span class="casify-sign__mint casify-sign__mint--red" data-cvh-enter><img src="../../assets/header-peppermint-red.png" width="34" height="34" alt=""></span>
+          <img class="casify-sign__plaque" src="../../assets/header-sign-plaque.png" width="152" height="54" alt="" data-cvh-enter>
+          <span class="casify-sign__mint casify-sign__mint--teal" data-cvh-enter><img src="../../assets/header-peppermint-teal.png" width="34" height="34" alt=""></span>
+        </span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#" class="cm-underline nav__link" data-cvh-enter><span>iPhone</span></a>
+        <a href="#" class="cm-underline nav__link" data-cvh-enter><span>Samsung</span></a>
+        <a href="#" class="cm-underline nav__link" data-cvh-enter><span>Collections</span></a>
+        <a href="#" class="cm-underline nav__link" data-cvh-enter><span>Contact</span></a>
+      </nav>
+      <div class="nav__spacer"></div>
+      <div class="nav__icons">
+        <a href="#" class="iconbtn" aria-label="Account" data-cvh-enter><span class="cm-icon" style="width:18px;height:18px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span></a>
+        <a href="#" class="iconbtn" aria-label="Cart, 2 items" data-cvh-enter><span class="cm-icon" style="width:18px;height:18px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><span class="badge" data-cart-count>2</span></a>
+      </div>
+    </div>
+    <span class="cvh-progress" aria-hidden="true"><span class="cvh-progress__fill"></span></span>
+  </header>
+</div>
+
+<main id="MainContent" role="main" tabindex="-1">
+  <!-- Mirrors sections/cv-product-counter.liquid for "Transparent Magnetic Phone Case for iPhone" (real option values and price; variants built below). -->
+  <div id="shopify-section-main" class="shopify-section">
+  <section class="cvc" id="cvPdp" data-cv-pdp="counter"
+           data-current-options='["Magnetic Case Camera Cutout Transparent","iPhone 17 Pro / 18 Pro"]'
+           data-money-format="${{amount}}" data-model-index="1" data-max-pct="31" data-compare-at-fallback="5999">
+    <div class="cvc__inner">
+      <nav class="cvc__crumbs" aria-label="Breadcrumb">
+        <a href="#">Home</a><span aria-hidden="true">/</span><a href="#">Cases</a><span aria-hidden="true">/</span><span aria-current="page">Transparent Magnetic Phone Case for iPhone</span>
+      </nav>
+
+      <div class="cvc__grid">
+        <div class="cvc__gallery">
+          <div class="cvc__photo-reel-shell">
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--vertical" aria-hidden="true"><svg viewBox="0 0 24 320" preserveAspectRatio="none"><path class="cvc__photo-reel-shadow" d="M12 7V313"/><path class="cvc__photo-reel-cream" d="M12 7V313"/><path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M12 7V313"/></svg></span>
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--horizontal" aria-hidden="true"><svg viewBox="0 0 320 24" preserveAspectRatio="none"><path class="cvc__photo-reel-shadow" d="M7 12H313"/><path class="cvc__photo-reel-cream" d="M7 12H313"/><path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M7 12H313"/></svg></span>
+            <img class="cvc__photo-reel-sweet cvc__photo-reel-sweet--start" src="../../assets/hero-sweet-wrapped-red.webp" alt="" width="80" height="80">
+            <div class="cvc__photo-reel" role="tablist" aria-label="Product photos">
+              <button type="button" class="cvc__photo-ticket" role="tab" data-cv-thumb aria-selected="true" aria-label="Photo 1 of 5" data-cv-full="featured.jpg" data-cv-zoom="featured.jpg"><span class="cvc__photo-ticket-card"><svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true"><path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-perf" d="M13 86H83"/></svg><span class="cvc__photo-ticket-image"><img src="../../assets/plates/thumb-1.png" alt="" width="160" height="160"></span><span class="cvc__photo-ticket-no" aria-hidden="true">1</span></span></button>
+              <button type="button" class="cvc__photo-ticket" role="tab" data-cv-thumb aria-selected="false" aria-label="Photo 2 of 5" data-cv-full="../../dev/product/raw/tmc-full-2.jpg" data-cv-zoom="../../dev/product/raw/tmc-full-2.jpg"><span class="cvc__photo-ticket-card"><svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true"><path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-perf" d="M13 86H83"/></svg><span class="cvc__photo-ticket-image"><img src="../../assets/plates/thumb-2.png" alt="" width="160" height="160"></span><span class="cvc__photo-ticket-no" aria-hidden="true">2</span></span></button>
+              <button type="button" class="cvc__photo-ticket" role="tab" data-cv-thumb aria-selected="false" aria-label="Photo 3 of 5" data-cv-full="../../dev/product/raw/tmc-full-3.jpg" data-cv-zoom="../../dev/product/raw/tmc-full-3.jpg"><span class="cvc__photo-ticket-card"><svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true"><path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-perf" d="M13 86H83"/></svg><span class="cvc__photo-ticket-image"><img src="../../assets/plates/thumb-3.png" alt="" width="160" height="160"></span><span class="cvc__photo-ticket-no" aria-hidden="true">3</span></span></button>
+              <button type="button" class="cvc__photo-ticket" role="tab" data-cv-thumb aria-selected="false" aria-label="Photo 4 of 5" data-cv-full="../../dev/product/raw/tmc-full-4.jpg" data-cv-zoom="../../dev/product/raw/tmc-full-4.jpg"><span class="cvc__photo-ticket-card"><svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true"><path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-perf" d="M13 86H83"/></svg><span class="cvc__photo-ticket-image"><img src="../../assets/plates/thumb-4.png" alt="" width="160" height="160"></span><span class="cvc__photo-ticket-no" aria-hidden="true">4</span></span></button>
+              <button type="button" class="cvc__photo-ticket" role="tab" data-cv-thumb aria-selected="false" aria-label="Photo 5 of 5" data-cv-full="../../dev/product/raw/tmc-full-5.jpg" data-cv-zoom="../../dev/product/raw/tmc-full-5.jpg"><span class="cvc__photo-ticket-card"><svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true"><path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/><path class="cvc__photo-ticket-perf" d="M13 86H83"/></svg><span class="cvc__photo-ticket-image"><img src="../../assets/plates/thumb-5.png" alt="" width="160" height="160"></span><span class="cvc__photo-ticket-no" aria-hidden="true">5</span></span></button>
+            </div>
+            <img class="cvc__photo-reel-sweet cvc__photo-reel-sweet--end" src="../../assets/hero-sweet-wrapped-teal.webp" alt="" width="80" height="80">
+          </div>
+          <div class="cvc__stage">
+            <img class="cvc__photo" id="cvMainImage" src="featured.jpg" width="1400" height="1400" alt="Transparent Magnetic Phone Case for iPhone" fetchpriority="high">
+            <button type="button" class="cvc__zoom" data-cvc-zoom-open aria-haspopup="dialog" aria-controls="cvcZoom-main" data-cv-zoom="featured.jpg">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
+              <span>Tap to zoom</span>
+            </button>
+          </div>
+        </div>
+
+        <form class="cvc__box" id="cvAddForm" method="post" action="#">
+          <input type="hidden" name="id" id="cvVariantId" value="">
+          <input type="hidden" name="quantity" id="cvQuantity" value="2">
+          <p class="cvc__vendor">Casify Cases</p>
+          <p class="cvc__tag">
+            <img class="cvc__tag-plate" src="../../assets/pdp-counter-tag.webp" width="360" height="414" alt="">
+            <span class="cvc__tag-price" aria-live="polite"><span id="cvPriceNow">$49.99</span> <s id="cvPriceWas">$59.99</s></span>
+            <span class="cvc__tag-sale" data-cv-tag-sale aria-hidden="true">
+              <svg viewBox="0 0 100 100" focusable="false"><path d="M50 3 59 12 72 8 77 21 91 23 88 37 98 47 89 58 93 72 79 77 76 91 62 88 51 98 41 89 27 93 22 79 8 76 12 62 2 51 11 41 7 27 21 22 24 8 38 12Z"/><circle cx="50" cy="50" r="34"/></svg>
+              <span class="cvc__tag-sale-copy"><strong data-cv-discount-pct>17%</strong><small>off</small></span>
+            </span>
+          </p>
+          <h1 class="cvc__title">Transparent Magnetic Phone Case for iPhone</h1>
+          <p class="cvc__price-saving" data-cv-price-proof aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13 13 20 4 11V4h7l9 9Z"/><circle cx="8.5" cy="8.5" r="1.25"/></svg><span>You save</span><strong data-cv-price-save>$10.00</strong></p>
+          <a class="cvc__rating" href="#cvc-reviews">
+            <span class="cv-stars cvc__stars" style="--fill: 0%;" aria-hidden="true" data-pv-stars></span>
+            <span class="cvc__rating-text">No reviews yet · <u>Write the first</u></span>
+          </a>
+
+          <div class="cvc__external-reviews" role="group" aria-label="Store rating: 4.9 out of 5 from 952 reviews on Trustpilot and Google">
+            <span class="cvc__external-label" aria-hidden="true">Store rating</span>
+            <span class="cvc__review-source cvc__review-source--trustpilot" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false"><path d="m12 2.3 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 16.87l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z"/></svg>
+              <span>Trustpilot</span>
+            </span>
+            <span class="cvc__review-source cvc__review-source--google" aria-hidden="true">
+              <svg class="cvc__review-source-icon" viewBox="0 0 24 24" focusable="false"><path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/><path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/><path fill="#fbbc05" d="M6.4 13.63A6 6 0 0 1 6.09 12c0-.57.11-1.12.31-1.63V7.52H3.06A9.96 9.96 0 0 0 2 12c0 1.61.38 3.14 1.06 4.48l3.34-2.85Z"/><path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/></svg>
+              <span>Google</span>
+            </span>
+            <span class="cvc__external-score" aria-hidden="true"><strong>4.9 / 5</strong><span>952 reviews</span></span>
+          </div>
+
+          <div class="cvc__opt">
+            <p class="cvc__label" id="cvcOpt0-main">Style: <span class="cvc__label-value" data-cv-opt-out="0">Magnetic Case Camera Cutout Transparent</span></p>
+            <div class="cvc__swatches" role="radiogroup" aria-labelledby="cvcOpt0-main">
+              <button type="button" class="cvc__swatch" role="radio" aria-checked="true" aria-label="Magnetic Case Camera Cutout Transparent" title="Magnetic Case Camera Cutout Transparent" data-cv-option-index="0" data-cv-value="Magnetic Case Camera Cutout Transparent" data-cv-stock=""><img src="../../assets/plates/thumb-1.png" alt="" width="70" height="70"></button>
+              <button type="button" class="cvc__swatch" role="radio" aria-checked="false" aria-label="Camera Cutout Transparent" title="Camera Cutout Transparent" data-cv-option-index="0" data-cv-value="Camera Cutout Transparent" data-cv-stock=""><img src="../../dev/product/raw/tmc-full-4.jpg" alt="" width="70" height="70"></button>
+            </div>
+          </div>
+
+          <div class="cvc__opt cvc__opt--model">
+            <label class="cvc__label" for="cvcModel-main">Model</label>
+            <span class="cvc__select">
+              <select id="cvcModel-main" name="options[Model]" data-cv-option-index="1" data-sold-suffix=" (sold out)" data-pv-models="select"></select>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div>
+
+          <div class="cvc__packs" role="radiogroup" aria-label="How many cases">
+            <button type="button" class="cvc__pack" role="radio" data-cv-pack aria-checked="false" data-cv-qty="1" data-cv-discount="0"><span class="cvc__pack-name">1 case</span><span class="cvc__pack-each" data-cv-tier-each="small">$49.99</span></button>
+            <button type="button" class="cvc__pack" role="radio" data-cv-pack aria-checked="true" data-cv-qty="2" data-cv-discount="18"><span class="cvc__flag">Save 18%</span><span class="cvc__pack-name">2 cases</span><span class="cvc__pack-each" data-cv-tier-each="small">$40.99<small> each</small></span></button>
+            <button type="button" class="cvc__pack cvc__pack--teal" role="radio" data-cv-pack aria-checked="false" data-cv-qty="3" data-cv-discount="31"><span class="cvc__flag">Best value</span><span class="cvc__pack-name">3 cases</span><span class="cvc__pack-each" data-cv-tier-each="small">$34.49<small> each</small></span></button>
+          </div>
+          <div class="cvc__savings">
+            <span class="cvc__meter" aria-hidden="true"><span class="cvc__meter-fill" data-cv-savings-fill style="width: 58%;"></span></span>
+            <p class="cvc__savings-text" data-cv-savings aria-live="polite" data-template-save="[qty] cases saves you [amount] vs buying singly" data-template-next="Choose [qty] cases to save [pct]% on each">2 cases saves you $18.00 vs buying singly</p>
+          </div>
+
+          <div class="cvc__buttons">
+            <button type="submit" class="cvc__add" id="cvAddBtn">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+              <span id="cvCtaLabel" data-label-default="Add to bag">Add to bag</span>
+              <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal">$81.98</span></span>
+            </button>
+            <button type="button" class="cvc__buy" data-cv-buy-now>
+              <span data-cv-buy-label data-label-default="Buy now">Buy now</span>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <p class="cvc__status" id="cvStatus" role="status" aria-live="polite"></p>
+          <p class="cvc__shipby" data-cvc-ship-by data-max-days="3" data-template="Order today, ships by [date]">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.3V12l3 1.9"/></svg>
+            <span data-cvc-ship-by-text>Ships in 1-3 business days</span>
+          </p>
+
+          <ul class="cvc__ribbon" role="list">
+            <li class="cvc__ribbon-item"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h10.5v9H2.5z"/><path d="M13 9.5h4.2l3.3 3.4v2.6H13z"/><circle cx="6.5" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></svg><span>Free shipping</span></li>
+            <li class="cvc__ribbon-item"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg><span>30-day returns</span></li>
+            <li class="cvc__ribbon-item"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7z"/><path d="m4 7 8 4.2L20 7"/><path d="M12 11.2v10"/><path d="m8 4.9 8 4.2"/></svg><span>Ships in 1-3 business days</span></li>
+          </ul>
+
+          <div class="cvc__accs">
+            <details class="cvc__acc">
+              <summary class="cvc__acc-q"><span>Details</span><span class="cvc__acc-mark" aria-hidden="true"></span></summary>
+              <div class="cvc__acc-a"><ul class="cvc__facts" role="list"><li><b>Style:</b> Magnetic Case Camera Cutout Transparent, Camera Cutout Transparent</li><li><b>Model:</b> made for 27 phones</li><li><b>Brand:</b> Casify</li></ul></div>
+            </details>
+            <details class="cvc__acc">
+              <summary class="cvc__acc-q"><span>Shipping &amp; returns</span><span class="cvc__acc-mark" aria-hidden="true"></span></summary>
+              <div class="cvc__acc-a"><p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p></div>
+            </details>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <dialog class="cvc-zoom" id="cvcZoom-main" aria-label="Transparent Magnetic Phone Case for iPhone: photos" data-cvc-zoom>
+      <div class="cvc-zoom__frame" data-cvc-zoom-frame><img class="cvc-zoom__img" alt="" width="2400" height="2400" data-cvc-zoom-img></div>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+      <p class="cvc-zoom__count" data-cvc-zoom-count aria-live="polite"></p>
+    </dialog>
+
+    <div class="cvc-sticky" id="cvSticky" aria-hidden="true">
+      <span class="cvc-sticky__pic"><img src="../../assets/plates/thumb-1.png" alt="" width="48" height="48"></span>
+      <div class="cvc-sticky__info">
+        <span class="cvc-sticky__name">Transparent Magnetic Phone Case for iPhone</span>
+        <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>Magnetic Case Camera Cutout Transparent / iPhone 17 Pro / 18 Pro</span> · <b id="cvStickyTotal">$81.98</b></span>
+      </div>
+      <div class="cvc-sticky__buttons">
+        <button type="button" class="cvc-sticky__add" id="cvStickyBtn" tabindex="-1">Add to bag</button>
+        <button type="button" class="cvc-sticky__buy" data-cv-buy-now tabindex="-1">Buy now</button>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-set.liquid, as filled by the recommendations fetch (real catalog products and links; variant lists are harness stand-ins) -->
+  <div class="shopify-section">
+  <section class="cvp cvp-set is-filled" data-cvp-set data-add-label="Add" data-adding-label="Adding…" data-added-label="In your bag" data-retry-label="Try again" data-fit-label="For your [model]" aria-labelledby="cvpSetTitle-set">
+    <div class="cvp__inner">
+      <div class="cvp-set__head"><h2 class="cvp__h2" id="cvpSetTitle-set">Add another case</h2></div>
+      <ul class="cvp-set__row" role="list">
+        <li class="cvp-set__item" data-cvp-set-item>
+          <a class="cvp-set__media" href="/products/magnetic-stand-phone-case-for-iphone" tabindex="-1" aria-hidden="true"><img src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/d05d3db2-2a10-4d4e-9ac5-ef9648596d81.png?v=1787515125&width=360" alt="" loading="lazy"></a>
+          <div class="cvp-set__body">
+            <a class="cvp-set__title" href="/products/magnetic-stand-phone-case-for-iphone">Magnetic Stand Phone Case for iPhone</a>
+            <span class="cvp-set__price">$49.99</span>
+            <p class="cvp-set__fit" data-cvp-set-fit hidden></p>
+            <script type="application/json" data-cvp-set-variants>[{"id":1001,"options":["Rose red","iPhone 17 Pro / 18 Pro"],"available":true},{"id":1002,"options":["Rose red","iPhone 17"],"available":true}]</script>
+            <button type="button" class="cvp-set__add" data-cvp-set-add hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-cvp-set-label>Add</span></button>
+            <a class="cvp-set__choose" href="/products/magnetic-stand-phone-case-for-iphone" data-cvp-set-choose>Choose your model</a>
+          </div>
+        </li>
+        <li class="cvp-set__item" data-cvp-set-item>
+          <a class="cvp-set__media" href="/products/iphone-18-magnetic-shockproof-protective-case-rigid-defender-for-iphone-18-pro" tabindex="-1" aria-hidden="true"><img src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/01763af3-8dee-49b6-b1ae-d529f0230ae8.jpg?v=1787515292&width=360" alt="" loading="lazy"></a>
+          <div class="cvp-set__body">
+            <a class="cvp-set__title" href="/products/iphone-18-magnetic-shockproof-protective-case-rigid-defender-for-iphone-18-pro">iPhone 18 Magnetic Shockproof Protective Case</a>
+            <span class="cvp-set__price">$39.99</span>
+            <p class="cvp-set__fit" data-cvp-set-fit hidden></p>
+            <script type="application/json" data-cvp-set-variants>[{"id":2001,"options":["Flash Black","IPHONE 11"],"available":true},{"id":2002,"options":["Flash Black","IPHONE 12 MINI"],"available":true}]</script>
+            <button type="button" class="cvp-set__add" data-cvp-set-add hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-cvp-set-label>Add</span></button>
+            <a class="cvp-set__choose" href="/products/iphone-18-magnetic-shockproof-protective-case-rigid-defender-for-iphone-18-pro" data-cvp-set-choose>Choose your model</a>
+          </div>
+        </li>
+        <li class="cvp-set__item" data-cvp-set-item>
+          <a class="cvp-set__media" href="/products/two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max" tabindex="-1" aria-hidden="true"><img src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/5ca6e12c-1a9b-4224-adbb-922dcfa1fd03.jpg?v=1787103058&width=360" alt="" loading="lazy"></a>
+          <div class="cvp-set__body">
+            <a class="cvp-set__title" href="/products/two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max">Two-in-One Space Case with Magnetic Mount &amp; Kickstand for iPhone</a>
+            <span class="cvp-set__price">$23.99</span>
+            <p class="cvp-set__fit" data-cvp-set-fit hidden></p>
+            <script type="application/json" data-cvp-set-variants>[{"id":3001,"options":["Silver","iPhone 17 Pro / 18 Pro"],"available":true}]</script>
+            <button type="button" class="cvp-set__add" data-cvp-set-add hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-cvp-set-label>Add</span></button>
+            <a class="cvp-set__choose" href="/products/two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max" data-cvp-set-choose>Choose your model</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-ribbon.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-ribbon" aria-label="Casify at a glance" data-cvw-ribbon>
+    <div class="cvw-ribbon__band">
+      <ul class="cvw-ribbon__track" role="list" data-cvw-ribbon-track>
+        <li class="cvw-ribbon__item"><span class="cvw-ribbon__ico"><span class="cv-ico" style="--s:26px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5h3"/></svg></span></span><span class="cvw-ribbon__title">iPhone &amp; Samsung cases</span><span class="cvw-ribbon__body">each made for its own list of phones</span></li>
+        <li class="cvw-ribbon__sep" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z"/><path d="M8 12 3 8.5v7zM16 12l5-3.5v7z"/></svg></span></li>
+        <li class="cvw-ribbon__item"><span class="cvw-ribbon__ico"><span class="cv-ico" style="--s:26px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12 5 8v8zM12 12l7-4v8z"/><circle cx="12" cy="12" r="1.8"/></svg></span></span><span class="cvw-ribbon__title">Packs of 2 and 3</span><span class="cvw-ribbon__body">save 18% or 31% on each case</span></li>
+        <li class="cvw-ribbon__sep" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z"/><path d="M8 12 3 8.5v7zM16 12l5-3.5v7z"/></svg></span></li>
+        <li class="cvw-ribbon__item"><span class="cvw-ribbon__ico"><span class="cv-ico" style="--s:26px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 15v7"/><path d="M9 7.5a3 3 0 1 1 3 4.5"/></svg></span></span><span class="cvw-ribbon__title">Est. 1920</span><span class="cvw-ribbon__body">the candy-shop counter, online</span></li>
+        <li class="cvw-ribbon__sep" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z"/><path d="M8 12 3 8.5v7zM16 12l5-3.5v7z"/></svg></span></li>
+      </ul>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-spotlight.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-spot" data-cvw-spot aria-labelledby="cvwSpotTitle-spot">
+    <div class="cvp__inner cvw-spot__grid">
+      <div class="cvw-spot__copy">
+        <h2 class="cvp__h2 cvw-spot__title" id="cvwSpotTitle-spot" data-cvw-split>The case, under glass</h2>
+        <p class="cvp__lede">A closer look before you choose. The label beside the glass is read from this case.</p>
+        <button type="button" class="cvs__cta cvw-spot__cta" data-cvp-back data-cvw-magnet><span>Choose my phone</span></button>
+      </div>
+      <div class="cvw-spot__stage" data-cvw-spot-stage>
+        <div class="cvw-spot__display">
+          <span class="cvw-spot__glow" aria-hidden="true" data-cvw-spot-glow></span>
+          <img class="cvw-spot__stand" src="../../assets/pdp-home-cloche-stand.webp" width="640" height="414" alt="">
+          <span class="cvw-spot__card" data-cvw-spot-photo><img class="cvw-spot__img" src="featured.jpg" width="1400" height="1400" alt="Transparent Magnetic Phone Case for iPhone"></span>
+          <img class="cvw-spot__dome" data-cvw-cloche src="../../assets/pdp-home-cloche-dome.webp" width="640" height="646" alt="">
+        </div>
+        <div class="cvw-spot__label" data-cvw-spot-label>
+          <p class="cvw-spot__label-title">Transparent Magnetic Phone Case for iPhone</p>
+          <dl class="cvw-spot__facts">
+            <div><dt>Made for</dt><dd>27 phone models</dd></div>
+            <div><dt>Styles</dt><dd>2</dd></div>
+            <div><dt>In a 3-case pack</dt><dd>$34.49 each</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-fit.liquid -->
+  <div class="shopify-section">
+  <section class="cvp cvp-fit" data-cvp-fit data-option-index="1" aria-labelledby="cvpFitTitle">
+    <div class="cvp__inner">
+      <div class="cvp-fit__head">
+        <h2 class="cvp__h2" id="cvpFitTitle">Made for your exact model</h2>
+        <p class="cvp__lede">These are the iPhone and Samsung models this case is made for. Choose yours and we'll set it on the counter.</p>
+      </div>
+      <div class="cvp-pad cvp-fit__pad">
+        <div class="cvp-fit__tools">
+          <label class="cvp-fit__search">
+            <span class="cvp__label">Find your phone</span>
+            <input class="cvp-fit__input" type="search" data-cvp-fit-filter autocomplete="off" placeholder="e.g. iPhone 16 Pro or Galaxy S24" aria-controls="cvpFitList">
+          </label>
+          <p class="cvp-fit__count" data-cvp-fit-count aria-live="polite">27 models</p>
+        </div>
+        <ul class="cvp-fit__list" id="cvpFitList" role="list" data-pv-models="fit"></ul>
+        <p class="cvp-fit__empty" data-cvp-fit-empty hidden>This case isn't made for that phone. <a href="#">See every case</a></p>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-value.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-value" data-cvw-value aria-labelledby="cvwValueTitle-value">
+    <div class="cvp__inner">
+      <div class="cvw-head">
+        <h2 class="cvp__h2" id="cvwValueTitle-value" data-cvw-split>Three worries, settled at the counter</h2>
+        <p class="cvp__lede">What people wonder before buying a case online, answered with what we can stand behind.</p>
+      </div>
+      <div class="cvw-value__grid">
+        <ol class="cvw-value__worries" role="list">
+          <li class="cvw-worry" data-cvw-worry><span class="cvw-worry__ico"><span class="cv-ico" style="--s:30px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5h3"/></svg></span></span><div class="cvw-worry__text"><h3 class="cvw-worry__q">Will it fit my phone?</h3><div class="cvw-worry__a"><p>Choose your exact model from the 27 phones this case is made for. If your phone isn't on the list, this case isn't made for it.</p></div></div><span class="cvw-worry__proof">27 models</span></li>
+          <li class="cvw-worry" data-cvw-worry><span class="cvw-worry__ico"><span class="cv-ico" style="--s:30px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.5"/></svg></span></span><div class="cvw-worry__text"><h3 class="cvw-worry__q">Will checkout cost more?</h3><div class="cvw-worry__a"><p>The pack prices on this page are what checkout charges for the cases, before any tax. Pack discounts come off automatically, with no code to enter.</p></div></div><span class="cvw-worry__proof">No code to enter</span></li>
+          <li class="cvw-worry" data-cvw-worry><span class="cvw-worry__ico"><span class="cv-ico" style="--s:30px" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg></span></span><div class="cvw-worry__text"><h3 class="cvw-worry__q">What if it isn't right?</h3><div class="cvw-worry__a"><p>Shipping is free, your order leaves us within 1 to 3 business days, and you have 30 days to send it back.</p></div></div><span class="cvw-worry__proof">30 days to decide</span></li>
+        </ol>
+        <figure class="cvw-scale" data-cvw-scale style="--tilt: 10.85;">
+          <figcaption class="cvw-scale__title">3 cases on the scale</figcaption>
+          <div class="cvw-scale__rig">
+            <img class="cvw-scale__img" data-cvw-scale-img src="../../assets/pdp-home-scale.webp" width="720" height="707" alt="">
+            <p class="cvw-scale__pan cvw-scale__pan--left" data-cvw-pan="left"><span class="cvw-scale__pan-label">3 bought one by one</span><b>$149.97</b></p>
+            <p class="cvw-scale__pan cvw-scale__pan--right" data-cvw-pan="right"><span class="cvw-scale__pan-label">One 3-case pack</span><b>$103.48</b></p>
+          </div>
+          <p class="cvw-scale__saving">The pack keeps <b>$46.49</b></p>
+          <p class="cvw-scale__note">Worked out from this case's price. The discount is applied automatically at checkout.</p>
+        </figure>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-compare.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-compare" data-cvw-compare aria-labelledby="cvwCompareTitle-compare">
+    <div class="cvp__inner">
+      <div class="cvw-head">
+        <h2 class="cvp__h2" id="cvwCompareTitle-compare" data-cvw-split>Put the packs side by side</h2>
+        <p class="cvp__lede">Same case, same phone. Only the number of jars on the counter changes.</p>
+      </div>
+      <div class="cvw-compare__scroll">
+        <table class="cvw-compare__table" style="--cols: 3;">
+          <caption class="cvw-sr">Put the packs side by side: Transparent Magnetic Phone Case for iPhone</caption>
+          <thead><tr>
+            <td class="cvw-compare__corner"></td>
+            <th scope="col" class="cvw-pack" data-cvw-pack-col><span class="cvw-pack__jar cvw-pack__jar--small" aria-hidden="true"><span class="cvw-pack__fill" data-cvw-jar-fill><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-small.webp" width="175" height="300" alt=""></span><span class="cvw-pack__name">1 case</span></th>
+            <th scope="col" class="cvw-pack is-highlight" data-cvw-pack-col><span class="cvw-pack__flag">Save 18%</span><span class="cvw-pack__jar cvw-pack__jar--medium" aria-hidden="true"><span class="cvw-pack__fill" data-cvw-jar-fill><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-medium.webp" width="178" height="380" alt=""></span><span class="cvw-pack__name">2 cases</span></th>
+            <th scope="col" class="cvw-pack" data-cvw-pack-col><span class="cvw-pack__flag">Best value</span><span class="cvw-pack__jar cvw-pack__jar--large" aria-hidden="true"><span class="cvw-pack__fill" data-cvw-jar-fill><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-large.webp" width="194" height="460" alt=""></span><span class="cvw-pack__name">3 cases</span></th>
+          </tr></thead>
+          <tbody>
+            <tr><th scope="row">Price per case</th><td class="cvw-compare__num"><b>$49.99</b></td><td class="cvw-compare__num is-highlight"><b>$40.99</b></td><td class="cvw-compare__num"><b>$34.49</b></td></tr>
+            <tr><th scope="row">You pay</th><td class="cvw-compare__num">$49.99</td><td class="cvw-compare__num is-highlight">$81.98</td><td class="cvw-compare__num">$103.48</td></tr>
+            <tr><th scope="row">You save</th><td class="cvw-compare__num cvw-compare__save"><span class="cvw-compare__none">Full price</span></td><td class="cvw-compare__num cvw-compare__save is-highlight"><span class="cvw-compare__chip">$18.00</span></td><td class="cvw-compare__num cvw-compare__save"><span class="cvw-compare__chip">$46.49</span></td></tr>
+            <tr class="cvw-compare__actions"><td></td><td><button type="button" class="cvw-compare__choose" data-cvw-pack="1">Choose 1 case</button></td><td class="is-highlight"><button type="button" class="cvw-compare__choose" data-cvw-pack="2">Choose 2 cases</button></td><td><button type="button" class="cvw-compare__choose" data-cvw-pack="3">Choose 3 cases</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="cvw-compare__cards" role="list">
+        <li class="cvw-pcard" data-cvw-pack-col>
+          <span class="cvw-pack__jar cvw-pack__jar--small cvw-pcard__jar" aria-hidden="true"><span class="cvw-pack__fill"><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-small.webp" width="175" height="300" alt=""></span>
+          <div class="cvw-pcard__info"><h3 class="cvw-pcard__name">1 case</h3>
+            <dl class="cvw-pcard__lines"><div><dt>Price per case</dt><dd><b>$49.99</b></dd></div><div><dt>You pay</dt><dd>$49.99</dd></div><div><dt>You save</dt><dd><span class="cvw-compare__none">Full price</span></dd></div></dl>
+          </div>
+          <button type="button" class="cvw-compare__choose cvw-pcard__choose" data-cvw-pack="1">Choose 1 case</button>
+        </li>
+        <li class="cvw-pcard is-highlight" data-cvw-pack-col>
+          <span class="cvw-pack__jar cvw-pack__jar--medium cvw-pcard__jar" aria-hidden="true"><span class="cvw-pack__fill"><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-medium.webp" width="178" height="380" alt=""></span>
+          <div class="cvw-pcard__info"><span class="cvw-pcard__flag">Save 18%</span><h3 class="cvw-pcard__name">2 cases</h3>
+            <dl class="cvw-pcard__lines"><div><dt>Price per case</dt><dd><b>$40.99</b></dd></div><div><dt>You pay</dt><dd>$81.98</dd></div><div><dt>You save</dt><dd><span class="cvw-compare__chip">$18.00</span></dd></div></dl>
+          </div>
+          <button type="button" class="cvw-compare__choose cvw-pcard__choose" data-cvw-pack="2">Choose 2 cases</button>
+        </li>
+        <li class="cvw-pcard" data-cvw-pack-col>
+          <span class="cvw-pack__jar cvw-pack__jar--large cvw-pcard__jar" aria-hidden="true"><span class="cvw-pack__fill"><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""><img class="cvw-pack__case" src="featured.jpg" width="60" height="60" alt=""></span><img class="cvw-pack__glass" src="../../assets/pdp-home-jar-large.webp" width="194" height="460" alt=""></span>
+          <div class="cvw-pcard__info"><span class="cvw-pcard__flag">Best value</span><h3 class="cvw-pcard__name">3 cases</h3>
+            <dl class="cvw-pcard__lines"><div><dt>Price per case</dt><dd><b>$34.49</b></dd></div><div><dt>You pay</dt><dd>$103.48</dd></div><div><dt>You save</dt><dd><span class="cvw-compare__chip">$46.49</span></dd></div></dl>
+          </div>
+          <button type="button" class="cvw-compare__choose cvw-pcard__choose" data-cvw-pack="3">Choose 3 cases</button>
+        </li>
+      </ul>
+      <p class="cvw-compare__foot">Prices for the phone and style chosen above. Pack discounts are applied automatically at checkout.</p>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-journey.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-journey" data-cvw-journey aria-labelledby="cvwJourneyTitle-journey">
+    <div class="cvw-journey__pin" data-cvw-journey-pin>
+      <div class="cvp__inner cvw-head">
+        <h2 class="cvp__h2" id="cvwJourneyTitle-journey" data-cvw-split>From our counter to your door</h2>
+        <p class="cvp__lede">What happens after you choose, one stop at a time. Scroll to ride along.</p>
+      </div>
+      <div class="cvw-journey__stage">
+        <div class="cvw-journey__scene" aria-hidden="true">
+          <svg class="cvw-journey__road" viewBox="0 0 1200 220" preserveAspectRatio="none" focusable="false">
+            <path class="cvw-journey__road-bed" d="M-20 150 C 180 96, 330 196, 560 150 S 930 92, 1220 138"/>
+            <path class="cvw-journey__road-line" data-cvw-road d="M-20 150 C 180 96, 330 196, 560 150 S 930 92, 1220 138"/>
+          </svg>
+          <img class="cvw-journey__bike" data-cvw-bike src="../../assets/pdp-home-bicycle.webp" width="900" height="547" alt="">
+          <img class="cvw-journey__parcel" data-cvw-parcel src="../../assets/pdp-home-parcel.webp" width="420" height="348" alt="">
+        </div>
+        <ol class="cvw-journey__stops" role="list" style="--stops: 5;">
+          <li class="cvw-stop" data-cvw-stop><span class="cvw-stop__pin" aria-hidden="true">1</span><span class="cvw-stop__metric"><b>27</b> phone models</span><h3 class="cvw-stop__title">Pick your exact phone</h3><p class="cvw-stop__body">Every phone this case is made for is on the list. Choose yours and it's the case cut for that phone.</p></li>
+          <li class="cvw-stop" data-cvw-stop><span class="cvw-stop__pin" aria-hidden="true">2</span><span class="cvw-stop__metric"><b>31%</b> off each in a 3-pack</span><h3 class="cvw-stop__title">Choose your pack</h3><p class="cvw-stop__body">One case, or two or three at 18% or 31% off each. The saving comes off automatically at checkout.</p></li>
+          <li class="cvw-stop" data-cvw-stop><span class="cvw-stop__pin" aria-hidden="true">3</span><span class="cvw-stop__metric"><b>1-3</b> business days</span><h3 class="cvw-stop__title">Packed at the counter</h3><p class="cvw-stop__body">Your order leaves the shop within 1 to 3 business days of ordering.</p></li>
+          <li class="cvw-stop" data-cvw-stop><span class="cvw-stop__pin" aria-hidden="true">4</span><span class="cvw-stop__metric"><b>Free</b> shipping</span><h3 class="cvw-stop__title">On its way to you</h3><p class="cvw-stop__body">Shipping is free on every order, with no minimum.</p></li>
+          <li class="cvw-stop" data-cvw-stop><span class="cvw-stop__pin" aria-hidden="true">5</span><span class="cvw-stop__metric"><b>30</b> days to decide</span><h3 class="cvw-stop__title">At your door</h3><p class="cvw-stop__body">Not the one? You have 30 days to send it back.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-reel.liquid (the product's own photos) -->
+  <div class="shopify-section">
+  <section class="cvw cvw-reel" data-cvw-reel aria-labelledby="cvwReelTitle-reel">
+    <div class="cvp__inner cvw-reel__head">
+      <h2 class="cvp__h2" id="cvwReelTitle-reel">The case in its own photos</h2>
+      <div class="cvw-reel__aside">
+        <p class="cvp__lede">Every frame on this strip is one of this product's own photos. Scroll to run the reel.</p>
+        <p class="cvw-reel__count" aria-hidden="true"><b data-cvw-reel-now>1</b><span>/</span>9</p>
+      </div>
+    </div>
+    <div class="cvw-reel__viewport" data-cvw-reel-viewport tabindex="0" role="region" aria-label="Transparent Magnetic Phone Case for iPhone: 9 photos, scroll sideways">
+      <ol class="cvw-reel__strip" role="list" data-cvw-reel-strip>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="featured.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">1 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-full-2.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">2 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-full-3.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">3 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-full-4.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">4 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-full-5.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">5 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-full-6.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">6 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-1.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">7 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-2.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">8 / 9</figcaption></figure></li>
+        <li class="cvw-reel__frame" data-cvw-reel-frame><figure class="cvw-reel__figure"><span class="cvw-reel__pic"><img class="cvw-reel__img" src="../../dev/product/raw/tmc-3.jpg" alt="Transparent Magnetic Phone Case for iPhone" loading="lazy"></span><figcaption class="cvw-reel__cap">9 / 9</figcaption></figure></li>
+      </ol>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-reviews.liquid: no review app yet, no rating metafields -->
+  <div class="shopify-section">
+  <section class="cvw cvw-reviews cvp-reviews" id="cvc-reviews" data-cvw-reviews aria-labelledby="cvpReviewsTitle-reviews">
+    <div class="cvp__inner">
+      <div class="cvw-board" data-cvw-board>
+        <img class="cvw-board__slate" src="../../assets/pdp-home-chalkboard.webp" width="1200" height="848" alt="">
+        <div class="cvw-board__chalk">
+          <h2 class="cvw-board__title" id="cvpReviewsTitle-reviews" data-cvw-chalk>What shoppers say</h2>
+          <p class="cvw-board__stars"><span class="cv-stars cvw-board__stars-row" style="--fill: 0%;" aria-hidden="true" data-pv-stars></span></p>
+          <p class="cvw-board__empty" data-cvw-chalk>No reviews yet</p>
+          <p class="cvw-board__hint" data-cvw-chalk>Bought this case? Your review goes up on this board.</p>
+          <svg class="cvw-board__underline" viewBox="0 0 320 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path data-cvw-chalk-line d="M4 16 C 60 6, 140 22, 200 12 S 290 8, 316 14"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-showcase.liquid (real catalog products; phone/style counts are harness stand-ins) -->
+  <div class="shopify-section">
+  <section class="cvw cvw-showcase" data-cvw-showcase aria-labelledby="cvwShowTitle-show">
+    <div class="cvp__inner">
+      <div class="cvw-head">
+        <h2 class="cvp__h2" id="cvwShowTitle-show">Three more from the counter</h2>
+        <p class="cvp__lede">Real cases from the shop, each cut for its own list of phones.</p>
+      </div>
+      <ul class="cvw-showcase__cards" role="list">
+        <li class="cvw-card cvw-card--cream" data-cvw-card><a class="cvw-card__link" href="/products/mobile-phone-case-apple"><span class="cvw-card__lid" aria-hidden="true"></span><span class="cvw-card__media"><img class="cvw-card__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/be4485e8-f80a-478b-ab11-bc0db4ae4b6c.jpg?v=1787515623&width=720" alt="Mobile phone case - Apple" loading="lazy"></span><span class="cvw-card__body"><span class="cvw-card__title">Mobile phone case - Apple</span><span class="cvw-card__facts"><span>24 phones</span><span>3 styles</span></span><span class="cvw-card__foot"><span class="cvw-card__price">$49.99</span><span class="cvw-card__cta">See the case <span class="cv-ico" style="--s:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span></span></span></span></a></li>
+        <li class="cvw-card cvw-card--teal" data-cvw-card><a class="cvw-card__link" href="/products/chain-crossbody-phone-case"><span class="cvw-card__lid" aria-hidden="true"></span><span class="cvw-card__media"><img class="cvw-card__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/18dbcc29-893f-4e2c-a3e9-ca10a1835394.jpg?v=1787515599&width=720" alt="Chain Crossbody Phone Case" loading="lazy"></span><span class="cvw-card__body"><span class="cvw-card__title">Chain Crossbody Phone Case</span><span class="cvw-card__facts"><span>22 phones</span><span>4 styles</span></span><span class="cvw-card__foot"><span class="cvw-card__price">$49.99</span><span class="cvw-card__cta">See the case <span class="cv-ico" style="--s:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span></span></span></span></a></li>
+        <li class="cvw-card cvw-card--cocoa" data-cvw-card><a class="cvw-card__link" href="/products/metal-protective-phone-case-for-iphone-and-samsung"><span class="cvw-card__lid" aria-hidden="true"></span><span class="cvw-card__media"><img class="cvw-card__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/e99894cf-a547-4813-8dc1-196da1728a82.jpg?v=1787515519&width=720" alt="Metal Protective Phone Case for iPhone and Samsung" loading="lazy"></span><span class="cvw-card__body"><span class="cvw-card__title">Metal Protective Phone Case for iPhone and Samsung</span><span class="cvw-card__facts"><span>30 phones</span><span>2 styles</span></span><span class="cvw-card__foot"><span class="cvw-card__price">$49.99</span><span class="cvw-card__cta">See the case <span class="cv-ico" style="--s:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span></span></span></span></a></li>
+      </ul>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-row.liquid (frontpage collection) -->
+  <div class="shopify-section">
+  <section class="cvw cvw-row" data-cvw-row aria-labelledby="cvwRowTitle-shop" style="--cvw-shelf: url(pdp-home-shelf.webp);">
+    <div class="cvp__inner">
+      <div class="cvw-head cvw-head--link">
+        <div><h2 class="cvp__h2" id="cvwRowTitle-shop">Every iPhone case we make</h2></div>
+        <a class="cvw-link" href="#">See all iPhone cases <span class="cv-ico" style="--s:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span></a>
+      </div>
+      <div class="cvw-row__shelf">
+        <ul class="cvw-row__items" role="list" style="--n: 4;">
+          <li class="cvw-row__item" data-cvw-row-item><a class="cvw-row__card" href="/products/four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design"><span class="cvw-row__box"><img class="cvw-row__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/d8532579-9155-4171-a69c-71f92926587f.jpg?v=1787515357&width=520" alt="Four-Corner Airbag Phone Case with Magnetic Stand and Glitter Design" loading="lazy"></span><span class="cvw-row__tag"><span class="cvw-row__title">Four-Corner Airbag Phone Case with Magnetic Stand and Glitter Design</span><span class="cvw-row__price">$49.99</span></span></a></li>
+          <li class="cvw-row__item" data-cvw-row-item><a class="cvw-row__card" href="/products/metal-lens-case-high-end-anti-drop-pc-case"><span class="cvw-row__box"><img class="cvw-row__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/0b3ea54d-5ef6-4212-9796-fbbe1055cd8b.jpg?v=1787515159&width=520" alt="Metal Lens Ring Case — High-End Anti-Drop PC Case for iPhone" loading="lazy"></span><span class="cvw-row__tag"><span class="cvw-row__title">Metal Lens Ring Case — High-End Anti-Drop PC Case for iPhone</span><span class="cvw-row__price">$49.99</span></span></a></li>
+          <li class="cvw-row__item" data-cvw-row-item><a class="cvw-row__card" href="/products/2-in-1-space-case-with-magnetic-mount-for-iphone-18-pro-max"><span class="cvw-row__box"><img class="cvw-row__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/58254893-9430-4d62-9bd4-4a4d5c268628.jpg?v=1787515327&width=520" alt="2-in-1 Space Case with Magnetic Mount for iPhone 18 Pro Max" loading="lazy"></span><span class="cvw-row__tag"><span class="cvw-row__title">2-in-1 Space Case with Magnetic Mount for iPhone 18 Pro Max</span><span class="cvw-row__price">$49.99</span></span></a></li>
+          <li class="cvw-row__item" data-cvw-row-item><a class="cvw-row__card" href="/products/magnetic-stand-phone-case-for-iphone"><span class="cvw-row__box"><img class="cvw-row__img" src="https://cdn.shopify.com/s/files/1/0816/4953/3173/files/d05d3db2-2a10-4d4e-9ac5-ef9648596d81.png?v=1787515125&width=520" alt="Magnetic Stand Phone Case for iPhone" loading="lazy"></span><span class="cvw-row__tag"><span class="cvw-row__title">Magnetic Stand Phone Case for iPhone</span><span class="cvw-row__price">$49.99</span></span></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- sections/cv-pdp-guarantee.liquid -->
+  <div class="shopify-section">
+  <section class="cvw cvw-guarantee" data-cvw-guarantee aria-labelledby="cvwFaqTitle-g" style="--cvs-paper: url(pdp-slip-paper.png);">
+    <div class="cvp__inner">
+      <div class="cvp-faq cvw-guarantee__faq" id="cvp-faq">
+        <h2 class="cvp-faq__title" id="cvwFaqTitle-g">Questions at the counter</h2>
+        <div class="cvp-faq__list">
+          <details class="cvp-faq__item" open><summary class="cvp-faq__q"><span>How long does shipping take?</span><span class="cvp-faq__mark" aria-hidden="true"></span></summary><div class="cvp-faq__a"><p>Orders leave us within 1 to 3 business days, and shipping is free.</p></div></details>
+          <details class="cvp-faq__item"><summary class="cvp-faq__q"><span>Can I send it back?</span><span class="cvp-faq__mark" aria-hidden="true"></span></summary><div class="cvp-faq__a"><p>Yes. You have 30 days to return it.</p></div></details>
+          <details class="cvp-faq__item"><summary class="cvp-faq__q"><span>How do pack prices work?</span><span class="cvp-faq__mark" aria-hidden="true"></span></summary><div class="cvp-faq__a"><p>With 2 cases in your bag each one is 18% off, and with 3 or more each one is 31% off. The saving comes off automatically at checkout, so the total on your button is what the cases cost, before any tax.</p></div></details>
+          <details class="cvp-faq__item"><summary class="cvp-faq__q"><span>What does Buy now do?</span><span class="cvp-faq__mark" aria-hidden="true"></span></summary><div class="cvp-faq__a"><p>It puts the case and pack you chose in your bag and takes you straight to checkout. Add to bag keeps you shopping instead.</p></div></details>
+        </div>
+      </div>
+      <div class="cvp-pad cvw-close" data-cvp-closer data-cvw-close>
+        <img class="cvw-close__sweet cvw-close__sweet--lolly" src="../../assets/hero-sweet-lollipop.webp" width="313" height="440" alt="">
+        <img class="cvw-close__sweet cvw-close__sweet--wrapped" src="../../assets/hero-sweet-wrapped-red.webp" width="440" height="212" alt="">
+        <h3 class="cvw-close__title" id="cvwCloseTitle-g">Ready at the counter</h3>
+        <p class="cvp-closer__summary cvw-close__summary" data-cvp-summary>Transparent Magnetic Phone Case for iPhone · Magnetic Case Camera Cutout Transparent / iPhone 17 Pro / 18 Pro</p>
+        <ul class="cvw-close__vows" role="list">
+          <li class="cvw-vow" data-cvw-vow><span class="cvw-vow__stamp" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h10.5v9H2.5z"/><path d="M13 9.5h4.2l3.3 3.4v2.6H13z"/><circle cx="6.5" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></svg></span></span><span class="cvw-vow__text"><b>Free shipping</b> <span>on every order, with no minimum</span></span></li>
+          <li class="cvw-vow" data-cvw-vow><span class="cvw-vow__stamp" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg></span></span><span class="cvw-vow__text"><b>30-day returns</b> <span>change your mind within 30 days</span></span></li>
+          <li class="cvw-vow" data-cvw-vow><span class="cvw-vow__stamp" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.2V12l3.2 2"/></svg></span></span><span class="cvw-vow__text"><b>Ships in 1-3 business days</b> <span>counted from the day you order</span></span></li>
+          <li class="cvw-vow" data-cvw-vow><span class="cvw-vow__stamp" aria-hidden="true"><span class="cv-ico" style="--s:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.5"/></svg></span></span><span class="cvw-vow__text"><b>Pack savings at checkout</b> <span>18% off each with 2 cases, 31% with 3</span></span></li>
+        </ul>
+        <button type="button" class="cvs__cta cvw-close__cta" data-cvp-back data-cvw-magnet><span>Back to the counter</span></button>
+      </div>
+    </div>
+  </section>
+  </div>
+
+</main>
+
+<script>
+  /* Harness data: the product's real option values and price, expanded to variants the way Shopify serves them. */
+  (function () {
+    // snippets/cv-stars.liquid: five 24px star icons per row
+    var star = '<svg viewBox="0 0 24 24" focusable="false"><path d="M12 2.9l2.8 5.7 6.3.9-4.55 4.45 1.07 6.27L12 17.26l-5.62 2.96 1.07-6.27L2.9 9.5l6.3-.9z"/></svg>';
+    var row = function (extra) { return '<span class="cv-stars__row' + extra + '">' + star + star + star + star + star + '</span>'; };
+    document.querySelectorAll('[data-pv-stars]').forEach(function (el) { el.innerHTML = row('') + row(' cv-stars__row--fill'); });
+
+    var styles = ['Magnetic Case Camera Cutout Transparent', 'Camera Cutout Transparent'];
+    var models = ['iPhone 17 AI Shutter Button', 'iPhone 17 Pro / 18 Pro AI Shutter Button', 'iPhone 17 Air AI Shutter Button', 'iPhone 17 Pro Max / 18 Pro Max AI button', 'iPhone 16 AI Shutter Button', 'iPhone 16 Pro AI Shutter Button', 'iPhone 16 Plus AI Shutter Button', 'iPhone 16 Pro Max AI Shutter Button', 'iPhone 17 Full Cover Buttons', 'iPhone 17 Pro / 18 Pro Full Cover', 'iPhone 17 Pro Max / 18 Pro Max Full Cove', 'iPhone 16 Full Cover Buttons', 'iPhone 16 Pro Full Cover Buttons', 'iPhone 16 Pro Max Full Cover Buttons', 'iPhone 17', 'iPhone 17 Pro / 18 Pro', 'iPhone 17 Air', 'iPhone 17 Pro Max / 18 Pro Max', 'iPhone 15', 'iPhone 15 Pro', 'iPhone 15 Pro Max', 'iPhone 14', 'iPhone 14 Pro', 'iPhone 14 Pro Max', 'iPhone 13', 'iPhone 13 Pro', 'iPhone 13 Pro Max'];
+    var variants = [];
+    var id = 48739047866613;
+    styles.forEach(function (s) {
+      models.forEach(function (m) {
+        variants.push({ id: id++, title: s + ' / ' + m, options: [s, m], price: 4999, compare_at_price: null, available: true, featured_image: null });
+      });
+    });
+    document.getElementById('cvPdp').setAttribute('data-variants', JSON.stringify(variants));
+    var current = 'iPhone 17 Pro / 18 Pro';
+    var select = document.querySelector('[data-pv-models="select"]');
+    var fitList = document.querySelector('[data-pv-models="fit"]');
+    models.forEach(function (m) {
+      var o = document.createElement('option');
+      o.value = m; o.textContent = m; if (m === current) o.selected = true;
+      select.appendChild(o);
+      var li = document.createElement('li');
+      var f = document.createElement('button');
+      f.type = 'button'; f.className = 'cvp-fit__model'; f.setAttribute('data-cvp-model', m);
+      f.setAttribute('aria-pressed', m === current ? 'true' : 'false'); f.textContent = m;
+      li.appendChild(f); fitList.appendChild(li);
+    });
+    // No cart endpoint in the harness: answer /cart/add.js locally and log what was posted.
+    window.pvCart = [];
+    var realFetch = window.fetch;
+    window.fetch = function (url, opts) {
+      if (String(url).indexOf('cart/add.js') > -1) {
+        try { window.pvCart.push(JSON.parse(opts.body)); } catch (e) {}
+        return new Promise(function (resolve) { setTimeout(function () { resolve(new Response('{"items":[]}', { status: 200, headers: { 'Content-Type': 'application/json' } })); }, 500); });
+      }
+      return realFetch.apply(this, arguments);
+    };
+  })();
+</script>
+<script src="../../assets/gsap.min.js"></script>
+<script>if (/[?&]lag=0/.test(location.search)) gsap.ticker.lagSmoothing(0);</script>
+<script src="../../assets/gsap-CustomEase.min.js"></script>
+<script src="../../assets/gsap-CustomBounce.min.js"></script>
+<script src="../../assets/gsap-CustomWiggle.min.js"></script>
+<script src="../../assets/gsap-MotionPathPlugin.min.js"></script>
+<script src="../../assets/gsap-ScrollTrigger.min.js"></script>
+<script src="../../assets/gsap-init.js"></script>
+<script src="../../assets/cv-header.js"></script>
+<script src="../../assets/cv-product.js"></script>
+<script src="../../assets/cv-pdp-story.js"></script>
+<script src="../../assets/cv-pdp-slip-motion.js"></script>
+<script src="../../assets/cv-pdp-counter.js"></script>
+<script src="../../assets/cv-pdp-counter-motion.js"></script>
+<script src="../../assets/gsap-DrawSVGPlugin.min.js"></script>
+<script src="../../assets/gsap-SplitText.min.js"></script>
+<script>gsap.registerPlugin(DrawSVGPlugin, SplitText);</script>
+<script src="../../assets/cv-pdp-home-motion.js"></script>
+</body>
+</html>

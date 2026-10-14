@@ -1,0 +1,19 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "ticker_text": "Est. 1920 · Free shipping · 30-day returns",
+        "topbar_enable": true,
+        "topbar_left": "Ships in 1-3 business days",
+        "topbar_right": "30-day returns",
+        "nav_style": "bubble"
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

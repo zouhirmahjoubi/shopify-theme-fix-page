@@ -1,0 +1,315 @@
+{
+  "regions": [
+    {
+      "id": "header",
+      "kind": "chrome",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.171
+      },
+      "container": true,
+      "note": "the existing site header section (awning, topbar, nav with the shop sign), already built from its own assets",
+      "codeDrawn": true
+    },
+    {
+      "id": "breadcrumb",
+      "kind": "text",
+      "box": {
+        "x": 0.102,
+        "y": 0.178,
+        "w": 0.24,
+        "h": 0.022
+      },
+      "note": "breadcrumb Home / Cases / product title in small typewriter type"
+    },
+    {
+      "id": "page-ground",
+      "kind": "texture",
+      "box": {
+        "x": 0.012,
+        "y": 0.3,
+        "w": 0.06,
+        "h": 0.1
+      },
+      "note": "cream paper page ground with faint dot grain, no ink"
+    },
+    {
+      "id": "window-frame",
+      "kind": "plate",
+      "box": {
+        "x": 0.102,
+        "y": 0.22,
+        "w": 0.386,
+        "h": 0.536
+      },
+      "note": "scalloped cream-bead window frame with a thin gold edge and an empty centre, placed around the product photo as a 9-slice border"
+    },
+    {
+      "id": "photo",
+      "kind": "image",
+      "box": {
+        "x": 0.113,
+        "y": 0.235,
+        "w": 0.363,
+        "h": 0.504
+      },
+      "note": "real product photo: two clear transparent magnetic cases with white MagSafe rings on a soft sky-grey ground"
+    },
+    {
+      "id": "thumb-1",
+      "kind": "image",
+      "box": {
+        "x": 0.1,
+        "y": 0.758,
+        "w": 0.078,
+        "h": 0.111
+      },
+      "note": "selected thumbnail: product photo inside a red candy-stripe frame"
+    },
+    {
+      "id": "thumb-2",
+      "kind": "image",
+      "box": {
+        "x": 0.182,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "note": "thumbnail: single clear case front view in a dashed cream frame"
+    },
+    {
+      "id": "thumb-3",
+      "kind": "image",
+      "box": {
+        "x": 0.259,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "note": "thumbnail: clear case lying at an angle in a dashed cream frame"
+    },
+    {
+      "id": "thumb-4",
+      "kind": "image",
+      "box": {
+        "x": 0.336,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "note": "thumbnail: clear case on a gold phone in a dashed cream frame"
+    },
+    {
+      "id": "thumb-5",
+      "kind": "image",
+      "box": {
+        "x": 0.413,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "note": "thumbnail: clear case edge close-up in a dashed cream frame"
+    },
+    {
+      "id": "slip",
+      "kind": "chrome",
+      "box": {
+        "x": 0.528,
+        "y": 0.168,
+        "w": 0.393,
+        "h": 0.735
+      },
+      "container": true,
+      "note": "cream panel rotated about 1 degree with a row of punched circles along its top edge, dashed rules between lines and a soft drop shadow"
+    },
+    {
+      "id": "slip-paper",
+      "kind": "texture",
+      "box": {
+        "x": 0.74,
+        "y": 0.452,
+        "w": 0.13,
+        "h": 0.026
+      },
+      "note": "clean patch of the slip's cream order-pad paper with faint grain, no ink"
+    },
+    {
+      "id": "tape",
+      "kind": "plate",
+      "box": {
+        "x": 0.522,
+        "y": 0.155,
+        "w": 0.085,
+        "h": 0.09
+      },
+      "note": "strip of red-and-cream candy-stripe tape holding the slip's top-left corner"
+    },
+    {
+      "id": "title",
+      "kind": "text",
+      "box": {
+        "x": 0.553,
+        "y": 0.214,
+        "w": 0.29,
+        "h": 0.104
+      },
+      "note": "product title in heavy high-contrast serif, two lines: Transparent Magnetic / Phone Case for iPhone"
+    },
+    {
+      "id": "price",
+      "kind": "text",
+      "box": {
+        "x": 0.557,
+        "y": 0.32,
+        "w": 0.09,
+        "h": 0.042
+      },
+      "note": "price $49.99 in heavy red serif"
+    },
+    {
+      "id": "step-1",
+      "kind": "control",
+      "box": {
+        "x": 0.558,
+        "y": 0.386,
+        "w": 0.222,
+        "h": 0.056
+      },
+      "note": "line 1: red stamped circle numeral 1, typewriter label YOUR PHONE, answer iPhone 17 Pro / 18 Pro, underlined Change link"
+    },
+    {
+      "id": "step-2-label",
+      "kind": "text",
+      "box": {
+        "x": 0.559,
+        "y": 0.477,
+        "w": 0.08,
+        "h": 0.04
+      },
+      "note": "red stamped circle numeral 2 and typewriter label STYLE"
+    },
+    {
+      "id": "style-1",
+      "kind": "control",
+      "box": {
+        "x": 0.596,
+        "y": 0.502,
+        "w": 0.152,
+        "h": 0.066
+      },
+      "note": "selected style pill: Magnetic Case Camera Cutout Transparent, red outline and red text"
+    },
+    {
+      "id": "style-2",
+      "kind": "control",
+      "box": {
+        "x": 0.751,
+        "y": 0.491,
+        "w": 0.138,
+        "h": 0.066
+      },
+      "note": "unselected style pill: Camera Cutout Transparent, dashed cocoa outline"
+    },
+    {
+      "id": "step-3-label",
+      "kind": "text",
+      "box": {
+        "x": 0.563,
+        "y": 0.602,
+        "w": 0.102,
+        "h": 0.036
+      },
+      "note": "red stamped circle numeral 3 and typewriter label HOW MANY"
+    },
+    {
+      "id": "pack-1",
+      "kind": "control",
+      "box": {
+        "x": 0.584,
+        "y": 0.631,
+        "w": 0.099,
+        "h": 0.082
+      },
+      "note": "pack ticket: 1 case $49.99 in a dashed box"
+    },
+    {
+      "id": "pack-2",
+      "kind": "control",
+      "box": {
+        "x": 0.689,
+        "y": 0.612,
+        "w": 0.101,
+        "h": 0.09
+      },
+      "note": "selected pack ticket: 2 cases $40.99 each, red outline, red ribbon flag Most popular"
+    },
+    {
+      "id": "pack-3",
+      "kind": "control",
+      "box": {
+        "x": 0.796,
+        "y": 0.614,
+        "w": 0.098,
+        "h": 0.082
+      },
+      "note": "pack ticket: 3 cases $34.49 each in a dashed box"
+    },
+    {
+      "id": "total",
+      "kind": "text",
+      "box": {
+        "x": 0.581,
+        "y": 0.705,
+        "w": 0.307,
+        "h": 0.07
+      },
+      "note": "handwritten total row: Total on the left, $81.98 on the right over a dashed rule"
+    },
+    {
+      "id": "cta",
+      "kind": "control",
+      "box": {
+        "x": 0.577,
+        "y": 0.764,
+        "w": 0.314,
+        "h": 0.078
+      },
+      "note": "wide red pill button Add to bag with darker bottom edge and glossy highlight"
+    },
+    {
+      "id": "service-line",
+      "kind": "text",
+      "box": {
+        "x": 0.579,
+        "y": 0.84,
+        "w": 0.309,
+        "h": 0.04
+      },
+      "note": "typewriter line: Free shipping · 30-day returns · Ships in 1-3 business days"
+    },
+    {
+      "id": "divider",
+      "kind": "chrome",
+      "box": {
+        "x": 0,
+        "y": 0.914,
+        "w": 1,
+        "h": 0.01
+      },
+      "note": "thin dashed cocoa rule across the page"
+    },
+    {
+      "id": "next-heading",
+      "kind": "text",
+      "box": {
+        "x": 0.102,
+        "y": 0.936,
+        "w": 0.37,
+        "h": 0.054
+      },
+      "note": "next section heading in heavy serif: Made for your exact model"
+    }
+  ]
+}

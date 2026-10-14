@@ -1,0 +1,148 @@
+{%- comment -%}
+  Casify product page: the spotlight (the home "Convert — Spotlight" section,
+  recreated for real per-product data).
+
+  The home version hung four fabricated callouts (12 ft drop, 1,400 g, 2.8 mm,
+  36 months) around a stock photo, plus a press marquee and a "10,000+ shipped"
+  count — none of it confirmed. This keeps the callout idea, the thing that made
+  the original punchy, but every value now comes from the product this section
+  sits on: how many phones it is made for, how many styles it comes in, and
+  what its biggest pack saves. A KIE brass spotlight lamp (assets/spot-lamp.webp)
+  aims a CSS light cone at the product's own photo, printed as a card and stood
+  under the glass cloche (assets/pdp-home-cloche-dome.webp/-stand.webp). The
+  shop-card label carries only the product's name, so no fact is stated twice.
+  assets/cv-pdp-home-motion.js swings the lamp on, brightens the beam, lifts the
+  dome and pops each callout in with its own leader dot.
+{%- endcomment -%}
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+  assign idx = section.settings.media_index | minus: 1
+  assign pic = product.media[idx].preview_image | default: product.media[idx] | default: product.featured_image
+
+  assign models = 0
+  assign styles = 0
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    assign fv = option.values.first | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'samsung'
+      assign models = option.values.size
+    elsif option.values.size > 1
+      assign styles = option.values.size
+    endif
+  endfor
+
+  assign pack_qty = section.settings.pack_qty | at_least: 1
+  assign pack_line = cvar.price | times: pack_qty
+  assign pack_off = pack_line | times: section.settings.pack_pct | divided_by: 100.0 | round
+  assign pack_each = pack_line | minus: pack_off | divided_by: pack_qty
+
+  comment
+    Every callout is computed from this product's own data or the store's
+    live pack settings — nothing here is merchant free text, so nothing here
+    can drift into a claim the product doesn't back up.
+  endcomment
+  assign positions = 'tl,tr,bl,br' | split: ','
+  assign callouts = ''
+  if models > 0
+    assign callouts = callouts | append: 'models|'
+  endif
+  if pack_qty > 1 and section.settings.pack_pct > 0
+    assign callouts = callouts | append: 'pack|'
+  endif
+  if styles > 1
+    assign callouts = callouts | append: 'styles|'
+  endif
+  assign callout_list = callouts | split: '|'
+-%}
+
+<section class="cvw cvw-spot" data-cvw-spot aria-labelledby="cvwSpotTitle-{{ section.id }}">
+  <div class="cvp__inner cvw-spot__grid">
+    <div class="cvw-spot__copy">
+      <h2 class="cvp__h2 cvw-spot__title" id="cvwSpotTitle-{{ section.id }}" data-cvw-split>{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.lede != blank -%}<p class="cvp__lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+      <button type="button" class="cvs__cta cvw-spot__cta" data-cvp-back data-cvw-magnet><span>{{ section.settings.cta_label | escape }}</span></button>
+    </div>
+
+    <div class="cvw-spot__stage" data-cvw-spot-stage>
+      <div class="cvw-spot__display">
+        <img class="cvw-spot__lamp" data-cvw-spot-lamp src="{{ 'spot-lamp.webp' | asset_url }}" width="360" height="769" alt="" loading="lazy" decoding="async">
+        <span class="cvw-spot__beam" aria-hidden="true" data-cvw-spot-beam></span>
+        <span class="cvw-spot__glow" aria-hidden="true" data-cvw-spot-glow></span>
+        <img class="cvw-spot__stand" src="{{ 'pdp-home-cloche-stand.webp' | asset_url }}" width="640" height="414" alt="" loading="lazy" decoding="async">
+        {%- if pic != blank -%}
+          <span class="cvw-spot__card" data-cvw-spot-photo>
+            {{ pic | image_url: width: 700 | image_tag: width: 700, height: 700, widths: '320, 480, 700', sizes: '(min-width: 990px) 200px, 40vw', loading: 'lazy', alt: pic.alt | default: product.title, class: 'cvw-spot__img' }}
+          </span>
+        {%- endif -%}
+        <img class="cvw-spot__dome" data-cvw-cloche src="{{ 'pdp-home-cloche-dome.webp' | asset_url }}" width="640" height="646" alt="" loading="lazy" decoding="async">
+
+        {%- if callout_list.size > 0 -%}
+          <div class="cvw-spot__callouts" data-cvw-spot-callouts>
+            {%- for kind in callout_list -%}
+              {%- liquid
+                assign pos = positions[forloop.index0]
+                case kind
+                  when 'models'
+                    assign co_icon = 'device'
+                    assign co_value = models
+                    assign co_label = section.settings.models_unit | default: 'phone models'
+                  when 'styles'
+                    assign co_icon = 'precision-fit'
+                    assign co_value = styles
+                    assign co_label = section.settings.styles_label | default: 'styles'
+                  when 'pack'
+                    assign co_icon = 'price-tag'
+                    assign co_value = section.settings.pack_pct | append: '%'
+                    assign co_label = section.settings.pack_label | replace: '[qty]', pack_qty | default: 'off in a pack'
+                endcase
+              -%}
+              <span class="cv-callout cvw-spot__callout cvw-spot__callout--{{ pos }}" style="--cv-i:{{ forloop.index0 }}" data-cvw-spot-callout>
+                <span class="cv-callout__pill glass">
+                  <span class="cv-pulse cv-pulse--red" aria-hidden="true"></span>
+                  {%- render 'cv-icon', name: co_icon, size: 15 -%}
+                  <span><b>{{ co_value }}</b> {{ co_label | escape }}</span>
+                </span>
+              </span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if pack_qty > 1 and section.settings.pack_pct > 0 -%}
+        <div class="cvw-spot__label" data-cvw-spot-label>
+          <p class="cvw-spot__label-title">{{ product.title | escape }}</p>
+          <p class="cvw-spot__label-price">{{ pack_each | money }} <span>{{ section.settings.each_label | escape }}</span></p>
+        </div>
+      {%- else -%}
+        <div class="cvw-spot__label" data-cvw-spot-label>
+          <p class="cvw-spot__label-title">{{ product.title | escape }}</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product: spotlight",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The case, under glass" },
+    { "type": "text", "id": "lede", "label": "Intro", "default": "A closer look before you choose. Every number here is read from this case." },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "Choose my phone" },
+    { "type": "range", "id": "media_index", "label": "Which product photo", "min": 1, "max": 10, "step": 1, "default": 1, "info": "A photo on a plain light background sits best under the glass. Falls back to the main photo." },
+    { "type": "header", "content": "Callouts", "info": "Computed from this product's own options and the pack settings below — there is no free-text callout, so nothing here can say more than this product actually does." },
+    { "type": "text", "id": "models_unit", "label": "Phones unit", "default": "phone models" },
+    { "type": "text", "id": "styles_label", "label": "Styles label", "default": "styles" },
+    { "type": "number", "id": "pack_qty", "label": "Pack size for the callout and price", "default": 3 },
+    { "type": "range", "id": "pack_pct", "label": "That pack's discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the automatic discount in Shopify admin. Set 0 to hide the callout." },
+    { "type": "text", "id": "pack_label", "label": "Pack callout label", "default": "off in a [qty]-pack" },
+    { "type": "text", "id": "each_label", "label": "Shop-card price unit", "default": "each" }
+  ],
+  "presets": [{ "name": "Product: spotlight" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

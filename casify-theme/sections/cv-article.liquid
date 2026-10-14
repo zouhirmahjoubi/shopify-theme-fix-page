@@ -1,0 +1,123 @@
+{%- comment -%}
+  Casify — article in the Chrismass design system.
+
+  A reading-progress bar tracks the body specifically rather than the whole
+  document, so it hits 100% at the end of the article instead of at the bottom
+  of the footer. The hero image drifts on a slow parallax; the prose itself
+  does not animate, because moving text is not readable text.
+{%- endcomment -%}
+
+<div class="cv-page-root cv-article">
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <a href="{{ blog.url }}">{{ blog.title | escape }}</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current">{{ article.title | escape }}</span>
+  </nav>
+
+  <header class="cv-article__hd" data-cv-reveal>
+    <p class="cv-article__meta">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %e, %Y' }}</time>
+      {%- if article.author != blank -%}
+        <span aria-hidden="true">·</span><span>{{ article.author | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.show_reading_time -%}
+        {%- assign words = article.content | strip_html | split: ' ' | size -%}
+        {%- assign mins = words | divided_by: 220 | plus: 1 -%}
+        <span aria-hidden="true">·</span><span>{{ mins }} min read</span>
+      {%- endif -%}
+    </p>
+    <h1 data-cv-split>{{ article.title | escape }}</h1>
+    {%- if article.excerpt != blank -%}
+      <div class="cv-article__lede">{{ article.excerpt | strip_html }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- if article.image -%}
+    <figure class="cv-article__hero" data-cv-reveal="scale">
+      <img src="{{ article.image | image_url: width: 1800 }}"
+           alt="{{ article.image.alt | default: article.title | escape }}"
+           width="1800" height="1000" loading="eager" decoding="async"
+           data-cv-parallax="0.05">
+    </figure>
+  {%- endif -%}
+
+  <div class="cv-article__body rte">
+    {{ article.content }}
+  </div>
+
+  {%- if article.tags.size > 0 -%}
+    <div class="cv-article__tags" data-cv-reveal data-cv-stagger>
+      {%- for tag in article.tags -%}
+        <a class="cv-search__chip" href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag | escape }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- Previous / next ---------- {%- endcomment -%}
+  {%- if article.previous_article or article.next_article -%}
+    <nav class="cv-article__nav" aria-label="More posts" data-cv-reveal>
+      {%- if article.next_article -%}
+        <a class="cv-article__navcard is-prev" href="{{ article.next_article.url }}">
+          <span class="cv-article__navlbl">{%- render 'cv-icon', name: 'chevron-down', size: 14 -%} Newer</span>
+          <span class="cv-article__navttl">{{ article.next_article.title | escape }}</span>
+        </a>
+      {%- endif -%}
+      {%- if article.previous_article -%}
+        <a class="cv-article__navcard is-next" href="{{ article.previous_article.url }}">
+          <span class="cv-article__navlbl">Older {%- render 'cv-icon', name: 'chevron-down', size: 14 -%}</span>
+          <span class="cv-article__navttl">{{ article.previous_article.title | escape }}</span>
+        </a>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
+  {%- if section.settings.show_comments and blog.comments_enabled? -%}
+    <section class="cv-article__comments" data-cv-reveal>
+      <h2>{{ article.comments_count }} {% if article.comments_count == 1 %}comment{% else %}comments{% endif %}</h2>
+
+      {%- for comment in article.comments -%}
+        <article class="cv-comment">
+          <span class="cv-comment__avatar" aria-hidden="true">{{ comment.author | slice: 0 | upcase }}</span>
+          <div>
+            <p class="cv-comment__by"><strong>{{ comment.author | escape }}</strong> <em>{{ comment.created_at | date: '%b %e, %Y' }}</em></p>
+            <div class="cv-comment__body">{{ comment.content }}</div>
+          </div>
+        </article>
+      {%- endfor -%}
+
+      {%- form 'new_comment', article, class: 'cv-comment__form' -%}
+        {%- if form.errors -%}
+          <p class="cv-comment__error">{%- render 'cv-icon', name: 'cross', size: 13 -%} {{ form.errors.messages.form }}</p>
+        {%- elsif form.posted_successfully? -%}
+          <p class="cv-comment__ok">{%- render 'cv-icon', name: 'check', size: 13 -%} Thanks — your comment is in the queue.</p>
+        {%- endif -%}
+        <div class="cv-comment__row">
+          <label for="cvCommentName">Name</label>
+          <input type="text" id="cvCommentName" name="comment[author]" required value="{{ form.author }}">
+        </div>
+        <div class="cv-comment__row">
+          <label for="cvCommentEmail">Email</label>
+          <input type="email" id="cvCommentEmail" name="comment[email]" required value="{{ form.email }}">
+        </div>
+        <div class="cv-comment__row">
+          <label for="cvCommentBody">Comment</label>
+          <textarea id="cvCommentBody" name="comment[body]" rows="4" required>{{ form.body }}</textarea>
+        </div>
+        <button type="submit" class="cv-cta cv-cta--ghost"><span>Post comment</span></button>
+      {%- endform -%}
+    </section>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_reading_time", "label": "Show reading time", "default": true },
+    { "type": "checkbox", "id": "show_comments", "label": "Show comments", "default": true }
+  ],
+  "presets": [{ "name": "Article" }]
+}
+{% endschema %}

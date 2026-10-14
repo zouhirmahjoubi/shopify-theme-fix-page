@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8791"],
+      "port": 8791
+    },
+    {
+      "name": "static-preview-ugc",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8795"],
+      "port": 8795
+    },
+    {
+      "name": "casify-theme-dev",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": ["theme", "dev", "--store", "casiffy.myshopify.com", "--port", "9292", "--live-reload", "off", "--no-color"],
+      "port": 9292
+    },
+    {
+      "name": "theme-dev",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": ["theme", "dev", "--store", "casiffy.myshopify.com", "--theme", "161454162165", "--port", "9292"],
+      "port": 9292
+    },
+    {
+      "name": "theme-dev-snap",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": ["theme", "dev", "--store", "casiffy.myshopify.com", "--theme", "161454162165", "--port", "9293"],
+      "port": 9293
+    }
+  ]
+}

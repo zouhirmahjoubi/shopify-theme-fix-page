@@ -1,0 +1,173 @@
+.csp { padding: clamp(48px, 7vw, 92px) 20px; color: var(--cocoa-600); }
+.csp--cream { background: var(--cream-100); }
+.csp--white { background: var(--cream-50); }
+.csp--teal { background: var(--teal-100); }
+.csp__inner { max-width: var(--max, 1160px); margin: 0 auto; }
+.csp__heading { margin: 0 0 28px; max-width: 62ch; }
+.csp__eyebrow { display: block; margin-bottom: 8px; color: var(--cocoa-500); font: 11px var(--font-label); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.csp__heading h2 { margin: 0; color: var(--red-600); font: 700 clamp(30px, 4vw, 48px)/1.15 var(--font-display); }
+.csp__heading p { margin: 12px 0 0; color: var(--cocoa-500); font: 15px/1.6 var(--font-body); }
+.csp__grid { display: grid; gap: 18px; align-items: stretch; }
+/* On the storefront Shopify wraps each theme block in div.shopify-block; display: contents makes the block's own root the grid item again (spans, stretch, no empty cells). */
+.csp__grid > .shopify-block { display: contents; }
+.csp__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.csp__grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.csp-rating, .csp-review, .csp-placeholder { min-width: 0; border: 1px solid var(--border-hairline); border-radius: 14px; background: var(--cream-50); box-shadow: var(--shadow-xs); }
+.csp-rating { padding: clamp(20px, 3vw, 30px); display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
+.csp-rating__score { color: var(--cocoa-700); font: 700 clamp(38px, 5vw, 58px)/1 var(--font-display); }
+.csp-rating__score small { color: var(--cocoa-400); font: 400 18px var(--font-body); }
+.csp-rating__stars, .csp-review__stars { display: block; color: var(--gold-500); line-height: 1; }
+.csp-rating__stars { font-size: 26px; }
+.csp-rating__detail { color: var(--cocoa-500); font: 11px/1.5 var(--font-label); letter-spacing: .08em; text-transform: uppercase; }
+.csp-rating__detail > span { margin: 0 5px; }
+.csp-review { padding: clamp(20px, 3vw, 28px); }
+.csp-review__header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.csp-review__avatar { flex: none; display: grid; place-items: center; width: 42px; height: 42px; overflow: hidden; border: 1px solid var(--gold-400); border-radius: 50%; background: var(--gold-200); color: var(--cocoa-700); font: 700 19px var(--font-display); }
+.csp-review__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.csp-review__person { min-width: 0; }
+.csp-review__name { margin: 0; color: var(--cocoa-700); font: 700 14px/1.3 var(--font-body); }
+.csp-review__date { display: block; margin-top: 3px; color: var(--cocoa-400); font: 11px/1.4 var(--font-label); }
+.csp-review__stars { margin-bottom: 12px; font-size: 18px; }
+.csp .cv-stars { --cv-star-empty: #F6E7B0; --cv-star-fill: #FFC21A; position: relative; display: inline-block; flex: none; width: 5.72em; height: 1.12em; vertical-align: -0.16em; }
+.csp .cv-stars__row { position: absolute; inset: 0; display: flex; gap: .035em; }
+.csp .cv-stars__row svg { flex: 1 1 0; width: 20%; height: 100%; overflow: visible; }
+.csp .cv-stars__row path { fill: var(--cv-star-empty); stroke: none; }
+.csp .cv-stars__row--fill { clip-path: inset(-10% calc(100% - var(--fill, 0%)) -10% -10%); }
+.csp .cv-stars__row--fill path { fill: var(--cv-star-fill); }
+.csp-review__body { color: var(--cocoa-600); font: 14px/1.7 var(--font-body); }
+.csp-review__body p { margin: 0 0 9px; }
+.csp-review__body p:last-child { margin-bottom: 0; }
+.csp-review__photo { margin-top: 16px; overflow: hidden; border-radius: 9px; background: var(--cream-200); }
+.csp-review__photo img { display: block; width: 100%; height: auto; }
+.csp-placeholder { padding: 26px; border-style: dashed; color: var(--cocoa-500); font: 13px/1.6 var(--font-body); }
+@media (max-width: 760px) { .csp__grid--2, .csp__grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 580px) { .csp { padding: 48px 16px; } .csp__grid--2, .csp__grid--3 { grid-template-columns: minmax(0, 1fr); } .csp__heading h2 { font-size: 32px !important; } }
+
+/* Star rating — compact stars row + outlined empty stars */
+.csp-inline { display: flex; grid-column: 1 / -1; min-width: 0; }
+.csp-inline--start { justify-content: flex-start; }
+.csp-inline--center { justify-content: center; }
+.csp-inline--end { justify-content: flex-end; }
+.csp-inline__body { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; max-width: 100%; padding: 8px 14px; border: 1px solid var(--border-hairline); border-radius: 999px; background: var(--cream-50); box-shadow: var(--shadow-xs); color: var(--cocoa-700); text-decoration: none; }
+.csp-inline .csp-rating__stars { font-size: var(--csp-inline-size, 18px); }
+.csp-inline__score { color: var(--red-600); font: 800 calc(var(--csp-inline-size, 18px) * .84)/1 var(--font-display); }
+.csp-inline__detail { color: var(--cocoa-500); font: calc(var(--csp-inline-size, 18px) * .68)/1.3 var(--font-label); letter-spacing: .03em; }
+.csp-inline--plain .csp-inline__body { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.csp-inline--plain a.csp-inline__body:hover { transform: none; }
+/* Star rating "Display on" */
+@media (max-width: 768px) { .csp-show--desktop { display: none !important; } }
+@media (min-width: 769px) { .csp-show--mobile { display: none !important; } }
+a.csp-inline__body { transition: border-color var(--duration-fast) ease-out, transform var(--duration-fast) ease-out; }
+a.csp-inline__body:hover { border-color: var(--red-500); transform: translateY(-1px); }
+a.csp-inline__body:hover .csp-inline__detail { text-decoration: underline; text-underline-offset: 3px; }
+a.csp-inline__body:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { a.csp-inline__body { transition: none; } a.csp-inline__body:hover { transform: none; } }
+
+/* Glossy stars are site-wide (theme.css). "Outlined" empty stars swap the mask. */
+.csp .csp-stars--outlined .cv-stars__row:not(.cv-stars__row--fill) svg {
+  --cv-star-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.6l2.5 5.3 5.8.7-4.3 4 1.1 5.8L12 16.6l-5.1 2.8 1.1-5.8-4.3-4 5.8-.7z' fill='none' stroke='%23000' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background: #E0A500;
+}
+
+/* =========================================================================
+   CS Video (blocks/cs-video.liquid) — a Shopify-hosted video on a paper
+   mat, with a wax-seal play button. Motion: assets/casify-cs-video.js.
+   ========================================================================= */
+.csv {
+  min-width: 0; margin: 0; display: grid; align-content: start; gap: 12px;
+  padding: var(--csv-pt, 0) var(--csv-pr, 0) var(--csv-pb, 0) var(--csv-pl, 0);
+}
+.csv--span-two { grid-column: span 2; }
+.csv--span-full { grid-column: 1 / -1; }
+.csv__frame {
+  position: relative; overflow: hidden; isolation: isolate;
+  aspect-ratio: var(--csv-ratio, 1.7778);
+  border-radius: var(--csv-radius, 14px);
+  background: var(--cocoa-700);
+  box-shadow: 0 0 0 6px var(--cream-50), 0 0 0 7px var(--border-hairline), 0 22px 40px -24px rgba(51, 35, 26, .55);
+  margin: 7px;
+}
+.csv--fixed .csv__frame { aspect-ratio: auto; height: var(--csv-h, 400px); }
+.csv__video { display: block; width: 100%; height: 100%; object-fit: var(--csv-fit, cover); background: #1c130d; }
+.csv__glass {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 253, 248, .32) 50%, transparent 62%) 160% 0 / 260% 100% no-repeat;
+  box-shadow: inset 0 1px rgba(255, 253, 248, .45);
+}
+/* Soft vignette behind the seal so its ring text stays legible on any poster. */
+.csv.is-idle .csv__frame::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(28, 19, 13, .38) 0%, rgba(28, 19, 13, 0) 55%);
+}
+
+.csv__play {
+  position: absolute; z-index: 2; inset: 0; margin: auto;
+  width: 124px; height: 124px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; background: none; cursor: pointer;
+}
+.csv__play[hidden], .csv__toggle[hidden] { display: none; }
+.csv__play:focus-visible { outline: 3px solid var(--cream-50); outline-offset: 4px; box-shadow: 0 0 0 7px var(--focus-ring, #4E7C7B); }
+.csv__ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.csv__ring text {
+  font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  fill: var(--cream-50); paint-order: stroke; stroke: rgba(28, 19, 13, .4); stroke-width: 2px;
+}
+.csv__core {
+  position: relative; display: grid; place-items: center; width: 56%; height: 56%; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--red-400), var(--red-500) 45%, var(--red-700));
+  box-shadow: 0 0 0 3px var(--gold-400), 0 0 0 5px rgba(126, 26, 23, .45), 0 14px 26px -10px rgba(28, 19, 13, .7);
+  color: var(--cream-50);
+}
+.csv__core svg { width: 38%; height: 38%; margin-left: 6%; fill: currentColor; }
+
+.csv__toggle {
+  position: absolute; z-index: 2; right: 12px; bottom: 12px;
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: rgba(51, 35, 26, .78); color: var(--cream-50);
+  box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .35);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.csv__toggle svg { width: 16px; height: 16px; fill: currentColor; }
+.csv__toggle-play { display: none; }
+.csv__toggle[aria-pressed="true"] .csv__toggle-play { display: block; }
+.csv__toggle[aria-pressed="true"] .csv__toggle-pause { display: none; }
+.csv__toggle:focus-visible { outline: 3px solid var(--focus-ring, #4E7C7B); outline-offset: 3px; }
+.csv__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.csv__caption {
+  margin: 0 7px; color: var(--cocoa-500);
+  font: 11.5px/1.5 var(--font-label); letter-spacing: .1em; text-transform: uppercase;
+}
+
+@media (max-width: 580px) {
+  .csv--span-two { grid-column: auto; }
+  .csv__play { width: 100px; height: 100px; }
+}
+
+/* Customer review — title, verified badge, multi-photo row */
+.csp-review__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 10px; }
+.csp-review__meta .csp-review__stars { margin-bottom: 0; }
+.csp-review__verified { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px 2px; border-radius: 999px; background: var(--teal-100); color: var(--teal-700, #33605F); font: 700 10.5px/1.3 var(--font-label); letter-spacing: .04em; }
+.csp-review__title { margin: 0 0 6px; color: var(--cocoa-700); font: 800 16px/1.3 var(--font-display); }
+.csp-review__photo--square img { aspect-ratio: 1; object-fit: cover; }
+.csp-review__photo--portrait img { aspect-ratio: 9 / 16; object-fit: cover; }
+.csp-review__photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.csp-review__photos li { overflow: hidden; border-radius: 8px; background: var(--cream-200); }
+.csp-review__photos img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+.csp-review__photos--portrait img { aspect-ratio: 9 / 16; }
+.csp-review__photos--natural img { aspect-ratio: auto; height: auto; }
+
+/* Ratings & reviews — stacked list layout (reviews one under another) */
+.csp--layout-list .csp__inner { max-width: 820px; }
+.csp__grid--list { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.csp__grid--list .csp-rating { margin-bottom: 26px; }
+.csp__grid--list .csp-inline { margin-bottom: 18px; }
+.csp__grid--list .csp-review { padding: 28px 0; border: 0; border-bottom: 1px dashed var(--border-dashed, rgba(74,51,36,.45)); border-radius: 0; background: transparent; box-shadow: none; }
+.csp__grid--list > .csp-review:last-child,
+.csp__grid--list > .shopify-block:last-child > .csp-review { border-bottom: 0; }
+.csp__grid--list .csp-review__body { font-size: 15px; }
+.csp__grid--list .csp-review__photos { max-width: 460px; }
+.csp__grid--list .csp-review__photo { max-width: 260px; }
+@media (max-width: 760px) { .csp__grid--list { grid-template-columns: minmax(0, 1fr); } }
+.csp__heading--center { margin-inline: auto; text-align: center; }

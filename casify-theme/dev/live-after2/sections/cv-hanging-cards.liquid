@@ -1,0 +1,119 @@
+{{ 'cv-hanging-cards.css' | asset_url | stylesheet_tag }}
+
+{%- assign card_count = section.blocks | size -%}
+{%- if card_count > 0 -%}
+  <section class="cvhang" data-cvhang {% if section.settings.heading != blank %}aria-labelledby="cvhang-title-{{ section.id }}"{% else %}aria-label="Hanging cards"{% endif %}>
+    <div class="cvhang__inner">
+      {%- if section.settings.heading != blank -%}
+        <header class="cvhang__heading">
+          <h2 id="cvhang-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.intro != blank -%}
+            <div class="cvhang__intro rte">{{ section.settings.intro }}</div>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      <div class="cvhang__installation">
+        <ul class="cvhang__row" role="list" data-cvhang-row>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign card_product = block.settings.product
+              assign card_image = block.settings.image
+              if card_image == blank and card_product != blank
+                assign card_image = card_product.featured_image
+              endif
+              assign card_title = block.settings.title
+              if card_title == blank and card_product != blank
+                assign card_title = card_product.title
+              endif
+              assign card_link = block.settings.link
+              if card_link == blank and card_product != blank
+                assign card_link = card_product.url
+              endif
+              assign image_alt = card_image.alt | default: card_title
+              assign is_plain = false
+              if card_image == blank and card_link == blank and card_product == blank
+                assign is_plain = true
+              endif
+            -%}
+            <li class="cvhang__item" data-cvhang-card {{ block.shopify_attributes }}>
+              <div class="cvhang__swing" data-cvhang-swing>
+                <span class="cvhang__hanger" aria-hidden="true">
+                  <span class="cvhang__anchor"></span>
+                  <span class="cvhang__strap"></span>
+                  <span class="cvhang__clasp"></span>
+                </span>
+                <article class="cvhang__card cvhang__card--{{ block.settings.tone }}{% if is_plain %} cvhang__card--plain{% endif %}">
+                  <span class="cvhang__eyelet" aria-hidden="true"></span>
+                  {%- if card_image != blank -%}
+                    <div class="cvhang__media">
+                      {{ card_image | image_url: width: 840 | image_tag: class: 'cvhang__image', loading: 'lazy', widths: '320, 480, 640, 840', sizes: '(min-width: 900px) 32vw, (min-width: 600px) 45vw, calc(100vw - 48px)', alt: image_alt }}
+                    </div>
+                  {%- endif -%}
+                  <div class="cvhang__body">
+                    {%- if card_title != blank -%}<h3>{{ card_title | escape }}</h3>{%- endif -%}
+                    {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
+                    {%- if card_product != blank or card_link != blank -%}
+                      <div class="cvhang__foot">
+                        {%- if card_product != blank -%}
+                          <span class="cvhang__price">{%- if card_product.price_varies -%}<small>From</small> {% endif -%}{{ card_product.price_min | money }}</span>
+                        {%- endif -%}
+                        {%- if card_link != blank -%}
+                          <a class="cvhang__link" href="{{ card_link | escape }}">
+                            {{ block.settings.link_label | default: 'Explore' | escape }}
+                            {%- render 'cv-icon', name: 'arrow-right', size: 17 -%}
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </article>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Hanging cards",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From the shop" },
+    { "type": "richtext", "id": "intro", "label": "Intro" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Hanging card",
+      "limit": 4,
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product (optional)", "info": "Adds its real image, title, price, and link when those fields are not set below." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Supporting text" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Explore" },
+        { "type": "select", "id": "tone", "label": "Accent", "default": "red", "options": [
+          { "value": "red", "label": "Candy red" },
+          { "value": "teal", "label": "Muted teal" },
+          { "value": "gold", "label": "Aged gold" }
+        ] }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hanging cards",
+      "blocks": [
+        { "type": "card", "settings": { "tone": "red", "title": "Choose your case", "text": "Find a finish that feels like yours." } },
+        { "type": "card", "settings": { "tone": "teal", "title": "Pick your phone", "text": "Check the model list on each case before you add it to your bag." } },
+        { "type": "card", "settings": { "tone": "gold", "title": "From our counter", "text": "Questions about a case? Send us a note and we will help you choose." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

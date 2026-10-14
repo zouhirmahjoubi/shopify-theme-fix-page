@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-search",
+      "settings": {
+        "eyebrow": "Find your model",
+        "heading": "What are you looking for?",
+        "results_heading": "Results",
+        "placeholder": "Try “iPhone 17 Pro” or “clear case”",
+        "suggestions": "iPhone 17 Pro, Clear case, MagSafe, Galaxy S25, Screen protector",
+        "per_page": 24,
+        "empty_body": "Check the spelling, or search by phone model — every case is listed under the model it was cut for."
+      }
+    }
+  },
+  "order": ["main"]
+}

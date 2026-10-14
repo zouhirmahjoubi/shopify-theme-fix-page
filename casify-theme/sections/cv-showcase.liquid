@@ -1,0 +1,564 @@
+{%- comment -%}
+  Casify — showcase cards (Chrismass design system).
+
+  By default the row holds a card for every product in the shop (or in the
+  chosen collection), each filled from its own product: photo, price,
+  compare-at price, link, phone and color counts, a saving or "new" badge,
+  and stars only when a review app has written a rating. Cards added as
+  blocks come first, in block order, and carry copy written for that
+  product (short title, one line, two features); every other product
+  follows with copy read off its title and tags. Markup per card:
+  snippets/cv-showcase-card.liquid.
+
+  With more than three cards the row becomes a swipeable rail with
+  previous/next buttons and a progress bar (assets/cv-showcase-motion.js;
+  the rail works without GSAP). Cards are dealt onto the counter from one
+  stack, the photo opens like a shop-window display, the badge stamps down
+  and the enamel CTA assembles last. Styles: assets/cv-showcase.css (loads
+  after theme.css, so it wins the cascade on the shared .cv-showcase
+  selectors; card internals live under the cvsh- prefix).
+
+  "Only the cards below" keeps the original hand-written cards, for a card
+  without a product.
+{%- endcomment -%}
+{{ 'cv-showcase.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign coll = section.settings.collection | default: collections.all
+  assign limit = section.settings.limit | default: 50
+  assign shown = ','
+  assign total = 0
+-%}
+{%- capture cards -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'card' and total < limit -%}
+      {%- liquid
+        assign bp = block.settings.product
+        assign skip = false
+        if bp != blank
+          assign key = bp.id | prepend: ',' | append: ','
+          if shown contains key
+            assign skip = true
+          else
+            assign shown = shown | append: bp.id | append: ','
+          endif
+        elsif section.settings.source == 'products'
+          assign skip = true
+        endif
+      -%}
+      {%- unless skip -%}
+        {%- render 'cv-showcase-card', item: bp, block: block, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
+        {%- assign total = total | plus: 1 -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if section.settings.source == 'products' -%}
+    {%- for item in coll.products -%}
+      {%- if total >= limit -%}{%- break -%}{%- endif -%}
+      {%- assign key = item.id | prepend: ',' | append: ',' -%}
+      {%- unless shown contains key -%}
+        {%- assign shown = shown | append: item.id | append: ',' -%}
+        {%- render 'cv-showcase-card', item: item, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
+        {%- assign total = total | plus: 1 -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="cv-sec cv-showcase cvsh{% if total > 3 %} cvsh--rail{% endif %}" data-cvsh data-section-id="{{ section.id }}">
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+    <div class="cv-row__hd" data-cv-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cv-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 data-cv-split id="cvshTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="cv-sec__lede">{{ section.settings.subheading | replace: '[count]', total }}</div>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.link_label != blank and section.settings.source == 'products' -%}
+        <a class="cv-row__all" href="{{ coll.url | default: routes.all_products_collection_url }}">
+          <span>{{ section.settings.link_label | escape }}</span>
+          {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if total > 3 -%}
+    <div class="cvsh__rail" role="region" aria-roledescription="carousel"{% if section.settings.heading != blank %} aria-labelledby="cvshTitle-{{ section.id }}"{% else %} aria-label="Cases"{% endif %}>
+      <ul class="cvsh__row" role="list" data-cvsh-row>{{ cards }}</ul>
+      <div class="cvsh__bar" data-cvsh-bar>
+        <div class="cvsh__track" aria-hidden="true"><span class="cvsh__thumb" data-cvsh-thumb></span></div>
+        <p class="cvsh__count" data-cvsh-count data-total="{{ total }}">1&ndash;3 of {{ total }}</p>
+        <div class="cvsh__nav">
+          <button type="button" class="cvsh__btn" data-cvsh-prev aria-label="Previous cases" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="cvsh__btn" data-cvsh-next aria-label="Next cases">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <ul class="cvsh__row" role="list" data-cvsh-row>{{ cards }}</ul>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Showcase cards",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop the range"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Every case on the counter"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Sub-heading",
+      "info": "[count] shows how many cards are in the row."
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Cards",
+      "default": "products",
+      "options": [
+        {
+          "value": "products",
+          "label": "A card for every product"
+        },
+        {
+          "value": "cards",
+          "label": "Only the cards below"
+        }
+      ],
+      "info": "Cards below come first, in this order. With \"every product\", the rest of the collection follows, each card filled from its own product."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Leave empty for every product in the shop."
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Most cards",
+      "min": 3,
+      "max": 50,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Card button",
+      "default": "Shop now"
+    },
+    {
+      "type": "text",
+      "id": "sale_badge",
+      "label": "Badge when a compare-at price is set",
+      "default": "Save [percent]%",
+      "info": "[percent] is the real saving. Leave empty for no badge."
+    },
+    {
+      "type": "text",
+      "id": "new_badge",
+      "label": "Badge for products added in the last 30 days",
+      "default": "New"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link to the collection",
+      "default": "See every case"
+    }
+  ],
+  "max_blocks": 50,
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Fills the card: photo, price, compare-at price, link, phone and color counts. Anything typed below replaces the product's own copy; prices always come from the product."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Short title",
+          "info": "Empty: the product title."
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "One line",
+          "info": "Empty: the product's SEO description, or the start of its description."
+        },
+        {
+          "type": "select",
+          "id": "pill_1_icon",
+          "label": "Feature 1 icon",
+          "default": "magnet-ring",
+          "options": [
+            {
+              "value": "magnet-ring",
+              "label": "Magnet ring"
+            },
+            {
+              "value": "magnet",
+              "label": "Magnet"
+            },
+            {
+              "value": "drop-shield",
+              "label": "Drop shield"
+            },
+            {
+              "value": "drop-height",
+              "label": "Drop height"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            },
+            {
+              "value": "lock-secure",
+              "label": "Lock"
+            },
+            {
+              "value": "precision-fit",
+              "label": "Precision fit"
+            },
+            {
+              "value": "camera-lip",
+              "label": "Camera lip"
+            },
+            {
+              "value": "slim",
+              "label": "Slim"
+            },
+            {
+              "value": "no-yellow",
+              "label": "No yellowing"
+            },
+            {
+              "value": "sparkle-clear",
+              "label": "Sparkle"
+            },
+            {
+              "value": "button-click",
+              "label": "Button"
+            },
+            {
+              "value": "wireless-charge",
+              "label": "Wireless charging"
+            },
+            {
+              "value": "device",
+              "label": "Phone"
+            },
+            {
+              "value": "honeycomb",
+              "label": "Honeycomb"
+            },
+            {
+              "value": "bow",
+              "label": "Bow"
+            },
+            {
+              "value": "candy-cane",
+              "label": "Candy cane"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "pill_1_text",
+          "label": "Feature 1 text",
+          "info": "Empty features are read off the product's title and tags."
+        },
+        {
+          "type": "select",
+          "id": "pill_2_icon",
+          "label": "Feature 2 icon",
+          "default": "check",
+          "options": [
+            {
+              "value": "magnet-ring",
+              "label": "Magnet ring"
+            },
+            {
+              "value": "magnet",
+              "label": "Magnet"
+            },
+            {
+              "value": "drop-shield",
+              "label": "Drop shield"
+            },
+            {
+              "value": "drop-height",
+              "label": "Drop height"
+            },
+            {
+              "value": "check",
+              "label": "Check"
+            },
+            {
+              "value": "lock-secure",
+              "label": "Lock"
+            },
+            {
+              "value": "precision-fit",
+              "label": "Precision fit"
+            },
+            {
+              "value": "camera-lip",
+              "label": "Camera lip"
+            },
+            {
+              "value": "slim",
+              "label": "Slim"
+            },
+            {
+              "value": "no-yellow",
+              "label": "No yellowing"
+            },
+            {
+              "value": "sparkle-clear",
+              "label": "Sparkle"
+            },
+            {
+              "value": "button-click",
+              "label": "Button"
+            },
+            {
+              "value": "wireless-charge",
+              "label": "Wireless charging"
+            },
+            {
+              "value": "device",
+              "label": "Phone"
+            },
+            {
+              "value": "honeycomb",
+              "label": "Honeycomb"
+            },
+            {
+              "value": "bow",
+              "label": "Bow"
+            },
+            {
+              "value": "candy-cane",
+              "label": "Candy cane"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "pill_2_text",
+          "label": "Feature 2 text"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "info": "Empty: \"New\" for 30 days, then the real saving."
+        },
+        {
+          "type": "select",
+          "id": "badge_tone",
+          "label": "Badge color",
+          "default": "red",
+          "options": [
+            {
+              "value": "red",
+              "label": "Red"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "badge_style",
+          "label": "Badge shape",
+          "default": "ribbon",
+          "options": [
+            {
+              "value": "ribbon",
+              "label": "Ribbon (corner fold)"
+            },
+            {
+              "value": "pill",
+              "label": "Pill"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "panel_tone",
+          "label": "Panel color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_tone",
+          "label": "Button color",
+          "default": "red",
+          "options": [
+            {
+              "value": "red",
+              "label": "Red"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Empty: the section's card button."
+        },
+        {
+          "type": "header",
+          "content": "Card without a product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Replaces the product photo when a product is picked."
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "default": "cover",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Fill frame"
+            },
+            {
+              "value": "contain",
+              "label": "Show full image"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon when there is no image",
+          "default": "ring-dot",
+          "options": [
+            {
+              "value": "ring-dot",
+              "label": "Ring + dot"
+            },
+            {
+              "value": "magnet-ring",
+              "label": "Magnet ring"
+            },
+            {
+              "value": "uv-sun",
+              "label": "Sun / UV"
+            },
+            {
+              "value": "drop-shield",
+              "label": "Drop shield"
+            },
+            {
+              "value": "no-yellow",
+              "label": "No yellowing"
+            },
+            {
+              "value": "sparkle-clear",
+              "label": "Sparkle"
+            },
+            {
+              "value": "precision-fit",
+              "label": "Precision fit"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare-at price"
+        },
+        {
+          "type": "text",
+          "id": "rating_count",
+          "label": "Review count",
+          "info": "Only for a card without a product. Product cards show stars only from a review app."
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Showcase cards"
+    }
+  ]
+}
+{% endschema %}

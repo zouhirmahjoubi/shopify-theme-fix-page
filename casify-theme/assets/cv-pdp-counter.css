@@ -1,0 +1,944 @@
+/* =========================================================================
+   Casify: product page, "The Shop Counter" (sections/cv-product-counter.liquid)
+   Left: a striped candy-shop reel of photo tickets beside the real photo on a
+   marble stage. Right: vendor ticket, title, rating row, hanging brass price tag,
+   style swatches, model dropdown, candy-box packs, savings meter, Add to bag
+   and Buy now, ship-by line, promise stamps, accordions.
+   Plates (KIE, cobalt-keyed; build sources in assets/plates/, shipped resized as WebP):
+     assets/plates/brass-tag.png      -> pdp-counter-tag.webp      (360x414)
+     assets/plates/candy-box.png      -> pdp-counter-box.webp      (560x325, 9-slice 69 26 19 25)
+     assets/plates/candy-box-teal.png -> pdp-counter-box-teal.webp (560x307, 9-slice 60 21 17 21)
+   Existing KIE GPT Image 2.5 hero sweets cap the SVG reel; product media stays
+   unmodified inside the CSS/SVG ticket frames.
+   Motion lives in cv-pdp-counter-motion.js; this file is the finished state.
+   ========================================================================= */
+
+.cvc {
+  --cvc-ink: var(--cocoa-700);
+  --cvc-muted: var(--cocoa-600);
+  --cvc-red: var(--red-500);
+  --cvc-red-deep: var(--red-700);
+  --cvc-rule: rgba(74, 51, 36, .3);
+  --cvc-gloss: linear-gradient(90deg, rgba(255, 253, 248, 0), rgba(255, 253, 248, .36) 45%, rgba(255, 253, 248, .1) 70%, rgba(255, 253, 248, 0));
+  position: relative;
+  padding-block: 12px 40px;
+  color: var(--cvc-ink);
+}
+.cvc ::selection { background: rgba(196, 48, 43, .22); color: var(--cvc-ink); }
+.cvc__inner { width: min(1360px, 100% - 80px); margin-inline: auto; }
+.cvc__visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Breadcrumb ---------- */
+.cvc__crumbs {
+  display: flex; flex-wrap: wrap; gap: 0 .5em;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.5; letter-spacing: .01em;
+  color: var(--cvc-muted);
+}
+.cvc__crumbs a { color: inherit; text-decoration: none; }
+.cvc__crumbs a:hover { color: var(--cvc-red); text-decoration: underline; text-underline-offset: 3px; }
+.cvc__crumbs [aria-current] { color: var(--cvc-ink); }
+
+/* ---------- Two columns ---------- */
+.cvc__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 650px) minmax(0, 589px);
+  justify-content: center;
+  column-gap: 45px;
+  align-items: start;
+  max-width: 1284px;
+  margin-inline: auto;
+}
+
+/* ---------- Gallery: candy-shop photo tickets + marble stage ---------- */
+.cvc__gallery {
+  grid-column: 1;
+  display: grid; grid-template-columns: 96px minmax(0, 520px); align-items: stretch;
+  gap: 18px; width: 100%; min-width: 0; max-width: 634px; padding-top: 14px;
+}
+.cvc__gallery--single { grid-template-columns: minmax(0, 520px); }
+.cvc__gallery--single .cvc__stage { grid-column: 1; }
+/* Size containment: the rail takes the photo's height and scrolls, instead of a long
+   rail (up to 8 tickets) stretching the square stage into a tall, mostly empty box. */
+.cvc__photo-reel-shell {
+  position: relative; min-width: 0; min-height: 0; overflow: hidden; contain: size;
+  display: flex; flex-direction: column; padding-block: 40px 38px;
+}
+.cvc__photo-reel-track { position: absolute; z-index: 0; pointer-events: none; }
+.cvc__photo-reel-track svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.cvc__photo-reel-track--vertical { inset: 18px 42px 18px; }
+.cvc__photo-reel-track--horizontal { display: none; }
+.cvc__photo-reel-shadow,
+.cvc__photo-reel-cream,
+.cvc__photo-reel-stripe { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.cvc__photo-reel-shadow { stroke: rgba(51, 35, 26, .25); stroke-width: 11; }
+.cvc__photo-reel-cream { stroke: var(--cream-50); stroke-width: 8; }
+.cvc__photo-reel-stripe { stroke: var(--cvc-red); stroke-width: 8; stroke-dasharray: 13 13; }
+.cvc__photo-reel-sweet {
+  position: absolute; left: 50%; z-index: 4; width: 72px; height: auto;
+  transform: translateX(-50%); pointer-events: none;
+  filter: drop-shadow(0 7px 7px rgba(51, 35, 26, .2));
+}
+.cvc__photo-reel-sweet--start { top: -7px; }
+.cvc__photo-reel-sweet--end { bottom: -9px; }
+.cvc__photo-reel {
+  position: relative; z-index: 2; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; gap: 7px;
+  padding: 3px 4px 5px; scrollbar-width: thin; scrollbar-color: rgba(196, 48, 43, .6) transparent;
+  overscroll-behavior: contain;
+}
+.cvc__photo-reel::-webkit-scrollbar { width: 5px; height: 5px; }
+.cvc__photo-reel::-webkit-scrollbar-track { background: transparent; }
+.cvc__photo-reel::-webkit-scrollbar-thumb { background: rgba(196, 48, 43, .6); border-radius: 999px; }
+.cvc__photo-ticket {
+  position: relative; flex: none; width: 96px; height: 108px;
+  padding: 0; border: 0; border-radius: 14px; background: none; cursor: pointer;
+  color: var(--cvc-ink);
+}
+.cvc__photo-ticket-card {
+  position: relative; display: block; width: 100%; height: 100%;
+  transform: rotate(-1.4deg); transform-origin: 50% 50%;
+  filter: drop-shadow(0 7px 7px rgba(51, 35, 26, .17));
+  transition: transform 220ms cubic-bezier(.16, 1, .3, 1), filter 220ms cubic-bezier(.16, 1, .3, 1);
+}
+.cvc__photo-ticket:nth-child(even) .cvc__photo-ticket-card { transform: rotate(1.4deg); }
+.cvc__photo-ticket-frame { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; overflow: visible; }
+.cvc__photo-ticket-paper { fill: var(--cream-50); }
+.cvc__photo-ticket-outline {
+  fill: none; stroke: rgba(74, 51, 36, .56); stroke-width: 2; stroke-linejoin: round;
+  transition: stroke 180ms ease, stroke-width 180ms ease;
+}
+.cvc__photo-ticket-perf { fill: none; stroke: rgba(74, 51, 36, .38); stroke-width: 1.6; stroke-dasharray: 3 3; }
+.cvc__photo-ticket-image {
+  position: absolute; inset: 12px 13px 24px; z-index: 1; overflow: hidden;
+  border-radius: 8px; background: var(--cream-200);
+}
+.cvc__photo-ticket-image img { display: block; width: 100%; height: 100%; object-fit: contain; background: var(--cream-50); }
+.cvc__photo-ticket-no {
+  position: absolute; left: 0; right: 0; bottom: 7px; z-index: 2;
+  font-family: var(--font-label); font-size: 11px; font-weight: 800; line-height: 1;
+  letter-spacing: .08em; text-align: center; color: var(--cvc-muted);
+}
+.cvc__photo-ticket:hover .cvc__photo-ticket-card { transform: translateX(3px) rotate(0); filter: drop-shadow(0 9px 9px rgba(51, 35, 26, .24)); }
+.cvc__photo-ticket[aria-selected="true"] .cvc__photo-ticket-card { transform: translateX(5px) rotate(0); filter: drop-shadow(0 10px 9px rgba(51, 35, 26, .28)); }
+.cvc__photo-ticket[aria-selected="true"] .cvc__photo-ticket-outline { stroke: var(--cvc-red); stroke-width: 4; stroke-dasharray: 10 4; }
+.cvc__photo-ticket[aria-selected="true"] .cvc__photo-ticket-no { color: var(--cvc-red-deep); }
+.cvc__photo-ticket:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 1px; }
+
+.cvc__stage {
+  position: relative; grid-column: 2; width: 100%; min-width: 0; max-width: 520px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden; border-radius: 6px;
+  background: var(--cream-200);
+  box-shadow: 0 20px 40px -28px rgba(51, 35, 26, .55);
+}
+.cvc__photo {
+  display: block; width: 100%; height: 100%; max-width: none;
+  object-fit: contain; object-position: center; cursor: zoom-in;
+  transition: opacity 260ms var(--ease-standard);
+}
+.cvc__photo.is-swapping { opacity: .35; }
+.cvc__photo--empty { cursor: default; }
+.cvc__zoom {
+  position: absolute; top: 11px; right: 12px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 34px; padding: 0 16px 0 12px;
+  border: 0; border-radius: 999px; cursor: zoom-in;
+  font-family: var(--font-label); font-size: 13px; line-height: 1; letter-spacing: .01em; text-transform: none;
+  color: var(--cvc-ink);
+  background: rgba(251, 246, 234, .94);
+  box-shadow: 0 6px 16px -8px rgba(51, 35, 26, .45), 0 0 0 1px rgba(74, 51, 36, .08);
+}
+.cvc__zoom svg { width: 18px; height: 18px; }
+
+/* ---------- Main image awning (snippets/cv-awning.liquid, motion: cv-awning.js) ---------- */
+.cv-awning {
+  --cv-awning-red: var(--red-500);
+  --cv-awning-teal: var(--teal-600);
+  --cv-awning-a: var(--cv-awning-red);
+  --cv-awning-b: var(--cream-100);
+  position: absolute; z-index: 2; top: 0; left: 0; right: 0;
+  aspect-ratio: var(--cv-awning-ratio, 320 / 30);
+  pointer-events: none;
+  filter: drop-shadow(0 5px 5px rgba(51, 35, 26, .26));
+}
+.cv-awning--teal { --cv-awning-a: var(--cv-awning-teal); }
+.cv-awning__flat { display: block; width: 100%; height: 100%; overflow: visible; }
+.cv-awning__stripe--a { fill: var(--cv-awning-a); transition: fill .45s ease; }
+/* Sideways scroll / swipe target (cv-awning.js); vertical scrolling stays with the page. */
+.cv-awning__hit { position: absolute; top: 0; left: 0; right: 0; height: 150%; pointer-events: auto; cursor: grab; touch-action: pan-y pinch-zoom; }
+.cv-awning__hit:active { cursor: grabbing; }
+@media (prefers-reduced-motion: reduce) { .cv-awning__stripe--a { transition: none; } }
+.cv-awning__stripe--b { fill: var(--cv-awning-b); }
+.cv-awning__rod { fill: rgba(255, 253, 248, .45); }
+/* The 3D canopy gets extra room below for the hem to sway into. */
+.cv-awning canvas { position: absolute; top: 0; left: 0; width: 100% !important; height: 160% !important; }
+.cv-awning.is-3d .cv-awning__flat { visibility: hidden; }
+/* Hidden with the section's other intro pieces (html.cvc-pending, max 1.4s, never
+   for reduced motion) so the 3D canopy can unroll from the rod without a flicker. */
+.cvc-pending .cv-awning__flat { visibility: hidden; }
+.cvc__stage--awning-true .cvc__zoom { top: auto; bottom: 12px; }
+
+/* ---------- Price tag on the photo (snippets/cv-photo-price.liquid, motion: cv-price-tag.js) ----------
+   Sized from the square stage: 24% wide, hanging from the top so the card clears
+   the awning hem, and 10% in from the edge so its swing stays on the photo.
+   The HTML card is the finished tag; the 3D one replaces it. */
+.cv-ptag {
+  position: absolute; z-index: 1; top: 0; right: 10%;
+  width: 24%; min-width: 92px; height: 48%;
+  pointer-events: none;
+}
+.cv-ptag__string {
+  position: absolute; top: 0; left: 50%; width: 2px; height: calc(29% + 12%);
+  background: var(--cocoa-600); transform: translateX(-50%); border-radius: 2px;
+}
+.cv-ptag__card {
+  position: absolute; top: 29%; left: 0; right: 0; aspect-ratio: 1 / 1.25;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4%;
+  padding: 22% 8% 10%;
+  border: 1px solid rgba(74, 51, 36, .3); border-radius: 12px;
+  background: var(--cream-50);
+  box-shadow: 0 10px 18px rgba(51, 35, 26, .22), inset 0 0 0 5px var(--cream-50), inset 0 0 0 6px rgba(74, 51, 36, .25);
+  transform-origin: 50% -45%;
+  font-size: clamp(11px, 1.9vw, 15px);
+  text-align: center;
+}
+.cv-ptag__hole {
+  position: absolute; top: 9%; left: 50%; width: 11%; aspect-ratio: 1;
+  border: 2px solid var(--gold-400); border-radius: 50%; background: var(--cream-200);
+  transform: translateX(-50%);
+}
+.cv-ptag__now { color: var(--red-700); font: 900 2.05em/1 var(--font-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.cv-ptag__was { color: var(--cocoa-500); font: 400 1.05em/1.1 var(--font-body); text-decoration-thickness: 1.5px; font-variant-numeric: tabular-nums; }
+.cv-ptag__save {
+  padding: .35em .7em .3em; border-radius: 999px; background: var(--red-500); color: var(--cream-50);
+  font: 700 .82em/1.1 var(--font-label); letter-spacing: .03em; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.cv-ptag__was[hidden], .cv-ptag__save[hidden] { display: none; }
+.cv-ptag canvas { position: absolute; top: 0; left: -70%; width: 240% !important; height: 112% !important; }
+.cv-ptag.is-3d .cv-ptag__string, .cv-ptag.is-3d .cv-ptag__card { visibility: hidden; }
+.cvc-pending .cv-ptag__string, .cvc-pending .cv-ptag__card { visibility: hidden; }
+.cvc__stage--awning-true .cvc__photo { box-sizing: border-box; padding-top: 7%; }
+.cvc__zoom:hover { background: var(--cream-50); }
+.cvc__zoom:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 2px; }
+
+/* ---------- Buy box ---------- */
+.cvc__box { position: relative; grid-column: 2; width: 100%; min-width: 0; margin-top: -4px; padding-top: 1px; }
+
+.cvc__vendor {
+  display: inline-block; margin: 0;
+  padding: 5px 12px 4px;
+  font-family: var(--font-label); font-size: 11px; line-height: 1.3; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cvc-ink);
+  background: var(--cream-300);
+  border: 1.5px dashed rgba(74, 51, 36, .55);
+  border-radius: 2px;
+  box-shadow: 0 3px 6px -4px rgba(74, 51, 36, .35);
+}
+
+/* the hanging brass price tag; its string runs up to the header rule */
+.cvc__tag {
+  position: absolute; top: -29px; right: -24px; z-index: 2;
+  width: 126px; margin: 0;
+  transform-origin: 60% 0;
+  pointer-events: none;
+}
+.cvc__tag-plate { display: block; width: 100%; height: auto; filter: saturate(.7) brightness(1.03) drop-shadow(0 10px 10px rgba(51, 35, 26, .28)); }
+.cvc__tag-price {
+  position: absolute; left: 12%; right: 6%; top: 43%;
+  display: flex; flex-direction: column; align-items: center;
+  transform: rotate(-12deg);
+  font-family: var(--font-display); font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em;
+  color: var(--red-600);
+  text-shadow: 0 1px 0 rgba(255, 238, 190, .55);
+  white-space: nowrap;
+}
+.cvc__tag-price s {
+  margin-top: 3px; padding-inline: 5px;
+  font-family: var(--font-label); font-size: .46em; font-weight: 800; line-height: 1.1;
+  color: var(--cocoa-600); text-shadow: none; text-decoration-thickness: 1.5px;
+}
+.cvc__tag-sale {
+  position: absolute; left: -12px; bottom: -3px; z-index: 2;
+  display: grid; width: 53px; aspect-ratio: 1; place-items: center;
+  transform: rotate(-7deg); color: var(--cream-50);
+  filter: drop-shadow(0 4px 4px rgba(51, 35, 26, .28));
+}
+.cvc__tag-sale[hidden] { display: none; }
+.cvc__tag-sale svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cvc__tag-sale svg path { fill: var(--cvc-red); stroke: var(--cream-50); stroke-width: 2; stroke-linejoin: round; }
+.cvc__tag-sale svg circle { fill: none; stroke: rgba(255, 253, 248, .72); stroke-width: 1.5; stroke-dasharray: 2.5 2.5; }
+.cvc__tag-sale-copy {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: var(--font-label); font-weight: 900; line-height: .85; text-align: center; text-transform: uppercase;
+}
+.cvc__tag-sale-copy strong { font-size: 16px; letter-spacing: -.04em; }
+.cvc__tag-sale-copy small { margin-top: 3px; font-size: 7px; letter-spacing: .13em; }
+
+/* Clear of the gold tag and its sale badge (they reach 114px in from the box edge). */
+.cvc__title {
+  max-width: min(462px, calc(100% - 124px)); margin: 4px 0 0;
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 41px; line-height: .95; letter-spacing: -.02em;
+  color: var(--cvc-ink); text-wrap: balance;
+}
+
+.cvc__price-saving {
+  display: inline-flex; align-items: center; gap: 5px;
+  width: fit-content; margin: 8px 0 0; padding: 5px 9px 5px 7px;
+  font-family: var(--font-label); font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: .035em; text-transform: uppercase;
+  color: var(--cvc-ink);
+  background:
+    linear-gradient(var(--cream-50), var(--cream-50)) padding-box,
+    repeating-linear-gradient(-45deg, var(--cvc-red) 0 5px, var(--cream-300) 5px 10px) border-box;
+  border: 2px solid transparent; border-radius: 3px;
+  box-shadow: 0 4px 10px -7px rgba(51, 35, 26, .55);
+}
+.cvc__price-saving[hidden] { display: none; }
+/* "Show the You save line" off: stays hidden even when a variant change would reveal it. */
+.cvc__price-saving--false { display: none !important; }
+
+/* ---------- Rating, price & pitch (snippets/cv-product-summary.liquid) ---------- */
+.cvc-sum { display: grid; gap: 8px; max-width: 462px; margin-top: 12px; }
+.cvc-sum__rating {
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 8px;
+  width: fit-content; min-height: 32px;
+  font-family: var(--font-label); font-size: 14px; line-height: 1.2;
+  color: var(--cvc-ink); text-decoration: none;
+}
+.cvc-sum__stars { font-size: 20px; line-height: 0; }
+.cvc-sum__score { font-family: var(--font-display); font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.cvc-sum__count {
+  color: var(--cvc-muted);
+  text-decoration: underline dashed color-mix(in srgb, var(--cvc-ink) 55%, transparent);
+  text-underline-offset: 4px; text-decoration-thickness: 1px;
+}
+.cvc-sum__rating:hover .cvc-sum__count { color: var(--cvc-red); text-decoration-color: currentColor; }
+.cvc-sum__rating:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 4px; border-radius: 4px; }
+.cvc-sum__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0; }
+.cvc-sum__now { color: var(--cvc-red-deep); font-family: var(--font-display); font-size: 30px; font-weight: 900; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.cvc-sum__was { color: var(--cvc-muted); font-family: var(--font-body); font-size: 17px; text-decoration-thickness: 1.5px; font-variant-numeric: tabular-nums; }
+.cvc-sum__save {
+  align-self: center;
+  padding: 5px 10px 4px; border-radius: 999px;
+  background: var(--cvc-red); color: var(--cream-50);
+  font-family: var(--font-label); font-size: 12px; font-weight: 700; line-height: 1.1; letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+.cvc-sum__was[hidden], .cvc-sum__save[hidden] { display: none; }
+.cvc-sum__pitch { margin: 2px 0 0; color: var(--cvc-muted); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+@media (max-width: 700px) {
+  .cvc-sum__now { font-size: 26px; }
+  .cvc-sum__pitch { font-size: 14px; }
+}
+.cvc__price-saving svg { flex: none; width: 15px; height: 15px; color: var(--cvc-red); }
+.cvc__price-saving strong { color: var(--cvc-red-deep); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.cvc__rating {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 32px; max-width: 100%; margin-top: 8px; padding: 2px 0;
+  font-family: var(--font-label); font-size: 14px; line-height: 1.2;
+  color: var(--cvc-ink); text-decoration: none;
+}
+.cvc__stars {
+  --cv-star-empty: #eadfca;
+  --cv-star-fill: #ffc107;
+  font-size: 23.5px; transform-origin: 0 50%;
+}
+.cvc__rating-text { display: inline-flex; align-items: baseline; gap: .42em; white-space: nowrap; }
+.cvc__rating-separator { color: color-mix(in srgb, var(--cvc-muted) 78%, transparent); }
+.cvc__rating u {
+  text-decoration-line: underline; text-decoration-style: dashed;
+  text-decoration-color: color-mix(in srgb, var(--cvc-ink) 72%, transparent);
+  text-underline-offset: 4px; text-decoration-thickness: 1px;
+  transition: color 160ms var(--ease-standard), text-decoration-color 160ms var(--ease-standard);
+}
+.cvc__rating:hover u { color: var(--cvc-red); text-decoration-color: currentColor; }
+.cvc__rating:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 4px; }
+.cvc__app:empty { display: none; }
+
+/* ---------- Google + Trustpilot tickets under the price (snippets/cv-store-ratings.liquid).
+   .cvrb, not .cvsr: that prefix belongs to the scrolling-reviews section, whose
+   56px section padding was landing on these tickets. ---------- */
+.cvrb {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 8px;
+  max-width: 462px; margin: 2px 0 0;
+}
+.cvrb__chip {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 5px 9px;
+  min-width: 0; margin: 0; padding: 9px 12px 8px;
+  color: var(--cvc-ink); text-decoration: none;
+  background: var(--cream-50);
+  border: 1px solid rgba(74, 51, 36, .16); border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 253, 248, .8), 0 6px 12px -10px rgba(51, 35, 26, .55);
+}
+a.cvrb__chip { transition: border-color 160ms var(--ease-standard), transform 160ms var(--ease-standard), box-shadow 160ms var(--ease-standard); }
+a.cvrb__chip:hover { border-color: rgba(74, 51, 36, .42); transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255, 253, 248, .8), 0 9px 14px -10px rgba(51, 35, 26, .6); }
+a.cvrb__chip:focus-visible { outline: 3px solid var(--focus-ring, var(--teal-500)); outline-offset: 2px; }
+.cvrb__brand {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 700 13px/1 Arial, Helvetica, sans-serif; letter-spacing: -.005em; white-space: nowrap;
+}
+.cvrb__logo { flex: none; width: 18px; height: 18px; }
+.cvrb__logo--tp { fill: #00b67a; }
+.cvrb__stars { display: inline-flex; font-size: 14px; line-height: 0; }
+.cvrb__score {
+  display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: baseline; gap: 2px 7px;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.2; color: var(--cvc-muted);
+}
+.cvrb__score strong { font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--cvc-ink); font-variant-numeric: tabular-nums; }
+/* Trustpilot's look: white stars on green squares, filled to the score */
+.cvrb__tp { position: relative; width: 5.48em; height: 1.04em; }
+.cvrb__tp-row { position: absolute; inset: 0; display: flex; gap: .12em; }
+.cvrb__tp-row--fill { clip-path: inset(0 calc(100% - var(--fill, 0%)) 0 0); }
+.cvrb__tp-box { display: grid; flex: 1 1 0; place-items: center; background: #dcdce6; }
+.cvrb__tp-row--fill .cvrb__tp-box { background: #00b67a; }
+.cvrb__tp-box svg { width: 80%; height: 80%; fill: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  a.cvrb__chip { transition: none; }
+  a.cvrb__chip:hover { transform: none; }
+}
+
+/* ---------- Low stock ---------- */
+.cvc__stock {
+  display: flex; align-items: center; gap: 7px;
+  margin: 9px 0 0;
+  font-family: var(--font-label); font-size: 13px; font-weight: 600; line-height: 1.2;
+  color: var(--cvc-red-deep);
+}
+.cvc__stock[hidden] { display: none; }
+.cvc__stock-dot {
+  flex: none; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cvc-red); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cvc-red) 22%, transparent);
+}
+
+/* ---------- Pills: low stock (pill style) + sales note ---------- */
+.cvc__stock--pill,
+.cvc__pill {
+  --cvc-pill-bg: #FFF8D0; --cvc-pill-ink: #7A5A00; --cvc-pill-dot: #C9920A;
+  display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 8px;
+  margin: 10px 0 0; padding: 6px 12px 5px;
+  border: 1px solid color-mix(in srgb, var(--cvc-pill-dot) 35%, transparent); border-radius: 999px;
+  background: var(--cvc-pill-bg); color: var(--cvc-pill-ink);
+  font-family: var(--font-label); font-size: 12.5px; font-weight: 700; line-height: 1.25;
+}
+.cvc__stock--pill[hidden] { display: none; }
+.cvc__pill--teal { --cvc-pill-bg: var(--teal-100); --cvc-pill-ink: var(--teal-700, #33605F); --cvc-pill-dot: var(--teal-600); }
+.cvc__pill--hint { --cvc-pill-bg: var(--cream-50); --cvc-pill-ink: var(--cocoa-500); border-style: dashed; font-weight: 400; }
+.cvc__stock--pill .cvc__stock-dot,
+.cvc__pill-dot {
+  flex: none; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cvc-pill-dot); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cvc-pill-dot) 22%, transparent);
+}
+.cvc__pill .cvc__sold-count { color: inherit; font-weight: 800; }
+
+/* Rocket line: "Hurry up! 500+ items have been sold" */
+.cvc__sold {
+  display: flex; align-items: center; gap: 8px;
+  margin: 10px 0 0;
+  color: var(--cocoa-600);
+  font-family: var(--font-body); font-size: 14.5px; line-height: 1.35;
+}
+.cvc__sold-icon { flex: none; color: var(--cocoa-700); transform: rotate(35deg); }
+.cvc__sold-count { display: inline-block; color: var(--cvc-red-deep); font-weight: 800; font-variant-numeric: tabular-nums; }
+.cvc__sold-count.is-rolling { text-align: right; }
+
+@keyframes cvc-pill-blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@keyframes cvc-sold-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+@media (prefers-reduced-motion: no-preference) {
+  .cvc__stock--pill .cvc__stock-dot,
+  .cvc__pill-dot { animation: cvc-pill-blink 1.4s ease-in-out infinite; }
+  .cvc__sold .cvc__sold-count { animation: cvc-sold-pulse 1.5s ease-in-out infinite; }
+}
+
+/* Both notes share a wrapper; cv-pdp-sales.js lays one three.js canvas over it,
+   overhanging the notes so embers and exhaust have room. A lit note hands its
+   dot or rocket icon to the canvas, and the rocket's number pulses with the engine. */
+.cvc__sales { position: relative; }
+.cvc__sales-canvas { position: absolute; z-index: 1; display: block; pointer-events: none; }
+.cvc__pill.is-lit .cvc__pill-dot,
+.cvc__sold.is-lit .cvc__sold-icon { visibility: hidden; animation: none; }
+.cvc__sold.is-lit .cvc__sold-count { animation: none; }
+
+/* ---------- Options ---------- */
+.cvc__opt { margin-top: 4px; }
+.cvc__opt--model { margin-top: 11px; }
+.cvc__label {
+  display: block; margin: 0;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.25; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--cvc-ink);
+}
+.cvc__label-value { text-transform: none; letter-spacing: .01em; }
+
+.cvc__swatches { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+.cvc__swatch {
+  position: relative; flex: none;
+  width: 56px; height: 56px; padding: 5px;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: repeating-linear-gradient(-45deg, var(--teal-500) 0 5px, var(--cream-50) 5px 10px);
+  box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .55), 0 4px 8px -4px rgba(51, 35, 26, .4);
+  transition: translate 180ms var(--ease-standard);
+}
+.cvc__swatch img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--cream-100); box-shadow: 0 0 0 2px var(--cream-50); }
+.cvc__swatch[aria-checked="true"] { background: repeating-linear-gradient(-45deg, var(--cvc-red) 0 6px, var(--cream-50) 6px 11px); }
+.cvc__swatch:hover { translate: 0 -2px; }
+.cvc__swatch[data-cv-stock="out"] { opacity: .5; }
+.cvc__swatch[data-cv-stock="out"]::after {
+  content: ""; position: absolute; left: 50%; top: 8%; bottom: 8%; width: 2px; background: var(--cocoa-600); transform: rotate(45deg);
+}
+.cvc__swatch:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 3px; }
+/* values without their own photo: text pills */
+.cvc__swatches--text .cvc__swatch {
+  width: auto; height: auto; min-height: 44px; padding: 8px 16px;
+  border-radius: 999px; background: var(--cream-50);
+  border: 1.5px dashed var(--cvc-rule); box-shadow: none;
+  font-family: var(--font-body); font-size: 13px; line-height: 1.25; color: var(--cvc-ink); text-transform: none; letter-spacing: 0;
+}
+.cvc__swatches--text .cvc__swatch[aria-checked="true"] { border: 2px solid var(--cvc-red); color: var(--cvc-red); font-weight: 700; }
+
+.cvc__select { position: relative; display: block; margin-top: 8px; }
+.cvc__select select {
+  display: block; width: 100%; height: 44px; margin: 0;
+  padding: 0 48px 0 16px;
+  -webkit-appearance: none; appearance: none;
+  font-family: var(--font-body); font-size: 17px; line-height: 1.2; color: var(--cvc-ink); text-transform: none; letter-spacing: 0;
+  background: var(--cream-50);
+  border: 1px solid rgba(74, 51, 36, .5); border-radius: 4px;
+  cursor: pointer;
+}
+.cvc__select select:hover { border-color: var(--cvc-ink); }
+.cvc__select select:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 2px; }
+.cvc__select svg { position: absolute; right: 14px; top: 50%; translate: 0 -50%; pointer-events: none; color: var(--cvc-ink); }
+
+/* ---------- Candy-box packs ---------- */
+.cvc__packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; margin-top: 23px; }
+.cvc__pack {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 116px; margin: 0; padding: 0 6px 4px;
+  border-style: solid; border-color: transparent;
+  border-width: 33px 12px 10px 12px;
+  border-image: var(--cvc-box) 69 26 19 25 fill / 33px 12px 10px 12px round;
+  background: none; cursor: pointer;
+  font-family: var(--font-display); color: var(--cvc-red); text-transform: none; letter-spacing: 0;
+  filter: drop-shadow(0 6px 8px rgba(51, 35, 26, .16));
+  transition: translate 200ms var(--ease-standard), filter 200ms var(--ease-standard);
+}
+.cvc__pack--teal { border-image: var(--cvc-box-teal) 60 21 17 21 fill / 33px 12px 10px 12px round; }
+.cvc__pack:hover { translate: 0 -2px; }
+.cvc__pack[aria-checked="true"] {
+  translate: 0 -5px;
+  filter: drop-shadow(0 10px 12px rgba(126, 26, 23, .28)) drop-shadow(0 0 0 var(--cvc-red));
+}
+.cvc__pack[aria-checked="true"]::after { /* chosen: the lid becomes a striped awning with a scalloped edge */
+  content: ""; position: absolute; left: -11px; right: -11px; top: -27px; height: 15px;
+  border-radius: 8px 8px 1px 1px;
+  background: repeating-linear-gradient(90deg, var(--cvc-red) 0 12px, var(--cream-50) 12px 24px);
+  box-shadow: inset 0 -2px 3px -2px rgba(126, 26, 23, .3);
+  -webkit-mask: radial-gradient(circle 6px at 6px 0, #000 98%, transparent) 0 100% / 12px 6px repeat-x, linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 5px) no-repeat;
+          mask: radial-gradient(circle 6px at 6px 0, #000 98%, transparent) 0 100% / 12px 6px repeat-x, linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 5px) no-repeat;
+  pointer-events: none;
+}
+.cvc__pack--teal[aria-checked="true"]::after { background: repeating-linear-gradient(90deg, var(--teal-600) 0 13px, var(--cream-50) 13px 26px); }
+.cvc__pack-name { font-weight: 600; font-size: 21px; line-height: 1.05; }
+.cvc__pack-each { font-weight: 700; font-size: 24px; line-height: 1.1; white-space: nowrap; }
+.cvc__pack-each small { font-size: .7em; font-weight: 700; }
+.cvc__pack-was { margin-top: 1px; font-family: var(--font-body); font-size: 14px; line-height: 1; color: var(--cvc-muted); text-decoration-thickness: 1.5px; font-variant-numeric: tabular-nums; }
+.cvc__pack-was[hidden] { display: none; }
+.cvc__flag {
+  position: absolute; left: 50%; top: -41px; translate: -50% 0; z-index: 1;
+  padding: 5px 20px 6px;
+  border-radius: 8px 8px 4px 4px;
+  font-family: var(--font-label); font-weight: 400; font-size: 14px; line-height: 1.15; letter-spacing: .01em; white-space: nowrap;
+  color: var(--cream-50);
+  background: var(--cvc-red);
+  box-shadow: 0 2px 0 var(--cvc-red-deep);
+}
+.cvc__pack--teal .cvc__flag { background: var(--teal-600); box-shadow: 0 2px 0 #3e605e; }
+.cvc__pack:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 4px; }
+
+/* ---------- Savings meter ---------- */
+.cvc__savings { display: flex; align-items: center; gap: 10px; margin-top: 19px; }
+.cvc__meter {
+  position: relative; flex: 0 1 281px; height: 16px; overflow: hidden;
+  border-radius: 999px;
+  background: var(--cream-200);
+  box-shadow: inset 0 1px 3px rgba(51, 35, 26, .28), 0 0 0 1px rgba(74, 51, 36, .12);
+}
+.cvc__meter-fill {
+  display: block; height: 100%; width: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(-55deg, var(--cvc-red) 0 9px, var(--cream-50) 9px 15px);
+  box-shadow: inset 0 -2px 0 rgba(126, 26, 23, .35);
+  transform-origin: 0 50%;
+  transition: width 420ms var(--ease-standard);
+}
+.cvc__savings-text {
+  flex: 1 1 auto; margin: 0;
+  font-family: var(--font-label); font-size: 13px; line-height: 1.3; color: var(--cvc-ink);
+}
+
+/* ---------- Add to bag + Buy now ---------- */
+.cvc__buttons { display: grid; grid-template-columns: minmax(0, 333fr) minmax(0, 250fr); gap: 7px; margin-top: 11px; }
+.cvc .cvc__add, .cvc .cvc__buy {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 50px; margin: 0; padding: 0 18px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1; letter-spacing: .01em; text-transform: none;
+  color: var(--cream-50);
+  white-space: nowrap;
+  transition: transform 150ms var(--ease-standard), box-shadow 150ms var(--ease-standard), background-color 150ms var(--ease-standard);
+}
+.cvc .cvc__add {
+  background: linear-gradient(180deg, #d23a33 0%, var(--cvc-red) 55%, #a92722 100%);
+  box-shadow: 0 4px 0 var(--cvc-red-deep), 0 12px 22px -10px rgba(126, 26, 23, .55);
+}
+.cvc .cvc__buy {
+  background: linear-gradient(180deg, #4a3222 0%, #36241a 55%, #2a1b12 100%);
+  box-shadow: 0 4px 0 #1b110b, 0 12px 22px -10px rgba(27, 17, 11, .55);
+}
+.cvc__add::after, .cvc__buy::after { /* gloss */
+  content: ""; position: absolute; right: 10%; top: 10%; width: 7%; height: 80%;
+  border-radius: 2px; transform: skewX(-34deg);
+  background: var(--cvc-gloss); pointer-events: none;
+}
+.cvc__add svg { flex: none; width: 20px; height: 20px; margin-top: -2px; }
+.cvc__buy svg { flex: none; width: 22px; height: 22px; }
+.cvc__add-total { font-weight: 700; }
+.cvc__add-total #cvTotal { display: inline-block; } /* so the total can roll over */
+.cvc .cvc__add:hover:not(:disabled), .cvc .cvc__buy:hover:not(:disabled) { transform: translateY(-2px); }
+.cvc .cvc__add:active:not(:disabled), .cvc .cvc__buy:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(27, 17, 11, .8); }
+.cvc .cvc__add:disabled, .cvc .cvc__buy:disabled { background: var(--cocoa-300); box-shadow: 0 4px 0 var(--cocoa-500); cursor: not-allowed; }
+.cvc .cvc__add:disabled .cvc__add-total { display: none; }
+.cvc .cvc__add.is-busy, .cvc .cvc__buy.is-busy { opacity: .88; cursor: progress; }
+.cvc .cvc__add.is-done { background: var(--teal-600); box-shadow: 0 4px 0 #3e605e; }
+.cvc__add:focus-visible, .cvc__buy:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+
+.cvc__status { margin: 8px 0 0; font: 13px/1.4 var(--font-body); color: var(--teal-600); }
+.cvc__status:empty { display: none; }
+
+.cvc__shipby {
+  display: flex; align-items: center; gap: 9px; margin: 10px 0 0;
+  font-family: var(--font-label); font-size: 15px; line-height: 1.25; color: var(--cvc-ink);
+}
+.cvc__shipby svg { flex: none; width: 20px; height: 20px; color: var(--cocoa-500); }
+
+/* ---------- Shop promises: three postage stamps ---------- */
+/* Perforated cream paper (round holes on every edge, the page showing through), a tinted
+   printed panel inside, laid on the counter at a slight angle. cv-pdp-promises.js deals
+   them in and draws a three.js scene into each art slot; the SVG is the still fallback. */
+.cvc__promises { position: relative; margin: 14px 0 0; }
+.cvc__promises-list {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px;
+  margin: 0; padding: 0; list-style: none;
+}
+.cvc__promise {
+  --tone: var(--red-500); --tint: #FBECE7; --tilt: -1.2deg; --perf: 3.5px; --lift: 0;
+  /* cv-pdp-promises.js deals the stamp in through these, leaving rotate/translate to the CSS */
+  --dx: 0px; --dy: 0px; --dr: 0deg; --ds: 1;
+  position: relative; isolation: isolate; display: flex; align-items: center; gap: 8px;
+  min-width: 0; min-height: 64px; padding: 11px 12px 11px 10px;
+  background:
+    radial-gradient(var(--perf), #0000 97%, var(--cream-50)) round calc(-1.5 * var(--perf)) calc(-1.5 * var(--perf)) / calc(3 * var(--perf)) calc(3 * var(--perf)),
+    linear-gradient(var(--cream-50) 0 0) no-repeat 50% / calc(100% - 3 * var(--perf)) calc(100% - 3 * var(--perf));
+  filter: drop-shadow(0 calc(1px + var(--lift) * 8px) calc(1.5px + var(--lift) * 6px) rgba(51, 35, 26, calc(.24 + var(--lift) * .08)));
+  rotate: var(--tilt);
+  transform: translate(var(--dx), var(--dy)) rotate(var(--dr)) scale(var(--ds));
+  transition: rotate 260ms var(--ease-standard), translate 260ms var(--ease-standard), filter 260ms var(--ease-standard);
+}
+.cvc__promise::before {
+  content: ""; position: absolute; inset: 7px; z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--tone) 45%, transparent); border-radius: 2px;
+  background: var(--tint);
+}
+.cvc__promise--returns { --tone: var(--teal-600); --tint: var(--teal-100); --tilt: .9deg; }
+.cvc__promise--box { --tone: var(--gold-500); --tint: #F7EEDB; --tilt: -.6deg; }
+.cvc__promise-art {
+  position: relative; display: grid; flex: none; place-items: center;
+  width: 54px; height: 44px; color: var(--tone);
+}
+.cvc__promise-art svg { width: 28px; height: 28px; }
+.cvc__promise.is-lit .cvc__promise-art svg { visibility: hidden; }
+.cvc__promise-text {
+  min-width: 0;
+  font-family: var(--font-label); font-size: 12.5px; line-height: 1.25; color: var(--cvc-ink);
+  text-wrap: balance;
+}
+.cvc__promises-canvas { position: absolute; z-index: 2; display: block; pointer-events: none; }
+@media (hover: hover) {
+  .cvc__promise:hover { --lift: .5; rotate: 0deg; translate: 0 -2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cvc__promise { transition: none; }
+  .cvc__promise:hover { translate: none; }
+}
+
+/* ---------- Accordions ---------- */
+.cvc__accs { margin-top: 15px; border-top: 1px dashed var(--cvc-rule); }
+.cvc__acc { border-bottom: 1px dashed var(--cvc-rule); }
+.cvc__acc-q {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 40px; cursor: pointer; list-style: none;
+  font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1.2; color: var(--cvc-ink);
+}
+.cvc__acc-q::-webkit-details-marker { display: none; }
+.cvc__acc-mark { position: relative; flex: none; width: 14px; height: 14px; }
+.cvc__acc-mark::before, .cvc__acc-mark::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.6px; margin-top: -.8px; background: currentColor;
+  transition: transform 220ms var(--ease-standard);
+}
+.cvc__acc-mark::after { transform: rotate(90deg); }
+.cvc__acc[open] .cvc__acc-mark::after { transform: rotate(0deg); }
+.cvc__acc-q:hover { color: var(--cvc-red); }
+.cvc__acc-q:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 2px; }
+.cvc__acc-a { padding: 0 0 16px; font-family: var(--font-body); font-size: 14px; line-height: 1.65; color: var(--cvc-muted); }
+.cvc__acc-a > :first-child { margin-top: 0; }
+.cvc__acc-a > :last-child { margin-bottom: 0; }
+.cvc__facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.cvc__facts b { color: var(--cvc-ink); font-weight: 700; }
+
+/* ---------- Zoom dialog ---------- */
+.cvc-zoom {
+  position: fixed; inset: 0; z-index: 200;
+  width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; overflow: hidden;
+  background: rgba(33, 23, 17, .95); color: var(--cream-50);
+}
+.cvc-zoom:not([open]) { display: none; }
+.cvc-zoom::backdrop { background: rgba(33, 23, 17, .6); }
+html.cvc-zoom-open { overflow: hidden; }
+.cvc-zoom__frame {
+  position: absolute; inset: 0; display: grid;
+  overflow: auto; overscroll-behavior: contain; scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.cvc-zoom__frame::-webkit-scrollbar { display: none; }
+.cvc-zoom__img {
+  display: block; width: min(2400px, 220vw); max-width: none; height: auto; margin: auto;
+  cursor: zoom-out; transition: opacity 200ms var(--ease-standard);
+}
+@media (min-width: 990px) { .cvc-zoom__img { width: min(2400px, 170vw); } }
+.cvc-zoom.is-fit .cvc-zoom__frame { overflow: hidden; }
+.cvc-zoom.is-fit .cvc-zoom__img { width: 100%; height: 100dvh; object-fit: contain; cursor: zoom-in; }
+.cvc-zoom.is-loading .cvc-zoom__img { opacity: .45; }
+.cvc-zoom__btn {
+  position: absolute; z-index: 1;
+  display: grid; place-items: center;
+  width: 48px; height: 48px; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  color: var(--cocoa-700); background: var(--cream-50);
+  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, .6);
+}
+.cvc-zoom__btn:hover { background: var(--cream-200); }
+.cvc-zoom__btn:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+.cvc-zoom__btn--close { top: 16px; right: 16px; }
+.cvc-zoom__btn--prev { left: 16px; top: 50%; translate: 0 -50%; }
+.cvc-zoom__btn--next { right: 16px; top: 50%; translate: 0 -50%; }
+.cvc-zoom__count {
+  position: absolute; left: 50%; bottom: 18px; translate: -50% 0; margin: 0;
+  padding: 6px 14px; border-radius: 999px;
+  font-family: var(--font-label); font-size: 13px; color: var(--cocoa-700); background: rgba(251, 246, 234, .92);
+}
+.cvc-zoom__count:empty { display: none; }
+
+/* ---------- Sticky bar: Add to bag and Buy now stay in reach ---------- */
+.cvc-sticky {
+  position: fixed; left: 50%; bottom: 14px; z-index: 90;
+  width: min(820px, 100% - 24px);
+  display: flex; align-items: center; gap: 14px;
+  padding: 8px 8px 8px 10px;
+  background: var(--cream-50);
+  border-radius: 999px;
+  box-shadow: 0 16px 32px -12px rgba(51, 35, 26, .5), 0 0 0 1px rgba(74, 51, 36, .14);
+  transform: translate(-50%, calc(100% + 30px));
+  transition: transform 320ms var(--ease-standard);
+}
+.cvc-sticky.is-visible { transform: translate(-50%, 0); }
+.cvc-sticky__pic { flex: none; width: 48px; height: 48px; overflow: hidden; border-radius: 50%; background: var(--cream-200); box-shadow: 0 0 0 3px var(--cream-100), 0 0 0 4px rgba(74, 51, 36, .2); }
+.cvc-sticky__pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cvc-sticky__info { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.cvc-sticky__name {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-family: var(--font-display); font-weight: 900; font-size: 16px; line-height: 1.2; color: var(--cvc-ink);
+}
+.cvc-sticky__meta {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.3; color: var(--cvc-muted);
+}
+.cvc-sticky__meta b { color: var(--red-600); font-weight: 700; }
+.cvc-sticky__buttons { flex: none; display: flex; gap: 6px; }
+.cvc-sticky__add, .cvc-sticky__buy {
+  min-height: 46px; padding: 0 22px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: .01em; text-transform: none;
+  color: var(--cream-50);
+}
+.cvc-sticky__add { background: linear-gradient(180deg, #d23a33 0%, var(--cvc-red) 55%, #a92722 100%); box-shadow: 0 3px 0 var(--cvc-red-deep); }
+.cvc-sticky__buy { background: linear-gradient(180deg, #4a3222 0%, #36241a 55%, #2a1b12 100%); box-shadow: 0 3px 0 #1b110b; }
+.cvc-sticky__add:disabled, .cvc-sticky__buy:disabled { background: var(--cocoa-300); box-shadow: 0 3px 0 var(--cocoa-500); cursor: not-allowed; }
+.cvc-sticky__add:focus-visible, .cvc-sticky__buy:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+
+/* ---------- Motion support (cv-pdp-counter-motion.js) ---------- */
+/* Decorative pieces wait for their entrance; the inline guard in the section lifts this within 1.4s. */
+.cvc-pending .cvc__tag, .cvc-pending .cvc__flag { opacity: 0; }
+.cvc-promises-pending .cvc__promise { opacity: 0; }
+.cvc-pending .cvc__meter-fill { transform: scaleX(0); }
+.cvc-pending .cvc__photo-ticket, .cvc-pending .cvc__photo-reel-sweet { opacity: 0; }
+/* the selected photo ticket that flies to the bag after an add */
+.cvc__token {
+  position: fixed; left: 0; top: 0; z-index: 130; pointer-events: none;
+  width: 60px; height: 68px; padding: 5px; border-radius: 12px; overflow: hidden;
+  background: var(--cream-50);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  box-shadow: 0 14px 22px -10px rgba(51, 35, 26, .55);
+  will-change: transform;
+}
+.cvc__token img { display: block; width: 100%; height: 100%; border-radius: 7px; object-fit: cover; }
+.cvc__token-count {
+  position: absolute; right: -2px; bottom: -2px;
+  min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 900; font-size: 14px; color: var(--cream-50); background: var(--cvc-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvc__photo-ticket-card, .cvc__photo-ticket-outline, .cvc__swatch, .cvc__pack, .cvc__meter-fill, .cvc-sticky, .cvc__photo, .cvc__tag-sale, .cvc__price-saving { transition: none; }
+}
+
+/* ---------- Responsive ---------- */
+/* Wide laptops: the buy box is still narrow here, so the title steps down a size to
+   stay on two lines beside the gold tag. */
+@media (min-width: 1261px) and (max-width: 1345px) {
+  .cvc__title { font-size: 38px; }
+}
+/* Narrow laptops: the columns share the space. */
+@media (max-width: 1260px) {
+  .cvc__inner { width: calc(100% - 48px); }
+  .cvc__grid { grid-template-columns: minmax(0, 1.08fr) minmax(380px, 1fr); column-gap: 36px; }
+  .cvc__gallery { grid-template-columns: 90px minmax(0, 1fr); gap: 18px; }
+  .cvc__gallery--single { grid-template-columns: minmax(0, 1fr); }
+  .cvc__stage { max-width: none; }
+  .cvc__photo-reel-track--vertical { inset-inline: 33px; }
+  .cvc__photo-ticket { width: 82px; height: 93px; }
+  .cvc__photo-ticket-image { inset: 10px 11px 22px; }
+  .cvc__photo-ticket-no { bottom: 6px; font-size: 10px; }
+  .cvc__photo-reel-sweet { width: 64px; }
+  .cvc__tag { width: 138px; right: -12px; top: -26px; }
+  .cvc__tag-price { font-size: 31px; }
+  .cvc__tag-sale { width: 57px; }
+  .cvc__title { max-width: calc(100% - 132px); font-size: 38px; }
+  /* With a sale on, the badge pokes out left of the tag; keep the title clear of it too. */
+  .cvc__tag:has(> .cvc__tag-sale:not([hidden])) + .cvc__title { max-width: calc(100% - 150px); }
+  .cvc__pack-name { font-size: 18px; }
+  .cvc__pack-each { font-size: 20px; }
+  .cvc .cvc__add, .cvc .cvc__buy { font-size: 19px; padding: 0 12px; gap: 8px; }
+  .cvc__buttons { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .cvc__promises-list { gap: 8px; }
+  .cvc__promise { gap: 5px; padding: 10px 9px 10px 8px; }
+  .cvc__promise-art { width: 46px; height: 40px; }
+  .cvc__promise-art svg { width: 24px; height: 24px; }
+  .cvc__promise-text { font-size: 11.5px; }
+}
+
+/* Tablet and down: photos first, then the counter, one column. */
+@media (max-width: 989px) {
+  .cvc { padding-bottom: 28px; }
+  .cvc__grid { grid-template-columns: minmax(0, 1fr); row-gap: 30px; max-width: 640px; margin-inline: auto; }
+  .cvc__gallery, .cvc__gallery--single { grid-template-columns: minmax(0, 1fr); gap: 12px; padding-top: 12px; }
+  .cvc__stage, .cvc__gallery--single .cvc__stage { grid-column: 1; grid-row: 1; width: 100%; max-width: 560px; justify-self: center; aspect-ratio: 1 / 1; }
+  .cvc__box { grid-column: 1; }
+  .cvc__photo-reel-shell {
+    grid-column: 1; grid-row: 2; height: 110px; padding: 0 40px; overflow: hidden;
+  }
+  .cvc__photo-reel-track--vertical { display: none; }
+  .cvc__photo-reel-track--horizontal { display: block; inset: 43px 18px; }
+  .cvc__photo-reel {
+    flex-direction: row; align-items: center; gap: 8px;
+    overflow-x: auto; overflow-y: hidden; padding: 7px 3px 8px;
+  }
+  .cvc__photo-ticket { width: 82px; height: 93px; }
+  .cvc__photo-reel-sweet { top: 50%; bottom: auto; width: 66px; transform: translateY(-50%); }
+  .cvc__photo-reel-sweet--start { left: -7px; }
+  .cvc__photo-reel-sweet--end { left: auto; right: -7px; }
+  .cvc__tag { top: -8px; right: -6px; width: 128px; }
+  .cvc__tag-price { font-size: 29px; }
+  .cvc__tag-sale { width: 54px; }
+  .cvc__title { max-width: calc(100% - 120px); font-size: 36px; }
+  .cvc__tag:has(> .cvc__tag-sale:not([hidden])) + .cvc__title { max-width: calc(100% - 146px); }
+  .cvc__packs { margin-top: 32px; }
+}
+
+/* Phones. */
+@media (max-width: 540px) {
+  .cvc__inner { width: calc(100% - 32px); }
+  .cvc__crumbs { font-size: 11px; }
+  .cvc__crumbs [aria-current] { display: none; }
+  .cvc__crumbs > :nth-last-child(2) { display: none; } /* the separator before the hidden product name */
+  .cvc__zoom { top: 10px; right: 10px; min-height: 32px; font-size: 12px; }
+  .cvc__photo-reel-shell { height: 98px; padding-inline: 34px; }
+  .cvc__photo-reel-track--horizontal { inset-block: 37px; }
+  .cvc__photo-ticket { width: 72px; height: 82px; }
+  .cvc__photo-ticket-image { inset: 9px 10px 20px; border-radius: 6px; }
+  .cvc__photo-ticket-no { bottom: 5px; font-size: 9px; }
+  .cvc__photo-reel-sweet { width: 58px; }
+
+  .cvc__tag { width: 104px; top: -4px; right: -4px; }
+  .cvc__tag-price { font-size: 23px; }
+  .cvc__tag-sale { left: -8px; bottom: -1px; width: 45px; }
+  .cvc__tag-sale-copy strong { font-size: 14px; }
+  .cvc__tag-sale-copy small { font-size: 6px; }
+  .cvc__vendor { font-size: 10px; }
+  .cvc__title { max-width: calc(100% - 96px); margin-top: 8px; font-size: 29px; line-height: .98; }
+  .cvc__tag:has(> .cvc__tag-sale:not([hidden])) + .cvc__title { max-width: calc(100% - 120px); }
+  .cvc__price-saving { margin-top: 7px; font-size: 10px; }
+  .cvc__rating { gap: 8px; font-size: 12px; }
+  .cvc__stars { font-size: 19px; flex: none; }
+  /* Long rating copy ("+1000 Happy Customer · Write the first") wraps instead of running off a 320px screen. */
+  .cvc__rating-text { flex-wrap: wrap; row-gap: 2px; min-width: 0; }
+
+  .cvc__swatch { width: 50px; height: 50px; }
+  .cvc__select select { font-size: 16px; }
+
+  .cvc__packs { gap: 8px; margin-top: 28px; }
+  .cvc__pack {
+    min-height: 84px; padding: 0 2px;
+    border-width: 26px 9px 8px 9px;
+    border-image-width: 26px 9px 8px 9px;
+  }
+  .cvc__pack-name { font-size: 14px; }
+  .cvc__pack-each { font-size: 16px; }
+  .cvc__pack-was { font-size: 11px; }
+  .cvc__flag { top: -29px; padding: 3px 8px 4px; font-size: 10.5px; }
+
+  .cvc__savings { flex-wrap: wrap; gap: 6px 10px; }
+  .cvc__meter { flex: 1 1 100%; height: 13px; }
+  .cvc__savings-text { font-size: 12px; }
+
+  .cvc__buttons { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .cvc .cvc__add, .cvc .cvc__buy { min-height: 52px; font-size: 20px; }
+
+  .cvc__shipby { font-size: 13px; }
+  .cvc__promises-list { gap: 7px; }
+  .cvc__promise { flex-direction: column; justify-content: flex-start; gap: 2px; min-height: 0; padding: 10px 7px 12px; text-align: center; }
+  .cvc__promise-art { width: 50px; height: 40px; }
+  .cvc__promise-text { font-size: 11px; }
+  .cvc__acc-q { min-height: 48px; }
+
+  .cvc-sticky { bottom: 8px; gap: 8px; padding: 6px; border-radius: 22px; }
+  .cvc-sticky__pic, .cvc-sticky__name { display: none; }
+  .cvc-sticky__info { padding-left: 10px; }
+  .cvc-sticky__meta { font-size: 11px; }
+  .cvc-sticky__add, .cvc-sticky__buy { min-height: 44px; padding: 0 14px; font-size: 15px; }
+}
+
+@media (max-width: 420px) {
+  /* theme.css forces every h1 to 22-28px on phones */
+  .cvc .cvc__title { font-size: 29px !important; }
+}
+
+/* 320-359px phones: "$40.99 each" is wider than a third of the row, so it ran over the striped pack border. */
+@media (max-width: 359px) {
+  .cvc__packs { gap: 6px; }
+  .cvc__pack-each { font-size: 14px; }
+  .cvc__pack-each small { font-size: .72em; }
+}

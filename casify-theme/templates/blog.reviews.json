@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "review-widget",
+      "settings": {
+        "heading": "Customer reviews",
+        "subheading": "Every review here was written by a Casify customer and read by us before it went up.",
+        "show_summary": true,
+        "show_form": true,
+        "reviews_article": "customer-reviews/reviews",
+        "email_alert": true,
+        "per_page": 12,
+        "pad_top": 48,
+        "pad_bottom": 72
+      }
+    }
+  },
+  "order": ["main"]
+}

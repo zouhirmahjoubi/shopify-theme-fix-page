@@ -1,0 +1,437 @@
+{%- comment -%}
+  Casify — multimedia collage (Chrismass design system).
+
+  A rebuild of the Shrine "collage" section: up to three tiles (image,
+  product, collection, video) in a one-large / two-small grid, mirrored with
+  the desktop layout setting, stacked or kept as a collage on mobile.
+
+  Each tile is a print mounted on shop paper with a hang-tag ticket for its
+  label. Video tiles carry a wax-seal play button and open a native <dialog>
+  lightbox; without JavaScript they are plain links to the video.
+
+  Motion: assets/cv-collage-motion.js (GSAP + ScrollTrigger + SplitText) —
+  tiles roll up like shop awnings, tags swing in on their grommet, images
+  drift with scroll and lean toward the pointer. Styles: assets/cv-collage.css,
+  which is the finished, static state.
+{%- endcomment -%}
+{{ 'cv-collage.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  # A tile is "ready" once its content is chosen. Unfinished tiles show as
+  # placeholders in the theme editor only; shoppers never see them, and the
+  # grid is sized from the tiles actually shown.
+  assign ready_count = 0
+  assign has_video = false
+  for block in section.blocks limit: 3
+    assign bs = block.settings
+    case block.type
+      when 'image'
+        if bs.image != blank
+          assign ready_count = ready_count | plus: 1
+        endif
+      when 'product'
+        if bs.product != blank
+          assign ready_count = ready_count | plus: 1
+        endif
+      when 'collection'
+        if bs.collection != blank
+          assign ready_count = ready_count | plus: 1
+        endif
+      when 'video'
+        if bs.video_url != blank and bs.cover_image != blank
+          assign ready_count = ready_count | plus: 1
+          assign has_video = true
+        elsif bs.video_url != blank and request.design_mode
+          assign has_video = true
+        endif
+    endcase
+  endfor
+  assign tile_count = ready_count
+  if request.design_mode
+    assign tile_count = section.blocks.size | at_most: 3
+  endif
+  assign tile_index = 0
+-%}
+
+{%- if tile_count > 0 -%}
+<section
+  class="cvcl cvcl--tone-{{ section.settings.tone }}"
+  data-cvcl
+  data-cvcl-parallax="{{ section.settings.parallax }}"
+  data-section-id="{{ section.id }}"
+  style="--cvcl-pt: {{ section.settings.padding_top }}px; --cvcl-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="cvcl__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
+      <header class="cvcl__hd">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cvcl__eyebrow" data-cvcl-fade>{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cvcl__title" data-cvcl-heading>{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="cvcl__lede" data-cvcl-fade>{{ section.settings.subheading }}</div>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <ul
+      class="cvcl__grid cvcl__grid--{{ section.settings.desktop_layout }} cvcl__grid--n{{ tile_count }} cvcl__grid--m-{{ section.settings.mobile_layout }}"
+      role="list"
+      data-cvcl-grid
+    >
+      {%- for block in section.blocks limit: 3 -%}
+        {%- liquid
+          assign s = block.settings
+          assign tile_ready = false
+          case block.type
+            when 'image'
+              if s.image != blank
+                assign tile_ready = true
+              endif
+            when 'product'
+              if s.product != blank
+                assign tile_ready = true
+              endif
+            when 'collection'
+              if s.collection != blank
+                assign tile_ready = true
+              endif
+            when 'video'
+              if s.video_url != blank and s.cover_image != blank
+                assign tile_ready = true
+              endif
+          endcase
+          if tile_ready == false and request.design_mode == false
+            continue
+          endif
+          assign tile_index = tile_index | plus: 1
+          assign href = blank
+          assign kicker = blank
+          assign title = blank
+          assign img_alt = ''
+          case block.type
+            when 'image'
+              assign img_alt = s.image.alt | default: s.title
+              assign href = s.link
+              assign kicker = s.kicker
+              assign title = s.title
+            when 'product'
+              assign p = s.product
+              if p != blank
+                assign img_alt = p.featured_image.alt | default: p.title
+                assign href = p.url
+                assign title = p.title
+              else
+                assign title = 'Your product'
+              endif
+              assign kicker = s.kicker
+            when 'collection'
+              assign c = s.collection
+              assign c_img = c.featured_image | default: c.products.first.featured_image
+              if c != blank
+                assign img_alt = c_img.alt | default: c.title
+                assign href = c.url
+                assign title = c.title
+                if s.show_count
+                  assign kicker = s.kicker | append: ' · ' | append: c.products_count | append: ' styles'
+                else
+                  assign kicker = s.kicker
+                endif
+              else
+                assign title = 'Your collection'
+                assign kicker = s.kicker
+              endif
+            when 'video'
+              assign img_alt = s.cover_image.alt | default: s.description
+              assign kicker = s.kicker
+              assign title = s.description
+          endcase
+
+          assign is_big = false
+          if section.settings.desktop_layout == 'left' and tile_index == 1
+            assign is_big = true
+          elsif section.settings.desktop_layout == 'right' and tile_index == tile_count
+            assign is_big = true
+          endif
+          if tile_count == 1
+            assign is_big = true
+          endif
+
+          if is_big
+            assign sizes = '(min-width: 750px) 66vw, 100vw'
+          else
+            assign sizes = '(min-width: 750px) 34vw, 100vw'
+          endif
+
+          assign frame_tag = 'div'
+          if block.type == 'video' and s.video_url != blank
+            assign frame_tag = 'a'
+          elsif href != blank
+            assign frame_tag = 'a'
+          endif
+        -%}
+        <li
+          class="cvcl-tile cvcl-tile--{{ block.type }}{% if is_big %} cvcl-tile--big{% endif %}"
+          data-cvcl-tile
+          {{ block.shopify_attributes }}
+        >
+          <{{ frame_tag }}
+            class="cvcl-tile__frame"
+            data-cvcl-frame
+            {%- if block.type == 'video' and s.video_url != blank %}
+              href="{{ s.video_url }}"
+              data-cvcl-play
+              data-cvcl-embed-type="{{ s.video_url.type }}"
+              data-cvcl-embed-id="{{ s.video_url.id }}"
+              data-cvcl-caption="{{ s.description | escape }}"
+              aria-haspopup="dialog"
+              aria-label="Play video: {{ s.description | escape }}"
+              target="_blank"
+              rel="noopener"
+            {%- elsif frame_tag == 'a' %}
+              href="{{ href }}"
+            {%- endif -%}
+          >
+            <div class="cvcl-tile__media" data-cvcl-media>
+              <div class="cvcl-tile__drift" data-cvcl-drift>
+                {%- case block.type -%}
+                  {%- when 'image' -%}
+                    {%- if s.image != blank -%}
+                      {{ s.image | image_url: width: 2200 | image_tag:
+                        class: 'cvcl-tile__img',
+                        loading: 'lazy',
+                        widths: '480, 720, 990, 1320, 1700, 2200',
+                        sizes: sizes,
+                        alt: img_alt
+                      }}
+                    {%- else -%}
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'cvcl-tile__img cvcl-tile__ph' }}
+                    {%- endif -%}
+                  {%- when 'product' -%}
+                    {%- if p != blank and p.featured_image -%}
+                      {{ p.featured_image | image_url: width: 1700 | image_tag:
+                        class: 'cvcl-tile__img',
+                        loading: 'lazy',
+                        widths: '480, 720, 990, 1320, 1700',
+                        sizes: sizes,
+                        alt: img_alt
+                      }}
+                      {%- if s.second_image and p.images[1] -%}
+                        {{ p.images[1] | image_url: width: 1700 | image_tag:
+                          class: 'cvcl-tile__img cvcl-tile__img--alt',
+                          loading: 'lazy',
+                          widths: '480, 720, 990, 1320, 1700',
+                          sizes: sizes,
+                          alt: ''
+                        }}
+                      {%- endif -%}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'cvcl-tile__img cvcl-tile__ph' }}
+                    {%- endif -%}
+                  {%- when 'collection' -%}
+                    {%- if c != blank and c_img -%}
+                      {{ c_img | image_url: width: 1700 | image_tag:
+                        class: 'cvcl-tile__img',
+                        loading: 'lazy',
+                        widths: '480, 720, 990, 1320, 1700',
+                        sizes: sizes,
+                        alt: img_alt
+                      }}
+                    {%- else -%}
+                      {{ 'collection-1' | placeholder_svg_tag: 'cvcl-tile__img cvcl-tile__ph' }}
+                    {%- endif -%}
+                  {%- when 'video' -%}
+                    {%- if s.cover_image != blank -%}
+                      {{ s.cover_image | image_url: width: 2200 | image_tag:
+                        class: 'cvcl-tile__img',
+                        loading: 'lazy',
+                        widths: '480, 720, 990, 1320, 1700, 2200',
+                        sizes: sizes,
+                        alt: img_alt
+                      }}
+                    {%- else -%}
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'cvcl-tile__img cvcl-tile__ph' }}
+                    {%- endif -%}
+                {%- endcase -%}
+              </div>
+              <span class="cvcl-tile__glass" aria-hidden="true"></span>
+            </div>
+
+            {%- if block.type == 'video' -%}
+              <span class="cvcl-seal" data-cvcl-seal aria-hidden="true">
+                <svg class="cvcl-seal__ring" data-cvcl-seal-ring viewBox="0 0 120 120" focusable="false">
+                  <defs>
+                    <path id="cvcl-seal-path-{{ block.id }}" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/>
+                  </defs>
+                  <text><textPath href="#cvcl-seal-path-{{ block.id }}" textLength="286">{{ s.seal_text | upcase | escape }} • {{ s.seal_text | upcase | escape }} •</textPath></text>
+                </svg>
+                <span class="cvcl-seal__core">
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+                </span>
+              </span>
+            {%- endif -%}
+
+            {%- if kicker != blank or title != blank -%}
+              <span class="cvcl-tag" data-cvcl-tag>
+                <span class="cvcl-tag__hole" aria-hidden="true"></span>
+                {%- if kicker != blank -%}
+                  <span class="cvcl-tag__kicker">{{ kicker | escape }}</span>
+                {%- endif -%}
+                {%- if title != blank -%}
+                  <span class="cvcl-tag__title">{{ title | escape }}</span>
+                {%- endif -%}
+                {%- if block.type == 'product' and p != blank -%}
+                  <span class="cvcl-tag__price">
+                    {%- if p.price_varies %}From {% endif -%}{{ p.price | money }}
+                    {%- if p.compare_at_price > p.price -%}
+                      <s>{{ p.compare_at_price | money }}</s>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+
+            {%- if frame_tag == 'a' and block.type != 'video' -%}
+              <span class="cvcl-tile__go" data-cvcl-go aria-hidden="true">
+                <svg viewBox="0 0 28 16" focusable="false"><path d="M1 8h23M17 1l7 7-7 7"/></svg>
+              </span>
+            {%- endif -%}
+          </{{ frame_tag }}>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%- if has_video -%}
+    <dialog class="cvcl-dialog" data-cvcl-dialog aria-label="Video">
+      <div class="cvcl-dialog__panel" data-cvcl-dialog-panel>
+        <button type="button" class="cvcl-dialog__close" data-cvcl-dialog-close aria-label="{{ 'general.close' | t }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <div class="cvcl-dialog__stage" data-cvcl-dialog-stage></div>
+        <p class="cvcl-dialog__caption" data-cvcl-dialog-caption></p>
+      </div>
+    </dialog>
+  {%- endif -%}
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Multimedia collage",
+  "tag": "div",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Italic words are set in the script face — use it for one short flourish.",
+      "default": "Straight from the <em>shop window</em>"
+    },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading" },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "left", "label": "Large tile first" },
+        { "value": "right", "label": "Large tile last" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        { "value": "collage", "label": "Collage" },
+        { "value": "column", "label": "Column" }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Background",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "cocoa", "label": "Cocoa" }
+      ],
+      "default": "page"
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "label": "Scroll parallax on images",
+      "default": true
+    },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "kicker", "label": "Tag label", "default": "In the shop" },
+        { "type": "text", "id": "title", "label": "Tag title", "default": "Fresh off the counter" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "checkbox", "id": "second_image", "label": "Show second image on hover", "default": true },
+        { "type": "text", "id": "kicker", "label": "Tag label", "default": "Featured case", "info": "Only call it a bestseller if your sales data shows it." }
+      ]
+    },
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "kicker", "label": "Tag label", "default": "Collection" },
+        { "type": "checkbox", "id": "show_count", "label": "Show product count", "default": true }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "image_picker", "id": "cover_image", "label": "Cover image" },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+          "label": "Video URL",
+          "placeholder": "Use a YouTube or Vimeo URL"
+        },
+        { "type": "text", "id": "description", "label": "Video description", "info": "Shown on the tag and read by screen readers.", "default": "Describe the video" },
+        { "type": "text", "id": "kicker", "label": "Tag label", "default": "Watch" },
+        { "type": "text", "id": "seal_text", "label": "Play-seal text", "default": "Play the film" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Multimedia collage",
+      "blocks": [
+        { "type": "image" },
+        { "type": "product" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

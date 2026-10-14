@@ -1,0 +1,233 @@
+{{ 'casify-customer-reviews.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'casify-customer-reviews.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign review_count = 0
+  assign rated_review_count = 0
+  assign rating_sum = 0
+  assign app_block_count = 0
+  assign draft_count = 0
+  for block in section.blocks
+    if block.type == 'review' and block.settings.review_text != blank
+      assign review_count = review_count | plus: 1
+      assign block_rating = block.settings.rating | plus: 0
+      if block_rating > 0
+        assign rated_review_count = rated_review_count | plus: 1
+        assign rating_sum = rating_sum | plus: block_rating
+      endif
+    elsif block.type == 'review'
+      assign draft_count = draft_count | plus: 1
+    elsif block.type == '@app'
+      assign app_block_count = app_block_count | plus: 1
+    endif
+  endfor
+  if rated_review_count > 0
+    assign rating_average = rating_sum | times: 1.0 | divided_by: rated_review_count | round: 1
+  endif
+  assign fallback_heading = 'sections.customer_reviews.heading' | t
+-%}
+
+{%- if review_count > 0 or app_block_count > 0 or request.design_mode -%}
+<section
+  class="ccr ccr--{{ section.settings.surface }}"
+  id="casify-reviews-{{ section.id }}"
+  data-casify-customer-reviews
+  aria-labelledby="casify-reviews-title-{{ section.id }}"
+  {% if review_count > 1 %}aria-roledescription="carousel"{% endif %}
+>
+  <div class="ccr__inner">
+    {%- if rated_review_count > 0 -%}
+      <div class="ccr__summary">
+        <span class="ccr__summary-star cv-star-solo" aria-hidden="true"></span>
+        <strong>{{ rating_average }} / 5</strong>
+        <span class="ccr__summary-context">
+          {%- if rated_review_count == 1 -%}
+            {{ 'sections.customer_reviews.summary_one' | t }}
+          {%- else -%}
+            {{ 'sections.customer_reviews.summary_other' | t: count: rated_review_count }}
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endif -%}
+    <header class="ccr__header">
+      <h2 class="ccr__title" id="casify-reviews-title-{{ section.id }}">
+        {{ section.settings.heading | default: fallback_heading | escape }}
+        {%- if section.settings.accent_text != blank -%}
+          <span>{{ section.settings.accent_text | escape }}</span>
+        {%- endif -%}
+      </h2>
+      {%- if section.settings.description != blank -%}
+        <p class="ccr__description">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if review_count > 0 -%}
+      <div
+        class="ccr__rail"
+        id="casify-reviews-rail-{{ section.id }}"
+        data-ccr-rail
+        role="list"
+        {% if review_count > 1 %}tabindex="0" aria-label="{{ 'sections.customer_reviews.carousel_label' | t | escape }}"{% endif %}
+      >
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' and block.settings.review_text != blank -%}
+            {%- liquid
+              assign rating = block.settings.rating | plus: 0
+              assign featured_product = block.settings.featured_product
+              assign photo_alt = block.settings.image_alt | default: block.settings.reviewer_name
+            -%}
+            <article class="ccr__card" role="listitem" data-ccr-card {{ block.shopify_attributes }}>
+              {%- if block.settings.review_image != blank -%}
+                <div class="ccr__media">
+                  {{ block.settings.review_image | image_url: width: 840 | image_tag: widths: '360, 540, 720, 840', sizes: '(max-width: 640px) 86vw, 360px', loading: 'lazy', alt: photo_alt, class: 'ccr__photo' }}
+                </div>
+              {%- else -%}
+                <div class="ccr__media ccr__media--type" aria-hidden="true">
+                  <span class="ccr__quote-mark">“</span>
+                  <span class="ccr__media-label">{{ 'sections.customer_reviews.customer_note' | t }}</span>
+                </div>
+              {%- endif -%}
+
+              <div class="ccr__card-body">
+                {%- if rating > 0 -%}
+                  {%- assign rating_fill = rating | times: 20 -%}
+                  <div class="ccr__stars" role="img" aria-label="{{ 'sections.customer_reviews.rating' | t: rating: rating | escape }}">
+                    {%- render 'cv-stars', fill: rating_fill -%}
+                  </div>
+                {%- endif -%}
+
+                <blockquote class="ccr__quote">
+                  <p>{{ block.settings.review_text | escape | newline_to_br }}</p>
+                </blockquote>
+
+                {%- if block.settings.reviewer_name != blank or block.settings.reviewer_detail != blank -%}
+                  <div class="ccr__reviewer">
+                    {%- if block.settings.reviewer_name != blank -%}
+                      <cite>{{ block.settings.reviewer_name | escape }}</cite>
+                    {%- endif -%}
+                    {%- if block.settings.reviewer_detail != blank -%}
+                      <span>{{ block.settings.reviewer_detail | escape }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                {%- if featured_product != blank -%}
+                  <a class="ccr__product" href="{{ featured_product.url | escape }}">
+                    {%- if featured_product.featured_image != blank -%}
+                      {{ featured_product.featured_image | image_url: width: 112, height: 112, crop: 'center' | image_tag: width: 56, height: 56, loading: 'lazy', alt: featured_product.title, class: 'ccr__product-photo' }}
+                    {%- endif -%}
+                    <span class="ccr__product-copy">
+                      <small>{{ 'sections.customer_reviews.featured_product' | t }}</small>
+                      <strong>{{ featured_product.title | escape }}</strong>
+                      <span>{{ featured_product.price | money }}</span>
+                    </span>
+                    <svg class="ccr__product-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M4 10h11m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if review_count > 1 -%}
+        <div class="ccr__controls" data-ccr-controls hidden>
+          <button type="button" class="ccr__nav" data-ccr-prev aria-label="{{ 'sections.customer_reviews.previous_review' | t | escape }}" aria-controls="casify-reviews-rail-{{ section.id }}">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="ccr__position" data-ccr-position data-template="{{ 'sections.customer_reviews.position' | t: current: '%current%', total: '%total%' | escape }}" aria-live="polite" aria-atomic="true">{{ 'sections.customer_reviews.position' | t: current: 1, total: review_count }}</span>
+          <button type="button" class="ccr__nav ccr__nav--next" data-ccr-next aria-label="{{ 'sections.customer_reviews.next_review' | t | escape }}" aria-controls="casify-reviews-rail-{{ section.id }}">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    {%- elsif app_block_count == 0 -%}
+      <div class="ccr__empty">
+        <span class="ccr__empty-symbol" aria-hidden="true">“ ”</span>
+        <p>{{ section.settings.empty_heading | escape }}</p>
+        {%- if request.design_mode -%}
+          <small>{{ 'sections.customer_reviews.editor_hint' | t }}</small>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if request.design_mode and draft_count > 0 -%}
+      <div class="ccr__drafts">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' and block.settings.review_text == blank -%}
+            <div class="ccr__draft" {{ block.shopify_attributes }}>{{ 'sections.customer_reviews.editor_draft' | t }}</div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if app_block_count > 0 -%}
+      <div class="ccr__apps">
+        {%- if section.settings.app_heading != blank -%}
+          <h3>{{ section.settings.app_heading | escape }}</h3>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Customer reviews",
+  "tag": "div",
+  "class": "section-casify-customer-reviews",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Customer reviews" },
+    { "type": "text", "id": "accent_text", "label": "Accent heading", "default": "In their own words" },
+    { "type": "textarea", "id": "description", "label": "Description" },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "White" },
+        { "value": "teal", "label": "Soft teal" }
+      ],
+      "default": "cream"
+    },
+    { "type": "text", "id": "empty_heading", "label": "Empty state text", "default": "There are no reviews to display yet." },
+    { "type": "text", "id": "app_heading", "label": "Review app heading", "default": "More customer feedback" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "review_text", "label": "Customer review" },
+        { "type": "text", "id": "reviewer_name", "label": "Customer name" },
+        { "type": "text", "id": "reviewer_detail", "label": "Optional customer detail" },
+        {
+          "type": "select",
+          "id": "rating",
+          "label": "Star rating",
+          "options": [
+            { "value": "0", "label": "No rating" },
+            { "value": "1", "label": "1 star" },
+            { "value": "2", "label": "2 stars" },
+            { "value": "3", "label": "3 stars" },
+            { "value": "4", "label": "4 stars" },
+            { "value": "5", "label": "5 stars" }
+          ],
+          "default": "0"
+        },
+        { "type": "image_picker", "id": "review_image", "label": "Optional review image" },
+        { "type": "text", "id": "image_alt", "label": "Image description" },
+        { "type": "product", "id": "featured_product", "label": "Optional featured product" }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "max_blocks": 20,
+  "presets": [{ "name": "Customer reviews" }]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stock and sales pills</title><link rel="stylesheet" href="/assets/theme.css"><link rel="stylesheet" href="/assets/cv-pdp-counter.css"><style>body{background:var(--cream-100)}.wrap{max-width:460px;margin:40px auto;padding:0 16px}.row{padding:12px 0;border-bottom:1px dashed var(--cream-400)}.row small{display:block;font:11px var(--font-label);color:var(--cocoa-500)}</style></head><body><div class="wrap cvc"><div class="row"><small>Low stock, pill style (real inventory, e.g. 3 left)</small><p class="cvc__stock cvc__stock--pill" role="status"><span class="cvc__stock-dot" aria-hidden="true"></span><span>Only 3 left in this style</span></p></div><div class="row"><small>Low stock, plain line style</small><p class="cvc__stock cvc__stock--line" role="status"><span class="cvc__stock-dot" aria-hidden="true"></span><span>Only 3 left in this style</span></p></div><div class="row"><small>Sales note, yellow (metafield = 18)</small><p class="cvc__pill cvc__pill--gold" >
+      <span class="cvc__pill-dot" aria-hidden="true"></span>
+      <span><strong class="cvc__sold-count">18</strong> sold this week</span>
+    </p></div><div class="row"><small>Sales note, teal (metafield = 18)</small><p class="cvc__pill cvc__pill--teal" >
+      <span class="cvc__pill-dot" aria-hidden="true"></span>
+      <span><strong class="cvc__sold-count">18</strong> sold this week</span>
+    </p></div><div class="row"><small>Rocket line, metafield = 537, round down to 50</small><p class="cvc__sold" >
+      <svg class="cvc__sold-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M12 2.8c3.4 2.3 5 5.7 5 9.4 0 1.6-.3 3.1-.9 4.4H7.9c-.6-1.3-.9-2.8-.9-4.4 0-3.7 1.6-7.1 5-9.4Z" fill="var(--cream-50)"/>
+        <circle cx="12" cy="10" r="2" fill="var(--teal-100)"/>
+        <path d="M7.9 16.6 5 19.2l.4-4.3 2-1.8M16.1 16.6l2.9 2.6-.4-4.3-2-1.8" fill="var(--red-500)" stroke="var(--red-700)"/>
+        <path d="M10.3 16.6h3.4l-.6 3.4-1.1 1.4-1.1-1.4z" fill="var(--gold-400)" stroke="var(--gold-500)"/>
+      </svg>
+      <span>Hurry up! <strong class="cvc__sold-count">500+</strong> items have been sold</span>
+    </p></div><div class="row"><small>Rocket line, exact number (metafield = 18)</small><p class="cvc__sold" >
+      <svg class="cvc__sold-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M12 2.8c3.4 2.3 5 5.7 5 9.4 0 1.6-.3 3.1-.9 4.4H7.9c-.6-1.3-.9-2.8-.9-4.4 0-3.7 1.6-7.1 5-9.4Z" fill="var(--cream-50)"/>
+        <circle cx="12" cy="10" r="2" fill="var(--teal-100)"/>
+        <path d="M7.9 16.6 5 19.2l.4-4.3 2-1.8M16.1 16.6l2.9 2.6-.4-4.3-2-1.8" fill="var(--red-500)" stroke="var(--red-700)"/>
+        <path d="M10.3 16.6h3.4l-.6 3.4-1.1 1.4-1.1-1.4z" fill="var(--gold-400)" stroke="var(--gold-500)"/>
+      </svg>
+      <span><strong class="cvc__sold-count">18</strong> sold this week</span>
+    </p></div><div class="row"><small>Sales note, metafield = 3 (below minimum 5) → hidden</small><em>(nothing rendered)</em></div><div class="row"><small>Sales note, metafield empty → hidden</small><em>(nothing rendered)</em></div><div class="row"><small>Same, in the theme editor</small><p class="cvc__pill cvc__pill--hint" >
+    <span>Sales note: no number in metafield custom.sold_recently for this product, so it is hidden from shoppers.</span>
+  </p></div></div></body></html>

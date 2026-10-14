@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>hero glow tuning</title>
+<style>
+  body { margin:0; background:#FDF9F1; font-family:sans-serif; }
+  .row { display:flex; flex-wrap:wrap; gap:12px; padding:12px; }
+  .cell { width:280px; }
+  .cell h4 { margin:4px 0; font:12px monospace; color:#4A3324; }
+  [data-cv-hero-glow] { width:280px; height:280px; border-radius:24px; overflow:hidden; background:#F5E9D3; position:relative; }
+  [data-cv-hero-glow] canvas, [data-cv-hero-glow] > div { width:100% !important; height:100% !important; }
+</style>
+</head>
+<body>
+<div class="row" id="grid"></div>
+<script>
+  const variants = [
+    { hue: 0,  amt: 0.85, label: 'hue 0 / 0.85' },
+    { hue: 6,  amt: 0.85, label: 'hue 6 / 0.85 (candy red target)' },
+    { hue: 12, amt: 0.85, label: 'hue 12 / 0.85' },
+    { hue: 20, amt: 0.85, label: 'hue 20 / 0.85' },
+    { hue: 35, amt: 0.85, label: 'hue 35 / 0.85 (gold-ish)' },
+    { hue: 6,  amt: 0.5,  label: 'hue 6 / 0.5' },
+    { hue: 6,  amt: 1.0,  label: 'hue 6 / 1.0' },
+    { hue: -8, amt: 0.85, label: 'hue -8 / 0.85' },
+  ];
+  const grid = document.getElementById('grid');
+  variants.forEach((v, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.innerHTML = '<h4>' + v.label + '</h4>';
+    const glow = document.createElement('div');
+    glow.setAttribute('data-cv-hero-glow', '');
+    glow.dataset.tintHue = String(v.hue);
+    glow.dataset.tintAmount = String(v.amt);
+    glow.dataset.speed = '0.5';
+    cell.appendChild(glow);
+    grid.appendChild(cell);
+  });
+</script>
+<script src="../../assets/cv-hero-glow.js"></script>
+</body>
+</html>

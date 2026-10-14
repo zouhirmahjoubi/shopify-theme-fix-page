@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- comment -%}
+      The shop name is appended once. Shopify's page_title on the home page is
+      the shop name itself unless the merchant sets a homepage title in Online
+      Store > Preferences; it used to render "Casify | Casify". Without that
+      setting the home page gets a descriptive fallback instead of a bare name.
+    {%- endcomment -%}
+    {%- liquid
+      assign seo_title = page_title | default: shop.name
+      if template.name == 'index' and seo_title == shop.name
+        assign seo_title = 'general.meta.home_title' | t: shop: shop.name
+      else
+        if current_tags
+          assign joined_tags = current_tags | join: ', '
+          assign tagged_label = 'general.meta.tagged' | t: tags: joined_tags
+          assign seo_title = seo_title | append: ' – ' | append: tagged_label
+        endif
+        if current_page != 1
+          assign page_label = 'general.meta.page' | t: page: current_page
+          assign seo_title = seo_title | append: ' – ' | append: page_label
+        endif
+        unless seo_title contains shop.name
+          assign seo_title = seo_title | append: ' | ' | append: shop.name
+        endunless
+      endif
+    -%}
+    <title>{{ seo_title }}</title>
+    {%- comment -%}
+      page_description is the merchant's own SEO text (Online Store >
+      Preferences for the home page, or the product, collection or page's own
+      description). When it is empty, fall back to a line built only from
+      confirmed store facts. Cart and search stay without one: they aren't indexed.
+    {%- endcomment -%}
+    {%- liquid
+      assign meta_description = page_description
+      if meta_description == blank
+        case template.name
+          when 'index'
+            assign meta_description = 'general.meta.home_description' | t: shop: shop.name
+          when 'product'
+            assign meta_description = 'general.meta.product_description' | t: title: product.title, shop: shop.name
+          when 'collection', 'list-collections', 'page', 'blog', 'article'
+            assign meta_description = 'general.meta.listing_description' | t: title: page_title, shop: shop.name
+        endcase
+      endif
+    -%}
+    {%- if meta_description != blank -%}<meta name="description" content="{{ meta_description | escape }}">{%- endif -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 48, height: 48 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" href="{{ 'casify-logo-mark.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'casify-logo-mark.png' | asset_url }}">
+    {%- endif -%}
+    {%- comment -%}
+      Social share preview. product.metafields.custom.og_image is a real,
+      per-product branded 1200x630 card (real product photo + real name/price)
+      set via the Admin API — never fabricated data. Everywhere else Shopify's
+      page_image is used: the product, collection or article image, or on the
+      home page the social sharing image from Online Store > Preferences.
+      image_url returns protocol-relative URLs, so https: is prefixed —
+      crawlers need absolute og:image URLs.
+    {%- endcomment -%}
+    {%- liquid
+      assign og_image = product.metafields.custom.og_image.value
+      assign og_image_width = 1200
+      assign og_image_height = 630
+      if og_image == blank and page_image != blank
+        assign og_image = page_image | image_url: width: 1200 | prepend: 'https:'
+        assign og_image_width = page_image.width | at_most: 1200
+        assign og_image_height = page_image.height | times: og_image_width | divided_by: page_image.width
+      endif
+      assign og_title = seo_title
+      assign og_description = meta_description | default: shop.description
+    -%}
+    <meta property="og:site_name" content="{{ shop.name | escape }}">
+    <meta property="og:title" content="{{ og_title | escape }}">
+    {%- if og_description != blank -%}<meta property="og:description" content="{{ og_description | escape }}">{%- endif -%}
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:type" content="{% if template.name == 'product' %}product{% else %}website{% endif %}">
+    {%- if template.name == 'product' -%}
+      <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">
+      <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+    {%- endif -%}
+    {%- if og_image != blank -%}
+      <meta property="og:image" content="{{ og_image }}">
+      <meta property="og:image:width" content="{{ og_image_width }}">
+      <meta property="og:image:height" content="{{ og_image_height }}">
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:image" content="{{ og_image }}">
+    {%- else -%}
+      <meta name="twitter:card" content="summary">
+    {%- endif -%}
+    <meta name="twitter:title" content="{{ og_title | escape }}">
+    {%- if og_description != blank -%}<meta name="twitter:description" content="{{ og_description | escape }}">{%- endif -%}
+    {%- if template.name == 'index' -%}
+      {%- comment -%} Organization + WebSite structured data. The search URL template is assigned in the liquid block: a literal brace inside an output tag breaks Liquid's tokenizer. {%- endcomment -%}
+      {%- liquid
+        if settings.logo != blank
+          assign org_logo = settings.logo | image_url: width: 600 | prepend: 'https:'
+        else
+          assign org_logo = 'casify-logo-mark.png' | asset_url | prepend: 'https:'
+        endif
+        assign org_same_as = ''
+        assign social_keys = 'social_instagram,social_tiktok,social_pinterest,social_facebook' | split: ','
+        for social in social_keys
+          if settings[social] != blank
+            assign org_same_as = org_same_as | append: settings[social] | append: '|'
+          endif
+        endfor
+        assign org_same_as = org_same_as | split: '|'
+        assign search_template = shop.url | append: routes.search_url | append: '?q={search_term_string}'
+      -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": {{ shop.url | append: '/#organization' | json }},
+              "name": {{ shop.name | json }},
+              "url": {{ shop.url | json }},
+              "logo": {{ org_logo | json }}
+              {%- if org_same_as.size > 0 -%},
+              "sameAs": {{ org_same_as | json }}
+              {%- endif %}
+            },
+            {
+              "@type": "WebSite",
+              "@id": {{ shop.url | append: '/#website' | json }},
+              "name": {{ shop.name | json }},
+              "url": {{ shop.url | json }},
+              "publisher": { "@id": {{ shop.url | append: '/#organization' | json }} },
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": {{ search_template | json }}
+                },
+                "query-input": "required name=search_term_string"
+              }
+            }
+          ]
+        }
+      </script>
+    {%- endif -%}
+    {%- render 'cv-fonts' -%}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {%- render 'palette-vars' -%}
+    <script>window.themeMoneyFormat = {{ shop.money_format | json }};</script>
+    {%- comment -%}
+      Script loading. content_for_layout is fully rendered before this layout,
+      so a section's own markup tells us whether its script is needed: each
+      section-specific script below loads only when that section is on the
+      page. In the theme editor (request.design_mode) everything loads, because
+      a section added there is injected without re-rendering this layout.
+    {%- endcomment -%}
+    {%- liquid
+      assign editor = request.design_mode
+      assign shop_page = false
+      if template.name == 'collection' or template.name == 'list-collections' or template.name == 'page' or template.name == 'policy'
+        assign shop_page = true
+      endif
+      assign gsap_drag = false
+      if editor or content_for_layout contains 'data-cvtr'
+        assign gsap_drag = true
+      endif
+      assign gsap_flip = false
+      if editor or shop_page or template.name == 'product'
+        assign gsap_flip = true
+      endif
+      assign gsap_path = gsap_flip
+      assign gsap_text = false
+      if editor or content_for_layout contains 'data-cvsu'
+        assign gsap_text = true
+      endif
+    -%}
+    {%- comment -%} GSAP + plugins in <head>, deferred: registered before any theme script runs, including scripts printed by sections. {%- endcomment -%}
+    {%- render 'gsap', drag: gsap_drag, flip: gsap_flip, path: gsap_path, text: gsap_text -%}
+    {{ content_for_header }}
+  </head>
+  {%- liquid
+    assign tpl_class = ''
+    if template.name == 'product'
+      assign tpl_class = ' cv-tpl'
+    endif
+  -%}
+  <body class="template-{{ template.name }}{{ tpl_class }}">
+    <a href="#MainContent" class="cm-skip-link">Skip to content</a>
+    {% sections 'header-group' %}
+    <main id="MainContent" role="main" tabindex="-1">{{ content_for_layout }}</main>
+    {% sections 'footer-group' %}
+    {% render 'cart-drawer' %}
+    {%- comment -%} Quick pick (snippets/cv-quick-pick.liquid): one dialog per page, only when a card on the page asks for colour and phone before adding. {%- endcomment -%}
+    {%- if editor or content_for_layout contains 'data-cvqp-open' -%}
+      {%- render 'cv-quick-pick', sid: 'page' -%}
+    {%- endif -%}
+    {%- comment -%} Header behaviour + motion. {%- endcomment -%}
+    <script src="{{ 'cv-header.js' | asset_url }}" defer></script>
+    <script src="{{ 'cv-footer.js' | asset_url }}" defer></script>
+    <script src="{{ 'casify-data.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    {%- if editor or content_for_layout contains 'halo-' -%}
+      <script src="{{ 'halo.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- comment -%} Shared design-system motion: every page opts in by attribute. {%- endcomment -%}
+    <script src="{{ 'cv-motion.js' | asset_url }}" defer></script>
+    {%- comment -%} Bespoke section motion; each file also no-ops without its section's markup. {%- endcomment -%}
+    {%- if editor or content_for_layout contains 'data-cv-proof' -%}
+      {%- comment -%} "The proof" (sections/cv-social-proof.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-proof-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvsp' -%}
+      {%- comment -%} "Convert — Spotlight" (sections/cv-spotlight.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-spotlight-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvsh' -%}
+      {%- comment -%} "Showcase cards" (sections/cv-showcase.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-showcase-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvhang' -%}
+      <script src="{{ 'cv-hanging-cards.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvoc' -%}
+      <script src="{{ 'cv-offer-courier.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvft' -%}
+      <script src="{{ 'cv-feature-tabs.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvcl' -%}
+      {%- comment -%} "Multimedia collage" (sections/cv-collage.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-collage-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if gsap_text -%}
+      {%- comment -%} "Email signup banner" (sections/cv-signup-banner.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-signup-motion.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvsr' -%}
+      {%- comment -%} "Scrolling reviews" (sections/cv-scrolling-reviews.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-scrolling-reviews.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if gsap_drag -%}
+      {%- comment -%} "Review rail" (sections/cv-trustpilot.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-trustpilot.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-csv' -%}
+      {%- comment -%} "CS Video" theme block (blocks/cs-video.liquid). {%- endcomment -%}
+      <script src="{{ 'casify-cs-video.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvap' -%}
+      {%- comment -%} "Apps" (sections/cv-apps.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-apps.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvfr' -%}
+      {%- comment -%} "Facebook reviews" (sections/facebook-reviews.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-facebook-reviews.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvps' -%}
+      {%- comment -%} "3D phone scan" (sections/cv-phone-scan.liquid): a module; it imports three.js only when WebGL works and motion is allowed. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-phone-scan.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvorbit' -%}
+      {%- comment -%} "The collection, in 3D" (sections/cv-orbit.liquid): a module; it imports three.js only when WebGL works. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-orbit.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvcx' -%}
+      {%- comment -%} "Comparison lab" (sections/cv-compare.liquid). {%- endcomment -%}
+      <script type="module" src="{{ 'cv-compare-lab.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvvs-row' -%}
+      {%- comment -%} "Us vs. them" (sections/cv-vs.liquid): module; GSAP rows + a three.js VS token. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-vs.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cv-awning' -%}
+      {%- comment -%} Main-image awning (snippets/cv-awning.liquid): module; three.js canopy + GSAP unroll, gusts and the red/teal swipe. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-awning.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cv-ptag' -%}
+      {%- comment -%} Price tag on the main photo (snippets/cv-photo-price.liquid): module; three.js card on a string, GSAP swing + flip. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-price-tag.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvqp-open' -%}
+      <script src="{{ 'cv-quick-pick.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvvr' -%}
+      {%- comment -%} "Product: video reviews" (sections/cv-pdp-video-reviews.liquid): ahead of cv-product.js so it hears the buy box's first "cvs:change". {%- endcomment -%}
+      <script src="{{ 'cv-pdp-video-reviews.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if template.name == 'product' -%}
+      {%- comment -%} Order Slip (cv-product.liquid) and Shop Counter (cv-product-counter.liquid) share cv-product.js; each script no-ops without its markup. {%- endcomment -%}
+      <script src="{{ 'cv-product.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pack-motion.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pdp-story.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pdp-slip-motion.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pdp-counter.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pdp-counter-motion.js' | asset_url }}" defer></script>
+      <script src="{{ 'cv-pdp-home-motion.js' | asset_url }}" defer></script>
+      <script type="module" src="{{ 'cv-pdp-reviews.js' | asset_url }}"></script>
+      <script src="{{ 'cv-customer-experience.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvcr' -%}
+      {%- comment -%} "Product: colour carousel" (sections/cv-pdp-carousel.liquid): a module placed after cv-product.js so the buy box is ready; it imports three.js only when WebGL works and motion is allowed. {%- endcomment -%}
+      <script type="module" src="{{ 'cv-pdp-carousel.js' | asset_url }}"></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvdl' -%}
+      {%- comment -%} "Product: delivery dates" (sections/cv-pdp-delivery.liquid). {%- endcomment -%}
+      <script src="{{ 'cv-pdp-delivery.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if editor or content_for_layout contains 'data-cvba' -%}
+      {%- comment -%} "Product: before & after" (sections/cv-pdp-before-after.liquid): it can be added to any template, so it loads by markup rather than on product pages only. {%- endcomment -%}
+      <script src="{{ 'cv-pdp-before-after.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if shop_page -%}
+      {%- comment -%} Aisle (filters, pack meter), aisles, contact letterbox, rule book; each module no-ops without its markup. {%- endcomment -%}
+      <script src="{{ 'cv-pages.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    <script src="{{ 'cart.js' | asset_url }}" defer></script>
+    {%- if editor or content_for_layout contains 'data-build-box' -%}
+      <script src="{{ 'build-box.js' | asset_url }}" defer></script>
+    {%- endif -%}
+  </body>
+</html>

@@ -1,0 +1,201 @@
+{{ 'cv-feature-tabs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign tab_count = 0
+  for block in section.blocks
+    if block.settings.label != blank
+      assign tab_count = tab_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if tab_count > 0 -%}
+<section class="cvft cvft--{{ section.settings.surface }}" data-cvft aria-labelledby="cvft-title-{{ section.id }}">
+  <div class="cvft__inner">
+    <header class="cvft__header">
+      <h2 class="cvft__title" id="cvft-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.intro != blank -%}
+        <p class="cvft__intro">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="cvft__layout">
+      <div class="cvft__tabs" role="tablist" aria-orientation="vertical" aria-labelledby="cvft-title-{{ section.id }}" data-cvft-tablist>
+        {%- assign index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.label != blank -%}
+            {%- assign index = index | plus: 1 -%}
+            <button
+              type="button"
+              class="cvft__tab"
+              role="tab"
+              id="cvft-tab-{{ block.id }}"
+              aria-controls="cvft-panel-{{ block.id }}"
+              aria-selected="{% if index == 1 %}true{% else %}false{% endif %}"
+              {% unless index == 1 %}tabindex="-1"{% endunless %}
+              data-cvft-tab
+              {{ block.shopify_attributes }}
+            >
+              <span class="cvft__badge" aria-hidden="true">
+                {%- if block.settings.thumb != blank -%}
+                  {{ block.settings.thumb | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                {%- else -%}
+                  {%- render 'cv-icon', name: block.settings.icon, size: 26 -%}
+                {%- endif -%}
+              </span>
+              <span class="cvft__tab-label">{{ block.settings.label | escape }}</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="cvft__panels">
+        {%- assign index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.label != blank -%}
+            {%- assign index = index | plus: 1 -%}
+            <div
+              class="cvft__panel"
+              role="tabpanel"
+              id="cvft-panel-{{ block.id }}"
+              aria-labelledby="cvft-tab-{{ block.id }}"
+              tabindex="0"
+              data-cvft-panel
+              {% unless index == 1 %}hidden{% endunless %}
+            >
+              <div class="cvft__media cvft__media--{{ block.settings.tone }}">
+                {%- if block.settings.video != blank -%}
+                  {%- assign poster = block.settings.image | default: block.settings.video.preview_image -%}
+                  <video
+                    class="cvft__video"
+                    muted
+                    loop
+                    playsinline
+                    preload="none"
+                    {% if poster != blank %}poster="{{ poster | image_url: width: 900 }}"{% endif %}
+                    data-cvft-video
+                    aria-label="{{ block.settings.media_alt | default: block.settings.label | escape }}"
+                  >
+                    {%- for source in block.settings.video.sources -%}
+                      {%- if source.mime_type == 'video/mp4' -%}<source src="{{ source.url }}" type="{{ source.mime_type }}">{%- endif -%}
+                    {%- endfor -%}
+                  </video>
+                  <button type="button" class="cvft__toggle" data-cvft-toggle data-label-pause="{{ 'sections.feature_tabs.pause' | t | escape }}" data-label-play="{{ 'sections.feature_tabs.play' | t | escape }}" aria-label="{{ 'sections.feature_tabs.play' | t | escape }}">
+                    <span class="cvft__toggle-play" aria-hidden="true">{%- render 'cv-icon', name: 'play', size: 18 -%}</span>
+                    <span class="cvft__toggle-pause" aria-hidden="true">{%- render 'cv-icon', name: 'pause', size: 18 -%}</span>
+                  </button>
+                {%- elsif block.settings.image != blank -%}
+                  {%- assign media_alt = block.settings.media_alt | default: '' -%}
+                  {{ block.settings.image | image_url: width: 900 | image_tag: class: 'cvft__image', loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 380px, (min-width: 700px) 45vw, 80vw', alt: media_alt }}
+                {%- else -%}
+                  <span class="cvft__art" aria-hidden="true">{%- render 'cv-icon', name: block.settings.icon, size: 96 -%}</span>
+                {%- endif -%}
+              </div>
+
+              <div class="cvft__copy">
+                <h3 class="cvft__heading">{{ block.settings.heading | default: block.settings.label | escape }}</h3>
+                {%- if block.settings.text != blank -%}
+                  <div class="cvft__text rte">{{ block.settings.text }}</div>
+                {%- endif -%}
+                {%- if block.settings.link != blank and block.settings.link_label != blank -%}
+                  <a class="cvft__link" href="{{ block.settings.link }}">
+                    {{ block.settings.link_label | escape }}
+                    {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- elsif request.design_mode -%}
+  <div class="cvft cvft--cream"><p class="cvft__hint">{{ 'sections.feature_tabs.editor_hint' | t }}</p></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Feature tabs",
+  "tag": "div",
+  "class": "section-cv-feature-tabs",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Made for the way you carry" },
+    { "type": "text", "id": "intro", "label": "Intro" },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "White" },
+        { "value": "teal", "label": "Soft teal" }
+      ],
+      "default": "cream"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Also shown large when the tab has no image or video.",
+          "options": [
+            { "value": "drop-shield", "label": "Drop shield" },
+            { "value": "magnet-ring", "label": "Magnet ring" },
+            { "value": "wireless-charge", "label": "Wireless charging" },
+            { "value": "sparkle-clear", "label": "Clear sparkle" },
+            { "value": "camera-lip", "label": "Camera lip" },
+            { "value": "button-click", "label": "Buttons" },
+            { "value": "precision-fit", "label": "Precise fit" },
+            { "value": "slim", "label": "Slim profile" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "truck-fast", "label": "Delivery" }
+          ],
+          "default": "drop-shield"
+        },
+        { "type": "image_picker", "id": "thumb", "label": "Tab thumbnail", "info": "Optional. Replaces the icon beside the label." },
+        { "type": "header", "content": "Media" },
+        { "type": "video", "id": "video", "label": "Video", "info": "Plays muted on a loop while its tab is open." },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Shown when there is no video, or used as the video's cover." },
+        { "type": "text", "id": "media_alt", "label": "Media description", "info": "Describe the image or video for screen readers." },
+        {
+          "type": "select",
+          "id": "tone",
+          "label": "Frame accent",
+          "options": [
+            { "value": "red", "label": "Candy red" },
+            { "value": "teal", "label": "Muted teal" },
+            { "value": "gold", "label": "Aged gold" }
+          ],
+          "default": "red"
+        },
+        { "type": "header", "content": "Text" },
+        { "type": "text", "id": "heading", "label": "Heading", "info": "Defaults to the tab label." },
+        { "type": "richtext", "id": "text", "label": "Text", "info": "Only describe what is true of your cases." },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label" }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Feature tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Protection", "icon": "drop-shield", "tone": "red" } },
+        { "type": "tab", "settings": { "label": "Charging", "icon": "wireless-charge", "tone": "teal" } },
+        { "type": "tab", "settings": { "label": "Fit", "icon": "precision-fit", "tone": "gold" } },
+        { "type": "tab", "settings": { "label": "Gifting", "icon": "gift", "tone": "red" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

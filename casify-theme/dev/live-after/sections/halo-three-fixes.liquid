@@ -1,0 +1,119 @@
+<section class="halo-sec" id="halo-fixes">
+  <div class="halo-sec__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 01 — the problem' }}</span>
+    <h2>{{ section.settings.heading | default: "Every case fails at one of three things. Halo was built around all three." }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <p>{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+  <div class="halo-fixes halo-stagger">
+    {%- for block in section.blocks -%}
+      <div class="halo-fix" {{ block.shopify_attributes }}>
+        <div class="halo-fix__metric">{{ block.settings.metric | escape }}<small>{{ block.settings.unit | escape }}</small></div>
+        <h3>{{ block.settings.title | escape }}</h3>
+        <p>{{ block.settings.body }}</p>
+        <p class="halo-fix__vs">{{ block.settings.compare | escape }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Three fixes",
+  "blocks": [
+    {
+      "type": "fix",
+      "name": "Fix",
+      "settings": [
+        {
+          "type": "text",
+          "id": "metric",
+          "label": "Metric number",
+          "default": "12"
+        },
+        {
+          "type": "text",
+          "id": "unit",
+          "label": "Unit",
+          "default": "ft"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "It cracks on the first real drop"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body"
+        },
+        {
+          "type": "text",
+          "id": "compare",
+          "label": "Compare line",
+          "default": "Typical slim case: 6–8 ft · Halo: 12 ft"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tick_label",
+      "label": "Section tick",
+      "default": "Section 01 — the problem"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Every case fails at one of three things. Halo was built around all three."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halo — Three fixes",
+      "blocks": [
+        {
+          "type": "fix",
+          "settings": {
+            "metric": "12",
+            "unit": "ft",
+            "title": "It cracks on the first real drop",
+            "body": "<p>Slim cases usually mean solid plastic corners that transmit the shock straight into the frame. DropCore corners are a honeycomb of collapsing air cells — they crush, absorb, and spring back. 26 drops onto concrete, no phone damage.</p>",
+            "compare": "Typical slim case: 6–8 ft · Halo: 12 ft"
+          }
+        },
+        {
+          "type": "fix",
+          "settings": {
+            "metric": "1400",
+            "unit": "g",
+            "title": "The magnet lets go when you need it",
+            "body": "<p>\"MagSafe compatible\" is not a spec, it's a sticker. We publish pull force. Eighteen N52 magnets in a full ring hold 1,400 g — your phone stays on the vent mount over a speed bump, and charges at the full Qi2 25W.</p>",
+            "compare": "Category average: 800–900 g · Halo: 1,400 g"
+          }
+        },
+        {
+          "type": "fix",
+          "settings": {
+            "metric": "0",
+            "unit": "Δb after 36mo",
+            "title": "Clear turns yellow by month four",
+            "body": "<p>Cheap TPU oxidises under UV and skin oil. It's why your last clear case looked like an old fingernail. ClearGuard is a UV-stable polycarbonate with a bonded top coat — no measurable colour shift after the equivalent of three years outdoors.</p>",
+            "compare": "Standard TPU: visible by month 4 · Halo: none at 36 months"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{%- comment -%}
+  Casify product page: the service ribbon (the home trust bar, rebuilt).
+  A candy-stripe band with a few true things about the shop. The service
+  promises are stated once, on the closing card (cv-pdp-guarantee), so the
+  band carries the brand instead. assets/cv-pdp-home-motion.js turns it into a marquee that leans
+  with the scroll speed; without motion it is a still, wrapped row.
+{%- endcomment -%}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+
+<section class="cvw cvw-ribbon" aria-label="{{ section.settings.label | escape }}" data-cvw-ribbon>
+  <div class="cvw-ribbon__band">
+    <ul class="cvw-ribbon__track" role="list" data-cvw-ribbon-track>
+      {%- for b in section.blocks -%}
+        <li class="cvw-ribbon__item" {{ b.shopify_attributes }}>
+          <span class="cvw-ribbon__ico">{%- render 'cv-icon', name: b.settings.icon, size: 26 -%}</span>
+          <span class="cvw-ribbon__title">{{ b.settings.title | escape }}</span>
+          {%- if b.settings.body != blank -%}<span class="cvw-ribbon__body">{{ b.settings.body | escape }}</span>{%- endif -%}
+        </li>
+        <li class="cvw-ribbon__sep" aria-hidden="true">{%- render 'cv-icon', name: 'twist-wrapper', size: 22 -%}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product: service ribbon",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label for screen readers", "default": "Casify at a glance" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Fact",
+      "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "device", "options": [
+          { "value": "truck-fast", "label": "Shipping" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "clock", "label": "Dispatch" },
+          { "value": "price-tag", "label": "Price tag" },
+          { "value": "lock-secure", "label": "Secure checkout" },
+          { "value": "gift", "label": "Gift" },
+          { "value": "device", "label": "Phone" },
+          { "value": "bow", "label": "Bow" },
+          { "value": "lollipop", "label": "Lollipop" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "iPhone & Samsung cases", "info": "Only what is true." },
+        { "type": "text", "id": "body", "label": "Detail", "default": "each made for its own list of phones" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product: service ribbon",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "device", "title": "iPhone & Samsung cases", "body": "each made for its own list of phones" } },
+        { "type": "item", "settings": { "icon": "bow", "title": "Packs of 2 and 3", "body": "save 18% or 31% on each case" } },
+        { "type": "item", "settings": { "icon": "lollipop", "title": "Est. 1920", "body": "the candy-shop counter, online" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

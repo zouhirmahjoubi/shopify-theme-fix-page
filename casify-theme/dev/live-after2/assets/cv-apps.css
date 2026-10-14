@@ -1,0 +1,66 @@
+/* =========================================================================
+   Casify: Apps (sections/cv-apps.liquid).
+   A light container for app blocks, with an optional paper-card frame.
+   Finished, static state; cv-apps.js only reveals the wrappers.
+   ========================================================================= */
+
+.cvap {
+  padding: calc(var(--cvap-pt, 40px) * .75) 0 calc(var(--cvap-pb, 40px) * .75);
+  color: var(--cocoa-600);
+}
+@media (min-width: 750px) {
+  .cvap { padding: var(--cvap-pt, 40px) 0 var(--cvap-pb, 40px); }
+}
+.cvap--tone-inset { background: var(--cream-200); }
+.cvap--tone-paper { background: var(--cream-50); }
+
+.cvap--contained .cvap__inner { max-width: var(--max, 1160px); margin: 0 auto; padding: 0 24px; }
+
+/* ---- heading ------------------------------------------------------------ */
+.cvap__hd { display: grid; gap: 10px; margin: 0 auto 26px; max-width: 760px; padding: 0 24px; }
+.cvap--contained .cvap__hd { padding: 0; }
+.cvap__hd--center { justify-items: center; text-align: center; }
+.cvap__hd--left { margin-left: 0; }
+.cvap__title {
+  margin: 0; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(28px, 3.8vw, 44px); line-height: 1.05; letter-spacing: -.02em;
+  color: var(--cocoa-700); text-wrap: balance;
+}
+.cvap__title em {
+  font-family: var(--font-script); font-style: normal; font-weight: 400;
+  font-size: 1.18em; letter-spacing: 0; color: var(--red-500);
+}
+.cvap__lede { font: 15.5px/1.62 var(--font-body); color: var(--cocoa-600); }
+.cvap__lede p { margin: 0; }
+
+/* ---- apps --------------------------------------------------------------- */
+.cvap__apps { display: grid; gap: 24px; }
+.cvap__app { min-width: 0; }
+.cvap__app:empty { display: none; }
+
+.cvap--frame-card .cvap__app {
+  position: relative; padding: clamp(18px, 3vw, 32px);
+  border-radius: 14px; background: var(--cream-50);
+  box-shadow: 0 1px 0 rgba(255, 253, 248, .8) inset, 0 0 0 1px rgba(74, 51, 36, .08), 0 22px 40px -28px rgba(51, 35, 26, .45);
+}
+.cvap--frame-card .cvap__app::before {
+  content: ""; position: absolute; inset: 6px; border-radius: 9px; pointer-events: none;
+  border: 1px dashed rgba(74, 51, 36, .22);
+}
+.cvap--frame-card.cvap--tone-paper .cvap__app { background: var(--cream-100); }
+
+.cvap__empty {
+  margin: 0; padding: 22px; border-radius: 14px; text-align: center;
+  border: 1.5px dashed var(--border-dashed, rgba(74, 51, 36, .45));
+  font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; color: var(--cocoa-400);
+}
+
+@media (max-width: 749px) {
+  .cvap--contained .cvap__inner { padding: 0 16px; }
+  .cvap__hd { padding: 0 16px; margin-bottom: 20px; }
+  .cvap__apps { gap: 18px; }
+}
+/* theme.css caps every h2 on small phones with !important; opt out like .halo-closer h2. */
+@media (max-width: 420px) {
+  .cvap .cvap__title { font-size: clamp(26px, 7.5vw, 32px) !important; }
+}

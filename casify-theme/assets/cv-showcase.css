@@ -1,0 +1,326 @@
+/* =========================================================================
+   Casify: showcase cards, redesigned (sections/cv-showcase.liquid).
+   Cards dealt onto the counter from one stack, product photography revealed
+   like a shop-window display, badge stamped, and CTA drawn as an enamel sign.
+   Loads after theme.css (section-rendered <link>, always after <head>), so
+   it wins the cascade on the shared .cv-showcase/.cv-show-card selectors —
+   new card internals live entirely under the cvsh- prefix.
+   Motion lives in cv-showcase-motion.js; this file is the finished state.
+   ========================================================================= */
+
+.cvsh__row {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px;
+  margin: 0; padding: 0; list-style: none;
+  perspective: 1200px;
+}
+
+.cvsh-card {
+  position: relative; display: flex; flex-direction: column;
+  border-radius: 22px; overflow: hidden; background: var(--cream-50);
+  box-shadow: 0 1px 0 rgba(74, 51, 36, .06), 0 22px 40px -26px rgba(51, 35, 26, .35);
+  transform-style: preserve-3d;
+  transition: box-shadow .35s var(--ease-standard);
+}
+.cvsh-card:hover, .cvsh-card:focus-within { box-shadow: 0 1px 0 rgba(74, 51, 36, .06), 0 30px 54px -24px rgba(51, 35, 26, .45); }
+
+.cvsh-card__stage {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  min-height: 220px; padding: 42px 24px 32px; overflow: hidden; isolation: isolate;
+}
+.cvsh-card--cream .cvsh-card__stage { background: linear-gradient(180deg, var(--cream-100) 0%, var(--cream-50) 100%); color: var(--cocoa-700); }
+.cvsh-card--teal .cvsh-card__stage { background: linear-gradient(180deg, var(--teal-500) 0%, var(--teal-600) 100%); color: var(--cream-50); }
+.cvsh-card--dark .cvsh-card__stage { background: linear-gradient(180deg, #2b1e15 0%, #1c130d 100%); color: var(--cream-50); }
+.cvsh-card--has-image .cvsh-card__stage { justify-content: flex-end; padding: 18px; }
+.cvsh-card--has-image .cvsh-card__stage::after {
+  content: ""; position: absolute; z-index: 1; inset: 42% 0 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(28, 19, 13, .12) 35%, rgba(28, 19, 13, .62));
+}
+
+.cvsh-card__ring {
+  position: absolute; z-index: 0; top: 50%; left: 50%; width: 168px; height: 168px;
+  translate: -50% -55%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(240, 226, 194, .55) 0%, rgba(240, 226, 194, 0) 68%);
+  filter: blur(2px);
+}
+.cvsh-card--cream .cvsh-card__ring { background: radial-gradient(circle, rgba(176, 143, 82, .28) 0%, rgba(176, 143, 82, 0) 68%); }
+.cvsh-card--has-image .cvsh-card__ring { z-index: 2; width: 70%; height: 70%; opacity: .38; mix-blend-mode: screen; }
+
+.cvsh-card__media {
+  position: absolute; z-index: 0; inset: 0; margin: 0; overflow: hidden;
+  background: inherit; transform-origin: 50% 65%;
+}
+.cvsh-card__image {
+  display: block; width: 100%; height: 100%; object-position: center;
+  transform: translateZ(0);
+}
+.cvsh-card__media--cover .cvsh-card__image { object-fit: cover; }
+.cvsh-card__media--contain .cvsh-card__image { object-fit: contain; padding: 16px 18px 42px; }
+.cvsh-card__glass {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(116deg, rgba(255, 253, 248, .28) 0%, rgba(255, 253, 248, .05) 18%, transparent 36%),
+    linear-gradient(180deg, rgba(255, 253, 248, .12), transparent 45%);
+  box-shadow: inset 0 1px rgba(255, 253, 248, .55);
+}
+
+.cvsh-card__icon { position: relative; z-index: 1; width: 68px; height: 68px; }
+.cvsh-card--cream .cvsh-card__icon { color: var(--red-500); }
+.cvsh-card--teal .cvsh-card__icon,
+.cvsh-card--dark .cvsh-card__icon { color: var(--gold-300); }
+
+.cvsh-card__badge {
+  position: absolute; top: 16px; left: -6px; z-index: 4;
+  padding: 5px 16px 5px 20px;
+  font-family: var(--font-label); font-weight: 700; font-size: 11px; letter-spacing: .08em;
+  color: var(--cream-50);
+  box-shadow: 0 3px 8px -2px rgba(0, 0, 0, .35);
+}
+.cvsh-card__badge.is-ribbon { clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%); }
+.cvsh-card__badge.is-pill { top: 16px; left: 16px; border-radius: 999px; clip-path: none; }
+.cvsh-card__badge--red { background: var(--red-500); }
+.cvsh-card__badge--dark { background: #2b1e15; }
+.cvsh-card__badge--teal { background: var(--teal-700); }
+
+.cvsh-card__pills { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+.cvsh-card__pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: 999px;
+  font-family: var(--font-label); font-weight: 700; font-size: 10px; letter-spacing: .05em;
+  background: rgba(255, 253, 248, .16); color: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .28);
+}
+.cvsh-card--cream .cvsh-card__pill { background: rgba(74, 51, 36, .06); box-shadow: inset 0 0 0 1px rgba(74, 51, 36, .16); }
+.cvsh-card--has-image .cvsh-card__pill {
+  color: var(--cream-50); background: rgba(51, 35, 26, .78);
+  box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .34), 0 4px 12px rgba(28, 19, 13, .18);
+  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+}
+
+.cvsh-card__body { display: flex; flex-direction: column; gap: 9px; padding: 22px 24px 26px; flex: 1; }
+
+.cvsh-stars { display: inline-flex; gap: 2px; color: var(--gold-500); }
+.cvsh-stars__star { width: 14px; height: 14px; fill: currentColor; }
+.cvsh-card__rating { display: flex; align-items: center; gap: 8px; font-family: var(--font-label); font-size: 12px; color: var(--cocoa-600); }
+
+.cvsh-card__title { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: 21px; line-height: 1.15; color: var(--cocoa-700); }
+.cvsh-card__desc { margin: 0; font: 14px/1.55 var(--font-body); color: var(--cocoa-500); }
+
+.cvsh-card__price { display: flex; align-items: baseline; gap: 9px; margin-top: 4px; }
+.cvsh-card__now { font-family: var(--font-display); font-weight: 900; font-size: 26px; color: var(--red-600); }
+.cvsh-card__was { font-family: var(--font-label); font-size: 14px; color: var(--cocoa-400); }
+
+.cvsh-card__body > .cvsh-sign-cta { margin-top: auto; }
+
+/* Enamel shop-sign CTA: a compact echo of the hanging header plaque. */
+.cvsh-sign-cta {
+  --cvsh-cta-fill: var(--red-500);
+  --cvsh-cta-hover: var(--red-600);
+  --cvsh-cta-edge: var(--red-700);
+  --cvsh-cta-stripe: var(--red-400);
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 58px; padding: 0 58px;
+  color: var(--cream-50); text-decoration: none; isolation: isolate;
+  transform-origin: 50% 8%; touch-action: manipulation; cursor: pointer;
+  filter: drop-shadow(0 7px 6px rgba(51, 35, 26, .2));
+}
+.cvsh-sign-cta--teal {
+  --cvsh-cta-fill: #4b7776;
+  --cvsh-cta-hover: #3f6d6c;
+  --cvsh-cta-edge: #345d5c;
+  --cvsh-cta-stripe: var(--teal-400);
+}
+.cvsh-sign-cta__art { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cvsh-sign-cta__base { fill: var(--cvsh-cta-fill); transition: fill .16s ease-out; }
+.cvsh-sign-cta__trim { fill: none; stroke: var(--cvsh-cta-edge); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.cvsh-sign-cta__stripe-light { fill: var(--cream-50); }
+.cvsh-sign-cta__stripe-dark { fill: var(--cvsh-cta-stripe); }
+.cvsh-sign-cta__stripes { opacity: .9; }
+.cvsh-sign-cta__shade { fill: var(--cvsh-cta-edge); opacity: .42; }
+.cvsh-sign-cta__shine { fill: rgba(255, 253, 248, .48); opacity: 0; }
+.cvsh-sign-cta__mint { transform-box: fill-box; transform-origin: center; }
+.cvsh-sign-cta__mint-rim { fill: var(--cvsh-cta-edge); }
+.cvsh-sign-cta__mint-paper { fill: var(--cream-50); }
+.cvsh-sign-cta__mint-swish, .cvsh-sign-cta__mint-center { fill: var(--cvsh-cta-fill); }
+.cvsh-sign-cta__label {
+  position: relative; z-index: 1; font-family: var(--font-label); font-size: 12px; font-weight: 700;
+  letter-spacing: .13em; line-height: 1; text-align: center; text-transform: uppercase;
+  text-shadow: 0 1px 1px rgba(51, 35, 26, .34);
+}
+.cvsh-sign-cta__arrow {
+  position: absolute; z-index: 1; right: 22px; top: 50%; width: 24px; height: 14px;
+  translate: 0 -50%; overflow: visible;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.cvsh-sign-cta:hover { color: var(--cream-50); }
+.cvsh-sign-cta:hover .cvsh-sign-cta__base,
+.cvsh-sign-cta:focus-visible .cvsh-sign-cta__base { fill: var(--cvsh-cta-hover); }
+.cvsh-sign-cta:focus-visible {
+  outline: 3px solid var(--focus-ring); outline-offset: 3px;
+  filter: drop-shadow(0 9px 7px rgba(51, 35, 26, .24));
+}
+
+@media (max-width: 899px) {
+  .cvsh__row { grid-template-columns: minmax(0, 1fr); }
+  .cvsh-card__stage { min-height: 260px; }
+}
+@media (max-width: 480px) {
+  .cvsh-card__stage { min-height: 228px; padding: 34px 20px 28px; }
+  .cvsh-card--has-image .cvsh-card__stage { padding: 16px; }
+  .cvsh-sign-cta { min-height: 56px; padding-inline: 54px; }
+  .cvsh-sign-cta__label { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvsh-card, .cvsh-sign-cta { transition: none; }
+  .cvsh-card__media, .cvsh-card__image, .cvsh-sign-cta__mint, .cvsh-sign-cta__arrow { transform: none !important; }
+  .cvsh-sign-cta__shine { opacity: 0 !important; }
+}
+
+/* -------------------------------------------------------------------------
+   Product cards: one per product, filled from the product itself
+   (snippets/cv-showcase-card.liquid). Square stage for the square hero
+   photos, the whole photo is a link, long titles clamp to two lines.
+   ------------------------------------------------------------------------- */
+.cvsh-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.cvsh-card__badge, .cvsh-card__pill { text-transform: uppercase; }
+
+.cvsh-card--product .cvsh-card__stage { aspect-ratio: 1 / 1; min-height: 0; }
+.cvsh-card__hit { position: absolute; inset: 0; z-index: 5; }
+
+.cvsh-card__title a { color: inherit; text-decoration: none; }
+.cvsh-card__title a:hover { color: var(--red-600); }
+.cvsh-card__title a:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; border-radius: 4px; }
+.cvsh-card--product .cvsh-card__title {
+  font-size: 20px;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.cvsh-card--product .cvsh-card__desc {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+.cvsh-card__facts {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 0;
+  font-family: var(--font-label); font-size: 12px; font-weight: 700; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--cocoa-500);
+}
+.cvsh-card__facts span + span::before {
+  content: ""; display: inline-block; width: 4px; height: 4px; margin: 0 10px 2px 0;
+  border-radius: 50%; background: var(--gold-500); vertical-align: middle;
+}
+.cvsh-card__now small { font-family: var(--font-label); font-size: 13px; font-weight: 700; color: var(--cocoa-500); }
+/* Lines run one to three rows; price and sign sit on the same baseline across the rail. */
+.cvsh-card--product .cvsh-card__price { margin-top: auto; padding-top: 6px; }
+.cvsh-card--product .cvsh-card__body > .cvsh-sign-cta { margin-top: 4px; }
+
+/* -------------------------------------------------------------------------
+   Rail: more than three cards scroll sideways, three to a view on desktop,
+   two on tablets, one and a peek on phones. The row's padding/negative
+   margin leaves room for the card shadows and the hover tilt.
+   ------------------------------------------------------------------------- */
+.cvsh__rail { position: relative; }
+.cvsh--rail .cvsh__row {
+  --cvsh-gap: 28px;
+  grid-template-columns: none; grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--cvsh-gap)) / 3);
+  gap: var(--cvsh-gap);
+  overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-padding-inline: 6px;
+  scrollbar-width: none;
+  padding: 14px 6px 46px; margin: -14px -6px -30px;
+}
+.cvsh--rail .cvsh__row::-webkit-scrollbar { display: none; }
+.cvsh--rail .cvsh-card { scroll-snap-align: start; }
+
+/* The row's perspective paints it like a positioned box; keep the bar above its shadow padding. */
+.cvsh__bar { position: relative; z-index: 2; display: flex; align-items: center; gap: 18px; margin-top: 4px; }
+.cvsh__track {
+  position: relative; flex: 1; height: 4px; overflow: hidden;
+  border-radius: 999px; background: rgba(74, 51, 36, .12);
+}
+.cvsh__thumb {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 25%;
+  border-radius: inherit; background: var(--red-500);
+}
+.cvsh__count {
+  margin: 0; white-space: nowrap;
+  font-family: var(--font-label); font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  font-variant-numeric: tabular-nums; color: var(--cocoa-500);
+}
+.cvsh__nav { display: flex; gap: 10px; }
+.cvsh__btn {
+  display: grid; place-items: center; width: 48px; height: 48px; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--cocoa-700); color: var(--cream-50);
+  box-shadow: 0 8px 16px -10px rgba(51, 35, 26, .6);
+  transition: background-color .16s ease-out, opacity .16s ease-out, transform .16s ease-out;
+  touch-action: manipulation;
+}
+.cvsh__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.cvsh__btn:hover:not(:disabled) { background: var(--red-500); }
+.cvsh__btn:active:not(:disabled) { transform: scale(.94); }
+.cvsh__btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.cvsh__btn:disabled { opacity: .3; cursor: default; box-shadow: none; }
+.cvsh.is-static .cvsh__bar { display: none; }
+
+@media (max-width: 1099px) {
+  .cvsh--rail .cvsh__row { --cvsh-gap: 22px; grid-auto-columns: calc((100% - var(--cvsh-gap)) / 2); }
+}
+@media (max-width: 699px) {
+  .cvsh--rail .cvsh__row { --cvsh-gap: 14px; grid-auto-columns: 84%; }
+  .cvsh__bar { gap: 12px; }
+  .cvsh__btn { width: 44px; height: 44px; }
+  .cvsh-card--product .cvsh-card__title { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cvsh--rail .cvsh__row { scroll-behavior: auto; }
+  .cvsh__btn { transition: none; }
+}
+
+/* -------------------------------------------------------------------------
+   The card's button as a <button> or inside an add-to-bag <form>
+   (collection grid: quick pick, add to bag, sold out).
+   ------------------------------------------------------------------------- */
+button.cvsh-sign-cta {
+  margin: 0; border: 0; background: none; font: inherit; -webkit-appearance: none; appearance: none;
+}
+button.cvsh-sign-cta:disabled { cursor: not-allowed; filter: grayscale(.85); opacity: .55; }
+button.cvsh-sign-cta:disabled .cvsh-sign-cta__base { fill: var(--cvsh-cta-fill); }
+.cvsh-card__form { margin: 4px 0 0; }
+.cvsh-card__form > .cvsh-sign-cta { width: 100%; }
+.cvsh-sign-cta__short { display: none; }
+
+/* -------------------------------------------------------------------------
+   Collection grid (sections/cv-collection.liquid): the showcase card in
+   place of the old product card. Three across on desktop, two on tablets,
+   and on phones a compact two-up card: one feature, no line, a plain plaque
+   with the short label so "Choose your phone" never wraps.
+   ------------------------------------------------------------------------- */
+.cvl__grid.cvl__grid--showcase {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 26px 24px;
+}
+.cvl__cell > .cvsh-card { flex: 1; min-width: 0; }
+
+@media (max-width: 749px) {
+  .cvl__grid.cvl__grid--showcase { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 10px; }
+  .cvl__grid--showcase .cvsh-card { border-radius: 16px; }
+  .cvl__grid--showcase .cvsh-card--has-image .cvsh-card__stage { padding: 10px; }
+  .cvl__grid--showcase .cvsh-card__badge { top: 10px; padding: 4px 10px 4px 14px; font-size: 9.5px; }
+  .cvl__grid--showcase .cvsh-card__badge.is-pill { left: 10px; padding-left: 10px; }
+  .cvl__grid--showcase .cvsh-card__pill { padding: 4px 8px; font-size: 9px; letter-spacing: .03em; }
+  .cvl__grid--showcase .cvsh-card__pill + .cvsh-card__pill { display: none; }
+  .cvl__grid--showcase .cvsh-card__body { gap: 6px; padding: 12px 11px 13px; }
+  .cvl__grid--showcase .cvsh-card--product .cvsh-card__title { font-size: 15px; line-height: 1.2; }
+  .cvl__grid--showcase .cvsh-card__desc { display: none; }
+  .cvl__grid--showcase .cvsh-card__facts { gap: 2px 6px; font-size: 10px; letter-spacing: .03em; }
+  .cvl__grid--showcase .cvsh-card__facts span + span::before { margin-right: 6px; }
+  .cvl__grid--showcase .cvsh-card__now { font-size: 19px; }
+  .cvl__grid--showcase .cvsh-card__was { font-size: 12px; }
+  .cvl__grid--showcase .cvsh-card__price { gap: 6px; flex-wrap: wrap; }
+  .cvl__grid--showcase .cvsh-sign-cta { min-height: 44px; padding: 0 8px; }
+  .cvl__grid--showcase .cvsh-sign-cta__stripes,
+  .cvl__grid--showcase .cvsh-sign-cta__mint,
+  .cvl__grid--showcase .cvsh-sign-cta__arrow { display: none; }
+  .cvl__grid--showcase .cvsh-sign-cta__label { font-size: 10px; letter-spacing: .07em; }
+  .cvl__grid--showcase .cvsh-sign-cta__long { display: none; }
+  .cvl__grid--showcase .cvsh-sign-cta__short { display: inline; }
+}

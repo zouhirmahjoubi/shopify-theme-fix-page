@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casify review components — local preview</title>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/casify-customer-reviews.css">
+  <link rel="stylesheet" href="../assets/casify-facebook-comments.css">
+  <link rel="stylesheet" href="../assets/casify-cs-blocks.css">
+  <style>
+    .preview-banner { position: sticky; top: 0; z-index: 5; padding: 12px 20px; background: var(--cocoa-700); color: var(--cream-50); font: 11px/1.4 var(--font-label); letter-spacing: .06em; text-align: center; }
+    .preview-banner strong { color: var(--gold-300); }
+    .preview-kicker { display: block; margin-bottom: 10px; font: 10px var(--font-label); letter-spacing: .16em; text-transform: uppercase; color: var(--teal-600); }
+    .preview-help { max-width: 1160px; margin: 0 auto; padding: 22px 20px; font: 13px/1.6 var(--font-body); color: var(--cocoa-500); }
+  </style>
+</head>
+<body>
+  <div class="preview-banner"><strong>LOCAL DESIGN PREVIEW</strong> · Text and ratings below are layout samples. No customer feedback is published from this file.</div>
+
+  <section class="csp csp--cream" aria-labelledby="proof-title">
+    <div class="csp__inner">
+      <header class="csp__heading">
+        <span class="preview-kicker">New theme editor section · Ratings &amp; reviews</span>
+        <span class="csp__eyebrow">From our customers</span>
+        <h2 id="proof-title">Ratings &amp; reviews</h2>
+      </header>
+      <div class="csp__grid csp__grid--3">
+        <div class="csp-rating">
+          <span class="csp-rating__score">4.5 <small>/ 5</small></span>
+          <span class="csp-rating__stars" role="img" aria-label="Sample rating: 4.5 out of 5 stars"><span class="cv-stars" data-fill="90"></span></span>
+          <span class="csp-rating__detail">Sample rating · replace with product data</span>
+        </div>
+        <article class="csp-review">
+          <div class="csp-review__header"><span class="csp-review__avatar" aria-hidden="true">C</span><div class="csp-review__person"><h3 class="csp-review__name">Customer name</h3><span class="csp-review__date">Date or detail</span></div></div>
+          <div class="csp-review__stars" role="img" aria-label="Sample rating: 5 out of 5 stars"><span class="cv-stars" data-fill="100"></span></div>
+          <div class="csp-review__body"><p>Your customer’s own review appears here after you add it in the theme editor. This is sample layout text.</p></div>
+        </article>
+        <article class="csp-review">
+          <div class="csp-review__header"><span class="csp-review__avatar" aria-hidden="true">C</span><div class="csp-review__person"><h3 class="csp-review__name">Customer name</h3><span class="csp-review__date">Date or detail</span></div></div>
+          <div class="csp-review__stars" role="img" aria-label="Sample rating: 4 out of 5 stars"><span class="cv-stars" data-fill="80"></span></div>
+          <div class="csp-review__body"><p>A second card shows how multiple reviews sit side by side on wider screens and stack on phones.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="ccr ccr--white" aria-labelledby="carousel-title">
+    <div class="ccr__inner">
+      <header class="ccr__header"><span class="preview-kicker">Theme editor section · Customer reviews carousel</span><h2 class="ccr__title" id="carousel-title">Customer reviews <span>In their own words</span></h2></header>
+      <div class="ccr__rail" role="list" aria-label="Sample review cards">
+        <article class="ccr__card" role="listitem"><div class="ccr__media ccr__media--type" aria-hidden="true"><span class="ccr__quote-mark">“</span><span class="ccr__media-label">Customer note</span></div><div class="ccr__card-body"><div class="ccr__stars" aria-label="Sample five-star rating">★★★★★</div><blockquote class="ccr__quote"><p>Customer review text is shown here as a layout sample.</p></blockquote><div class="ccr__reviewer"><cite>Customer name</cite><span>Optional detail</span></div></div></article>
+        <article class="ccr__card" role="listitem"><div class="ccr__media ccr__media--type" aria-hidden="true"><span class="ccr__quote-mark">“</span><span class="ccr__media-label">Customer note</span></div><div class="ccr__card-body"><div class="ccr__stars" aria-label="Sample four-star rating">★★★★<span class="ccr__star--empty">★</span></div><blockquote class="ccr__quote"><p>Add the customer’s exact words in the section settings. Cards can also show an optional review photo.</p></blockquote><div class="ccr__reviewer"><cite>Customer name</cite></div></div></article>
+        <article class="ccr__card" role="listitem"><div class="ccr__media ccr__media--type" aria-hidden="true"><span class="ccr__quote-mark">“</span><span class="ccr__media-label">Customer note</span></div><div class="ccr__card-body"><div class="ccr__stars" aria-label="Sample five-star rating">★★★★★</div><blockquote class="ccr__quote"><p>On phones, shoppers can swipe through the review cards.</p></blockquote><div class="ccr__reviewer"><cite>Customer name</cite></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cvfb cvfb--cream" aria-labelledby="comments-title">
+    <div class="cvfb__inner">
+      <header class="cvfb__header"><div><span class="preview-kicker">Theme editor section · Facebook comments</span><h2 class="cvfb__title" id="comments-title">In their words</h2></div><span class="cvfb__stamp" aria-hidden="true">Customer notes</span></header>
+      <ol class="cvfb__grid cvfb__grid--two" style="--cvfb-spacing: 24px">
+        <li class="cvfb__item"><span class="cvfb__avatar" aria-hidden="true">C</span><article class="cvfb__bubble"><h3 class="cvfb__name">Customer name</h3><p class="cvfb__comment">A customer comment will appear here when you add it in the theme editor. This is sample layout text.</p><div class="cvfb__meta">Optional original date and link</div></article></li>
+        <li class="cvfb__item"><span class="cvfb__avatar" aria-hidden="true">C</span><article class="cvfb__bubble"><h3 class="cvfb__name">Customer name</h3><p class="cvfb__comment">The comment section uses Casify’s paper cards and warm colors, with one column on small screens.</p></article></li>
+      </ol>
+    </div>
+  </section>
+  <p class="preview-help">This standalone page is for visual review. Add the sections in Shopify’s theme editor and enter real customer content before publishing.</p>
+  <script>
+    const star = '<svg class="cv-stars__icon" viewBox="0 0 16 16" focusable="false"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>';
+    document.querySelectorAll('.cv-stars').forEach((el) => { el.style.setProperty('--fill', `${el.dataset.fill}%`); el.innerHTML = `<span class="cv-stars__row">${star.repeat(5)}</span><span class="cv-stars__row cv-stars__row--fill">${star.repeat(5)}</span>`; });
+  </script>
+</body>
+</html>

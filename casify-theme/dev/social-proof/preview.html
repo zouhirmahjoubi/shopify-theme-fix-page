@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Casify proof board preview</title>
+  <link rel="stylesheet" href="../../assets/theme.css">
+  <link rel="stylesheet" href="../../assets/cv-social-proof.css">
+  <style>html,body{margin:0;background:#2f1f18}</style>
+</head>
+<body>
+  <main>
+    <section class="cvp-proof" id="cv-reviews" data-cv-proof data-proof-state="open" data-three-enabled="true">
+      <div class="cvp-proof__three" data-cv-proof-three aria-hidden="true"></div>
+      <div class="cvp-proof__shell">
+        <header class="cvp-proof__header">
+          <h2 class="cvp-proof__heading" data-cv-proof-heading>The proof, as it arrives</h2>
+          <p class="cvp-proof__intro">A live record of published customer feedback. Nothing on this board is pre-filled or manually scored.</p>
+        </header>
+        <div class="cvp-proof__board" data-cv-proof-board>
+          <div class="cvp-proof__summary" data-cv-proof-summary>
+            <div class="cvp-proof__status"><span class="cvp-proof__status-dot" aria-hidden="true"></span><span>Record open</span></div>
+            <div class="cvp-proof__empty-mark" aria-hidden="true">
+              <svg viewBox="0 0 120 120" role="presentation">
+                <path data-cv-proof-svg d="M30 18h48l16 16v68H30z" />
+                <path data-cv-proof-svg d="M78 18v17h16M45 55h34M45 69h34M45 83h21" />
+                <path class="cvp-proof__svg-check" data-cv-proof-svg d="m70 95 8 8 18-22" />
+              </svg>
+            </div>
+            <h3 class="cvp-proof__empty-title">No published reviews yet</h3>
+            <p class="cvp-proof__empty-copy">The first customer review will set the score — not us.</p>
+            <dl class="cvp-proof__source" data-cv-proof-lines>
+              <div><dt>Score source</dt><dd>Published customer ratings</dd></div>
+              <div><dt>Updates</dt><dd>With every new review</dd></div>
+              <div><dt>Editorial edits</dt><dd>None</dd></div>
+            </dl>
+          </div>
+          <div class="cvp-proof__ledger" data-cv-proof-ledger>
+            <div class="cvp-proof__ledger-head">
+              <div class="cvp-proof__ledger-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation"><path d="M7 3h10a2 2 0 0 1 2 2v16l-3-2-4 2-4-2-3 2V5a2 2 0 0 1 2-2Z"/><path d="M8.5 8h7M8.5 12h7M8.5 16H13"/></svg>
+              </div>
+              <div><h3>Customer ledger</h3><p>Written in customers' own words.</p></div>
+            </div>
+            <div class="cvp-proof__app" data-cv-proof-app>
+              <div class="cvp-proof__waiting">
+                <span class="cvp-proof__waiting-line"></span><span class="cvp-proof__waiting-line"></span><span class="cvp-proof__waiting-line"></span>
+                <p>Customer notes will appear here automatically as they are published.</p>
+              </div>
+            </div>
+            <p class="cvp-proof__note"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-9"/></svg><span>No sample quotes. No imported press logos. Just the live record.</span></p>
+          </div>
+        </div>
+        <div class="cvp-proof__thanks" data-cv-proof-thanks>
+          <div class="cvp-proof__thanks-copy"><h3>Thank you.</h3><p>For helping us build the record one honest review at a time.</p></div>
+          <div class="cvp-proof__verified" data-cv-proof-stamp>
+            <img src="../../assets/proof-stamp.webp" width="640" height="640" alt="">
+            <p><strong>Source checked</strong><span>Live Shopify review data</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="../../assets/gsap.min.js"></script>
+  <script src="../../assets/gsap-ScrollTrigger.min.js"></script>
+  <script src="../../assets/gsap-init.js"></script>
+  <script src="../../assets/cv-proof-motion.js"></script>
+</body>
+</html>

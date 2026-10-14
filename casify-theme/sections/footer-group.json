@@ -1,0 +1,26 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {},
+      "blocks": {
+        "shop": {
+          "type": "link_list",
+          "settings": { "title": "Shop", "menu": "main-menu" }
+        },
+        "legal": {
+          "type": "link_list",
+          "settings": { "title": "Support", "menu": "footer" }
+        },
+        "company": {
+          "type": "contact",
+          "settings": { "title": "Company" }
+        }
+      },
+      "block_order": ["shop", "legal", "company"]
+    }
+  },
+  "order": ["footer"]
+}

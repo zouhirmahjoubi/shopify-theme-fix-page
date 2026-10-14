@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-best-product",
+      "settings": {
+        "eyebrow": "CASIFY CASES",
+        "intro": "Premium woven texture. Strong magnetic connection. Everyday protection for your iPhone.",
+        "benefit_one": "Strong Magnetic Attachment",
+        "benefit_one_copy": "Works perfectly with MagSafe chargers and accessories.",
+        "benefit_two": "Premium Woven Texture",
+        "benefit_two_copy": "Soft-touch feel with a modern, stylish look.",
+        "benefit_three": "Everyday Protection",
+        "benefit_three_copy": "Raised edges keep your screen and camera safe."
+      }
+    }
+  },
+  "order": ["main"]
+}

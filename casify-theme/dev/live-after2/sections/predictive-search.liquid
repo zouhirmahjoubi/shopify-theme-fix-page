@@ -1,0 +1,72 @@
+{%- comment -%}
+  Predictive search results. Rendered stand-alone via AJAX:
+    {{ routes.predictive_search_url }}?q=TERM&resources[type]=product,collection,page,query
+      &resources[limit]=4&section_id=predictive-search
+  Shopify returns just this section's markup, isolated, with `predictive_search`
+  populated. See sections/header.liquid for the fetch + injection.
+{%- endcomment -%}
+{%- if predictive_search.performed -%}
+  {%- assign ps = predictive_search.resources.results -%}
+  {%- assign has_results = false -%}
+  {%- if ps.products.size > 0 or ps.collections.size > 0 or ps.pages.size > 0 or ps.articles.size > 0 -%}
+    {%- assign has_results = true -%}
+  {%- endif -%}
+
+  {%- if has_results -%}
+    {%- if ps.queries.size > 0 -%}
+      <div class="cm-predictive-results__queries">
+        {%- for query in ps.queries -%}
+          <a href="{{ query.url }}" class="cm-predictive-results__query">{{ query.styled_text }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if ps.products.size > 0 -%}
+      <div class="cm-predictive-results__group">
+        {%- for product in ps.products -%}
+          <a href="{{ product.url }}" class="cm-predictive-results__item">
+            <span class="cm-predictive-results__thumb">
+              {%- if product.featured_media -%}
+                <img src="{{ product.featured_media | image_url: width: 96 }}" alt="{{ product.featured_media.alt | default: product.title | escape }}" width="48" height="48" loading="lazy">
+              {%- endif -%}
+            </span>
+            <span class="cm-predictive-results__text">
+              <strong>{{ product.title | escape }}</strong>
+              <span class="cm-predictive-results__price">
+                {%- if product.price_min != product.price_max -%}
+                  {{ product.price_min | money }} &ndash; {{ product.price_max | money }}
+                {%- else -%}
+                  {{ product.price_min | money }}
+                {%- endif -%}
+              </span>
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if ps.collections.size > 0 or ps.pages.size > 0 or ps.articles.size > 0 -%}
+      <div class="cm-predictive-results__group cm-predictive-results__group--links">
+        {%- for collection in ps.collections -%}
+          <a href="{{ collection.url }}" class="cm-predictive-results__link">{{ collection.title | escape }} <small>Collection</small></a>
+        {%- endfor -%}
+        {%- for page in ps.pages -%}
+          <a href="{{ page.url }}" class="cm-predictive-results__link">{{ page.title | escape }} <small>Page</small></a>
+        {%- endfor -%}
+        {%- for article in ps.articles -%}
+          <a href="{{ article.url }}" class="cm-predictive-results__link">{{ article.title | escape }} <small>Article</small></a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product" class="cm-predictive-results__viewall">
+      View all results for &ldquo;{{ predictive_search.terms | escape }}&rdquo;
+    </a>
+  {%- else -%}
+    <p class="cm-predictive-results__empty">No results for &ldquo;{{ predictive_search.terms | escape }}&rdquo;.</p>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{ "name": "Predictive search" }
+{% endschema %}

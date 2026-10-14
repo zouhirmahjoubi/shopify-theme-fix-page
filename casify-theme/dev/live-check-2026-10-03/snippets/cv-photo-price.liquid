@@ -1,0 +1,42 @@
+{% doc %}
+  Price tag hanging on a string over the main product photo
+  (sections/cv-product-counter.liquid, "Price tag on the photo" setting).
+  The HTML tag is the finished, static version; assets/cv-price-tag.js swaps it
+  for a three.js card that drops in, swings on its string (GSAP) and flips to
+  show a new price when the variant changes. A struck-through price and "Save"
+  appear only when the variant has a real compare-at price.
+  Decorative (aria-hidden): the page already states the price in text.
+
+  @param {boolean} show - Section setting; renders nothing when false.
+  @param {object} variant - The selected variant.
+{% enddoc %}
+{%- if show -%}
+  {%- liquid
+    assign was_price = variant.compare_at_price | default: 0
+    assign has_was = false
+    assign saving = 0
+    if was_price > variant.price
+      assign has_was = true
+      assign saving = was_price | minus: variant.price
+    endif
+  -%}
+  <div
+    class="cv-ptag"
+    data-cv-ptag
+    data-price="{{ variant.price }}"
+    data-was="{% if has_was %}{{ was_price }}{% else %}0{% endif %}"
+    data-money-format="{{ shop.money_format | escape }}"
+    data-save-label="{{ 'products.product_summary.save' | t | escape }}"
+    aria-hidden="true"
+  >
+    <span class="cv-ptag__string"></span>
+    <span class="cv-ptag__card">
+      <span class="cv-ptag__hole"></span>
+      <strong class="cv-ptag__now" data-cv-ptag-now>{{ variant.price | money }}</strong>
+      <s class="cv-ptag__was" data-cv-ptag-was{% unless has_was %} hidden{% endunless %}>{%- if has_was -%}{{ was_price | money }}{%- endif -%}</s>
+      <span class="cv-ptag__save" data-cv-ptag-save{% unless has_was %} hidden{% endunless %}>
+        {{- 'products.product_summary.save' | t }} <span data-cv-ptag-save-value>{%- if has_was -%}{{ saving | money }}{%- endif -%}</span>
+      </span>
+    </span>
+  </div>
+{%- endif -%}

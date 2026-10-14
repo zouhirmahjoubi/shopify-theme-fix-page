@@ -1,0 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Support answers in under a business day, and can override anything on this page in your favour.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support"
+      }
+    },
+    "sales-note": {
+      "type": "cv-sales-note",
+      "settings": {}
+    },
+    "video-reviews": {
+      "type": "cv-page-video-reviews",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "sales-note",
+    "video-reviews"
+  ]
+}

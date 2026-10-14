@@ -1,0 +1,127 @@
+{{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-extras.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pdp-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  assign has_rating = false
+  assign rating_value = 0
+  assign rating_max = 5
+  assign star_pct = 0
+  if rating != blank and rating_count > 0
+    assign has_rating = true
+    assign rating_value = rating.rating
+    assign rating_max = rating.scale_max | default: 5
+    assign star_pct = rating_value | times: 100.0 | divided_by: rating_max | round: 1
+  endif
+  assign app_blocks = 0
+  for block in section.blocks
+    if block.type == '@app'
+      assign app_blocks = app_blocks | plus: 1
+    endif
+  endfor
+-%}
+
+<section
+  class="cvw cvw-reviews cvp-reviews"
+  id="{{ section.settings.anchor | default: 'cvc-reviews' | escape }}"
+  data-cvw-reviews
+  data-review-rating="{{ rating_value }}"
+  data-review-max="{{ rating_max }}"
+  data-review-count="{{ rating_count }}"
+  data-review-has-rating="{{ has_rating }}"
+  aria-labelledby="cvpReviewsTitle-{{ section.id }}"
+>
+  <div class="cvp__inner">
+    <div class="cvw-reviews__stage" data-cvw-review-stage>
+      <div class="cvw-reviews__three" data-cvw-review-three aria-hidden="true"></div>
+
+      <div class="cvw-board" data-cvw-board>
+        <div class="cvw-board__tilt" data-cvw-review-tilt>
+          <img class="cvw-board__slate" src="{{ 'pdp-home-chalkboard.webp' | asset_url }}" width="1200" height="848" alt="" loading="lazy" decoding="async">
+          <div class="cvw-board__chalk">
+            <h2 class="cvw-board__title" id="cvpReviewsTitle-{{ section.id }}" data-cvw-chalk>{{ section.settings.heading | escape }}</h2>
+            {%- if has_rating -%}
+              <p class="cvw-board__score" data-cvw-chalk>
+                <b data-cvw-score-number>{{ rating_value | round: 1 }}</b><span>/ {{ rating_max | round }}</span>
+              </p>
+              <p class="cvw-board__stars">
+                {%- render 'cv-stars', fill: star_pct, class: 'cvw-board__stars-row' -%}
+                <span class="cvw-sr">{{ 'products.review_board.rating' | t: rating: rating_value, maximum: rating_max }}</span>
+              </p>
+              <p class="cvw-board__count" data-cvw-chalk>
+                <span data-cvw-count-number>{{ rating_count }}</span>
+                {%- if rating_count == 1 -%}
+                  {{- 'products.review_board.review' | t | prepend: ' ' -}}
+                {%- else -%}
+                  {{- 'products.review_board.reviews' | t | prepend: ' ' -}}
+                {%- endif -%}
+              </p>
+            {%- else -%}
+              <p class="cvw-board__stars">{%- render 'cv-stars', fill: 0, class: 'cvw-board__stars-row' -%}</p>
+              <p class="cvw-board__empty" data-cvw-chalk>{{ section.settings.empty_heading | escape }}</p>
+              <p class="cvw-board__hint" data-cvw-chalk>{{ section.settings.empty_text | escape }}</p>
+            {%- endif -%}
+            <svg class="cvw-board__underline" viewBox="0 0 320 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path data-cvw-chalk-line d="M4 16 C 60 6, 140 22, 200 12 S 290 8, 316 14"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cvw-reviews__note" data-cvw-review-note aria-label="{{ 'products.review_board.ledger_label' | t }}">
+        <span class="cvw-reviews__note-pin" aria-hidden="true"></span>
+        <span class="cvw-reviews__note-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="M7 4.5h18v23H7z"/><path d="M11 10h10M11 15h10M11 20h6"/><path d="m21.5 22 2 2 4-5"/></svg>
+        </span>
+        <p class="cvw-reviews__note-copy">{{ 'products.review_board.source_note' | t }}</p>
+        <span class="cvw-reviews__live"><i aria-hidden="true"></i>{{ 'products.review_board.live_label' | t }}</span>
+        <span class="cvw-reviews__state">
+          {%- if app_blocks > 0 -%}
+            {{ 'products.review_board.connected' | t }}
+          {%- else -%}
+            {{ 'products.review_board.waiting' | t }}
+          {%- endif -%}
+        </span>
+        {%- if app_blocks == 0 and section.settings.write_url != blank -%}
+          <a class="cvp-reviews__write" href="{{ section.settings.write_url }}">{{ section.settings.write_label | escape }}</a>
+        {%- endif -%}
+      </aside>
+    </div>
+
+    {%- if app_blocks > 0 -%}
+      <div class="cvw-reviews__app-shell" data-cvw-review-app>
+        <div class="cvw-reviews__app-head">
+          <span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M5.5 7.5h21v17h-14l-6 4v-4h-1z"/><path d="M10 13h12M10 18h8"/></svg></span>
+          <h3>{{ 'products.review_board.app_heading' | t }}</h3>
+        </div>
+        <div class="cvp-reviews__app cvw-reviews__app">
+          {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product: reviews",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What shoppers say" },
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "cvc-reviews", "info": "The buy box's rating row links here." },
+    { "type": "header", "content": "Before the first review", "info": "Shown when the product has no rating yet." },
+    { "type": "text", "id": "empty_heading", "label": "Heading", "default": "No reviews yet" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "Bought this case? Your review goes up on this board." },
+    { "type": "url", "id": "write_url", "label": "Review link", "info": "Optional, used only when no review app block is added." },
+    { "type": "text", "id": "write_label", "label": "Review link label", "default": "Write the first review" }
+  ],
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "presets": [{ "name": "Product: reviews" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

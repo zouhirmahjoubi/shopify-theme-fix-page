@@ -1,0 +1,121 @@
+{{ 'casify-facebook-comments.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign comment_count = 0
+  for block in section.blocks
+    if block.type == 'comment'
+      if block.settings.name != blank and block.settings.comment != blank
+        assign comment_count = comment_count | plus: 1
+      elsif request.design_mode
+        assign comment_count = comment_count | plus: 1
+      endif
+    endif
+  endfor
+  assign fallback_heading = 'sections.facebook_comments.heading' | t
+-%}
+
+{%- if comment_count > 0 or request.design_mode -%}
+<section
+  class="cvfb cvfb--{{ section.settings.surface }}"
+  id="cv-facebook-comments-{{ section.id }}"
+  aria-labelledby="cv-facebook-comments-title-{{ section.id }}"
+  style="--cvfb-spacing: {{ section.settings.card_spacing }}px"
+>
+  <div class="cvfb__inner">
+    <header class="cvfb__header">
+      <div>
+        <h2 class="cvfb__title" id="cv-facebook-comments-title-{{ section.id }}">{{ section.settings.heading | default: fallback_heading | escape }}</h2>
+        {%- if section.settings.intro != blank -%}
+          <p class="cvfb__intro">{{ section.settings.intro | escape }}</p>
+        {%- endif -%}
+      </div>
+      <span class="cvfb__stamp" aria-hidden="true">{{ 'sections.facebook_comments.customer_notes' | t }}</span>
+    </header>
+
+    {%- if comment_count > 0 -%}
+      <ol class="cvfb__grid cvfb__grid--{{ section.settings.desktop_columns }}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'comment' -%}
+            {%- assign complete_comment = false -%}
+            {%- if block.settings.name != blank and block.settings.comment != blank -%}
+              {%- assign complete_comment = true -%}
+            {%- endif -%}
+            {%- if complete_comment or request.design_mode -%}
+            <li class="cvfb__item" {{ block.shopify_attributes }}>
+              {%- if complete_comment -%}
+              <div class="cvfb__avatar" aria-hidden="true">
+                {%- if block.settings.profile_image != blank -%}
+                  {{ block.settings.profile_image | image_url: width: 96, height: 96, crop: 'center' | image_tag: class: 'cvfb__avatar-image', loading: 'lazy', alt: '' }}
+                {%- else -%}
+                  <span>{{ block.settings.name | slice: 0, 1 | upcase | escape }}</span>
+                {%- endif -%}
+              </div>
+              <article class="cvfb__bubble">
+                <h3 class="cvfb__name">{{ block.settings.name | escape }}</h3>
+                <p class="cvfb__comment">{{ block.settings.comment | escape | newline_to_br }}</p>
+                {%- if block.settings.date != blank or block.settings.source_url != blank -%}
+                  <div class="cvfb__meta">
+                    {%- if block.settings.date != blank -%}
+                      <span>{{ block.settings.date | escape }}</span>
+                    {%- endif -%}
+                    {%- if block.settings.source_url != blank -%}
+                      <a href="{{ block.settings.source_url | escape }}" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" focusable="false"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.027 4.388 11.024 10.125 11.927v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.695 4.533-4.695 1.312 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.931-1.956 1.886v2.262h3.328l-.532 3.49h-2.796V24C19.612 23.097 24 18.1 24 12.073Z"/></svg>
+                        {{ 'sections.facebook_comments.view_original' | t }}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </article>
+              {%- else -%}
+                <div class="cvfb__editor-hint">{{ 'sections.facebook_comments.editor_hint' | t }}</div>
+              {%- endif -%}
+            </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    {%- else -%}
+      <div class="cvfb__empty">
+        <span class="cvfb__empty-mark" aria-hidden="true">“</span>
+        <p>{{ section.settings.empty_text | escape }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Facebook comments",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "In their words", "info": "Add comments as blocks. This section does not sync with Facebook." },
+    { "type": "text", "id": "intro", "label": "Intro text" },
+    { "type": "text", "id": "empty_text", "label": "Empty state", "default": "Customer comments will appear here when added." },
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "surface", "label": "Background", "options": [
+      { "value": "cream", "label": "Cream" },
+      { "value": "paper", "label": "Paper" }
+    ], "default": "cream" },
+    { "type": "select", "id": "desktop_columns", "label": "Desktop columns", "options": [
+      { "value": "two", "label": "Two" },
+      { "value": "three", "label": "Three" }
+    ], "default": "three" },
+    { "type": "range", "id": "card_spacing", "label": "Space between comments", "min": 16, "max": 40, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "comment",
+      "name": "Customer comment",
+      "settings": [
+        { "type": "image_picker", "id": "profile_image", "label": "Profile image" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "textarea", "id": "comment", "label": "Comment" },
+        { "type": "text", "id": "date", "label": "Date or time", "info": "Enter the original date or time only if you know it." },
+        { "type": "url", "id": "source_url", "label": "Original Facebook comment URL", "info": "Optional. Adds a link to the original comment." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Facebook comments" }]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scaffold reference: shop-counter-v2.png</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Labrada:wght@700&display=swap">
+  <link rel="stylesheet" href="layout.css">
+  <style>html,body{margin:0}body{background:#f5f4e8}.region{box-sizing:border-box}.region.text p{white-space:pre-wrap}</style>
+</head>
+<body>
+<!-- Reference only. Every region sits at its measured box inside a comp-aspect frame. Take the boxes (layout.css), keep your own semantic structure. -->
+<main class="comp-frame" style="max-width:2016px">
+  <div class="r-header region chrome" data-region="header"><!-- the existing site header section (awning, topbar, nav with the shop sign), already built from its own assets --></div>
+  <div class="r-breadcrumb region text" data-region="breadcrumb"><!-- breadcrumb Home / Cases / product title in small typewriter type --><p style="font-size:var(--r-breadcrumb-font);line-height:1.05;margin:0">breadcrumb</p></div>
+  <div class="r-page-ground region texture" data-region="page-ground" style="background-image:url('..\..\..\assets\plates\page-ground.png');background-repeat:repeat"></div>
+  <div class="r-thumb-rail region chrome" data-region="thumb-rail"><!-- vertical rail of five round glass jar-lid thumbnails --></div>
+  <figure class="r-jar-lid region plate" data-region="jar-lid"><img src="..\..\..\assets\plates\jar-lid.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:top left"></figure>
+  <figure class="r-thumb-1 region plate" data-region="thumb-1"><img src="..\..\..\assets\plates\thumb-1.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <figure class="r-thumb-2 region plate" data-region="thumb-2"><img src="..\..\..\assets\plates\thumb-2.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <figure class="r-thumb-3 region plate" data-region="thumb-3"><img src="..\..\..\assets\plates\thumb-3.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <figure class="r-thumb-4 region plate" data-region="thumb-4"><img src="..\..\..\assets\plates\thumb-4.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <figure class="r-thumb-5 region plate" data-region="thumb-5"><img src="..\..\..\assets\plates\thumb-5.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <figure class="r-photo region plate" data-region="photo"><img src="..\..\..\assets\plates\photo.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:center"></figure>
+  <div class="r-zoom-chip region control" data-region="zoom-chip"><!-- cream pill chip with magnifier icon: Tap to zoom: rebuild the control's chrome from the crop (comp-spec.mjs --crop zoom-chip); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-vendor-ticket region chrome" data-region="vendor-ticket"><!-- small cream ticket with dashed brown border: CASIFY CASES in typewriter type --></div>
+  <div class="r-title region text" data-region="title"><!-- product title in heavy high-contrast serif, two lines: Transparent Magnetic / Phone Case for iPhone --><p style="font-size:var(--r-title-font);font-family:var(--r-title-family),sans-serif;font-weight:var(--r-title-weight);line-height:1.05;margin:0">title</p></div>
+  <div class="r-rating region control" data-region="rating"><!-- five outlined brass stars, typewriter No reviews yet · Write the first (underlined link): rebuild the control's chrome from the crop (comp-spec.mjs --crop rating); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <figure class="r-brass-tag region plate" data-region="brass-tag"><img src="..\..\..\assets\plates\brass-tag.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:top left"></figure>
+  <div class="r-tag-price region text" data-region="tag-price"><!-- price $49.99 in heavy red serif, tilted with the tag --><p style="font-size:var(--r-tag-price-font);line-height:1.05;margin:0">tag-price</p></div>
+  <div class="r-style-label region text" data-region="style-label"><!-- typewriter STYLE: Magnetic Case Camera Cutout Transparent --><p style="font-size:var(--r-style-label-font);line-height:1.05;margin:0">style-label</p></div>
+  <div class="r-swatches region control" data-region="swatches"><!-- two round style swatches with real variant photos, selected one in a red candy-stripe ring, other teal-dashed: rebuild the control's chrome from the crop (comp-spec.mjs --crop swatches); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-model-label region text" data-region="model-label"><!-- typewriter label MODEL --><p style="font-size:var(--r-model-label-font);line-height:1.05;margin:0">model-label</p></div>
+  <div class="r-model-select region control" data-region="model-select"><!-- model dropdown with thin cocoa border: iPhone 17 Pro / 18 Pro and chevron: rebuild the control's chrome from the crop (comp-spec.mjs --crop model-select); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <figure class="r-candy-box region plate" data-region="candy-box"><img src="..\..\..\assets\plates\candy-box.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:top left"></figure>
+  <div class="r-pack-1 region text" data-region="pack-1"><!-- 1 case / $49.99 in heavy red serif --><p style="font-size:var(--r-pack-1-font);line-height:1.05;margin:0">pack-1</p></div>
+  <div class="r-pack-2 region control" data-region="pack-2"><!-- selected pack: red Most popular flag on the lid, 2 cases / $40.99 each: rebuild the control's chrome from the crop (comp-spec.mjs --crop pack-2); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <figure class="r-candy-box-teal region plate" data-region="candy-box-teal"><img src="..\..\..\assets\plates\candy-box-teal.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:top left"></figure>
+  <div class="r-pack-3 region text" data-region="pack-3"><!-- 3 cases / $34.49 each in heavy red serif --><p style="font-size:var(--r-pack-3-font);line-height:1.05;margin:0">pack-3</p></div>
+  <div class="r-savings-meter region control" data-region="savings-meter"><!-- thin candy-stripe progress bar two thirds filled, typewriter text 2 cases saves you $18.00 vs buying singly: rebuild the control's chrome from the crop (comp-spec.mjs --crop savings-meter); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-add-to-bag region control" data-region="add-to-bag"><!-- red pill button with bag icon: Add to bag · $81.98, darker bottom edge: rebuild the control's chrome from the crop (comp-spec.mjs --crop add-to-bag); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-buy-now region control" data-region="buy-now"><!-- deep cocoa pill button: Buy now with arrow, cream text: rebuild the control's chrome from the crop (comp-spec.mjs --crop buy-now); its ink box, border, fill, radius, and label size are the comp's --></div>
+  <div class="r-ship-by region text" data-region="ship-by"><!-- clock icon and typewriter Order today, ships by Fri, Sep 18 --><p style="font-size:var(--r-ship-by-font);line-height:1.05;margin:0">ship-by</p></div>
+  <div class="r-service-ribbon region chrome" data-region="service-ribbon"><!-- candy-stripe dashed ribbon box with three items and icons: Free shipping | 30-day returns | Ships in 1-3 business days --></div>
+  <div class="r-accordions region control" data-region="accordions"><!-- two collapsed rows Details and Shipping & returns in heavy serif with plus marks, dashed rules: rebuild the control's chrome from the crop (comp-spec.mjs --crop accordions); its ink box, border, fill, radius, and label size are the comp's --></div>
+</main>
+</body>
+</html>

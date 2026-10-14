@@ -1,0 +1,13 @@
+/* Casify hero — ThreeUI ambient glow (candy-red/gold LiquidFormBackground).
+   Loaded only when section.settings.enable_3d_glow is true. */
+.cv-hero__glow { transition: opacity 600ms var(--ease-out-soft); }
+.cv-hero__glow-3d {
+  position: absolute; top: -22%; right: -12%; width: 56%; aspect-ratio: 1; pointer-events: none;
+  opacity: 0; filter: blur(2px) saturate(1.05);
+  transition: opacity 900ms var(--ease-out-soft);
+}
+.cv-hero__glow-3d.is-ready { opacity: .68; }
+.cv-hero__glow:has(+ .cv-hero__glow-3d.is-ready) { opacity: 0; }
+.cv-hero__glow-3d > div { position: absolute; inset: 0; }
+.cv-hero__glow-3d canvas { display: block; width: 100% !important; height: 100% !important; }
+@media (max-width: 860px) { .cv-hero__glow-3d { width: 74%; right: -18%; } }

@@ -1,0 +1,8 @@
+dev/*
+.claude/*
+design-tokens/*
+.impeccable/*
+assets/plates/*
+assets/*.webp.json
+assets/*.png.json
+PRODUCT.md

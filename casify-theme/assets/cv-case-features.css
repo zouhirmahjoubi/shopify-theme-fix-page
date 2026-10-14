@@ -1,0 +1,82 @@
+/* Casify: the Shop Counter's case features (snippets/cv-case-features.liquid).
+   A paper card of up to six tiles, an icon over a short typewriter line. Rows of
+   three, centred, so four sit two by two and five as three over two.
+   cv-case-features.js deals the tiles in and draws a three.js scene into each art
+   slot; the SVG is the still fallback. */
+.cvcf {
+  --cvcf-pink: #F4CFC7;
+  --cvcf-ink: var(--cocoa-700);
+  position: relative;
+  margin: 18px 0 0;
+  padding: 14px 8px 16px;
+  border: 1px solid rgba(74, 51, 36, .16);
+  border-radius: 14px;
+  background: var(--cream-50);
+  box-shadow: 0 1px 0 rgba(255, 253, 248, .8) inset, 0 10px 22px -16px rgba(51, 35, 26, .45);
+  color: var(--cvcf-ink);
+}
+.cvcf__title {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 8px 4px;
+  font: 700 11px/1.2 var(--font-label);
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--cocoa-500);
+}
+.cvcf__title::before, .cvcf__title::after {
+  content: ""; flex: 1 1 0; min-width: 12px;
+  border-top: 1px dashed rgba(74, 51, 36, .3);
+}
+.cvcf__title span { flex: none; max-width: 80%; text-align: center; }
+.cvcf__list {
+  display: flex; flex-wrap: wrap; justify-content: center; row-gap: 4px;
+  margin: 0; padding: 0; list-style: none;
+}
+.cvcf__item {
+  display: flex; flex: 0 0 33.333%; flex-direction: column; align-items: center; gap: 6px;
+  min-width: 0; padding: 10px 6px 4px;
+  text-align: center;
+}
+.cvcf--n1 .cvcf__item { flex-basis: 100%; }
+.cvcf--n2 .cvcf__item, .cvcf--n4 .cvcf__item { flex-basis: 50%; }
+.cvcf__art {
+  position: relative; display: grid; flex: none; place-items: center;
+  width: 84px; height: 68px;
+  transition: translate 260ms var(--ease-standard);
+}
+.cvcf-ic { width: 100%; height: 100%; overflow: visible; }
+.cvcf__item.is-lit .cvcf-ic { visibility: hidden; }
+.cvcf__text {
+  max-width: 21ch;
+  font-family: var(--font-label); font-size: 12.5px; line-height: 1.3;
+  color: var(--cvcf-ink);
+  text-wrap: balance;
+}
+.cvcf__canvas { position: absolute; z-index: 2; display: block; pointer-events: none; }
+
+/* Icon fills: the SVG strokes are currentColor (cocoa ink). */
+.cvcf-ic__pink { fill: var(--cvcf-pink); }
+.cvcf-ic__teal { fill: var(--teal-200); }
+.cvcf-ic__paper { fill: var(--cream-200); }
+.cvcf-ic__gold { fill: var(--gold-300); }
+.cvcf-ic__ink { fill: var(--cocoa-500); }
+.cvcf-ic__red { fill: var(--red-500); }
+.cvcf-ic__ring { stroke: var(--gold-500); }
+.cvcf-ic__gold-line { stroke: var(--gold-500); }
+.cvcf-ic__stripe { stroke: var(--red-400); }
+
+@media (hover: hover) {
+  .cvcf__item:hover .cvcf__art { translate: 0 -3px; }
+}
+@media (max-width: 420px) {
+  .cvcf { padding: 12px 4px 14px; }
+  .cvcf__item { padding: 8px 3px 2px; gap: 4px; }
+  .cvcf__art { width: 68px; height: 55px; }
+  .cvcf__text { font-size: 11.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cvcf__art { transition: none; }
+  .cvcf__item:hover .cvcf__art { translate: none; }
+}
+
+/* Tiles wait for their entrance; the snippet's inline guard lifts this within 1.4s. */
+.cvcf-pending .cvcf__item, .cvcf-pending .cvcf__title { opacity: 0; }

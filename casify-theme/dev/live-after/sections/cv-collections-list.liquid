@@ -1,0 +1,76 @@
+{%- comment -%}
+  Casify: every collection, "The aisles".
+
+  Each collection hangs its own candy-shop aisle sign (KIE plate) over a
+  shelf of its first three real product photos and its product count. Empty
+  collections and handles listed in the settings (the home page collection by
+  default) are left out, so no aisle leads to an empty shelf.
+
+  Motion: assets/cv-pages.js (signs swing in, photos fan on hover).
+  Styles: assets/cv-pages.css.
+{%- endcomment -%}
+{{ 'cv-pages.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hidden_handles = section.settings.hide_handles | remove: ' ' | split: ','
+-%}
+<div class="cv-page-root cvcl">
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current" aria-current="page">Collections</span>
+  </nav>
+
+  <header class="cvcl__hd">
+    <h1 class="cvcl__title">{{ section.settings.heading | default: 'Every collection' | escape }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cvcl__lede rte">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- assign shown = 0 -%}
+  <ul class="cvcl__aisles" role="list">
+    {%- for col in collections -%}
+      {%- if hidden_handles contains col.handle or col.products_count == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign shown = shown | plus: 1 -%}
+      <li class="cvcl__aisle">
+        <a class="cvcl__link" href="{{ col.url }}">
+          <span class="cvcl__sign" data-cv-sign>
+            <img class="cvcl__plate" src="{{ 'pages-aisle-sign.webp' | asset_url }}" width="900" height="655" alt="" loading="lazy">
+            <span class="cvcl__name">{{ col.title | escape }}</span>
+          </span>
+          <span class="cvcl__shelf" aria-hidden="true">
+            {%- for p in col.products limit: 3 -%}
+              {%- if p.featured_image -%}
+                <span class="cvcl__pic">{{ p.featured_image | image_url: width: 360 | image_tag: width: 180, height: 180, alt: '', loading: 'lazy' }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+          <span class="cvcl__meta">
+            <span>{{ col.products_count }} {% if col.products_count == 1 %}product{% else %}products{% endif %}</span>
+            {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+          </span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  {%- if shown == 0 -%}
+    <div class="cvl__empty">
+      <h2>No collections yet</h2>
+      <p>Once collections have products in them, they appear here.</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collections: the aisles",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every collection" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "info": "Optional." },
+    { "type": "text", "id": "hide_handles", "label": "Leave out these collections", "default": "frontpage", "info": "Collection handles, separated by commas. Empty collections are always left out." }
+  ],
+  "presets": [{ "name": "Collections: the aisles" }]
+}
+{% endschema %}

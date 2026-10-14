@@ -1,0 +1,106 @@
+{%- comment -%}
+  Casify — Converting PDP: cost-of-skipping ticket.
+
+  Sits after the comparison table and before risk-reversal: translates the
+  "why it wins" specs into a dollar argument (replacement cases + one screen
+  repair vs. one case) so the price premium is easy to rationalize right
+  before the guarantee/FAQ close. Every number is merchant-editable copy,
+  not a live calculation — same honesty bar as the rest of this PDP (see the
+  low-stock and social-proof settings in cv-product.liquid).
+{%- endcomment -%}
+
+<section class="cv-sec cv-cost" id="cv-cost">
+  <div class="cv-sec__hd" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Do the math' | escape }}</span>
+    <h2 data-cv-split>{{ section.settings.heading | default: 'What a cheap case actually costs you' | escape }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="cv-cost__grid">
+    <div class="cv-cost__them" data-cv-reveal="left">
+      <span class="cv-cost__side-label">{{ section.settings.them_title | default: 'Skipping this case' | escape }}</span>
+      <ul class="cv-cost__list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'row' -%}
+            <li class="cv-cost__row" {{ block.shopify_attributes }}>
+              <span class="cv-cost__label">{{ block.settings.label | escape }}</span>
+              <span class="cv-cost__value cv-cost__value--them">{{ block.settings.them | escape }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="cv-cost__us" data-cv-reveal="right">
+      <span class="cv-cost__side-label cv-cost__side-label--us">{{ section.settings.us_title | default: 'This case' | escape }}</span>
+      <ul class="cv-cost__list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'row' -%}
+            <li class="cv-cost__row">
+              <span class="cv-cost__label">{{ block.settings.label | escape }}</span>
+              <span class="cv-cost__value cv-cost__value--us">{{ block.settings.us | escape }}</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.settings.verdict_value != blank -%}
+        <div class="cv-cost__verdict">
+          <span class="cv-cost__verdict-n">{{ section.settings.verdict_value | escape }}</span>
+          <span class="cv-cost__verdict-label">{{ section.settings.verdict_label | default: 'saved over three years' | escape }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="cv-cost__foot" data-cv-reveal>
+      <button type="button" class="cv-cta cv-cta--ghost" data-cv-scroll-to-buy>
+        <span>{{ section.settings.cta_label | escape }}</span>
+        {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+      </button>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Convert — Cost compare",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Do the math" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What a cheap case actually costs you" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>Not a discount pitch — the honest math on what buyers usually spend without this case.</p>" },
+    { "type": "text", "id": "them_title", "label": "Left column title", "default": "Skipping this case" },
+    { "type": "text", "id": "us_title", "label": "Right column title", "default": "This case" },
+    { "type": "header", "content": "Verdict" },
+    { "type": "text", "id": "verdict_value", "label": "Big number", "default": "$180+", "info": "Write this from your own numbers below — it isn't calculated automatically." },
+    { "type": "text", "id": "verdict_label", "label": "Verdict label", "default": "saved over three years" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Pick my model" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Cost row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Row label", "default": "Replacement cases" },
+        { "type": "text", "id": "them", "label": "Cost without this case", "default": "$30" },
+        { "type": "text", "id": "us", "label": "Cost with this case", "default": "$0" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Convert — Cost compare",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Replacement cases (2, after they crack or yellow)", "them": "$30", "us": "$0" } },
+        { "type": "row", "settings": { "label": "Average screen repair", "them": "$200", "us": "Covered up to $200" } },
+        { "type": "row", "settings": { "label": "This case, lasts 3+ years", "them": "—", "us": "$39" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

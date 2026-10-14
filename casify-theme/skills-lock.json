@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "motion-design": {
+      "source": "LottieFiles/motion-design-skill",
+      "sourceType": "github",
+      "skillPath": "skills/motion-design/SKILL.md",
+      "computedHash": "4f16f46c81f25a2a25b7a4720b7ea001e65f384b31b5b7f4b455fef87fbc9016"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "17e48da905f83a19c174079b50760a98c069527ba50079239b3c187236627c29"
+    },
+    "image": {
+      "source": "user-provided",
+      "sourceType": "inline",
+      "skillPath": "skills/image/SKILL.md",
+      "computedHash": "c34b67e249e558410ee960043d0de3c1d188dc3b6ba36d7714c16ec6f1fad46e"
+    }
+  }
+}

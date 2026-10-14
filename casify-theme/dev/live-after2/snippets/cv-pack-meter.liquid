@@ -1,0 +1,65 @@
+{%- comment -%}
+  Casify: the pack meter for collection pages.
+
+  Three little striped candy boxes that fill with the real photos of the
+  cases already in the bag. Empty boxes keep their lids on. The line under
+  them says what the bag's case count earns, from the store's automatic
+  discounts ("Pack of 2 cases: 18% off", "Pack of 3 cases: 31% off"), which
+  count any cases in the bag, mixed or not.
+
+  Params:
+    sid      section id
+    pack2    percentage for 2 cases (must match the store's discount)
+    pack3    percentage for 3 cases (must match the store's discount)
+    heading  the meter's heading
+
+  Behaviour and motion: assets/cv-pages.js (packMeter). Styles: assets/cv-pages.css.
+{%- endcomment -%}
+{%- liquid
+  assign imgs = ''
+  assign filled = 0
+  for item in cart.items
+    for q in (1..item.quantity)
+      if filled < 3
+        assign item_img = item.image | image_url: width: 200
+        assign imgs = imgs | append: item_img | append: '|'
+        assign filled = filled | plus: 1
+      endif
+    endfor
+  endfor
+  assign img_list = imgs | split: '|'
+  assign n = cart.item_count
+
+  assign t0 = 'Mix any 2 cases for [p2]% off, or any 3 for [p3]% off. Colours and phones can all be different.'
+  assign t1 = '1 case in your bag. Add 1 more and [p2]% comes off both.'
+  assign t2 = '2 cases in your bag: [p2]% off at checkout. Add 1 more for [p3]% off.'
+  assign t3 = '[n] cases in your bag: [p3]% off at checkout.'
+  case n
+    when 0
+      assign line = t0
+    when 1
+      assign line = t1
+    when 2
+      assign line = t2
+    else
+      assign line = t3
+  endcase
+  assign line = line | replace: '[p2]', pack2 | replace: '[p3]', pack3 | replace: '[n]', n
+-%}
+<aside class="cvpm" data-cv-pack-meter aria-labelledby="cvpmTitle-{{ sid }}"
+       data-count="{{ n }}" data-p2="{{ pack2 }}" data-p3="{{ pack3 }}"
+       data-t0="{{ t0 | escape }}" data-t1="{{ t1 | escape }}" data-t2="{{ t2 | escape }}" data-t3="{{ t3 | escape }}">
+  <h2 class="cvpm__title" id="cvpmTitle-{{ sid }}">{{ heading | default: 'Mix a pack' | escape }}</h2>
+  <ul class="cvpm__boxes" aria-hidden="true">
+    {%- for i in (1..3) -%}
+      {%- assign src = img_list[forloop.index0] -%}
+      <li class="cvpm__box{% if src != blank %} is-filled{% endif %}" data-cvpm-box>
+        <span class="cvpm__photo"><img {% if src != blank %}src="{{ src }}" {% endif %}alt="" width="100" height="100" loading="lazy" data-cvpm-img></span>
+        <img class="cvpm__front" src="{{ 'pack-box-wall.webp' | asset_url }}" alt="" width="860" height="313" loading="lazy">
+        <img class="cvpm__lid" src="{{ 'pack-box-lid.webp' | asset_url }}" alt="" width="520" height="313" loading="lazy" data-cvpm-lid>
+        <span class="cvpm__tag">{% if forloop.index == 1 %}1 case{% elsif forloop.index == 2 %}2 · −{{ pack2 }}%{% else %}3 · −{{ pack3 }}%{% endif %}</span>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <p class="cvpm__text" data-cvpm-text aria-live="polite">{{ line | escape }}</p>
+</aside>

@@ -1,0 +1,42 @@
+{%- comment -%}
+  GSAP 3.15.0 — self-hosted UMD builds from the official `gsap` npm package.
+
+  Render this in <head>. Every file is `defer`, so it runs after parsing but
+  before any deferred script later in the document — including scripts that
+  sections print inside content_for_layout (they used to run before GSAP when
+  this bundle sat at the end of <body>). Order within the bundle: core first,
+  then plugins with their dependencies ahead of them (CustomEase before
+  CustomBounce/CustomWiggle). gsap-init.js registers whatever loaded.
+
+  Always loaded: the plugins the header, footer and home sections use.
+  Loaded on demand (the layout passes the flags):
+    drag  Draggable + InertiaPlugin   review rail (cv-trustpilot)
+    flip  Flip                        shop pages, product pack motion
+    path  MotionPathPlugin            shop pages, product templates
+    text  ScrambleTextPlugin + TextPlugin   email signup banner
+  Not shipped at all (no theme code uses them): CSSRulePlugin, EasePack,
+  EaselPlugin, Observer, MorphSVGPlugin, Physics2DPlugin, PhysicsPropsPlugin,
+  PixiPlugin, ScrollSmoother, and the dev-only GSDevTools/MotionPathHelper.
+  The files stay in assets/ so any of them can be added back here.
+{%- endcomment -%}
+{%- liquid
+  assign gsap_plugins = 'CustomEase,CustomBounce,CustomWiggle,DrawSVGPlugin'
+  if drag
+    assign gsap_plugins = gsap_plugins | append: ',InertiaPlugin,Draggable'
+  endif
+  if flip
+    assign gsap_plugins = gsap_plugins | append: ',Flip'
+  endif
+  if path
+    assign gsap_plugins = gsap_plugins | append: ',MotionPathPlugin'
+  endif
+  if text
+    assign gsap_plugins = gsap_plugins | append: ',ScrambleTextPlugin,TextPlugin'
+  endif
+  assign gsap_plugins = gsap_plugins | append: ',ScrollTrigger,ScrollToPlugin,SplitText' | split: ','
+-%}
+<script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
+{%- for plugin in gsap_plugins %}
+<script src="{{ 'gsap-' | append: plugin | append: '.min.js' | asset_url }}" defer></script>
+{%- endfor %}
+<script src="{{ 'gsap-init.js' | asset_url }}" defer></script>

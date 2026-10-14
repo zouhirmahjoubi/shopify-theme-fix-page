@@ -1,0 +1,95 @@
+{%- comment -%}
+  Casify — product card for the Chrismass design system.
+
+  Params:
+    product (required)
+    index   (optional) — feeds --cv-i so grids cascade in
+    show_add (optional, default true) — render the quick add-to-bag form
+    quick_pick (optional, default false) — on a product with more than one
+      variant, the button opens the quick pick (snippets/cv-quick-pick.liquid)
+      to choose colour and phone instead of adding the first variant, and the
+      card says how many phone models the case is made for
+
+  The second product image is preloaded as a hover state, so the card flips to
+  a lifestyle shot on pointer-over without a layout shift. Sold-out variants
+  disable the button rather than hiding it, which keeps the grid rhythm even.
+{%- endcomment -%}
+{%- liquid
+  assign cvar = product.selected_or_first_available_variant
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+  assign show_add_btn = true
+  if show_add == false
+    assign show_add_btn = false
+  endif
+
+  assign quick = false
+  assign fit_count = 0
+  if quick_pick == true and product.has_only_default_variant == false
+    assign quick = true
+    for option in product.options_with_values
+      assign oname = option.name | downcase
+      if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+        assign fit_count = option.values.size
+        break
+      endif
+    endfor
+  endif
+-%}
+<article class="cv-card{% if quick %} cv-card--pick{% endif %}" data-cv-reveal style="--cv-i:{{ index | default: 0 }}">
+  <a href="{{ product.url }}" class="cv-card__media" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_image -%}
+      <img class="cv-card__img"
+           src="{{ product.featured_image | image_url: width: 640 }}"
+           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+           width="640" height="640" loading="lazy" decoding="async">
+      {%- if product.images[1] -%}
+        <img class="cv-card__img cv-card__img--alt"
+             src="{{ product.images[1] | image_url: width: 640 }}"
+             alt="" width="640" height="640" loading="lazy" decoding="async">
+      {%- endif -%}
+    {%- else -%}
+      <span class="cv-card__ph">{%- render 'cv-icon', name: 'precision-fit', size: 34 -%}</span>
+    {%- endif -%}
+
+    {%- if on_sale -%}
+      {%- assign off = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+      <span class="cv-card__flag">−{{ off }}%</span>
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="cv-card__flag is-out">Sold out</span>
+    {%- endunless -%}
+  </a>
+
+  <div class="cv-card__body">
+    <h3 class="cv-card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    {%- if fit_count > 1 -%}
+      <p class="cv-card__fit">Made for {{ fit_count }} phone models</p>
+    {%- endif -%}
+
+    <div class="cv-card__price">
+      <span class="cv-card__now">{% if product.price_varies %}From {% endif %}{{ product.price | money }}</span>
+      {%- if on_sale -%}<s class="cv-card__was">{{ product.compare_at_price | money }}</s>{%- endif -%}
+    </div>
+
+    {%- if show_add_btn -%}
+      {%- if quick -%}
+        <button type="button" class="cv-card__add cv-card__pick" data-cvqp-open data-handle="{{ product.handle }}" data-url="{{ product.url }}"{% unless product.available %} disabled{% endunless %}>
+          {%- render 'cv-icon', name: 'bag', size: 15 -%}
+          <span>{% if product.available %}{% if fit_count > 0 %}Choose your phone{% else %}Choose options{% endif %}{% else %}Sold out{% endif %}</span>
+        </button>
+      {%- else -%}
+        <form method="post" action="{{ routes.cart_add_url }}" data-cart-add-form class="cv-card__form">
+          <input type="hidden" name="id" value="{{ cvar.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="cv-card__add"{% unless product.available %} disabled{% endunless %}>
+            {%- render 'cv-icon', name: 'bag', size: 15 -%}
+            <span>{% if product.available %}Add to bag{% else %}Sold out{% endif %}</span>
+          </button>
+        </form>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</article>

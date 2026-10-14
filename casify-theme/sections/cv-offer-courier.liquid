@@ -1,0 +1,191 @@
+{{ 'cv-offer-courier.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign heading = section.settings.heading
+  assign code = section.settings.code | strip
+  assign link = section.settings.link | default: routes.all_products_collection_url
+  assign cta_href = link
+  if code != blank and section.settings.apply_code
+    assign root = routes.root_url
+    if root == '/'
+      assign root = ''
+    endif
+    assign encoded_code = code | url_encode
+    assign encoded_link = link | url_encode
+    assign cta_href = root | append: '/discount/' | append: encoded_code | append: '?redirect=' | append: encoded_link
+  endif
+
+  comment
+    Popup: a modal the shopkeeper walks into after a delay, shown once and then not
+    again for the chosen number of days (assets/cv-offer-courier.js). On a product
+    page with no button link and no code to apply, the button closes the popup and
+    goes to the pack picker instead of leaving the product.
+  endcomment
+  assign popup = false
+  if section.settings.display == 'popup'
+    assign popup = true
+  endif
+  assign cta_scroll = false
+  if popup and template.name == 'product' and section.settings.link == blank and cta_href == link
+    assign cta_scroll = true
+    assign cta_href = '#cvPdp'
+  endif
+-%}
+
+{%- if heading != blank or request.design_mode -%}
+{%- if popup -%}
+<dialog
+  class="cvoc-pop"
+  data-cvoc-pop
+  data-delay="{{ section.settings.popup_delay }}"
+  data-days="{{ section.settings.popup_days }}"
+  data-key="{{ section.id | append: heading | append: code | md5 }}"
+  {% if request.design_mode %}data-editor{% endif %}
+  aria-labelledby="cvoc-title-{{ section.id }}"
+>
+  <button type="button" class="cvoc-pop__close" data-cvoc-close aria-label="{{ 'general.close' | t | escape }}">
+    {%- render 'cv-icon', name: 'close', size: 18 -%}
+  </button>
+{%- endif -%}
+<section
+  class="cvoc{% if popup %} cvoc--popup{% endif %}"
+  data-cvoc
+  aria-labelledby="cvoc-title-{{ section.id }}"
+>
+  <div class="cvoc__stage">
+    <div class="cvoc__figure" data-cvoc-figure aria-hidden="true">
+      <span class="cvoc__bubble cvoc__bubble--before" data-cvoc-bubble-before>{{ section.settings.bubble_before | escape }}</span>
+      <span class="cvoc__bubble cvoc__bubble--after" data-cvoc-bubble-after>{{ section.settings.bubble_after | escape }}</span>
+      <div class="cvoc__figure-inner" data-cvoc-inner>
+        <svg class="cvoc__mascot" viewBox="0 0 140 232" focusable="false">
+          <defs>
+            <pattern id="cvoc-stripe-{{ section.id }}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(90)">
+              <rect width="10" height="10" fill="var(--cream-50)"/>
+              <rect width="5" height="10" fill="var(--red-500)"/>
+            </pattern>
+          </defs>
+          <ellipse class="cvoc__shadow" cx="70" cy="222" rx="38" ry="6"/>
+          <g class="cvoc__leg cvoc__leg--back" data-cvoc-leg-back>
+            <rect x="53" y="146" width="15" height="62" rx="7" fill="var(--cocoa-600)"/>
+            <ellipse cx="58" cy="210" rx="13" ry="7" fill="var(--cocoa-700)"/>
+          </g>
+          <g class="cvoc__leg cvoc__leg--front" data-cvoc-leg-front>
+            <rect x="72" y="146" width="15" height="62" rx="7" fill="var(--cocoa-600)"/>
+            <ellipse cx="82" cy="210" rx="13" ry="7" fill="var(--cocoa-700)"/>
+          </g>
+          <g class="cvoc__arm" data-cvoc-arm-back>
+            <rect x="37" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+            <circle cx="43.5" cy="140" r="7.5" fill="var(--cvoc-skin)"/>
+          </g>
+          <rect x="44" y="80" width="52" height="74" rx="17" fill="var(--teal-600)"/>
+          <path d="M52 100h36v48a8 8 0 0 1-8 8H60a8 8 0 0 1-8-8z" fill="url(#cvoc-stripe-{{ section.id }})" stroke="var(--red-700)" stroke-width="1.2"/>
+          <path d="M55 100 60 82M85 100 80 82" stroke="var(--red-600)" stroke-width="3" stroke-linecap="round"/>
+          <rect x="62" y="116" width="16" height="11" rx="2" fill="var(--cream-50)" stroke="var(--red-700)" stroke-width="1"/>
+          <g class="cvoc__arm" data-cvoc-arm-front>
+            <rect x="90" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+            <circle cx="96.5" cy="140" r="7.5" fill="var(--cvoc-skin)"/>
+          </g>
+          <g data-cvoc-head>
+            <rect x="64" y="70" width="12" height="12" rx="4" fill="var(--cvoc-skin)"/>
+            <circle cx="70" cy="50" r="27" fill="var(--cvoc-skin)"/>
+            <circle cx="60" cy="52" r="3" fill="var(--cocoa-700)"/>
+            <circle cx="80" cy="52" r="3" fill="var(--cocoa-700)"/>
+            <circle cx="53" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+            <circle cx="87" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+            <path d="M61 63q9 8 18 0" fill="none" stroke="var(--cocoa-700)" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M40 36 50 9h40l10 27z" fill="var(--red-500)" stroke="var(--red-700)" stroke-width="1.4" stroke-linejoin="round"/>
+            <rect x="43" y="26" width="54" height="6" fill="var(--cream-50)"/>
+            <circle cx="70" cy="18" r="4" fill="var(--gold-400)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="cvoc__card cvoc__card--{{ section.settings.tone }}" data-cvoc-card>
+      {%- if heading != blank -%}
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="cvoc__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="cvoc__title" id="cvoc-title-{{ section.id }}">{{ heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <div class="cvoc__text rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if code != blank -%}
+          <div class="cvoc__code">
+            <span class="cvoc__code-label">{{ 'sections.offer_courier.code_label' | t }}</span>
+            <code class="cvoc__code-value">{{ code | escape }}</code>
+            <button type="button" class="cvoc__copy" data-cvoc-copy data-code="{{ code | escape }}" data-copied="{{ 'sections.offer_courier.copied' | t | escape }}">
+              {{- 'sections.offer_courier.copy' | t -}}
+            </button>
+          </div>
+          <span class="cvoc__sr" role="status" data-cvoc-status></span>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a class="cvoc__cta" href="{{ cta_href | escape }}"{% if cta_scroll %} data-cvoc-scroll=".cvc__packs"{% endif %}>
+            {{ section.settings.button_label | escape }}
+            {%- render 'cv-icon', name: 'arrow-right', size: 17 -%}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.fine_print != blank -%}
+          <p class="cvoc__fine">{{ section.settings.fine_print | escape }}</p>
+        {%- endif -%}
+      {%- else -%}
+        <h2 class="cvoc__title" id="cvoc-title-{{ section.id }}">{{ 'sections.offer_courier.editor_heading' | t }}</h2>
+        <p class="cvoc__placeholder">{{ 'sections.offer_courier.editor_hint' | t }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- if popup -%}</dialog>{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Offer delivery",
+  "tag": "div",
+  "class": "section-cv-offer-courier",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Offer" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From the counter" },
+    { "type": "text", "id": "heading", "label": "Offer heading", "info": "The section stays hidden from shoppers until this is filled in." },
+    { "type": "richtext", "id": "text", "label": "Offer details" },
+    { "type": "text", "id": "code", "label": "Discount code", "info": "Use a code that exists in Discounts. Leave blank for an offer without a code." },
+    { "type": "checkbox", "id": "apply_code", "label": "Apply the code when the button is clicked", "default": true },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the offer" },
+    { "type": "url", "id": "link", "label": "Button link", "info": "Defaults to all products. In a popup on a product page, leave blank to go to that product's pack picker." },
+    { "type": "text", "id": "fine_print", "label": "Fine print", "info": "For example the end date or minimum order." },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Card accent",
+      "options": [
+        { "value": "red", "label": "Candy red" },
+        { "value": "teal", "label": "Muted teal" },
+        { "value": "gold", "label": "Aged gold" }
+      ],
+      "default": "red"
+    },
+    { "type": "header", "content": "Display" },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Show as",
+      "options": [
+        { "value": "inline", "label": "Section on the page" },
+        { "value": "popup", "label": "Popup" }
+      ],
+      "default": "inline"
+    },
+    { "type": "range", "id": "popup_delay", "label": "Popup opens after", "min": 2, "max": 60, "step": 1, "unit": "s", "default": 12, "visible_if": "{{ section.settings.display == 'popup' }}" },
+    { "type": "range", "id": "popup_days", "label": "Show it again after", "min": 0, "max": 30, "step": 1, "unit": "d", "default": 7, "info": "Counted from when the shopper closes it. 0 shows it again on every page load.", "visible_if": "{{ section.settings.display == 'popup' }}" },
+    { "type": "header", "content": "Shopkeeper" },
+    { "type": "text", "id": "bubble_before", "label": "First speech bubble", "default": "Hold on — I've got something for you!" },
+    { "type": "text", "id": "bubble_after", "label": "Last speech bubble", "default": "Here you go!" }
+  ],
+  "presets": [{ "name": "Offer delivery" }]
+}
+{% endschema %}

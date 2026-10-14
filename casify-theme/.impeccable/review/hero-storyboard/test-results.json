@@ -1,0 +1,96 @@
+{
+  "report": [
+    {
+      "name": "desktop",
+      "overflow": false,
+      "heading": "Your iPhone. Your colour.",
+      "cta": "/products/mobile-phone-case-apple?variant=48739159015669",
+      "images": [
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/acb70b3f-1bf2-4a9b-9ca3-de64b282a542.jpg?v=1787515622"
+        },
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/3ecc32f5-3579-4c55-9a36-3427f9479e84.jpg?v=1787515622"
+        }
+      ],
+      "stageHeight": 577.796875
+    },
+    {
+      "name": "tablet",
+      "overflow": false,
+      "heading": "Your iPhone. Your colour.",
+      "cta": "/products/mobile-phone-case-apple?variant=48739159015669",
+      "images": [
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/acb70b3f-1bf2-4a9b-9ca3-de64b282a542.jpg?v=1787515622"
+        },
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/3ecc32f5-3579-4c55-9a36-3427f9479e84.jpg?v=1787515622"
+        }
+      ],
+      "stageHeight": 529.015625
+    },
+    {
+      "name": "mobile",
+      "overflow": false,
+      "heading": "Your iPhone. Your colour.",
+      "cta": "/products/mobile-phone-case-apple?variant=48739159015669",
+      "images": [
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/acb70b3f-1bf2-4a9b-9ca3-de64b282a542.jpg?v=1787515622"
+        },
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/3ecc32f5-3579-4c55-9a36-3427f9479e84.jpg?v=1787515622"
+        }
+      ],
+      "stageHeight": 280
+    },
+    {
+      "name": "small-mobile",
+      "overflow": false,
+      "heading": "Your iPhone. Your colour.",
+      "cta": "/products/mobile-phone-case-apple?variant=48739159015669",
+      "images": [
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/acb70b3f-1bf2-4a9b-9ca3-de64b282a542.jpg?v=1787515622"
+        },
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/3ecc32f5-3579-4c55-9a36-3427f9479e84.jpg?v=1787515622"
+        }
+      ],
+      "stageHeight": 280
+    },
+    {
+      "name": "landscape",
+      "overflow": false,
+      "heading": "Your iPhone. Your colour.",
+      "cta": "/products/mobile-phone-case-apple?variant=48739159015669",
+      "images": [
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/acb70b3f-1bf2-4a9b-9ca3-de64b282a542.jpg?v=1787515622"
+        },
+        {
+          "loaded": true,
+          "src": "https://cdn.shopify.com/s/files/1/0816/4953/3173/files/3ecc32f5-3579-4c55-9a36-3427f9479e84.jpg?v=1787515622"
+        }
+      ],
+      "stageHeight": 367.65625
+    },
+    {
+      "interactions": "variant links, selection, replay/pause/resume/skip, shopping interruption, reduced motion: pass"
+    },
+    {
+      "noJavaScript": "Shopping link and product poster visible; inactive controls hidden: pass"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casify — all new sections</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  body { margin: 0; background: var(--cream-200); color: var(--cocoa-700); }
+  .top { position: sticky; top: 0; z-index: 5; padding: 14px 20px; background: var(--cocoa-700); color: var(--cream-50); box-shadow: 0 4px 14px rgba(51,35,26,.25); }
+  .top h1 { margin: 0 0 8px; font: 800 1.35rem/1.2 var(--font-display); }
+  .top p { margin: 0 0 10px; color: var(--cream-300); font: .78rem/1.4 var(--font-label); }
+  .top nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .top nav a { padding: 5px 10px; border: 1px solid var(--cream-400); border-radius: 999px; color: var(--cream-50); font: 700 .68rem/1.2 var(--font-label); text-decoration: none; }
+  .top nav a:hover { background: var(--red-500); border-color: var(--red-500); }
+  main { width: min(1240px, calc(100% - 32px)); margin: 28px auto 80px; display: grid; gap: 34px; }
+  .item { scroll-margin-top: 130px; }
+  .item header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 10px; }
+  .item h2 { margin: 0; font: 800 1.5rem/1.2 var(--font-display); }
+  .item h2 small { margin-left: 8px; color: var(--cocoa-500); font: .72rem/1 var(--font-label); }
+  .item .tools { display: flex; gap: 8px; }
+  .item .tools a, .item .tools button { padding: 7px 12px; border: 1px solid var(--cocoa-700); border-radius: 999px; background: var(--cream-50); color: var(--cocoa-700); font: 700 .68rem/1.2 var(--font-label); cursor: pointer; text-decoration: none; }
+  .item .tools button { background: var(--red-500); border-color: var(--red-700); color: var(--cream-50); }
+  .item p.note { margin: 0 0 10px; color: var(--cocoa-600); font: .85rem/1.5 var(--font-body); }
+  .frame { overflow: hidden; border: 1px solid var(--cream-400); border-radius: 14px; background: var(--cream-50); box-shadow: 0 8px 22px rgba(51,35,26,.1); }
+  iframe { display: block; width: 100%; border: 0; }
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Casify — all new sections</h1>
+  <p>Local preview. Every name, rating, code and review below is a placeholder.</p>
+  <nav>
+    <a href="#hanging">Hanging cards</a>
+    <a href="#offer">Offer delivery</a>
+    <a href="#vs">Us vs. them</a>
+    <a href="#tabs">Feature tabs</a>
+    <a href="#fb">Facebook testimonials</a>
+    <a href="#tp">Trustpilot reviews</a>
+    <a href="#google">Google rating</a>
+    <a href="#pills">Stock &amp; sales pills</a>
+    <a href="#stars-all">Stars everywhere</a>
+    <a href="#stars">Star rating block</a>
+    <a href="#review-card">Customer review block</a>
+    <a href="#review-list">Reviews stacked list</a>
+    <a href="#reviews">Ratings, carousel &amp; comments</a>
+  </nav>
+</div>
+
+<main>
+  <section class="item" id="hanging">
+    <header><h2>Hanging cards <small>About Us page</small></h2><div class="tools"><button type="button" data-replay>Replay</button><a href="/dev/hanging-cards/preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">GSAP swing on scroll; hover a card to nudge it, drag one sideways to spin it.</p>
+    <div class="frame"><iframe data-src="/dev/hanging-cards/preview.html" data-focus=".cvhang__row" height="820" title="Hanging cards"></iframe></div>
+  </section>
+
+  <section class="item" id="offer">
+    <header><h2>Offer delivery <small>theme editor section</small></h2><div class="tools"><button type="button" data-replay>Replay</button><a href="/dev/offer-courier-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">The shopkeeper walks in, waves, leaves, then drags the offer card on stage (≈7 s). Hover him afterwards for a wave.</p>
+    <div class="frame"><iframe data-src="/dev/offer-courier-preview.html" data-focus=".cvoc" height="700" title="Offer delivery"></iframe></div>
+  </section>
+
+  <section class="item" id="vs">
+    <header><h2>Us vs. them <small>comparison · GSAP + three.js</small></h2><div class="tools"><button type="button" data-replay>Replay</button><a href="/dev/vs-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">The 3D peppermint VS coin spins in and tilts toward your cursor; rows slide together from both sides, checks draw on, crosses pop.</p>
+    <div class="frame"><iframe data-src="/dev/vs-preview.html" data-focus=".cvvs__stage" height="900" title="Us vs. them"></iframe></div>
+  </section>
+
+  <section class="item" id="tabs">
+    <header><h2>Feature tabs <small>theme editor section</small></h2><div class="tools"><a href="/dev/feature-tabs-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">Click a tab (or use the arrow keys) to swap the media frame and copy. "Protection" has a sample video with a pause button; the others show the icon fallback.</p>
+    <div class="frame"><iframe data-src="/dev/feature-tabs-preview.html" height="900" title="Feature tabs"></iframe></div>
+  </section>
+
+  <section class="item" id="fb">
+    <header><h2>Facebook testimonials <small>carousel · floating posts</small></h2><div class="tools"><a href="/dev/fb-testimonials-grid.html" target="_blank">Grid ↗</a><a href="/dev/fb-testimonials-carousel.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">Float option switched on; neighbouring posts drift in opposite directions.</p>
+    <div class="frame"><iframe data-src="/dev/fb-testimonials-carousel.html" height="760" title="Facebook testimonials"></iframe></div>
+  </section>
+
+  <section class="item" id="tp">
+    <header><h2>Trustpilot reviews <small>carousel</small></h2><div class="tools"><a href="/dev/trustpilot-grid.html" target="_blank">Grid ↗</a><a href="/dev/trustpilot-carousel.html" target="_blank">Open ↗</a></div></header>
+    <div class="frame"><iframe data-src="/dev/trustpilot-carousel.html" height="720" title="Trustpilot reviews"></iframe></div>
+  </section>
+
+  <section class="item" id="google">
+    <header><h2>Google rating <small>product page, under Add to bag</small></h2><div class="tools"><a href="/dev/google-rating-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">With quote, count and link — and the minimal version with only a rating.</p>
+    <div class="frame"><iframe data-src="/dev/google-rating-preview.html" height="260" title="Google rating"></iframe></div>
+  </section>
+
+  <section class="item" id="pills">
+    <header><h2>Stock &amp; sales pills <small>product page</small></h2><div class="tools"><a href="/dev/pills-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">Low-stock pill (real inventory) and the Sales note block (real metafield number), including the hidden states.</p>
+    <div class="frame"><iframe data-src="/dev/pills-preview.html" height="420" title="Stock and sales pills"></iframe></div>
+  </section>
+
+  <section class="item" id="stars-all">
+    <header><h2>Glossy stars everywhere <small>every rating on the store</small></h2><div class="tools"><a href="/dev/stars-everywhere.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">Each row uses that section's own stylesheet and wrapper, so it shows how the stars really render there. Blank space around some rows comes from those sections' padding.</p>
+    <div class="frame"><iframe data-src="/dev/stars-everywhere.html" height="1200" title="Glossy stars everywhere"></iframe></div>
+  </section>
+
+  <section class="item" id="stars">
+    <header><h2>Star rating block <small>score card &amp; compact row</small></h2><div class="tools"><a href="/dev/star-rating-preview.html" target="_blank">Open ↗</a></div></header>
+    <div class="frame"><iframe data-src="/dev/star-rating-preview.html" height="560" title="Star rating block"></iframe></div>
+  </section>
+
+  <section class="item" id="review-card">
+    <header><h2>Customer review block <small>title · country · verified · 4 photos</small></h2><div class="tools"><a href="/dev/review-card-preview.html" target="_blank">Open ↗</a></div></header>
+    <div class="frame"><iframe data-src="/dev/review-card-preview.html" height="720" title="Customer review block"></iframe></div>
+  </section>
+
+  <section class="item" id="review-list">
+    <header><h2>Ratings &amp; reviews — stacked list <small>Amazon-style list layout</small></h2><div class="tools"><a href="/dev/review-list-preview.html" target="_blank">Open ↗</a></div></header>
+    <div class="frame"><iframe data-src="/dev/review-list-preview.html" height="900" title="Reviews stacked list"></iframe></div>
+  </section>
+
+  <section class="item" id="reviews">
+    <header><h2>Ratings &amp; reviews, reviews carousel, Facebook comments</h2><div class="tools"><a href="/dev/reviews-preview.html" target="_blank">Open ↗</a></div></header>
+    <p class="note">Adapted earlier by the previous session; the Ratings &amp; reviews schema fix is included.</p>
+    <div class="frame"><iframe data-src="/dev/reviews-preview.html" height="1500" title="Review components"></iframe></div>
+  </section>
+</main>
+
+<script>
+  // Load each frame as it approaches the viewport, so scroll-triggered intros play when seen.
+  function load(frame) {
+    frame.onload = function () {
+      var win = frame.contentWindow;
+      var target = frame.dataset.focus && frame.contentDocument && frame.contentDocument.querySelector(frame.dataset.focus);
+      if (target) {
+        var box = target.getBoundingClientRect();
+        win.scrollTo(0, win.scrollY + box.top + box.height / 2 - win.innerHeight / 2);
+      }
+    };
+    frame.src = frame.dataset.src + (frame.dataset.src.indexOf('?') > -1 ? '&' : '?') + 't=' + Date.now();
+  }
+  var frames = document.querySelectorAll('iframe[data-src]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { io.unobserve(entry.target); load(entry.target); }
+      });
+    }, { rootMargin: '0px 0px -25% 0px' });
+    frames.forEach(function (frame) { io.observe(frame); });
+  } else {
+    frames.forEach(load);
+  }
+  document.querySelectorAll('[data-replay]').forEach(function (button) {
+    button.addEventListener('click', function () { load(button.closest('.item').querySelector('iframe')); });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{%- comment -%}
+  Section Rendering API wrapper for snippets/cart-drawer.liquid. It isn't placed
+  in any template: assets/cart.js fetches `?sections=cv-cart-drawer` after an add
+  made without a page load (product page, quick pick) so the drawer shows the
+  real cart.
+{%- endcomment -%}
+{%- render 'cart-drawer' -%}
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "tag": "div"
+}
+{% endschema %}

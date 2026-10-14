@@ -1,0 +1,1526 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-09-14T22:28:27.706Z",
+  "comp": ".impeccable/mocks/decision/order-slip.png",
+  "warnings": [
+    "region header: \"codeDrawn\": true set in the regions file (the painted-material refusal is overridden: code draws this region)",
+    "region header: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)",
+    "region slip: \"container\": true set in the regions file (the region-size refusal is overridden: one undivided element)"
+  ],
+  "uncoveredInkCells": [],
+  "compSize": {
+    "width": 2016,
+    "height": 1344
+  },
+  "aspect": 1.5,
+  "orientation": "landscape",
+  "palette": [
+    {
+      "hex": "#f5f3e6",
+      "coverage": 0.8302
+    },
+    {
+      "hex": "#d4c1b2",
+      "coverage": 0.0603
+    },
+    {
+      "hex": "#352618",
+      "coverage": 0.0467
+    },
+    {
+      "hex": "#bb2f2c",
+      "coverage": 0.0372
+    },
+    {
+      "hex": "#c1ced8",
+      "coverage": 0.0256
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0118,
+      "strength": 0.3395
+    },
+    {
+      "y": 0.0471,
+      "strength": 1
+    },
+    {
+      "y": 0.0824,
+      "strength": 1
+    },
+    {
+      "y": 0.1647,
+      "strength": 0.4112
+    },
+    {
+      "y": 0.2353,
+      "strength": 0.3033
+    },
+    {
+      "y": 0.7765,
+      "strength": 0.3015
+    },
+    {
+      "y": 0.8353,
+      "strength": 0.3094
+    },
+    {
+      "y": 0.9529,
+      "strength": 0.3965
+    },
+    {
+      "y": 0.9765,
+      "strength": 0.4027
+    }
+  ],
+  "regions": [
+    {
+      "id": "header",
+      "kind": "chrome",
+      "note": "the existing site header section (awning, topbar, nav with the shop sign), already built from its own assets",
+      "grid": null,
+      "codeDrawn": true,
+      "container": true,
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.171
+      },
+      "px": {
+        "x": 0,
+        "y": 0,
+        "w": 2016,
+        "h": 230
+      },
+      "aspect": 8.7652,
+      "palette": [
+        {
+          "hex": "#f7f6e7",
+          "coverage": 0.6003
+        },
+        {
+          "hex": "#372718",
+          "coverage": 0.2069
+        },
+        {
+          "hex": "#bb312e",
+          "coverage": 0.1204
+        },
+        {
+          "hex": "#e2cabd",
+          "coverage": 0.0535
+        },
+        {
+          "hex": "#ddc894",
+          "coverage": 0.0189
+        }
+      ],
+      "detail": {
+        "energy": 65.5122
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "breadcrumb",
+      "kind": "text",
+      "note": "breadcrumb Home / Cases / product title in small typewriter type",
+      "grid": null,
+      "box": {
+        "x": 0.102,
+        "y": 0.178,
+        "w": 0.24,
+        "h": 0.022
+      },
+      "px": {
+        "x": 206,
+        "y": 239,
+        "w": 484,
+        "h": 30
+      },
+      "aspect": 16.1333,
+      "palette": [
+        {
+          "hex": "#f7f6e9",
+          "coverage": 0.9151
+        },
+        {
+          "hex": "#b0ac9e",
+          "coverage": 0.0319
+        },
+        {
+          "hex": "#777065",
+          "coverage": 0.03
+        },
+        {
+          "hex": "#16120e",
+          "coverage": 0.0144
+        },
+        {
+          "hex": "#393526",
+          "coverage": 0.0087
+        }
+      ],
+      "detail": {
+        "energy": 52.2076
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 25,
+          "capHeightPx": 11.3,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.7351,
+          "advTall": 0.7351,
+          "advX": 0.7204,
+          "gap": 0.0588,
+          "xRatio": 0.724,
+          "stemW": 0.1801,
+          "contrast": 1.1294,
+          "serif": 0.9275,
+          "densTall": 0.4445,
+          "densX": 0.5855,
+          "weight": 0.4445
+        },
+        "widthClass": "wide",
+        "weightClass": "regular"
+      }
+    },
+    {
+      "id": "page-ground",
+      "kind": "texture",
+      "note": "cream paper page ground with faint dot grain, no ink",
+      "grid": null,
+      "box": {
+        "x": 0.012,
+        "y": 0.3,
+        "w": 0.06,
+        "h": 0.1
+      },
+      "px": {
+        "x": 24,
+        "y": 403,
+        "w": 121,
+        "h": 134
+      },
+      "aspect": 0.903,
+      "palette": [
+        {
+          "hex": "#f8f8e8",
+          "coverage": 1
+        }
+      ],
+      "detail": {
+        "energy": 0.4511
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\page-ground.png",
+      "text": null
+    },
+    {
+      "id": "window-frame",
+      "kind": "plate",
+      "note": "scalloped cream-bead window frame with a thin gold edge and an empty centre, placed around the product photo as a 9-slice border",
+      "grid": null,
+      "box": {
+        "x": 0.102,
+        "y": 0.22,
+        "w": 0.386,
+        "h": 0.536
+      },
+      "px": {
+        "x": 206,
+        "y": 296,
+        "w": 778,
+        "h": 720
+      },
+      "aspect": 1.0806,
+      "palette": [
+        {
+          "hex": "#e8e7e2",
+          "coverage": 0.714
+        },
+        {
+          "hex": "#d6bfaa",
+          "coverage": 0.1348
+        },
+        {
+          "hex": "#bac3cc",
+          "coverage": 0.0981
+        },
+        {
+          "hex": "#b79e86",
+          "coverage": 0.0299
+        },
+        {
+          "hex": "#c1a16b",
+          "coverage": 0.0232
+        }
+      ],
+      "detail": {
+        "energy": 20.3174
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\window-frame.png",
+      "text": null
+    },
+    {
+      "id": "photo",
+      "kind": "image",
+      "note": "real product photo: two clear transparent magnetic cases with white MagSafe rings on a soft sky-grey ground",
+      "grid": null,
+      "box": {
+        "x": 0.113,
+        "y": 0.235,
+        "w": 0.363,
+        "h": 0.504
+      },
+      "px": {
+        "x": 228,
+        "y": 316,
+        "w": 732,
+        "h": 677
+      },
+      "aspect": 1.0812,
+      "palette": [
+        {
+          "hex": "#e6e5e2",
+          "coverage": 0.6961
+        },
+        {
+          "hex": "#d7bfaa",
+          "coverage": 0.1495
+        },
+        {
+          "hex": "#bac3cd",
+          "coverage": 0.1066
+        },
+        {
+          "hex": "#b79f88",
+          "coverage": 0.0314
+        },
+        {
+          "hex": "#9e9892",
+          "coverage": 0.0164
+        }
+      ],
+      "detail": {
+        "energy": 16.8072
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\photo.png",
+      "text": null
+    },
+    {
+      "id": "thumb-1",
+      "kind": "image",
+      "note": "selected thumbnail: product photo inside a red candy-stripe frame",
+      "grid": null,
+      "box": {
+        "x": 0.1,
+        "y": 0.758,
+        "w": 0.078,
+        "h": 0.111
+      },
+      "px": {
+        "x": 202,
+        "y": 1019,
+        "w": 157,
+        "h": 149
+      },
+      "aspect": 1.0537,
+      "palette": [
+        {
+          "hex": "#f2f1e7",
+          "coverage": 0.5905
+        },
+        {
+          "hex": "#d2cac6",
+          "coverage": 0.2875
+        },
+        {
+          "hex": "#c9af9e",
+          "coverage": 0.0676
+        },
+        {
+          "hex": "#c43830",
+          "coverage": 0.0397
+        },
+        {
+          "hex": "#c1655a",
+          "coverage": 0.0147
+        }
+      ],
+      "detail": {
+        "energy": 17.9401
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\thumb-1.png",
+      "text": null
+    },
+    {
+      "id": "thumb-2",
+      "kind": "image",
+      "note": "thumbnail: single clear case front view in a dashed cream frame",
+      "grid": null,
+      "box": {
+        "x": 0.182,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "px": {
+        "x": 367,
+        "y": 1025,
+        "w": 137,
+        "h": 136
+      },
+      "aspect": 1.0074,
+      "palette": [
+        {
+          "hex": "#edebe7",
+          "coverage": 0.9536
+        },
+        {
+          "hex": "#b8b8b8",
+          "coverage": 0.021
+        },
+        {
+          "hex": "#f5f1d1",
+          "coverage": 0.0148
+        },
+        {
+          "hex": "#9e8e74",
+          "coverage": 0.0096
+        },
+        {
+          "hex": "#d8c898",
+          "coverage": 0.001
+        }
+      ],
+      "detail": {
+        "energy": 8.4687
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\thumb-2.png",
+      "text": null
+    },
+    {
+      "id": "thumb-3",
+      "kind": "image",
+      "note": "thumbnail: clear case lying at an angle in a dashed cream frame",
+      "grid": null,
+      "box": {
+        "x": 0.259,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "px": {
+        "x": 522,
+        "y": 1025,
+        "w": 137,
+        "h": 136
+      },
+      "aspect": 1.0074,
+      "palette": [
+        {
+          "hex": "#e9e8e4",
+          "coverage": 0.9484
+        },
+        {
+          "hex": "#b5b4b2",
+          "coverage": 0.0182
+        },
+        {
+          "hex": "#f5f2d2",
+          "coverage": 0.0134
+        },
+        {
+          "hex": "#7c6e53",
+          "coverage": 0.0105
+        },
+        {
+          "hex": "#8a8a8a",
+          "coverage": 0.0096
+        }
+      ],
+      "detail": {
+        "energy": 9.6945
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\thumb-3.png",
+      "text": null
+    },
+    {
+      "id": "thumb-4",
+      "kind": "image",
+      "note": "thumbnail: clear case on a gold phone in a dashed cream frame",
+      "grid": null,
+      "box": {
+        "x": 0.336,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "px": {
+        "x": 677,
+        "y": 1025,
+        "w": 137,
+        "h": 136
+      },
+      "aspect": 1.0074,
+      "palette": [
+        {
+          "hex": "#f4f1ea",
+          "coverage": 0.7494
+        },
+        {
+          "hex": "#d1c5b8",
+          "coverage": 0.2269
+        },
+        {
+          "hex": "#1f2127",
+          "coverage": 0.0102
+        },
+        {
+          "hex": "#5f4d35",
+          "coverage": 0.0087
+        },
+        {
+          "hex": "#a29b9b",
+          "coverage": 0.0048
+        }
+      ],
+      "detail": {
+        "energy": 10.77
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\thumb-4.png",
+      "text": null
+    },
+    {
+      "id": "thumb-5",
+      "kind": "image",
+      "note": "thumbnail: clear case edge close-up in a dashed cream frame",
+      "grid": null,
+      "box": {
+        "x": 0.413,
+        "y": 0.763,
+        "w": 0.068,
+        "h": 0.101
+      },
+      "px": {
+        "x": 833,
+        "y": 1025,
+        "w": 137,
+        "h": 136
+      },
+      "aspect": 1.0074,
+      "palette": [
+        {
+          "hex": "#f0eeea",
+          "coverage": 0.8686
+        },
+        {
+          "hex": "#b6b6b6",
+          "coverage": 0.0818
+        },
+        {
+          "hex": "#7b797b",
+          "coverage": 0.0224
+        },
+        {
+          "hex": "#f1e9c9",
+          "coverage": 0.0204
+        },
+        {
+          "hex": "#675b52",
+          "coverage": 0.0068
+        }
+      ],
+      "detail": {
+        "energy": 14.7692
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\thumb-5.png",
+      "text": null
+    },
+    {
+      "id": "slip",
+      "kind": "chrome",
+      "note": "cream panel rotated about 1 degree with a row of punched circles along its top edge, dashed rules between lines and a soft drop shadow",
+      "grid": null,
+      "container": true,
+      "box": {
+        "x": 0.528,
+        "y": 0.168,
+        "w": 0.393,
+        "h": 0.735
+      },
+      "px": {
+        "x": 1064,
+        "y": 226,
+        "w": 792,
+        "h": 988
+      },
+      "aspect": 0.8016,
+      "palette": [
+        {
+          "hex": "#f7f3e5",
+          "coverage": 0.8843
+        },
+        {
+          "hex": "#bb2b28",
+          "coverage": 0.0575
+        },
+        {
+          "hex": "#d2c6b4",
+          "coverage": 0.0241
+        },
+        {
+          "hex": "#312316",
+          "coverage": 0.0236
+        },
+        {
+          "hex": "#c75751",
+          "coverage": 0.0105
+        }
+      ],
+      "detail": {
+        "energy": 26.4517
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "slip-paper",
+      "kind": "texture",
+      "note": "clean patch of the slip's cream order-pad paper with faint grain, no ink",
+      "grid": null,
+      "box": {
+        "x": 0.74,
+        "y": 0.452,
+        "w": 0.13,
+        "h": 0.026
+      },
+      "px": {
+        "x": 1492,
+        "y": 607,
+        "w": 262,
+        "h": 35
+      },
+      "aspect": 7.4857,
+      "palette": [
+        {
+          "hex": "#f8efe3",
+          "coverage": 0.9905
+        },
+        {
+          "hex": "#bcae9c",
+          "coverage": 0.0076
+        },
+        {
+          "hex": "#e0e0c0",
+          "coverage": 0.0019
+        }
+      ],
+      "detail": {
+        "energy": 2.9355
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\slip-paper.png",
+      "text": null
+    },
+    {
+      "id": "tape",
+      "kind": "plate",
+      "note": "strip of red-and-cream candy-stripe tape holding the slip's top-left corner",
+      "grid": null,
+      "box": {
+        "x": 0.522,
+        "y": 0.155,
+        "w": 0.085,
+        "h": 0.09
+      },
+      "px": {
+        "x": 1052,
+        "y": 208,
+        "w": 171,
+        "h": 121
+      },
+      "aspect": 1.4132,
+      "palette": [
+        {
+          "hex": "#f5f2e3",
+          "coverage": 0.815
+        },
+        {
+          "hex": "#ad2b27",
+          "coverage": 0.0722
+        },
+        {
+          "hex": "#d9ccb9",
+          "coverage": 0.0665
+        },
+        {
+          "hex": "#c4261b",
+          "coverage": 0.0238
+        },
+        {
+          "hex": "#c25c4e",
+          "coverage": 0.0225
+        }
+      ],
+      "detail": {
+        "energy": 12.8944
+      },
+      "medium": "raster",
+      "plate": "assets\\plates\\tape.png",
+      "text": null
+    },
+    {
+      "id": "title",
+      "kind": "text",
+      "note": "product title in heavy high-contrast serif, two lines: Transparent Magnetic / Phone Case for iPhone",
+      "grid": null,
+      "box": {
+        "x": 0.553,
+        "y": 0.214,
+        "w": 0.29,
+        "h": 0.104
+      },
+      "px": {
+        "x": 1115,
+        "y": 288,
+        "w": 585,
+        "h": 140
+      },
+      "aspect": 4.1786,
+      "palette": [
+        {
+          "hex": "#f8f5e7",
+          "coverage": 0.7439
+        },
+        {
+          "hex": "#332517",
+          "coverage": 0.197
+        },
+        {
+          "hex": "#c6bdaf",
+          "coverage": 0.023
+        },
+        {
+          "hex": "#63574a",
+          "coverage": 0.0181
+        },
+        {
+          "hex": "#948879",
+          "coverage": 0.018
+        }
+      ],
+      "detail": {
+        "energy": 70.6733
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 6,
+          "capHeightPx": 111.4,
+          "inkIsDark": true,
+          "allCaps": true,
+          "advance": 1.3602,
+          "advTall": 1.5532,
+          "advX": null,
+          "gap": 0.009,
+          "xRatio": null,
+          "stemW": 0.0881,
+          "contrast": 1.4911,
+          "serif": null,
+          "densTall": 0.375,
+          "densX": null,
+          "weight": 0.375
+        },
+        "widthClass": "wide",
+        "weightClass": "regular",
+        "chosen": {
+          "family": "Bigelow Rules",
+          "weight": 400,
+          "fontSizePx": 159,
+          "source": "catalog",
+          "estimatedSize": true,
+          "stamp": "e7ac1a8e41eb"
+        }
+      }
+    },
+    {
+      "id": "price",
+      "kind": "text",
+      "note": "price $49.99 in heavy red serif",
+      "grid": null,
+      "box": {
+        "x": 0.557,
+        "y": 0.32,
+        "w": 0.09,
+        "h": 0.042
+      },
+      "px": {
+        "x": 1123,
+        "y": 430,
+        "w": 181,
+        "h": 56
+      },
+      "aspect": 3.2321,
+      "palette": [
+        {
+          "hex": "#f8f5e6",
+          "coverage": 0.6883
+        },
+        {
+          "hex": "#c0312b",
+          "coverage": 0.2185
+        },
+        {
+          "hex": "#eec1b0",
+          "coverage": 0.0475
+        },
+        {
+          "hex": "#cc6658",
+          "coverage": 0.0285
+        },
+        {
+          "hex": "#de9882",
+          "coverage": 0.0173
+        }
+      ],
+      "detail": {
+        "energy": 27.7854
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 6,
+          "capHeightPx": 35.5,
+          "inkIsDark": true,
+          "allCaps": true,
+          "advance": 0.3099,
+          "advTall": null,
+          "advX": null,
+          "gap": 0.0563,
+          "xRatio": null,
+          "stemW": 0.2464,
+          "contrast": 3.1326,
+          "serif": null,
+          "densTall": null,
+          "densX": null,
+          "weight": null
+        },
+        "widthClass": "compressed",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "step-1",
+      "kind": "control",
+      "note": "line 1: red stamped circle numeral 1, typewriter label YOUR PHONE, answer iPhone 17 Pro / 18 Pro, underlined Change link",
+      "grid": null,
+      "box": {
+        "x": 0.558,
+        "y": 0.386,
+        "w": 0.222,
+        "h": 0.056
+      },
+      "px": {
+        "x": 1125,
+        "y": 519,
+        "w": 448,
+        "h": 75
+      },
+      "aspect": 5.9733,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 0.9171
+        },
+        {
+          "hex": "#d2c0b4",
+          "coverage": 0.0233
+        },
+        {
+          "hex": "#56493c",
+          "coverage": 0.0219
+        },
+        {
+          "hex": "#8e8172",
+          "coverage": 0.02
+        },
+        {
+          "hex": "#c12f2c",
+          "coverage": 0.0178
+        }
+      ],
+      "detail": {
+        "energy": 32.6032
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "step-2-label",
+      "kind": "text",
+      "note": "red stamped circle numeral 2 and typewriter label STYLE",
+      "grid": null,
+      "box": {
+        "x": 0.559,
+        "y": 0.477,
+        "w": 0.08,
+        "h": 0.04
+      },
+      "px": {
+        "x": 1127,
+        "y": 641,
+        "w": 161,
+        "h": 54
+      },
+      "aspect": 2.9815,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 0.8067
+        },
+        {
+          "hex": "#c63a33",
+          "coverage": 0.1182
+        },
+        {
+          "hex": "#dc8f81",
+          "coverage": 0.0301
+        },
+        {
+          "hex": "#dfc4b5",
+          "coverage": 0.0301
+        },
+        {
+          "hex": "#503e30",
+          "coverage": 0.015
+        }
+      ],
+      "detail": {
+        "energy": 19.8349
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 4,
+          "capHeightPx": 45.3,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 1.0497,
+          "advTall": 1.0387,
+          "advX": 1.0608,
+          "gap": 0.1105,
+          "xRatio": 0.8177,
+          "stemW": 0.1694,
+          "contrast": 4.4649,
+          "serif": null,
+          "densTall": 0.5459,
+          "densX": 0.1191,
+          "weight": 0.5459
+        },
+        "widthClass": "wide",
+        "weightClass": "medium"
+      }
+    },
+    {
+      "id": "style-1",
+      "kind": "control",
+      "note": "selected style pill: Magnetic Case Camera Cutout Transparent, red outline and red text",
+      "grid": null,
+      "box": {
+        "x": 0.596,
+        "y": 0.502,
+        "w": 0.152,
+        "h": 0.066
+      },
+      "px": {
+        "x": 1202,
+        "y": 675,
+        "w": 306,
+        "h": 89
+      },
+      "aspect": 3.4382,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 0.8743
+        },
+        {
+          "hex": "#c13630",
+          "coverage": 0.0371
+        },
+        {
+          "hex": "#e0978a",
+          "coverage": 0.0311
+        },
+        {
+          "hex": "#ce665d",
+          "coverage": 0.0291
+        },
+        {
+          "hex": "#efc9bb",
+          "coverage": 0.0285
+        }
+      ],
+      "detail": {
+        "energy": 35.2855
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "style-2",
+      "kind": "control",
+      "note": "unselected style pill: Camera Cutout Transparent, dashed cocoa outline",
+      "grid": null,
+      "box": {
+        "x": 0.751,
+        "y": 0.491,
+        "w": 0.138,
+        "h": 0.066
+      },
+      "px": {
+        "x": 1514,
+        "y": 660,
+        "w": 278,
+        "h": 89
+      },
+      "aspect": 3.1236,
+      "palette": [
+        {
+          "hex": "#f8f4e6",
+          "coverage": 0.9309
+        },
+        {
+          "hex": "#c2b4a4",
+          "coverage": 0.0333
+        },
+        {
+          "hex": "#8b7f6c",
+          "coverage": 0.0185
+        },
+        {
+          "hex": "#2d2616",
+          "coverage": 0.0105
+        },
+        {
+          "hex": "#201010",
+          "coverage": 0.0069
+        }
+      ],
+      "detail": {
+        "energy": 25.4627
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "step-3-label",
+      "kind": "text",
+      "note": "red stamped circle numeral 3 and typewriter label HOW MANY",
+      "grid": null,
+      "box": {
+        "x": 0.563,
+        "y": 0.602,
+        "w": 0.102,
+        "h": 0.036
+      },
+      "px": {
+        "x": 1135,
+        "y": 809,
+        "w": 206,
+        "h": 48
+      },
+      "aspect": 4.2917,
+      "palette": [
+        {
+          "hex": "#f8f6e7",
+          "coverage": 0.8508
+        },
+        {
+          "hex": "#c0332e",
+          "coverage": 0.0688
+        },
+        {
+          "hex": "#ca564e",
+          "coverage": 0.0359
+        },
+        {
+          "hex": "#d77a6e",
+          "coverage": 0.0242
+        },
+        {
+          "hex": "#edd5c6",
+          "coverage": 0.0203
+        }
+      ],
+      "detail": {
+        "energy": 22.1075
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 9,
+          "capHeightPx": 13.5,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.7203,
+          "advTall": 0.6095,
+          "advX": 0.7757,
+          "gap": 0.2955,
+          "xRatio": 0.8052,
+          "stemW": 0.1372,
+          "contrast": 0.9158,
+          "serif": 2.0471,
+          "densTall": 0.5571,
+          "densX": 0.5359,
+          "weight": 0.5571
+        },
+        "widthClass": "wide",
+        "weightClass": "medium"
+      }
+    },
+    {
+      "id": "pack-1",
+      "kind": "control",
+      "note": "pack ticket: 1 case $49.99 in a dashed box",
+      "grid": null,
+      "box": {
+        "x": 0.584,
+        "y": 0.631,
+        "w": 0.099,
+        "h": 0.082
+      },
+      "px": {
+        "x": 1177,
+        "y": 848,
+        "w": 200,
+        "h": 110
+      },
+      "aspect": 1.8182,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 0.9521
+        },
+        {
+          "hex": "#a79982",
+          "coverage": 0.0164
+        },
+        {
+          "hex": "#16100b",
+          "coverage": 0.0119
+        },
+        {
+          "hex": "#d0c3af",
+          "coverage": 0.0111
+        },
+        {
+          "hex": "#817868",
+          "coverage": 0.0086
+        }
+      ],
+      "detail": {
+        "energy": 14.7948
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "pack-2",
+      "kind": "control",
+      "note": "selected pack ticket: 2 cases $40.99 each, red outline, red ribbon flag Most popular",
+      "grid": null,
+      "box": {
+        "x": 0.689,
+        "y": 0.612,
+        "w": 0.101,
+        "h": 0.09
+      },
+      "px": {
+        "x": 1389,
+        "y": 823,
+        "w": 204,
+        "h": 121
+      },
+      "aspect": 1.686,
+      "palette": [
+        {
+          "hex": "#f7eadc",
+          "coverage": 0.8044
+        },
+        {
+          "hex": "#bf312b",
+          "coverage": 0.1234
+        },
+        {
+          "hex": "#e7b4a6",
+          "coverage": 0.0346
+        },
+        {
+          "hex": "#d37b6f",
+          "coverage": 0.0217
+        },
+        {
+          "hex": "#c4554b",
+          "coverage": 0.0159
+        }
+      ],
+      "detail": {
+        "energy": 22.4804
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "pack-3",
+      "kind": "control",
+      "note": "pack ticket: 3 cases $34.49 each in a dashed box",
+      "grid": null,
+      "box": {
+        "x": 0.796,
+        "y": 0.614,
+        "w": 0.098,
+        "h": 0.082
+      },
+      "px": {
+        "x": 1605,
+        "y": 825,
+        "w": 198,
+        "h": 110
+      },
+      "aspect": 1.8,
+      "palette": [
+        {
+          "hex": "#f8f5e7",
+          "coverage": 0.9277
+        },
+        {
+          "hex": "#d3c9b7",
+          "coverage": 0.0283
+        },
+        {
+          "hex": "#a19381",
+          "coverage": 0.02
+        },
+        {
+          "hex": "#1c120c",
+          "coverage": 0.0125
+        },
+        {
+          "hex": "#413627",
+          "coverage": 0.0116
+        }
+      ],
+      "detail": {
+        "energy": 18.3039
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "total",
+      "kind": "text",
+      "note": "handwritten total row: Total on the left, $81.98 on the right over a dashed rule",
+      "grid": null,
+      "box": {
+        "x": 0.581,
+        "y": 0.705,
+        "w": 0.307,
+        "h": 0.07
+      },
+      "px": {
+        "x": 1171,
+        "y": 948,
+        "w": 619,
+        "h": 94
+      },
+      "aspect": 6.5851,
+      "palette": [
+        {
+          "hex": "#f8f6e7",
+          "coverage": 0.9365
+        },
+        {
+          "hex": "#1e150d",
+          "coverage": 0.0223
+        },
+        {
+          "hex": "#bd3230",
+          "coverage": 0.0178
+        },
+        {
+          "hex": "#c5b7a6",
+          "coverage": 0.015
+        },
+        {
+          "hex": "#c8625c",
+          "coverage": 0.0084
+        }
+      ],
+      "detail": {
+        "energy": 28.6426
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": null,
+        "measuredAt": "2026-09-14T22:28:30.928Z",
+        "note": "no separable lettering in the crop; size by the region box"
+      }
+    },
+    {
+      "id": "cta",
+      "kind": "control",
+      "note": "wide red pill button Add to bag with darker bottom edge and glossy highlight",
+      "grid": null,
+      "box": {
+        "x": 0.577,
+        "y": 0.764,
+        "w": 0.314,
+        "h": 0.078
+      },
+      "px": {
+        "x": 1163,
+        "y": 1027,
+        "w": 633,
+        "h": 105
+      },
+      "aspect": 6.0286,
+      "palette": [
+        {
+          "hex": "#ba2a29",
+          "coverage": 0.5161
+        },
+        {
+          "hex": "#f7f4e6",
+          "coverage": 0.3796
+        },
+        {
+          "hex": "#c85955",
+          "coverage": 0.0659
+        },
+        {
+          "hex": "#741514",
+          "coverage": 0.0294
+        },
+        {
+          "hex": "#dcbeac",
+          "coverage": 0.009
+        }
+      ],
+      "detail": {
+        "energy": 29.6434
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "service-line",
+      "kind": "text",
+      "note": "typewriter line: Free shipping · 30-day returns · Ships in 1-3 business days",
+      "grid": null,
+      "box": {
+        "x": 0.579,
+        "y": 0.84,
+        "w": 0.309,
+        "h": 0.04
+      },
+      "px": {
+        "x": 1167,
+        "y": 1129,
+        "w": 623,
+        "h": 54
+      },
+      "aspect": 11.537,
+      "palette": [
+        {
+          "hex": "#f8f3e7",
+          "coverage": 0.9123
+        },
+        {
+          "hex": "#bcb2a5",
+          "coverage": 0.0381
+        },
+        {
+          "hex": "#54483d",
+          "coverage": 0.018
+        },
+        {
+          "hex": "#251913",
+          "coverage": 0.0172
+        },
+        {
+          "hex": "#83796c",
+          "coverage": 0.0145
+        }
+      ],
+      "detail": {
+        "energy": 26.971
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 33,
+          "capHeightPx": 43.9,
+          "inkIsDark": true,
+          "allCaps": true,
+          "advance": 0.6034,
+          "advTall": 0.6034,
+          "advX": null,
+          "gap": 0.0455,
+          "xRatio": null,
+          "stemW": 0.0574,
+          "contrast": 1.1269,
+          "serif": null,
+          "densTall": 0.1568,
+          "densX": null,
+          "weight": 0.1568
+        },
+        "widthClass": "condensed",
+        "weightClass": "light"
+      }
+    },
+    {
+      "id": "divider",
+      "kind": "chrome",
+      "note": "thin dashed cocoa rule across the page",
+      "grid": null,
+      "box": {
+        "x": 0,
+        "y": 0.914,
+        "w": 1,
+        "h": 0.01
+      },
+      "px": {
+        "x": 0,
+        "y": 1228,
+        "w": 2016,
+        "h": 13
+      },
+      "aspect": 155.0769,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 1
+        }
+      ],
+      "detail": {
+        "energy": 7.4421
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "next-heading",
+      "kind": "text",
+      "note": "next section heading in heavy serif: Made for your exact model",
+      "grid": null,
+      "box": {
+        "x": 0.102,
+        "y": 0.936,
+        "w": 0.37,
+        "h": 0.054
+      },
+      "px": {
+        "x": 206,
+        "y": 1258,
+        "w": 746,
+        "h": 73
+      },
+      "aspect": 10.2192,
+      "palette": [
+        {
+          "hex": "#f8f7e8",
+          "coverage": 0.7189
+        },
+        {
+          "hex": "#332518",
+          "coverage": 0.2076
+        },
+        {
+          "hex": "#6d6154",
+          "coverage": 0.0403
+        },
+        {
+          "hex": "#d1c6b8",
+          "coverage": 0.0192
+        },
+        {
+          "hex": "#a4998a",
+          "coverage": 0.014
+        }
+      ],
+      "detail": {
+        "energy": 83.5231
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 14,
+          "capHeightPx": 45,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 1.0889,
+          "advTall": 1.1333,
+          "advX": 0.6222,
+          "gap": 0.0222,
+          "xRatio": 0.6738,
+          "stemW": 0.2556,
+          "contrast": 3.241,
+          "serif": 1.2283,
+          "densTall": 0.5131,
+          "densX": 0.6274,
+          "weight": 0.5131
+        },
+        "widthClass": "normal",
+        "weightClass": "medium"
+      }
+    }
+  ]
+}

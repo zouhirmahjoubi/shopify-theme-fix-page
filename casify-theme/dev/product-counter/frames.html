@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shop Counter: phone and tablet frames</title>
+<style>
+  body { margin: 0; padding: 16px; display: flex; gap: 24px; align-items: flex-start; background: #d9d2c3; font: 12px/1.4 monospace; }
+  figure { margin: 0; }
+  figcaption { margin-bottom: 6px; }
+  iframe { display: block; border: 0; background: #fff; height: 8200px; }
+</style>
+</head>
+<body>
+  <figure><figcaption data-for="f390">390</figcaption><iframe id="f390" width="390" src="preview.html"></iframe></figure>
+  <figure><figcaption data-for="f768">768</figcaption><iframe id="f768" width="768" src="preview.html"></iframe></figure>
+<script>
+  /* Print each frame's horizontal overflow once it has settled. */
+  setTimeout(function () {
+    document.querySelectorAll('iframe').forEach(function (f) {
+      try {
+        var d = f.contentDocument.documentElement;
+        var cap = document.querySelector('[data-for="' + f.id + '"]');
+        cap.textContent = f.width + ' scrollWidth ' + d.scrollWidth + (d.scrollWidth > Number(f.width) ? ' OVERFLOW' : ' ok');
+      } catch (e) { /* file:// frames can be opaque */ }
+    });
+  }, 3500);
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Order Slip product page at phone + tablet widths</title>
+<style>
+  body { margin: 0; padding: 16px; background: #d9d2c5; display: flex; gap: 16px; align-items: flex-start; font: 12px monospace; }
+  figure { margin: 0; }
+  figcaption { margin-bottom: 6px; }
+  iframe { display: block; border: 0; background: #fff; }
+</style>
+</head>
+<body>
+  <!-- Headless Chrome won't lay out a real 390px window; media queries inside an iframe use the iframe's width. -->
+  <figure><figcaption>390px</figcaption><iframe src="preview.html?frame=390" width="390" height="5600"></iframe></figure>
+  <figure><figcaption>768px</figcaption><iframe src="preview.html?frame=768" width="768" height="5600"></iframe></figure>
+  <script>
+    document.querySelectorAll('iframe').forEach(function (f) {
+      f.addEventListener('load', function () {
+        setTimeout(function () {
+          var d = f.contentDocument.documentElement;
+          f.previousElementSibling.textContent += '  scrollW=' + d.scrollWidth + (d.scrollWidth > f.width ? '  OVERFLOW' : '  ok') + '  h=' + d.scrollHeight;
+        }, 2500);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+/* =========================================================================
+   Casify — homepage hero (sections/cv-hero.liquid)
+   Copy on the left; the shop window on the right with its striped blind,
+   hanging tag, sweets, and the candy sunburst behind.
+   Motion lives in cv-hero.js. Everything here is the finished state, so the
+   hero reads correctly without JS and under reduced motion.
+   ========================================================================= */
+
+.cvhero {
+  position: relative;
+  overflow: hidden; overflow: clip; /* sweets and sunburst reach past the edges on narrow screens */
+  padding-block: clamp(32px, 4.5vw, 60px) clamp(64px, 7vw, 104px);
+  background:
+    radial-gradient(46% 62% at 76% 50%, rgba(231,211,168,.5), rgba(231,211,168,0) 72%),
+    radial-gradient(40% 50% at 12% 30%, rgba(255,253,248,.7), rgba(255,253,248,0) 70%);
+}
+.cvhero__inner {
+  max-width: var(--max); margin: 0 auto; padding-inline: 24px;
+  min-height: clamp(520px, calc(100vh - 300px), 700px);
+  min-height: clamp(520px, calc(100svh - 300px), 700px); /* header + trust bar sit above */
+  display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr);
+  gap: clamp(40px, 6vw, 96px); align-items: center;
+}
+
+/* ---------- Copy ---------- */
+.cvhero__copy { position: relative; z-index: 2; display: grid; justify-items: start; gap: 22px; }
+.cvhero__eyebrow { margin: 0; }
+
+.cvhero__title {
+  margin: 0; max-width: 13ch;
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(2.6rem, 1.05rem + 4.9vw, 5.6rem);
+  line-height: .98; letter-spacing: -.025em;
+  color: var(--cocoa-700);
+}
+.cvhero__sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.cvhero__lines { display: block; }
+/* Each word rises out of its own mask; the padding/negative margin pair gives
+   ascenders, descenders and italic overhang room without moving the layout. */
+.cvhero__w {
+  display: inline-block; vertical-align: top; overflow: hidden;
+  padding: .06em .08em .16em 0; margin: -.06em -.08em -.16em 0;
+}
+.cvhero__w > span { display: inline-block; }
+
+.cvhero__accent {
+  position: relative; display: inline-block; white-space: nowrap;
+  font-style: italic; font-weight: 700; color: var(--red-500);
+}
+.cvhero__squiggle {
+  position: absolute; left: -1%; bottom: -.18em; width: 102%; height: .3em;
+  overflow: visible; pointer-events: none;
+}
+.cvhero__squiggle path { fill: none; stroke: var(--gold-500); stroke-width: 4.5; stroke-linecap: round; }
+
+.cvhero__lede { max-width: 42ch; font-size: clamp(15px, .9rem + .25vw, 17px); line-height: 1.65; color: var(--text-body); }
+.cvhero__lede p { margin: 0; }
+
+.cvhero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.cvhero__cta { width: auto; padding: 18px 34px; }
+
+.cvhero__specs {
+  display: flex; flex-wrap: wrap; row-gap: 12px;
+  list-style: none; margin: 4px 0 0; padding: 18px 0 0;
+  border-top: 1.5px dashed var(--border-dashed);
+}
+.cvhero__specs li { display: grid; gap: 5px; padding: 0 clamp(14px, 2vw, 24px); border-left: 1.5px dashed var(--border-dashed); }
+.cvhero__specs li:first-child { padding-left: 0; border-left: 0; }
+.cvhero__specs b {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(22px, 1rem + .7vw, 28px); line-height: 1;
+  color: var(--red-600); font-variant-numeric: tabular-nums lining-nums;
+}
+.cvhero__num { display: inline-block; } /* min-width in ch keeps the row still while it counts */
+.cvhero__specs small { margin-left: 2px; font-size: .56em; font-weight: 800; color: var(--cocoa-600); }
+.cvhero__spec-label {
+  font-family: var(--font-label); font-size: 9.5px;
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--cocoa-500);
+}
+
+/* ---------- Stage ---------- */
+.cvhero__stage {
+  --reach: 1; /* how far sweets stick out past the window */
+  position: relative; z-index: 1;
+  width: min(100%, 420px); justify-self: center; margin-top: 10px;
+}
+.cvhero__sunburst {
+  position: absolute; left: 50%; top: 48%; z-index: 0;
+  width: 165%; aspect-ratio: 1; translate: -50% -50%;
+  border-radius: 50%; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, rgba(196,48,43,.14) 0deg 6deg, rgba(196,48,43,0) 6deg 12deg);
+  -webkit-mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+          mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+}
+
+/* The arched window: candy-stripe frame, cream bead, marble-dark glass. */
+.cvhero__window {
+  position: relative; z-index: 1;
+  aspect-ratio: 3 / 4; padding: 10px;
+  border-radius: 50% 50% 18px 18px / 37.5% 37.5% 18px 18px;
+  background: repeating-linear-gradient(-45deg, var(--red-500) 0 9px, var(--cream-50) 9px 18px);
+  box-shadow: 0 0 0 2px var(--red-700), 0 34px 60px -22px rgba(51,35,26,.55);
+}
+.cvhero__window::after { /* the sill the resting sweets land on */
+  content: ""; position: absolute; z-index: 2;
+  left: -7%; right: -7%; bottom: -16px; height: 20px; border-radius: 5px;
+  background: linear-gradient(180deg, var(--cocoa-300), var(--cocoa-600) 55%, var(--cocoa-700));
+  box-shadow: inset 0 1px 0 rgba(255,253,248,.3), 0 14px 22px -8px rgba(51,35,26,.5);
+}
+.cvhero__glass {
+  position: absolute; inset: 10px; overflow: hidden; isolation: isolate;
+  border-radius: 50% 50% 8px 8px / 37% 37% 8px 8px;
+  background: var(--cocoa-700);
+  box-shadow: 0 0 0 4px var(--cream-50);
+  transform: translateZ(0); /* keeps Safari clipping transformed children to the arch */
+}
+.cvhero__glass::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(51,35,26,.35), inset 0 18px 40px rgba(20,12,8,.35);
+}
+.cvhero__photo {
+  position: absolute; left: 0; top: -6%; z-index: 0; /* 6% headroom for scroll drift */
+  display: block; width: 100%; height: 112%; max-width: none;
+  object-fit: cover; object-position: 50% 58%;
+  transform: scale(1.06);
+}
+.cvhero__sheen {
+  position: absolute; inset: -10%; z-index: 1; pointer-events: none;
+  background: linear-gradient(105deg, rgba(255,253,248,0) 38%, rgba(255,253,248,.24) 47%, rgba(255,253,248,.06) 53%, rgba(255,253,248,0) 62%);
+  mix-blend-mode: screen;
+  transform: translateX(-120%);
+}
+
+/* Striped roller blind: rolled up to a short awning at rest. */
+.cvhero__blind {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 2; height: 100%;
+  transform: translateY(-88%);
+  background:
+    linear-gradient(180deg, rgba(51,35,26,.2), rgba(51,35,26,0) 30%, rgba(255,253,248,.12) 72%, rgba(51,35,26,.24)),
+    repeating-linear-gradient(90deg, var(--red-500) 0 26px, var(--cream-50) 26px 52px);
+  box-shadow: 0 4px 10px rgba(20,12,8,.3);
+}
+.cvhero__valance {
+  position: absolute; left: 0; right: 0; top: 100%; height: 13px;
+  filter: drop-shadow(0 3px 2px rgba(20,12,8,.35));
+}
+.cvhero__valance::after { /* pull ring */
+  content: ""; position: absolute; left: 50%; top: 100%;
+  width: 14px; height: 14px; margin: 1px 0 0 -7px; border-radius: 50%;
+  border: 2.5px solid var(--gold-400);
+}
+.cvhero__scallops {
+  display: block; height: 100%;
+  background: repeating-linear-gradient(90deg, var(--red-500) 0 26px, var(--cream-50) 26px 52px);
+  -webkit-mask: radial-gradient(circle at 13px 0, #000 12.4px, transparent 13px) 0 0 / 26px 13px repeat-x;
+          mask: radial-gradient(circle at 13px 0, #000 12.4px, transparent 13px) 0 0 / 26px 13px repeat-x;
+}
+
+/* ---------- Hanging tag ---------- */
+.cvhero__tag {
+  position: absolute; z-index: 4; top: 30%; right: -34px;
+  display: flex; flex-direction: column; align-items: center;
+  transform-origin: 50% 0; /* swings from its pin */
+}
+.cvhero__tag::before { /* brass pin */
+  content: ""; width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold-200), var(--gold-500) 70%);
+  box-shadow: 0 1px 2px rgba(0,0,0,.35);
+}
+.cvhero__tag-string { width: 1.5px; height: 40px; margin-top: -2px; background: var(--cocoa-600); }
+.cvhero__tag-card {
+  position: relative; margin: -4px 0 0; min-width: 92px;
+  display: grid; justify-items: center; gap: 3px;
+  padding: 19px 14px 12px;
+  background: var(--surface-ticket);
+  border: 1px dashed var(--border-dashed); border-radius: 8px 8px 12px 12px;
+  box-shadow: var(--shadow-lg);
+  rotate: 3deg;
+}
+.cvhero__tag-card::before { /* punched hole */
+  content: ""; position: absolute; top: 7px; left: 50%;
+  width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%;
+  background: var(--cream-100); box-shadow: inset 0 1px 2px rgba(51,35,26,.4);
+}
+.cvhero__tag-card b { font-family: var(--font-display); font-weight: 900; font-size: 24px; line-height: 1; color: var(--red-600); }
+.cvhero__tag-card i {
+  font-style: normal; font-family: var(--font-label); font-size: 9px;
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--cocoa-500);
+}
+
+/* ---------- Sweets ---------- */
+.cvhero__sweets { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.cvhero__sweet { position: absolute; display: block; rotate: var(--r, 0deg); pointer-events: auto; }
+.cvhero__sweet img {
+  display: block; width: 100%; height: auto;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 10px 10px rgba(51,35,26,.26));
+}
+.cvhero__sweet--cane         { width: 15%; left:  calc(-9% * var(--reach));  bottom: 3px; --r: -8deg; }
+.cvhero__sweet--wrapped-teal { width: 31%; right: calc(-6% * var(--reach));  bottom: 1px; --r: 4deg; }
+.cvhero__sweet--wrapped-red  { width: 29%; left:  calc(-23% * var(--reach)); top: 36%;    --r: -16deg; }
+.cvhero__sweet--lollipop     { width: 20%; right: calc(-15% * var(--reach)); top: -4%;    --r: 18deg; }
+.cvhero__sweet--coin         { width: 15%; right: calc(-17% * var(--reach)); top: 67%;    --r: -14deg; }
+
+/* ---------- Before cv-hero.js sets start states (inline guard in the section) ---------- */
+.cvhero-pending .cvhero [data-cvhero-in],
+.cvhero-pending .cvhero__squiggle,
+.cvhero-pending .cvhero__sweet img,
+.cvhero-pending .cvhero__tag { opacity: 0; }
+.cvhero-pending .cvhero__w > span { transform: translateY(115%); }
+.cvhero-pending .cvhero__blind { transform: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px) {
+  .cvhero__stage { --reach: .7; }
+}
+@media (max-width: 989px) {
+  .cvhero__inner { grid-template-columns: 1fr; min-height: 0; gap: 56px; }
+  .cvhero__title { max-width: 14ch; }
+  .cvhero__stage { --reach: .5; width: min(76%, 340px); margin-top: 0; }
+}
+@media (max-width: 420px) {
+  /* theme.css forces every h1 to 22–28px on phones with !important; the hero
+     heading is the one place that has to stay display-sized. */
+  .cvhero .cvhero__title { font-size: clamp(2.35rem, 11vw, 2.8rem) !important; }
+}
+@media (max-width: 540px) {
+  /* Three even columns so a narrow phone never wraps one spec onto its own row. */
+  .cvhero__specs { display: grid; grid-template-columns: repeat(3, minmax(0, auto)); justify-content: start; }
+  .cvhero__specs li { padding: 0 12px; }
+  .cvhero__spec-label { font-size: 8.5px; letter-spacing: .12em; }
+  .cvhero__cta { width: 100%; }
+  .cvhero__window { padding: 8px; }
+  .cvhero__glass { inset: 8px; }
+  .cvhero__tag { top: 31%; right: -22px; }
+  .cvhero__tag-string { height: 30px; }
+  .cvhero__tag-card { min-width: 76px; padding: 16px 10px 9px; }
+  .cvhero__tag-card b { font-size: 19px; }
+}

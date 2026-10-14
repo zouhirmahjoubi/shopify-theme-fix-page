@@ -1,0 +1,77 @@
+{% doc %}
+  Card copy written for each product: short title, one line and two
+  features, each taken from that product's own description, tags or photo.
+  Read by snippets/cv-showcase-card.liquid on the home showcase and on
+  collection pages, so a product's card says the same thing everywhere.
+  Copy typed on a home showcase block still wins over this file.
+
+  Outputs "title~|~line~|~icon 1~|~feature 1~|~icon 2~|~feature 2", or
+  nothing for a product not listed here (its card then reads its copy off
+  the product). Icons are names from snippets/cv-icon.liquid.
+
+  @param {string} handle - Product handle.
+{% enddoc %}
+{%- case handle -%}
+  {%- when 'peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-dual-layer-tough-case' -%}
+    Peppermint Christmas, Dual-Layer~|~A vintage candy-shop Christmas print on a dual-layer tough case, cut for iPhone, Pixel and Galaxy.~|~drop-shield~|~Dual-layer tough~|~candy-cane~|~Christmas print
+  {%- when 'two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max' -%}
+    Two-in-One Space Case~|~Clear acrylic back with a built-in magnetic kickstand and four-corner drop protection.~|~magnet-ring~|~Magnetic kickstand~|~drop-shield~|~4-corner protection
+  {%- when 'cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case' -%}
+    Sweet Little Life, Cherry Plaid~|~Pale-blue gingham and tiny cherries on a magnetic impact case, in glossy or matte.~|~magnet-ring~|~MagSafe compatible~|~drop-shield~|~Impact-resistant
+  {%- when 'metal-lens-case-high-end-anti-drop-pc-case' -%}
+    Metal Lens Ring Case~|~A hard anti-drop PC case with a metal ring guarding each camera lens.~|~camera-lip~|~Metal lens rings~|~drop-shield~|~Anti-drop PC
+  {%- when 'phone-case-a-little-softer-pink-bow-protective-tough-case' -%}
+    A Little Softer, Pink Bow~|~Soft pink stripes and bows on a glossy two-piece tough case with a screen-guarding bezel.~|~drop-shield~|~Two-piece tough~|~wireless-charge~|~Wireless charging
+  {%- when 'four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design' -%}
+    Glitter Airbag Stand Case~|~Gradient glitter in a clear shell, with air-cushioned corners and a magnetic ring stand.~|~drop-shield~|~Airbag corners~|~magnet-ring~|~Magnetic stand
+  {%- when 'transparent-anti-yellowing-pc-phone-case-for-apple-iphone' -%}
+    Anti-Yellowing Clear Case~|~Clear PC with a coating that resists yellowing, and exact cutouts for every port and button.~|~no-yellow~|~Anti-yellowing~|~precision-fit~|~Precision cut
+  {%- when 'tech-fabric-magnetic-phone-case-for-iphone' -%}
+    Tech Fabric Magnetic Case~|~Woven tech-fabric texture over a shockproof magnetic case, with a camera button.~|~magnet-ring~|~Magnetic~|~button-click~|~Camera button
+  {%- when 'peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-magnetic-impact-resistant-case' -%}
+    Peppermint Christmas, Magnetic~|~The candy-shop Christmas print on a magnetic impact-resistant case, in glossy or matte.~|~magnet-ring~|~MagSafe compatible~|~candy-cane~|~Christmas print
+  {%- when 'chain-crossbody-phone-case' -%}
+    Chain Crossbody Case~|~A purple case on a crossbody strap with gold clasps, so your phone rides hands-free.~|~lock-secure~|~Crossbody strap~|~device~|~iPhone + Samsung
+  {%- when 'eagle-eye-metal-lens-magnetic-phone-case-for-iphone' -%}
+    Eagle Eye Metal Lens Case~|~A clear anti-fingerprint back, a metal frame around the lenses and a built-in magnetic ring.~|~camera-lip~|~Metal lens frame~|~magnet-ring~|~Magnetic
+  {%- when 'iphone-18-magnetic-shockproof-protective-case-rigid-defender-for-iphone-18-pro' -%}
+    Rigid Defender Magnetic Case~|~A rigid shockproof case with a built-in magnetic ring, cut for iPhone and Galaxy S.~|~drop-shield~|~Shockproof~|~magnet-ring~|~Magnetic
+  {%- when '2-in-1-space-case-with-magnetic-mount-for-iphone-18-pro-max' -%}
+    2-in-1 Space Case~|~A tinted acrylic case with a magnetic ring mount that flips out as a kickstand.~|~magnet-ring~|~Magnetic mount~|~check~|~Kickstand
+  {%- when 'magnetic-stand-phone-case-for-iphone' -%}
+    Ice-Cream Magnetic Stand Case~|~A soft color case with a magnetic ring holder that folds out as a stand.~|~magnet-ring~|~Magnetic holder~|~check~|~Built-in stand
+  {%- when 'transparent-magnetic-phone-case-for-iphone' -%}
+    Transparent Magnetic Case~|~A crystal-clear magnetic case with a camera cutout, with a shutter button or full-cover buttons.~|~magnet-ring~|~Magnetic~|~sparkle-clear~|~Transparent
+  {%- when 'metal-protective-phone-case-for-iphone-and-samsung' -%}
+    Metal Protective Case~|~A black rugged metal case cut for iPhones and Samsung Galaxy phones, old and new.~|~drop-shield~|~Rugged metal~|~device~|~iPhone + Samsung
+  {%- when 'mobile-phone-case-apple' -%}
+    Plated Clear Magnetic Case~|~A clear back framed in plated edges, with metal lens rings and a magnetic ring.~|~magnet-ring~|~Magnetic ring~|~camera-lip~|~Lens rings
+  {%- when 'magnetic-shockproof-phone-case-for-iphone' -%}
+    Embossed Magnetic Shockproof Case~|~An embossed art pattern on a slim hard PC shell, with strong magnets and drop protection.~|~magnet-ring~|~Magnetic~|~drop-shield~|~Shockproof PC
+  {%- when 'diamond-pattern-magnetic-phone-case-for-iphone' -%}
+    Diamond Pattern Magnetic Case~|~A diamond Kevlar-style pattern with a skin-feel grip, full coverage and strong magnets.~|~magnet-ring~|~Magnetic~|~drop-shield~|~Full coverage
+  {%- when 'bracket-mobile-phone-case-magnetic-protective-case' -%}
+    Bracket Magnetic Case~|~A slim TPU case with built-in magnets for MagSafe and a fold-out bracket stand.~|~magnet-ring~|~MagSafe compatible~|~check~|~Built-in stand
+  {%- when 'magnetic-protective-phone-case-for-iphone' -%}
+    Frosted Magnetic Half-Cover~|~A slim frosted PC half-cover with strong magnets that shrugs off fingerprints and scratches.~|~magnet-ring~|~Magnetic~|~slim~|~Slim half-cover
+  {%- when 'magnetic-bitcoin-design-phone-case' -%}
+    Bitcoin Magnetic Case~|~A Bitcoin-pattern hard shell with built-in magnets: slim, shockproof and scratch-resistant.~|~magnet-ring~|~Magnetic~|~drop-shield~|~Shockproof PC
+  {%- when 'canvas-magnetic-phone-case-full-cover' -%}
+    Canvas Magnetic Full-Cover~|~Horse-to-success canvas art on a full-body case whose magnets hold MagSafe accessories.~|~magnet-ring~|~MagSafe compatible~|~drop-shield~|~Full-body
+  {%- when 'magnetic-stand-phone-case-matte-skin-fee-lprotective-case' -%}
+    Matte Magnetic Stand Case~|~Matte skin-feel PC with a magnetic ring and an invisible kickstand for hands-free viewing.~|~magnet-ring~|~Magnetic ring~|~check~|~Hidden kickstand
+  {%- when 'skin-like-matte-magnetic-lens-holder-phone-case' -%}
+    Matte Lens-Holder Case~|~A non-slip matte case with a magnetic ring, a lens film guard and a built-in stand.~|~camera-lip~|~Lens guard~|~check~|~Built-in stand
+  {%- when 'fine-hole-liquid-silicone-phone-case-magnetic-stand' -%}
+    Fine-Hole Silicone Stand Case~|~Soft liquid silicone with a magnetic stand ring and a dedicated AI button.~|~magnet-ring~|~MagSafe compatible~|~button-click~|~AI button
+  {%- when 'magnetic-silicone-phone-case-with-stand-for-iphone' -%}
+    Silicone Magnetic Stand Case~|~Ultra-thin liquid silicone with magnets and a hidden stand for portrait or landscape.~|~magnet-ring~|~Magnetic~|~check~|~Hidden stand
+  {%- when 'sandblasted-magnetic-suction-phone-case' -%}
+    Sandblasted 360° Ring Case~|~A sandblasted matte finish with a 360° rotating magnetic ring that works as a stand.~|~magnet-ring~|~360° ring stand~|~slim~|~Slim fit
+  {%- when 'magnetic-phone-case-with-stand-for-iphone-series' -%}
+    Slim Silicone Stand Case~|~Ultra-thin liquid silicone with built-in magnets and a stand, in pine or teal green.~|~magnet-ring~|~Magnetic~|~check~|~Built-in stand
+  {%- when 'peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-protective-tough-case' -%}
+    Peppermint Christmas, Tough~|~The candy-shop Christmas print on a protective tough case for iPhone and Galaxy.~|~drop-shield~|~Tough case~|~candy-cane~|~Christmas print
+  {%- when 'camera-lens-protective-film' -%}
+    Camera Lens Protective Film~|~Tempered-glass lens covers with an anti-reflective coating, for iPhone 17 Pro and Pro Max.~|~camera-lip~|~Tempered glass~|~sparkle-clear~|~AR coating
+{%- endcase -%}

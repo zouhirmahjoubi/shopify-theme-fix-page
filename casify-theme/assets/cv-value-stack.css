@@ -1,0 +1,135 @@
+/* =========================================================================
+   Casify: value stack, redesigned (sections/cv-value-stack.liquid).
+   Fix rows get a brass medallion + count-up metric + tipping balance beam;
+   the benefit grid is lightly refreshed; the old horizontal proof bars
+   become a vertical drop-height gauge, tallest (ours) flagged with a
+   candy cane. Loads after theme.css, so it wins the cascade on the shared
+   .cv-values/.cv-fix/.cv-proof/.cv-bar selectors this section still uses
+   for its header/shell — new internals live under the cvvs- prefix.
+   Motion lives in cv-value-stack-motion.js; this file is the finished state.
+   ========================================================================= */
+
+.cvvs-pending [data-cvvs-fix],
+.cvvs-pending [data-cvvs-benefit],
+.cvvs-pending [data-cvvs-gauge] { visibility: hidden; }
+
+/* ---------- Fix rows ---------- */
+.cvvs-fix {
+  display: grid; grid-template-columns: minmax(160px, 220px) minmax(0, 1fr); gap: 40px 56px;
+  align-items: center; padding: 44px 0; border-bottom: 1px dashed var(--border-hairline, rgba(74, 51, 36, .22));
+}
+.cvvs-fix:first-of-type { padding-top: 8px; }
+.cvvs-fix--flip { grid-template-columns: minmax(0, 1fr) minmax(160px, 220px); }
+.cvvs-fix--flip .cvvs-fix__figure { order: 2; }
+
+.cvvs-fix__figure { position: relative; display: grid; justify-items: center; gap: 10px; }
+.cvvs-fix__medal {
+  position: absolute; top: 50%; left: 50%; width: 128px; height: 128px; translate: -50% -60%;
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, var(--gold-200) 0%, rgba(240, 226, 194, 0) 70%);
+  box-shadow: 0 0 0 1px var(--gold-300) inset;
+}
+.cvvs-fix__ico { position: relative; color: var(--red-500); }
+.cvvs-fix__metric {
+  position: relative; display: flex; align-items: baseline; gap: 3px;
+  font-family: var(--font-display); font-weight: 900; color: var(--cocoa-700);
+}
+.cvvs-fix__metric b { font-size: clamp(2rem, 1.5rem + 1.6vw, 2.9rem); font-variant-numeric: tabular-nums; line-height: 1; }
+.cvvs-fix__metric i { font: 700 14px/1 var(--font-label); font-style: normal; color: var(--cocoa-500); }
+
+.cvvs-fix__index { display: block; margin-bottom: 6px; font: 700 12px/1 var(--font-label); letter-spacing: .1em; color: var(--cocoa-400); }
+.cvvs-fix__problem { margin: 0 0 10px; font-family: var(--font-display); font-weight: 900; font-size: clamp(1.3rem, 1.05rem + .8vw, 1.7rem); line-height: 1.15; color: var(--cocoa-700); }
+.cvvs-fix__copy { max-width: 58ch; font: 15px/1.65 var(--font-body); color: var(--cocoa-500); }
+.cvvs-fix__copy p { margin: 0; }
+
+.cvvs-beam { display: flex; align-items: center; gap: 14px; margin-top: 22px; max-width: 480px; }
+.cvvs-beam__side { display: flex; flex-direction: column; gap: 4px; }
+.cvvs-beam__side--them { text-align: right; }
+.cvvs-beam__side strong { font-family: var(--font-display); font-weight: 900; font-size: 17px; color: var(--cocoa-700); }
+.cvvs-beam__side--us strong { color: var(--red-600); }
+.cvvs-beam__tag { display: inline-flex; align-items: center; gap: 5px; font: 700 10.5px/1 var(--font-label); letter-spacing: .04em; text-transform: uppercase; color: var(--cocoa-400); }
+.cvvs-beam__side--them .cvvs-beam__tag { justify-content: flex-end; }
+.cvvs-beam__side--us .cvvs-beam__tag { color: var(--red-500); }
+
+.cvvs-beam__fulcrum { position: relative; flex: 1 1 auto; min-width: 40px; height: 22px; }
+.cvvs-beam__fulcrum::after {
+  content: ''; position: absolute; left: 50%; bottom: 0; translate: -50% 0;
+  border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 10px solid var(--gold-400);
+}
+.cvvs-beam__bar {
+  position: absolute; left: 0; right: 0; bottom: 10px; height: 3px; border-radius: 2px;
+  background: var(--cocoa-400); transform-origin: 50% 50%;
+}
+
+/* ---------- Benefit grid ---------- */
+.cvvs-benefits { margin-top: 18px; padding-top: 44px; border-top: 1px dashed var(--border-hairline, rgba(74, 51, 36, .22)); }
+.cvvs-benefits__hd { margin: 0 0 26px; font-family: var(--font-display); font-weight: 900; font-size: clamp(1.3rem, 1.1rem + .6vw, 1.55rem); color: var(--cocoa-700); }
+.cvvs-benefits__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 28px; margin: 0; padding: 0; list-style: none; }
+.cvvs-benefit {
+  display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px;
+  background: var(--cream-100); transition: transform .3s var(--ease-standard), box-shadow .3s var(--ease-standard);
+}
+.cvvs-benefit:hover { transform: translateY(-3px); box-shadow: 0 16px 28px -20px rgba(51, 35, 26, .35); }
+.cvvs-benefit__ico { color: var(--red-500); }
+.cvvs-benefit h4 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 15.5px; color: var(--cocoa-700); }
+.cvvs-benefit p { margin: 0; font: 13px/1.5 var(--font-body); color: var(--cocoa-500); }
+
+/* ---------- Proof gauge ---------- */
+.cvvs-gauge { margin-top: 18px; padding-top: 48px; border-top: 1px dashed var(--border-hairline, rgba(74, 51, 36, .22)); }
+.cvvs-gauge__hd { margin-bottom: 30px; }
+.cvvs-gauge__hd h3 { margin: 6px 0 0; font-family: var(--font-display); font-weight: 900; font-size: clamp(1.4rem, 1.15rem + 1vw, 1.9rem); color: var(--cocoa-700); }
+
+.cvvs-gauge__rig {
+  position: relative; display: flex; align-items: flex-start; justify-content: center; justify-content: safe center;
+  gap: clamp(14px, 3vw, 34px); padding-bottom: 14px; overflow-x: auto;
+}
+.cvvs-gauge__col { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: none; width: 76px; }
+.cvvs-gauge__val { font-family: var(--font-display); font-weight: 900; font-size: 15px; line-height: 22px; color: var(--cocoa-600); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cvvs-gauge__col.is-us .cvvs-gauge__val { color: var(--red-600); font-size: 17px; }
+
+.cvvs-gauge__bar {
+  position: relative; width: 44px; height: 220px; border-radius: 9px 9px 3px 3px;
+  background: var(--cream-200); overflow: visible; --fill: 0%;
+}
+.cvvs-gauge__bar::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: var(--fill);
+  border-radius: 9px 9px 3px 3px; background: var(--cocoa-400);
+}
+.cvvs-gauge__col.is-us .cvvs-gauge__bar::after {
+  background:
+    repeating-linear-gradient(-45deg, var(--cream-50) 0 7px, var(--red-500) 7px 14px);
+  box-shadow: 0 0 0 2px var(--red-600) inset;
+}
+.cvvs-gauge__flag {
+  position: absolute; left: 50%; bottom: 100%; translate: -50% 6px;
+  color: var(--red-600); filter: drop-shadow(0 3px 4px rgba(51, 35, 26, .3));
+}
+
+.cvvs-gauge__name { font: 700 11px/1.2 var(--font-label); letter-spacing: .02em; color: var(--cocoa-500); text-align: center; }
+.cvvs-gauge__col.is-us .cvvs-gauge__name { color: var(--cocoa-700); }
+
+.cvvs-gauge__line { display: block; height: 2px; margin-top: -14px; background: var(--cocoa-400); opacity: .35; }
+.cvvs-gauge__foot { display: flex; align-items: center; gap: 7px; margin: 18px 0 0; font: 12.5px/1.4 var(--font-label); color: var(--cocoa-400); }
+
+@media (max-width: 899px) {
+  .cvvs-fix, .cvvs-fix--flip { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  .cvvs-fix__figure, .cvvs-fix--flip .cvvs-fix__figure { order: 0; }
+  .cvvs-fix__copy { max-width: none; margin-inline: auto; }
+  .cvvs-beam { margin-inline: auto; }
+  .cvvs-benefits__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .cvvs-benefits__grid { grid-template-columns: minmax(0, 1fr); }
+  .cvvs-gauge__bar { width: 38px; height: 180px; }
+}
+/* Phones: five fixed 76px columns are wider than the screen, and a centred
+   overflow can't be scrolled to its left edge, so the first bar was cut off.
+   Share the width instead. */
+@media (max-width: 599px) {
+  .cvvs-gauge__rig { gap: 6px; justify-content: space-between; overflow-x: visible; }
+  .cvvs-gauge__col { flex: 1 1 0; width: auto; min-width: min-content; }
+  .cvvs-gauge__bar { width: min(38px, 100%); }
+  .cvvs-gauge__val { font-size: 13px; }
+  .cvvs-gauge__col.is-us .cvvs-gauge__val { font-size: 15px; }
+  .cvvs-gauge__name { font-size: 10px; letter-spacing: 0; }
+}

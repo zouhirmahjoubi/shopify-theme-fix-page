@@ -1,0 +1,265 @@
+{%- comment -%}
+  Facebook reviews — Elixir's "Facebook Reviews" section, copied with its
+  original look, markup, classes and every setting (sizes, colors, gradient,
+  layout). Separate from Casify's own "Facebook comments" section, which is
+  left untouched.
+
+  Differences from the Elixir file, all deliberate:
+    - comments ship empty: a review only renders once it has a name and a
+      comment (the theme editor shows a hint for unfinished ones), and the
+      section is hidden on the storefront until at least one is complete;
+    - the badge defaults to a neutral line instead of "Recently viral";
+    - Like / Reply are decorative labels, hidden from screen readers;
+    - Elixir's "reveal on scroll" setting is replaced by GSAP motion
+      (assets/cv-facebook-reviews.js): comments arrive like a live thread.
+  Styles: assets/cv-facebook-reviews.css (Elixir's stylesheet + the few
+  variables and grid utilities it relied on from the Elixir theme).
+{%- endcomment -%}
+{{ 'cv-facebook-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  # Determine background style based on gradient settings
+  if section.settings.use_gradient_background
+    assign background_style = 'background: linear-gradient(' | append: section.settings.gradient_angle | append: 'deg, ' | append: section.settings.gradient_start_color | append: ', ' | append: section.settings.gradient_end_color | append: ');'
+  else
+    assign background_style = 'background-color: ' | append: section.settings.background_color | append: ';'
+  endif
+
+  assign complete_reviews = 0
+  for block in section.blocks
+    if block.settings.name != blank and block.settings.comment != blank
+      assign complete_reviews = complete_reviews | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if complete_reviews > 0 or request.design_mode -%}
+<section
+  class="facebook-reviews-section"
+  id="facebook-reviews-{{ section.id }}"
+  data-cvfr
+  style="{{ background_style }}"
+>
+  {% if section.settings.title != blank %}
+    <div class="title-container">
+      <h2
+        class="reviews-title"
+        data-cvfr-title
+        style="color: {{ section.settings.title_color }} !important; font-size: {{ section.settings.title_size }}px;"
+      >
+        {{ section.settings.title }}
+      </h2>
+      {%- if section.settings.badge_text != blank -%}
+        <div class="facebook-views-badge" data-cvfr-badge style="background-color: {{ section.settings.views_badge_color }} !important; color: {{ section.settings.badge_text_color }} !important; font-size: {{ section.settings.badge_text_size }}px;">
+          <svg
+            class="facebook-icon"
+            data-cvfr-badge-icon
+            width="{{ section.settings.badge_icon_size }}"
+            height="{{ section.settings.badge_icon_size }}"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style="fill: {{ section.settings.badge_text_color }};"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          <span class="facebook-text">{{ section.settings.badge_text }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  {% endif %}
+
+  <div class="reviews-container" style="max-width: {{ section.settings.container_width }}px;">
+    <div
+      class="reviews-grid md:grid-cols-3 {% if section.settings.single_column_mobile %}grid-cols-1{% else %}grid-cols-2{% endif %}"
+      style="grid-gap: {{ section.settings.column_spacing }}px;"
+    >
+      {% for block in section.blocks %}
+        {%- if block.settings.name != blank and block.settings.comment != blank -%}
+          <div
+            class="review-item"
+            data-cvfr-item
+            {{ block.shopify_attributes }}
+            style="margin-bottom: {{ section.settings.review_spacing }}px;"
+          >
+            <div
+              class="profile-pic"
+              style="width: {{ section.settings.profile_size }}px; height: {{ section.settings.profile_size }}px;"
+            >
+              {% if block.settings.profile_image != blank %}
+                <img
+                  src="{{ block.settings.profile_image | image_url: width: 100, height: 100, crop: 'center' }}"
+                  alt=""
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                >
+              {% else %}
+                <img src="{{ 'user-placeholder.png' | asset_url }}" alt="" width="100" height="100" loading="lazy">
+              {% endif %}
+            </div>
+            <div class="fb-comment-wrapper">
+              <div class="fb-comment-card" style="background-color: {{ section.settings.comment_background }}">
+                <div class="reviewer-name" style="color: {{ section.settings.name_color }}">
+                  {{ block.settings.name | escape }}
+                </div>
+                <p class="fb-comment-text" style="color: {{ section.settings.text_color }}">
+                  {{ block.settings.comment | escape }}
+                </p>
+              </div>
+              <div class="review-meta">
+                <div class="review-actions" aria-hidden="true">
+                  <span class="review-action" style="color: {{ section.settings.action_color }}">
+                    {{- section.settings.like_text -}}
+                  </span>
+                  <span class="review-action" style="color: {{ section.settings.action_color }}">
+                    {{- section.settings.reply_text -}}
+                  </span>
+                </div>
+                <div class="review-time" style="color: {{ section.settings.date_color }}">
+                  {{ block.settings.date | escape }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- elsif request.design_mode -%}
+          <div class="review-item cvfr-draft" {{ block.shopify_attributes }}>
+            Add the reviewer's name and their comment to show this review.
+          </div>
+        {%- endif -%}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Dynamic styles that use section-specific settings */
+  #facebook-reviews-{{ section.id }} {
+    padding: {{ section.settings.section_padding_vertical }}px {{ section.settings.section_padding_horizontal }}px;
+  }
+
+  #facebook-reviews-{{ section.id }} .reviewer-name {
+    font-size: {{ section.settings.reviewer_size }}px;
+  }
+
+  #facebook-reviews-{{ section.id }} .fb-comment-text {
+    font-size: {{ section.settings.review_text_size }}px;
+  }
+
+  #facebook-reviews-{{ section.id }} .review-action,
+  #facebook-reviews-{{ section.id }} .review-time {
+    font-size: {{ section.settings.action_date_size }}px;
+  }
+
+  @media (max-width: 767px) {
+    #facebook-reviews-{{ section.id }} .reviews-title {
+      font-size: {{ section.settings.title_size_mobile }}px !important;
+    }
+
+    #facebook-reviews-{{ section.id }} .facebook-views-badge {
+      font-size: {{ section.settings.badge_text_size_mobile }}px !important;
+    }
+
+    #facebook-reviews-{{ section.id }} .facebook-icon {
+      width: {{ section.settings.badge_icon_size_mobile }}px !important;
+      height: {{ section.settings.badge_icon_size_mobile }}px !important;
+    }
+    #facebook-reviews-{{ section.id }} .profile-pic {
+      width: {{ section.settings.profile_size_mobile }}px !important;
+      height: {{ section.settings.profile_size_mobile }}px !important;
+    }
+    #facebook-reviews-{{ section.id }} .reviewer-name {
+      font-size: {{ section.settings.reviewer_size_mobile }}px !important;
+    }
+    #facebook-reviews-{{ section.id }} .fb-comment-text {
+      font-size: {{ section.settings.review_text_size_mobile }}px !important;
+    }
+    #facebook-reviews-{{ section.id }} .review-action,
+    #facebook-reviews-{{ section.id }} .review-time {
+      font-size: {{ section.settings.action_date_size_mobile }}px !important;
+    }
+  }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Facebook reviews",
+  "tag": "div",
+  "class": "section-facebook-reviews",
+  "disabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "paragraph", "content": "Copy real comments from your Facebook posts into the review blocks. This section does not sync with Facebook." },
+    { "type": "text", "id": "title", "label": "Section title", "default": "Latest Facebook reviews" },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Comments from our Facebook page", "info": "Leave blank to hide the badge. Only describe what's true, e.g. don't say \"viral\" unless it was." },
+    { "type": "text", "id": "like_text", "label": "Like button text", "default": "Like" },
+    { "type": "text", "id": "reply_text", "label": "Reply button text", "default": "Reply" },
+
+    { "type": "header", "content": "Desktop sizing" },
+    { "type": "range", "id": "title_size", "min": 16, "max": 60, "step": 1, "unit": "px", "label": "Title size", "default": 48 },
+    { "type": "range", "id": "badge_text_size", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Badge text size", "default": 10 },
+    { "type": "range", "id": "badge_icon_size", "min": 8, "max": 20, "step": 1, "unit": "px", "label": "Badge icon size", "default": 13 },
+    { "type": "range", "id": "profile_size", "min": 20, "max": 60, "step": 5, "unit": "px", "label": "Profile picture size", "default": 40 },
+    { "type": "range", "id": "reviewer_size", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Reviewer name size", "default": 13 },
+    { "type": "range", "id": "review_text_size", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Review text size", "default": 13 },
+    { "type": "range", "id": "action_date_size", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Review actions/date size", "default": 10 },
+
+    { "type": "header", "content": "Mobile sizing" },
+    { "type": "range", "id": "title_size_mobile", "min": 16, "max": 60, "step": 1, "unit": "px", "label": "Title size", "default": 32 },
+    { "type": "range", "id": "badge_text_size_mobile", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Badge text size", "default": 10 },
+    { "type": "range", "id": "badge_icon_size_mobile", "min": 8, "max": 20, "step": 1, "unit": "px", "label": "Badge icon size", "default": 11 },
+    { "type": "range", "id": "profile_size_mobile", "min": 20, "max": 60, "step": 5, "unit": "px", "label": "Profile picture size", "default": 40 },
+    { "type": "range", "id": "reviewer_size_mobile", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Reviewer name size", "default": 13 },
+    { "type": "range", "id": "review_text_size_mobile", "min": 10, "max": 20, "step": 1, "unit": "px", "label": "Review text size", "default": 13 },
+    { "type": "range", "id": "action_date_size_mobile", "min": 8, "max": 16, "step": 1, "unit": "px", "label": "Review actions/date size", "default": 10 },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "container_width", "min": 600, "max": 1600, "step": 50, "unit": "px", "label": "Container width", "default": 1200 },
+    { "type": "range", "id": "section_padding_vertical", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Section vertical padding", "default": 20 },
+    { "type": "range", "id": "section_padding_horizontal", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Section horizontal padding", "default": 20 },
+    { "type": "range", "id": "column_spacing", "min": 3, "max": 20, "step": 1, "unit": "px", "label": "Column spacing", "default": 5 },
+    { "type": "range", "id": "review_spacing", "min": 3, "max": 20, "step": 1, "unit": "px", "label": "Review spacing", "default": 5 },
+    { "type": "checkbox", "id": "single_column_mobile", "label": "Single column on mobile", "default": false, "info": "Display comments in one column instead of two on mobile devices" },
+
+    { "type": "header", "content": "Background" },
+    { "type": "checkbox", "id": "use_gradient_background", "label": "Use gradient background", "default": false },
+    { "type": "color", "id": "background_color", "label": "Solid background color", "default": "transparent" },
+    { "type": "color", "id": "gradient_start_color", "label": "Gradient start color", "default": "#ff6b6b" },
+    { "type": "color", "id": "gradient_end_color", "label": "Gradient end color", "default": "#4ecdc4" },
+    { "type": "range", "id": "gradient_angle", "min": 0, "max": 360, "step": 10, "unit": "deg", "label": "Gradient angle", "default": 130 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#000000" },
+    { "type": "color", "id": "views_badge_color", "label": "Badge background color", "default": "#0866ff" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge text & icon color", "default": "#ffffff" },
+    { "type": "color", "id": "comment_background", "label": "Comment background", "default": "#ffffff" },
+    { "type": "color", "id": "name_color", "label": "Username color", "default": "#050505" },
+    { "type": "color", "id": "text_color", "label": "Comment text color", "default": "#050505" },
+    { "type": "color", "id": "date_color", "label": "Date/time color", "default": "#65676B" },
+    { "type": "color", "id": "action_color", "label": "Action button color", "default": "#65676B" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "paragraph", "content": "Copy a real comment word for word." },
+        { "type": "image_picker", "id": "profile_image", "label": "Profile image" },
+        { "type": "text", "id": "name", "label": "Reviewer name" },
+        { "type": "textarea", "id": "comment", "label": "Review comment" },
+        { "type": "text", "id": "date", "label": "Date/time text", "info": "The date shown on the original comment, e.g. \"12 Sep\". Relative times like \"48 min\" go out of date." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Facebook reviews",
+      "category": "Social",
+      "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" } ]
+    }
+  ]
+}
+{% endschema %}

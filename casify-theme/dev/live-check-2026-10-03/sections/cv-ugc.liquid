@@ -1,0 +1,280 @@
+{%- comment -%}
+  Casify — Converting PDP: UGC video wall.
+
+  A horizontal rail of 9:16 creator clips that behave the way people expect
+  short-form video to behave:
+    · muted autoplay once the card is actually on screen, pause when it leaves
+    · per-card sound toggle, one clip audible at a time
+    · click to open a lightbox with real controls + keyboard prev/next
+    · YouTube / Vimeo render as a click-to-load facade (no third-party JS
+      until the viewer asks for it)
+
+  Every clip degrades cleanly: Shopify-hosted video → external mp4 → embed →
+  poster image with a play affordance. A block with only a poster still looks
+  intentional, so the section is safe to ship before the videos are uploaded.
+
+  With no clip blocks the section renders nothing on the storefront — an empty
+  "no clips yet" panel only costs shoppers a scroll. The theme editor still
+  shows the empty state so the merchant can see where clips will go.
+
+  Behaviour lives in assets/cv-product.js (the `ugc` module).
+{%- endcomment -%}
+
+{%- liquid
+  assign clip_count = 0
+  assign stat_count = 0
+  for b in section.blocks
+    if b.type == 'clip'
+      assign clip_count = clip_count | plus: 1
+    elsif b.type == 'stat'
+      assign stat_count = stat_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if clip_count > 0 or request.design_mode -%}
+<section class="cv-sec cv-ugc" id="cv-ugc" data-cv-ugc>
+  <div class="cv-sec__hd cv-ugc__hd" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Your clips' | escape }}</span>
+    <h2 data-cv-split>{{ section.settings.heading | default: 'Your case, on camera' | escape }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- if stat_count > 0 -%}
+    <ul class="cv-ugc__stats" data-cv-reveal data-cv-stagger>
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'stat' -%}
+          <li class="cv-ugc__stat" {{ b.shopify_attributes }}>
+            <span class="cv-ugc__stat-ico">{%- render 'cv-icon', name: b.settings.icon, size: 20, animate: true -%}</span>
+            <b data-cv-count="{{ b.settings.value }}" data-cv-suffix="{{ b.settings.unit | escape }}">0{{ b.settings.unit }}</b>
+            <span>{{ b.settings.label | escape }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- if clip_count == 0 -%}
+    <div class="cv-ugc__empty" data-cv-reveal>
+      {%- render 'cv-icon', name: 'video', size: 28 -%}
+      <p>{{ section.settings.empty_heading | default: 'No customer clips yet' | escape }}</p>
+      <span>{{ section.settings.empty_text | default: 'Filmed an unboxing or your case out and about? Send it to us through the contact page.' | escape }}</span>
+      <span>Hidden on your live store until you add a clip.</span>
+    </div>
+  {%- endif -%}
+
+  {%- if clip_count > 0 -%}
+    <div class="cv-ugc__wrap" data-cv-reveal>
+      <button type="button" class="cv-ugc__nav is-prev" data-cv-ugc-scroll="-1" aria-label="Previous clips">
+        {%- render 'cv-icon', name: 'chevron-down', size: 20 -%}
+      </button>
+
+      <div class="cv-ugc__rail" data-cv-ugc-rail role="list">
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'clip' -%}
+            {%- liquid
+              assign vid = b.settings.video
+              assign poster_src = ''
+              if b.settings.poster != blank
+                assign poster_src = b.settings.poster | image_url: width: 720
+              elsif b.settings.poster_url != blank
+                assign poster_src = b.settings.poster_url
+              elsif vid != blank and vid.preview_image != blank
+                assign poster_src = vid.preview_image | image_url: width: 720
+              endif
+
+              assign embed = b.settings.embed_url
+              assign has_native = false
+              if vid != blank or b.settings.mp4_url != blank
+                assign has_native = true
+              endif
+              assign kind = 'poster'
+              if has_native
+                assign kind = 'native'
+              elsif embed != blank
+                assign kind = 'embed'
+              endif
+            -%}
+
+            <article class="cv-clip"
+                     role="listitem"
+                     data-cv-clip
+                     data-cv-clip-kind="{{ kind }}"
+                     {%- if kind == 'embed' %} data-cv-embed-type="{{ embed.type }}" data-cv-embed-id="{{ embed.id }}"{% endif %}
+                     style="--cv-i:{{ forloop.index0 }}"
+                     {{ b.shopify_attributes }}>
+
+              <div class="cv-clip__frame" data-cv-tilt>
+                {%- if poster_src != blank -%}
+                  <img class="cv-clip__poster" src="{{ poster_src }}"
+                       alt="{{ b.settings.caption | default: b.settings.handle | escape }}"
+                       width="405" height="720" loading="lazy" decoding="async">
+                {%- else -%}
+                  <span class="cv-clip__poster cv-clip__poster--empty" aria-hidden="true">
+                    {%- render 'cv-icon', name: 'video', size: 40 -%}
+                  </span>
+                {%- endif -%}
+
+                {%- if kind == 'native' -%}
+                  <video class="cv-clip__video"
+                         muted playsinline loop preload="none"
+                         {% if poster_src != blank %}poster="{{ poster_src }}"{% endif %}
+                         aria-label="{{ b.settings.caption | default: b.settings.handle | escape }}">
+                    {%- if vid != blank -%}
+                      {%- for source in vid.sources -%}
+                        {%- if source.format == 'mp4' -%}
+                          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif b.settings.mp4_url != blank -%}
+                      <source src="{{ b.settings.mp4_url }}" type="video/mp4">
+                    {%- endif -%}
+                  </video>
+                {%- endif -%}
+
+                <span class="cv-clip__scrim" aria-hidden="true"></span>
+
+                {%- if b.settings.badge != blank -%}
+                  <span class="cv-clip__badge">
+                    {%- render 'cv-icon', name: 'flame', size: 12 -%}
+                    {{ b.settings.badge | escape }}
+                  </span>
+                {%- endif -%}
+
+                {%- if kind == 'poster' -%}
+                  <span class="cv-clip__play cv-clip__play--static" aria-hidden="true">
+                    {%- render 'cv-icon', name: 'play', size: 22 -%}
+                  </span>
+                {%- else -%}
+                  <button type="button" class="cv-clip__sound" data-cv-clip-sound
+                          aria-label="Turn sound on" aria-pressed="false">
+                    <span class="cv-clip__sound-on">{%- render 'cv-icon', name: 'sound-on', size: 15 -%}</span>
+                    <span class="cv-clip__sound-off">{%- render 'cv-icon', name: 'sound-off', size: 15 -%}</span>
+                  </button>
+                  <button type="button" class="cv-clip__open" data-cv-clip-open
+                          aria-label="Play {{ b.settings.handle | default: 'clip' | escape }} full screen">
+                    <span class="cv-clip__play" aria-hidden="true">{%- render 'cv-icon', name: 'play', size: 22 -%}</span>
+                    <span class="cv-clip__expand" aria-hidden="true">{%- render 'cv-icon', name: 'expand', size: 14 -%}</span>
+                  </button>
+                {%- endif -%}
+
+                <div class="cv-clip__meta">
+                  {%- if b.settings.stars > 0 -%}
+                    {%- assign clip_fill = b.settings.stars | times: 20 -%}
+                    <span class="cv-clip__stars" role="img" aria-label="{{ b.settings.stars }} out of 5">
+                      {%- render 'cv-stars', fill: clip_fill -%}
+                    </span>
+                  {%- endif -%}
+                  {%- if b.settings.caption != blank -%}
+                    <p class="cv-clip__caption">{{ b.settings.caption | escape }}</p>
+                  {%- endif -%}
+                  <span class="cv-clip__by">
+                    <strong>{{ b.settings.handle | default: '@customer' | escape }}</strong>
+                    {%- if b.settings.verified -%}
+                      <span class="cv-clip__verified">{%- render 'cv-icon', name: 'user-check', size: 11 -%} Verified buyer</span>
+                    {%- endif -%}
+                  </span>
+                  {%- if b.settings.tag != blank -%}
+                    <span class="cv-clip__tag">{{ b.settings.tag | escape }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <button type="button" class="cv-ugc__nav is-next" data-cv-ugc-scroll="1" aria-label="More clips">
+        {%- render 'cv-icon', name: 'chevron-down', size: 20 -%}
+      </button>
+    </div>
+
+    <div class="cv-ugc__foot" data-cv-reveal>
+      <span class="cv-ugc__hint">{%- render 'cv-icon', name: 'video', size: 14 -%} {{ section.settings.hint | default: 'Tap any clip for sound' | escape }}</span>
+      {%- if section.settings.cta_label != blank -%}
+        <button type="button" class="cv-cta cv-cta--ghost" data-cv-scroll-to-buy>
+          {%- render 'cv-icon', name: 'bag', size: 17 -%}
+          <span>{{ section.settings.cta_label | escape }}</span>
+        </button>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Lightbox shell — filled and controlled by cv-product.js {%- endcomment -%}
+    <div class="cv-lightbox" data-cv-lightbox hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Customer clip">
+      <button type="button" class="cv-lightbox__close" data-cv-lb-close aria-label="Close">
+        {%- render 'cv-icon', name: 'close', size: 20 -%}
+      </button>
+      <button type="button" class="cv-lightbox__arrow is-prev" data-cv-lb-step="-1" aria-label="Previous clip">
+        {%- render 'cv-icon', name: 'chevron-down', size: 22 -%}
+      </button>
+      <div class="cv-lightbox__stage" data-cv-lb-stage></div>
+      <button type="button" class="cv-lightbox__arrow is-next" data-cv-lb-step="1" aria-label="Next clip">
+        {%- render 'cv-icon', name: 'chevron-down', size: 22 -%}
+      </button>
+    </div>
+  {%- endif -%}
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Convert — UGC videos",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Your clips" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your case, on camera" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>Videos from real customers go up here once people send them in.</p>" },
+    { "type": "text", "id": "hint", "label": "Rail hint", "default": "Tap any clip for sound" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Get the same case" },
+    { "type": "header", "content": "Before the first clip", "info": "Shown when no clip blocks are added yet." },
+    { "type": "text", "id": "empty_heading", "label": "Heading", "default": "No customer clips yet" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "Filmed an unboxing or your case out and about? Send it to us through the contact page." }
+  ],
+  "blocks": [
+    {
+      "type": "clip",
+      "name": "Customer clip",
+      "settings": [
+        { "type": "header", "content": "Video source", "info": "First match wins: uploaded video → external MP4 → YouTube/Vimeo → poster only." },
+        { "type": "video", "id": "video", "label": "Uploaded video", "info": "Shopify-hosted video. Best option — autoplays muted in the rail." },
+        { "type": "text", "id": "mp4_url", "label": "External MP4 URL", "info": "A direct .mp4 link. Also autoplays in the rail." },
+        { "type": "video_url", "id": "embed_url", "label": "YouTube or Vimeo URL", "accept": ["youtube", "vimeo"], "info": "Loads only when the viewer clicks, so it costs nothing until then." },
+        { "type": "header", "content": "Poster" },
+        { "type": "image_picker", "id": "poster", "label": "Poster image" },
+        { "type": "text", "id": "poster_url", "label": "External poster URL", "info": "Used when no poster is uploaded." },
+        { "type": "header", "content": "Creator" },
+        { "type": "text", "id": "handle", "label": "Handle", "default": "@customer" },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "Dropped it off a ladder. Nothing." },
+        { "type": "range", "id": "stars", "label": "Stars", "min": 0, "max": 5, "step": 1, "default": 5 },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer badge", "default": true },
+        { "type": "text", "id": "tag", "label": "Model / finish tag", "default": "iPhone 17 Pro · Clear" },
+        { "type": "text", "id": "badge", "label": "Corner badge", "info": "Optional, e.g. \"Most watched\"." }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Header stat",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "video", "label": "Video" },
+          { "value": "heart", "label": "Heart" },
+          { "value": "star", "label": "Star" },
+          { "value": "user-check", "label": "Verified buyer" },
+          { "value": "flame", "label": "Trending" }
+        ], "default": "video" },
+        { "type": "text", "id": "value", "label": "Number", "default": "1240" },
+        { "type": "text", "id": "unit", "label": "Unit", "info": "Optional — e.g. % or mo." },
+        { "type": "text", "id": "label", "label": "Label", "default": "customer clips submitted" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Convert — UGC videos"
+    }
+  ]
+}
+{% endschema %}

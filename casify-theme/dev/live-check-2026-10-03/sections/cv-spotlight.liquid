@@ -1,0 +1,169 @@
+{{ 'cv-spotlight.css' | asset_url | stylesheet_tag }}
+<script>
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvsp-pending');
+    setTimeout(function () { root.classList.remove('cvsp-pending'); }, 1600);
+  })(document.documentElement);
+</script>
+
+{%- liquid
+  assign count_collection = section.settings.count_collection | default: collections.all
+  assign design_count = count_collection.all_products_count
+  if design_count == blank or design_count == 0
+    assign design_count = count_collection.products.size
+  endif
+
+  assign image_alt = section.settings.image_alt
+  if image_alt == blank and section.settings.image != blank
+    assign image_alt = section.settings.image.alt
+  endif
+  if image_alt == blank
+    assign image_alt = 'A clear Casify phone case in a warm cream studio setting'
+  endif
+
+  assign primary_url = section.settings.cta_url | default: routes.all_products_collection_url
+  assign show_secondary_cta = false
+  if section.settings.cta2_label != blank and section.settings.cta2_url != blank
+    assign show_secondary_cta = true
+  endif
+-%}
+
+<section class="cv-sec cvsp" id="cv-spotlight" data-cvsp aria-labelledby="cvspTitle-{{ section.id }}">
+  <div class="cvsp__shop">
+    <div class="cvsp__awning" data-cvsp-awning aria-hidden="true">
+      <span class="cvsp__awning-shade"></span>
+      <span class="cvsp__awning-valance"></span>
+    </div>
+
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="cvsp__shop-sign" data-cvsp-sign>
+        <span class="cvsp__mint cvsp__mint--red" data-cvsp-mint>{% render 'cvsp-icon', name: 'peppermint', size: 34 %}</span>
+        <span class="cvsp__shop-sign-copy">{{ section.settings.eyebrow | escape }}</span>
+        <span class="cvsp__mint cvsp__mint--teal" data-cvsp-mint>{% render 'cvsp-icon', name: 'peppermint', size: 34 %}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="cvsp__body">
+      <div class="cvsp__copy" data-cvsp-copy>
+        <span class="cvsp__ornament" data-cvsp-ornament aria-hidden="true">
+          <span></span>
+          {% render 'cvsp-icon', name: 'sparkle', size: 24 %}
+          <span></span>
+        </span>
+
+        <h2 class="cvsp__heading" id="cvspTitle-{{ section.id }}" data-cvsp-heading>{{ section.settings.heading | default: 'Protection you forget is even there' | escape }}</h2>
+
+        {%- if section.settings.subheading != blank -%}
+          <div class="cvsp__lede" data-cvsp-lede>{{ section.settings.subheading }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.cta_label != blank or show_secondary_cta -%}
+          <div class="cvsp__ctas" data-cvsp-ctas>
+            {%- if section.settings.cta_label != blank -%}
+              <a href="{{ primary_url }}" class="cv-cta cvsp__primary" data-cvsp-cta>
+                {%- render 'cv-icon', name: 'bag', size: 17 -%}
+                <span>{{ section.settings.cta_label | escape }}</span>
+              </a>
+            {%- endif -%}
+            {%- if show_secondary_cta -%}
+              <a href="{{ section.settings.cta2_url }}" class="cv-cta cv-cta--ghost cvsp__secondary" data-cvsp-cta>
+                <span>{{ section.settings.cta2_label | escape }}</span>
+                {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="cvsp__display" data-cvsp-display>
+        <span class="cvsp__brass-corner cvsp__brass-corner--tl" aria-hidden="true"></span>
+        <span class="cvsp__brass-corner cvsp__brass-corner--br" aria-hidden="true"></span>
+
+        <div class="cvsp__window" data-cvsp-window>
+          <div class="cvsp__window-inner">
+            {%- if section.settings.image != blank -%}
+              {{ section.settings.image | image_url: width: 1200 | image_tag: class: 'cvsp__img', widths: '480, 720, 900, 1200', sizes: '(min-width: 901px) 38vw, 88vw', loading: 'lazy', alt: image_alt }}
+            {%- elsif section.settings.image_url != blank -%}
+              <img class="cvsp__img" src="{{ section.settings.image_url | escape }}" alt="{{ image_alt | escape }}" width="900" height="1200" loading="lazy" decoding="async">
+            {%- else -%}
+              <img class="cvsp__img" src="{{ 'cv-spotlight-case.jpg' | asset_url }}" alt="{{ image_alt | escape }}" width="900" height="1200" loading="lazy" decoding="async">
+            {%- endif -%}
+
+            <span class="cvsp__reflection" data-cvsp-reflection aria-hidden="true"></span>
+            <span class="cvsp__shutter cvsp__shutter--left" data-cvsp-shutter aria-hidden="true"></span>
+            <span class="cvsp__shutter cvsp__shutter--right" data-cvsp-shutter aria-hidden="true"></span>
+            <span class="cvsp__window-spark" data-cvsp-spark aria-hidden="true">{% render 'cvsp-icon', name: 'sparkle', size: 44 %}</span>
+          </div>
+          <span class="cvsp__window-label" aria-hidden="true">Made for your phone</span>
+        </div>
+
+        <ul class="cvsp__tickets" aria-label="Shop service highlights">
+          <li class="cvsp__ticket cvsp__ticket--designs" data-cvsp-ticket>
+            <span class="cvsp__ticket-pin" aria-hidden="true"></span>
+            <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'designs', size: 28 %}</span>
+            <span class="cvsp__ticket-copy"><b data-cvsp-count data-cv-count="{{ design_count }}">{{ design_count }}</b><small>case designs</small></span>
+          </li>
+          <li class="cvsp__ticket cvsp__ticket--packs" data-cvsp-ticket>
+            <span class="cvsp__ticket-pin" aria-hidden="true"></span>
+            <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'bundle', size: 28 %}</span>
+            <span class="cvsp__ticket-copy"><b>18&ndash;31%</b><small>off in packs</small></span>
+          </li>
+          <li class="cvsp__ticket cvsp__ticket--shipping" data-cvsp-ticket>
+            <span class="cvsp__ticket-pin" aria-hidden="true"></span>
+            <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'shipping', size: 28 %}</span>
+            <span class="cvsp__ticket-copy"><b>Free</b><small>shipping, always</small></span>
+          </li>
+          <li class="cvsp__ticket cvsp__ticket--returns" data-cvsp-ticket>
+            <span class="cvsp__ticket-pin" aria-hidden="true"></span>
+            <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'returns', size: 28 %}</span>
+            <span class="cvsp__ticket-copy"><b>30 days</b><small>to change your mind</small></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cvsp__marquee" data-cvsp-marquee>
+      <div class="cvsp__track" data-cvsp-track>
+        {%- for pass in (1..2) -%}
+          <span class="cvsp__marquee-set"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+            <span class="cvsp__item">Free shipping</span>
+            <span class="cvsp__separator">{% render 'cvsp-icon', name: 'sparkle', size: 14 %}</span>
+            <span class="cvsp__item">30-day returns</span>
+            <span class="cvsp__separator">{% render 'cvsp-icon', name: 'sparkle', size: 14 %}</span>
+            <span class="cvsp__item">Ships in 1&ndash;3 business days</span>
+            <span class="cvsp__separator">{% render 'cvsp-icon', name: 'sparkle', size: 14 %}</span>
+            <span class="cvsp__item">Molded for your exact phone</span>
+            <span class="cvsp__separator">{% render 'cvsp-icon', name: 'sparkle', size: 14 %}</span>
+          </span>
+        {%- endfor -%}
+      </div>
+      <button class="cvsp__marquee-toggle" type="button" data-cvsp-marquee-toggle aria-pressed="false" aria-label="Pause service ticker">
+        <span data-cvsp-pause-icon>{% render 'cv-icon', name: 'pause', size: 15 %}</span>
+        <span data-cvsp-play-icon hidden>{% render 'cv-icon', name: 'play', size: 15 %}</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Convert — Spotlight",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Shop sign", "default": "Now in the shop" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Protection you forget is even there" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>Cut from your phone's own CAD file, so it disappears in your pocket &mdash; sized to your exact model, not a generic fit.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Primary button label", "default": "Find my model" },
+    { "type": "url", "id": "cta_url", "label": "Primary button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button label" },
+    { "type": "url", "id": "cta2_url", "label": "Secondary button link" },
+    { "type": "collection", "id": "count_collection", "label": "Collection used for design count" },
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_url", "label": "External image URL", "info": "Used when no image is uploaded above. Falls back to the bundled studio shot if both are blank." },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" }
+  ],
+  "presets": [{ "name": "Convert — Spotlight" }]
+}
+{% endschema %}

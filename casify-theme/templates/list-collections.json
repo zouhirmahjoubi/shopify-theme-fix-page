@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-collections-list",
+      "settings": {
+        "heading": "Every collection",
+        "subheading": "",
+        "hide_handles": "frontpage"
+      }
+    }
+  },
+  "order": ["main"]
+}

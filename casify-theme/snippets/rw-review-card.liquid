@@ -1,0 +1,67 @@
+{% doc %}
+  One review card in the review widget (sections/review-widget.liquid).
+  Every text value is escaped here, so callers pass plain text.
+
+  @param {number} rating - Stars from 1 to 5; 0 hides the stars.
+  @param {string} [title] - Review title.
+  @param {string} text - Review text.
+  @param {string} author - Reviewer's name as they gave it.
+  @param {object} [avatar] - Optional photo of the reviewer, shown in place of their initial.
+  @param {string} [date] - Date text.
+  @param {boolean} [verified] - Show the "Verified buyer" badge.
+  @param {string} [verified_label] - Badge text.
+  @param {object} [image] - Optional photo.
+  @param {string} [product_title] - Set when the review is about another product.
+  @param {string} [product_url] - Link for that product.
+  @param {string} [product_label] - Words before the product name, e.g. "Review of".
+  @param {string} [attrs] - block.shopify_attributes for theme-editor blocks.
+{% enddoc %}
+{%- liquid
+  assign r = rating | default: 0 | plus: 0 | at_least: 0 | at_most: 5
+  assign who = author | strip
+  if who == blank
+    assign who = 'Customer'
+  endif
+  assign star_fill = r | times: 20
+-%}
+<article class="rw-card" data-rw-card tabindex="-1" {{ attrs }}>
+  <div class="rw-card__top">
+    {%- if r > 0 -%}
+      <span class="rw-card__stars" role="img" aria-label="{{ r }} out of 5 stars">{%- render 'cv-stars', fill: star_fill -%}</span>
+    {%- endif -%}
+    {%- if date != blank -%}<span class="rw-card__date">{{ date | escape }}</span>{%- endif -%}
+  </div>
+
+  {%- if title != blank -%}<h3 class="rw-card__title">{{ title | escape }}</h3>{%- endif -%}
+  <p class="rw-card__text">{{ text | strip | escape | newline_to_br }}</p>
+
+  {%- if image != blank -%}
+    <div class="rw-card__photo">
+      {{ image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 990px) 33vw, 100vw', alt: '' }}
+    </div>
+  {%- endif -%}
+
+  <div class="rw-card__author">
+    {%- if avatar != blank -%}
+      <span class="rw-card__avatar rw-card__avatar--photo">{{ avatar | image_url: width: 112, height: 112, crop: 'center' | image_tag: loading: 'lazy', width: 56, height: 56, alt: '' }}</span>
+    {%- else -%}
+      <span class="rw-card__avatar" aria-hidden="true">{{ who | slice: 0 | upcase | escape }}</span>
+    {%- endif -%}
+    <span class="rw-card__who">
+      <strong>{{ who | escape }}</strong>
+      {%- if verified -%}
+        <span class="rw-card__verified">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>
+          {{ verified_label | default: 'Verified buyer' | escape }}
+        </span>
+      {%- endif -%}
+      {%- if product_title != blank -%}
+        {%- if product_url != blank -%}
+          <a class="rw-card__product" href="{{ product_url }}">{{ product_label | default: 'Review of' | escape }} {{ product_title | escape }}</a>
+        {%- else -%}
+          <span class="rw-card__product">{{ product_label | default: 'Review of' | escape }} {{ product_title | escape }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </span>
+  </div>
+</article>

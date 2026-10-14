@@ -1,0 +1,279 @@
+{{ 'cv-compare-lab.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cols = section.blocks | where: 'type', 'col'
+  assign rows = section.blocks | where: 'type', 'row'
+  assign col_count = cols.size
+-%}
+
+{%- if col_count > 0 and rows.size > 0 -%}
+  <section
+    class="cv-sec cvcx"
+    id="cvCompare-{{ section.id }}"
+    data-cvcx
+    aria-labelledby="cvCompareTitle-{{ section.id }}"
+  >
+    <div class="cvcx__awning" aria-hidden="true"><span></span></div>
+
+    <div class="cvcx__inner">
+      <header class="cvcx__intro">
+        <div class="cvcx__copy">
+          <h2 class="cvcx__title" id="cvCompareTitle-{{ section.id }}" data-cvcx-title>
+            {{ section.settings.heading | escape }}
+          </h2>
+          {%- if section.settings.subheading != blank -%}
+            <div class="cvcx__lede" data-cvcx-lede>{{ section.settings.subheading }}</div>
+          {%- endif -%}
+          <div class="cvcx__rule" aria-hidden="true">
+            <svg viewBox="0 0 480 26" preserveAspectRatio="none" focusable="false">
+              <path data-cvcx-rule d="M3 17 C 70 5, 142 24, 214 13 S 350 8, 477 15"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="cvcx__stage" data-cvcx-stage aria-hidden="true">
+          <div class="cvcx__three" data-cvcx-three></div>
+          <svg class="cvcx__fallback" viewBox="0 0 640 390" role="presentation" focusable="false">
+            <defs>
+              <filter id="cvcx-shadow-{{ section.id }}" x="-30%" y="-30%" width="160%" height="180%">
+                <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#33231a" flood-opacity=".2"/>
+              </filter>
+            </defs>
+            <path class="cvcx__fallback-shelf" d="M70 326h500l-20 30H90z"/>
+            <g class="cvcx__fallback-case cvcx__fallback-case--one" filter="url(#cvcx-shadow-{{ section.id }})">
+              <rect x="112" y="75" width="124" height="238" rx="26"/>
+              <rect x="131" y="94" width="48" height="49" rx="14"/>
+              <circle cx="155" cy="218" r="43"/>
+            </g>
+            <g class="cvcx__fallback-case cvcx__fallback-case--two" filter="url(#cvcx-shadow-{{ section.id }})">
+              <rect x="258" y="62" width="124" height="251" rx="26"/>
+              <rect x="277" y="82" width="48" height="49" rx="14"/>
+              <circle cx="320" cy="211" r="43"/>
+            </g>
+            <g class="cvcx__fallback-case cvcx__fallback-case--three" filter="url(#cvcx-shadow-{{ section.id }})">
+              <rect x="404" y="48" width="134" height="265" rx="28"/>
+              <rect x="424" y="69" width="52" height="53" rx="15"/>
+              <circle cx="471" cy="199" r="46"/>
+            </g>
+            <path class="cvcx__fallback-tick" d="m292 272 16 16 37-45"/>
+          </svg>
+          <span class="cvcx__stage-label">{{ section.settings.stage_label | escape }}</span>
+        </div>
+      </header>
+
+      <div class="cvcx__ledger" data-cvcx-ledger>
+        <span class="cvcx__clip cvcx__clip--left" aria-hidden="true"></span>
+        <span class="cvcx__clip cvcx__clip--right" aria-hidden="true"></span>
+
+        <table class="cvcx__table">
+          <caption class="cvcx__caption">{{ section.settings.heading | escape }}</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="cvcx__corner">
+                <span class="cvcx__corner-icon" aria-hidden="true">{%- render 'cv-icon', name: 'lab', size: 22 -%}</span>
+                <span>{{ section.settings.row_label | escape }}</span>
+              </th>
+              {%- for c in cols -%}
+                <th
+                  scope="col"
+                  class="cvcx__col{% if c.settings.is_us %} is-us{% endif %}"
+                  data-cvcx-col="{{ forloop.index0 }}"
+                  {{ c.shopify_attributes }}
+                >
+                  <button
+                    class="cvcx__specimen"
+                    type="button"
+                    data-cvcx-activate="{{ forloop.index0 }}"
+                    aria-pressed="{% if c.settings.is_us %}true{% else %}false{% endif %}"
+                  >
+                    <span class="cvcx__specimen-media" aria-hidden="true">
+                      {%- if c.settings.image != blank -%}
+                        {{ c.settings.image | image_url: width: 240 | image_tag: widths: '120, 180, 240', sizes: '120px', loading: 'lazy' }}
+                      {%- elsif c.settings.is_us -%}
+                        <img src="{{ 'cv-spotlight-case.jpg' | asset_url }}" width="240" height="240" loading="lazy" alt="">
+                      {%- else -%}
+                        <svg viewBox="0 0 70 92" focusable="false">
+                          <rect x="12" y="4" width="46" height="84" rx="12"/>
+                          <rect x="18" y="10" width="17" height="18" rx="5"/>
+                          <circle cx="35" cy="54" r="15"/>
+                        </svg>
+                      {%- endif -%}
+                    </span>
+                    {%- if c.settings.is_us -%}
+                      <span class="cvcx__winner">{%- render 'cv-icon', name: 'warranty-seal', size: 14 -%} {{ section.settings.our_label | escape }}</span>
+                    {%- endif -%}
+                    <span class="cvcx__col-name">{{ c.settings.name | escape }}</span>
+                    {%- if c.settings.note != blank -%}
+                      <span class="cvcx__col-note">{{ c.settings.note | escape }}</span>
+                    {%- endif -%}
+                  </button>
+                </th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- for r in rows -%}
+              <tr class="cvcx__row" data-cvcx-row {{ r.shopify_attributes }}>
+                <th scope="row" class="cvcx__row-label">
+                  <span class="cvcx__row-icon" aria-hidden="true">{%- render 'cv-icon', name: r.settings.icon, size: 19 -%}</span>
+                  <span>{{ r.settings.label | escape }}</span>
+                </th>
+                {%- for c in cols -%}
+                  {%- liquid
+                    assign ci = forloop.index
+                    assign val = ''
+                    assign kind = 'val'
+                    case ci
+                      when 1
+                        assign val = r.settings.cell_1
+                        assign kind = r.settings.kind_1
+                      when 2
+                        assign val = r.settings.cell_2
+                        assign kind = r.settings.kind_2
+                      when 3
+                        assign val = r.settings.cell_3
+                        assign kind = r.settings.kind_3
+                      when 4
+                        assign val = r.settings.cell_4
+                        assign kind = r.settings.kind_4
+                    endcase
+                    assign kind = kind | default: 'val'
+                  -%}
+                  <td
+                    class="cvcx__cell is-{{ kind }}{% if c.settings.is_us %} is-us{% endif %}"
+                    data-cvcx-col="{{ forloop.index0 }}"
+                  >
+                    <span class="cvcx__cell-name">{{ c.settings.name | escape }}</span>
+                    <span class="cvcx__cell-value">
+                      {%- if kind == 'yes' -%}
+                        <span class="cvcx__mark is-yes" aria-hidden="true">{%- render 'cv-icon', name: 'check', size: 13 -%}</span>
+                      {%- elsif kind == 'no' -%}
+                        <span class="cvcx__mark is-no" aria-hidden="true">{%- render 'cv-icon', name: 'cross', size: 13 -%}</span>
+                      {%- endif -%}
+                      <span>{{ val | default: '—' | escape }}</span>
+                    </span>
+                  </td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cvcx__foot" data-cvcx-foot>
+        {%- if section.settings.footnote != blank -%}
+          <p class="cvcx__note">{%- render 'cv-icon', name: 'lab', size: 16 -%}<span>{{ section.settings.footnote | escape }}</span></p>
+        {%- endif -%}
+        {%- if section.settings.cta_label != blank -%}
+          {%- if section.settings.cta_url != blank -%}
+            <a class="cvcx__cta" href="{{ section.settings.cta_url }}">
+              <span>{{ section.settings.cta_label | escape }}</span>
+              {%- render 'cv-icon', name: 'arrow-right', size: 17 -%}
+            </a>
+          {%- else -%}
+            <button type="button" class="cvcx__cta" data-cv-scroll-to-buy>
+              <span>{{ section.settings.cta_label | escape }}</span>
+              {%- render 'cv-icon', name: 'arrow-right', size: 17 -%}
+            </button>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Comparison lab",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Put it next to what you almost bought" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Same test, same lab, same day. Only the case changed.</p>" },
+    { "type": "text", "id": "stage_label", "label": "3D stage label", "default": "Three specimens · one test bench" },
+    { "type": "text", "id": "row_label", "label": "Corner cell label", "default": "Measured" },
+    { "type": "text", "id": "our_label", "label": "Winning column label", "default": "Our pick" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Rival figures measured in-house on retail units bought at full price." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Find my model" },
+    { "type": "url", "id": "cta_url", "label": "Button link", "info": "Leave empty on a product page to scroll back to the buy box." }
+  ],
+  "blocks": [
+    {
+      "type": "col",
+      "name": "Comparison column",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "This case" },
+        { "type": "text", "id": "note", "label": "Price or note" },
+        { "type": "image_picker", "id": "image", "label": "Specimen image" },
+        { "type": "checkbox", "id": "is_us", "label": "Highlight this column", "default": false }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Measurement row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Measurement", "default": "Drop height before damage" },
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          { "value": "drop-height", "label": "Drop" },
+          { "value": "magnet-ring", "label": "Magnet" },
+          { "value": "ruler", "label": "Thickness" },
+          { "value": "device", "label": "Weight" },
+          { "value": "no-yellow", "label": "Clarity" },
+          { "value": "wireless-charge", "label": "Charging" },
+          { "value": "lab", "label": "Lab data" },
+          { "value": "warranty-seal", "label": "Warranty" },
+          { "value": "returns", "label": "Returns" }
+        ], "default": "lab" },
+        { "type": "header", "content": "Column 1" },
+        { "type": "text", "id": "cell_1", "label": "Value", "default": "12 ft" },
+        { "type": "select", "id": "kind_1", "label": "Style", "options": [
+          { "value": "val", "label": "Plain value" },
+          { "value": "yes", "label": "Tick and value" },
+          { "value": "no", "label": "Cross and value" }
+        ], "default": "val" },
+        { "type": "header", "content": "Column 2" },
+        { "type": "text", "id": "cell_2", "label": "Value" },
+        { "type": "select", "id": "kind_2", "label": "Style", "options": [
+          { "value": "val", "label": "Plain value" },
+          { "value": "yes", "label": "Tick and value" },
+          { "value": "no", "label": "Cross and value" }
+        ], "default": "val" },
+        { "type": "header", "content": "Column 3" },
+        { "type": "text", "id": "cell_3", "label": "Value" },
+        { "type": "select", "id": "kind_3", "label": "Style", "options": [
+          { "value": "val", "label": "Plain value" },
+          { "value": "yes", "label": "Tick and value" },
+          { "value": "no", "label": "Cross and value" }
+        ], "default": "val" },
+        { "type": "header", "content": "Column 4" },
+        { "type": "text", "id": "cell_4", "label": "Value" },
+        { "type": "select", "id": "kind_4", "label": "Style", "options": [
+          { "value": "val", "label": "Plain value" },
+          { "value": "yes", "label": "Tick and value" },
+          { "value": "no", "label": "Cross and value" }
+        ], "default": "val" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Comparison lab",
+      "settings": { "cta_url": "/collections/all" },
+      "blocks": [
+        { "type": "col", "settings": { "name": "Casify", "is_us": true } },
+        { "type": "col", "settings": { "name": "Designer clear", "note": "$65+" } },
+        { "type": "col", "settings": { "name": "Rugged bulk", "note": "$55" } },
+        { "type": "row", "settings": { "label": "Drop height before damage", "icon": "drop-height", "cell_1": "12 ft", "kind_1": "val", "cell_2": "7.2 ft", "kind_2": "val", "cell_3": "10.5 ft", "kind_3": "val" } },
+        { "type": "row", "settings": { "label": "Magnet pull force", "icon": "magnet-ring", "cell_1": "1,400 g", "kind_1": "val", "cell_2": "850 g", "kind_2": "val", "cell_3": "1,100 g", "kind_3": "val" } },
+        { "type": "row", "settings": { "label": "Back thickness", "icon": "ruler", "cell_1": "2.8 mm", "kind_1": "val", "cell_2": "3.1 mm", "kind_2": "val", "cell_3": "6.4 mm", "kind_3": "val" } },
+        { "type": "row", "settings": { "label": "Added weight", "icon": "device", "cell_1": "24 g", "kind_1": "val", "cell_2": "31 g", "kind_2": "val", "cell_3": "78 g", "kind_3": "val" } },
+        { "type": "row", "settings": { "label": "Still clear at 36 months", "icon": "no-yellow", "cell_1": "No shift", "kind_1": "yes", "cell_2": "Yellow by month 4", "kind_2": "no", "cell_3": "Opaque", "kind_3": "no" } },
+        { "type": "row", "settings": { "label": "Qi2 25W through the case", "icon": "wireless-charge", "cell_1": "Full speed", "kind_1": "yes", "cell_2": "Full speed", "kind_2": "yes", "cell_3": "Slowed", "kind_3": "no" } },
+        { "type": "row", "settings": { "label": "Publishes its lab data", "icon": "lab", "cell_1": "Yes", "kind_1": "yes", "cell_2": "No", "kind_2": "no", "cell_3": "No", "kind_3": "no" } },
+        { "type": "row", "settings": { "label": "Returns window", "icon": "returns", "cell_1": "30 days", "kind_1": "yes", "cell_2": "30 days", "kind_2": "val", "cell_3": "30 days", "kind_3": "val" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

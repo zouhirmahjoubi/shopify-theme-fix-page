@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Support answers in under a business day, and can override anything on this page in your favour.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support"
+      }
+    },
+    "sales-note": {
+      "type": "cv-sales-note"
+    },
+    "video-reviews": {
+      "type": "cv-page-video-reviews"
+    },
+    "offer-delivery": {
+      "type": "cv-offer-courier",
+      "settings": {
+        "eyebrow": "From the counter",
+        "heading": "Two cases? 18% off each. Three? 31% off.",
+        "text": "<p>Pick a pack on any case and the saving comes off automatically at checkout — no code needed.</p>",
+        "code": "",
+        "apply_code": false,
+        "button_label": "Choose your pack",
+        "link": "",
+        "fine_print": "Free shipping on every order · 30-day returns",
+        "tone": "red",
+        "display": "popup",
+        "popup_delay": 5,
+        "popup_days": 0,
+        "bubble_before": "Hold on — I’ve got something for you!",
+        "bubble_after": "Here you go!"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "sales-note",
+    "video-reviews",
+    "offer-delivery"
+  ]
+}

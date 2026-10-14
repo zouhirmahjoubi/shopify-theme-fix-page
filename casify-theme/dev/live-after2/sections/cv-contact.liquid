@@ -1,0 +1,209 @@
+{%- comment -%}
+  Casify: contact page, "The letterbox".
+
+  Answers first: links to the shop's own pages that may already answer the
+  question (tracking, returns, shipping, FAQs). Then Shopify's contact form
+  with a topic and optional order number and phone model, posted into a
+  candy-red letterbox (KIE plate); and the ways to reach the shop taken live
+  from the store's own settings (email, phone, address), so nothing here is a
+  promise the shop has not made. The counter bell rings when a message has
+  been sent.
+
+  The lede is the Contact page's own content from Shopify admin.
+  Behaviour + motion: assets/cv-pages.js (contact). Styles: assets/cv-pages.css.
+{%- endcomment -%}
+{{ 'cv-pages.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign topics = section.settings.topics | newline_to_br | split: '<br />'
+  assign phone_digits = shop.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '.'
+-%}
+<div class="cv-page-root cvct" data-cvct>
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current" aria-current="page">{{ page.title | default: 'Contact' | escape }}</span>
+  </nav>
+
+  <header class="cvct__hd">
+    <h1 class="cvct__title">{{ section.settings.heading | default: page.title | default: 'Contact' | escape }}</h1>
+    {%- if page.content != blank -%}
+      <div class="cvct__lede rte">{{ page.content }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- if section.blocks.size > 0 -%}
+    <nav class="cvct__answers" aria-labelledby="cvctAnswers-{{ section.id }}">
+      <h2 class="cvct__h2" id="cvctAnswers-{{ section.id }}">{{ section.settings.answers_heading | default: 'It may already be answered' | escape }}</h2>
+      <ul class="cvct__links" role="list">
+        {%- for b in section.blocks -%}
+          {%- assign target = b.settings.page -%}
+          {%- if target != blank and target.url != blank -%}
+            <li {{ b.shopify_attributes }}>
+              <a class="cvct__link" href="{{ target.url }}">
+                <span class="cvct__link-ico">{%- render 'cv-icon', name: b.settings.icon, size: 26 -%}</span>
+                <span class="cvct__link-text">
+                  <b>{{ b.settings.title | default: target.title | escape }}</b>
+                  {%- if b.settings.text != blank -%}<span>{{ b.settings.text | escape }}</span>{%- endif -%}
+                </span>
+                {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  <div class="cvct__grid">
+    {%- comment -%} ---------- The form, posted into the letterbox ---------- {%- endcomment -%}
+    <section class="cvct__card" aria-labelledby="cvctFormTitle-{{ section.id }}">
+      <img class="cvct__letterbox" src="{{ 'contact-letterbox.webp' | asset_url }}" width="460" height="613" alt="" loading="lazy" data-cvct-box>
+      <h2 class="cvct__h2" id="cvctFormTitle-{{ section.id }}">{{ section.settings.form_heading | default: 'Write to the shop' | escape }}</h2>
+
+      {%- form 'contact', id: 'cvctForm', class: 'cvct__form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="cvct__sent" role="status" data-cvct-sent>
+            {%- render 'cv-icon', name: 'check', size: 18 -%}
+            <p>{{ section.settings.success_message | default: 'Thank you. Your message is with the shop, and the reply will come to the email address you gave.' | escape }}</p>
+          </div>
+        {%- elsif form.errors -%}
+          <div class="cvct__error" role="alert">
+            {%- render 'cv-icon', name: 'cross', size: 16 -%}
+            <div>{{ form.errors | default_errors }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if topics.size > 0 and section.settings.topics != blank -%}
+          <fieldset class="cvct__topics">
+            <legend>{{ section.settings.topic_label | default: 'What is it about?' | escape }}</legend>
+            <div class="cvct__chips">
+              {%- for t in topics -%}
+                {%- assign topic = t | strip -%}
+                {%- if topic != blank -%}
+                  <label class="cvct__chip">
+                    <input type="radio" name="contact[topic]" value="{{ topic | escape }}"{% if forloop.first %} checked{% endif %}>
+                    <span>{{ topic | escape }}</span>
+                  </label>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endif -%}
+
+        <div class="cvct__row">
+          <div class="cvct__field">
+            <label for="cvctName">Name</label>
+            <input type="text" id="cvctName" name="contact[name]" autocomplete="name" required value="{{ form.name }}">
+          </div>
+          <div class="cvct__field">
+            <label for="cvctEmail">Email</label>
+            <input type="email" id="cvctEmail" name="contact[email]" autocomplete="email" spellcheck="false" required value="{{ form.email }}">
+          </div>
+        </div>
+        <div class="cvct__row">
+          <div class="cvct__field">
+            <label for="cvctOrder">Order number <span>optional</span></label>
+            <input type="text" id="cvctOrder" name="contact[order number]" placeholder="#1001" autocomplete="off">
+          </div>
+          <div class="cvct__field">
+            <label for="cvctPhone">Your phone model <span>optional</span></label>
+            <input type="text" id="cvctPhone" name="contact[phone model]" placeholder="iPhone 16 Pro" autocomplete="off">
+          </div>
+        </div>
+        <div class="cvct__field">
+          <label for="cvctBody">Message</label>
+          <textarea id="cvctBody" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+        </div>
+
+        <div class="cvct__send">
+          <button type="submit" class="cvct__submit" data-cvct-submit>
+            <svg class="cvct__envelope" data-cvct-letter viewBox="0 0 32 22" width="30" height="21" aria-hidden="true"><rect x="1" y="1" width="30" height="20" rx="2.5" fill="#fffdf8" stroke="currentColor" stroke-width="1.6"/><path d="m2 3 14 10L30 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <span>{{ section.settings.submit_label | default: 'Post the message' | escape }}</span>
+          </button>
+          {%- if section.settings.fine_print != blank -%}
+            <p class="cvct__fine">{{ section.settings.fine_print | escape }}</p>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+    </section>
+
+    {%- comment -%} ---------- Other ways in, from the store's own settings ---------- {%- endcomment -%}
+    <aside class="cvct__rail" aria-labelledby="cvctRail-{{ section.id }}">
+      <img class="cvct__bell" src="{{ 'contact-bell.webp' | asset_url }}" width="420" height="376" alt="" loading="lazy" data-cvct-bell>
+      <h2 class="cvct__h2" id="cvctRail-{{ section.id }}">{{ section.settings.rail_heading | default: 'Or reach the shop directly' | escape }}</h2>
+      <ul class="cvct__ways" role="list">
+        {%- if shop.email != blank -%}
+          <li class="cvct__way">
+            <span class="cvct__way-ico">{%- render 'cv-icon', name: 'mail', size: 22 -%}</span>
+            <span class="cvct__way-text">
+              <b>Email</b>
+              <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+            </span>
+          </li>
+        {%- endif -%}
+        {%- if section.settings.show_phone and shop.phone != blank -%}
+          <li class="cvct__way">
+            <span class="cvct__way-ico">{%- render 'cv-icon', name: 'device', size: 22 -%}</span>
+            <span class="cvct__way-text">
+              <b>Phone</b>
+              <a href="tel:{{ phone_digits }}">{{ shop.phone }}</a>
+            </span>
+          </li>
+        {%- endif -%}
+        {%- if section.settings.show_address and shop.address.summary != blank -%}
+          <li class="cvct__way">
+            <span class="cvct__way-ico">{%- render 'cv-icon', name: 'gift', size: 22 -%}</span>
+            <span class="cvct__way-text">
+              <b>{{ section.settings.address_label | default: 'Post' | escape }}</b>
+              <span>{{ shop.address.summary | escape }}</span>
+            </span>
+          </li>
+        {%- endif -%}
+      </ul>
+    </aside>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact: the letterbox",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave empty to use the page title." },
+    { "type": "text", "id": "answers_heading", "label": "Answers heading", "default": "It may already be answered" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Write to the shop" },
+    { "type": "text", "id": "topic_label", "label": "Topic question", "default": "What is it about?" },
+    { "type": "textarea", "id": "topics", "label": "Topics", "default": "An order\nFit and phone model\nA return or exchange\nSomething else", "info": "One per line. Sent with the message." },
+    { "type": "text", "id": "submit_label", "label": "Send button", "default": "Post the message" },
+    { "type": "text", "id": "success_message", "label": "Sent message", "default": "Thank you. Your message is with the shop, and the reply will come to the email address you gave." },
+    { "type": "text", "id": "fine_print", "label": "Under the button", "default": "Your details are used to answer this message.", "info": "Keep it true for how you handle messages." },
+    { "type": "header", "content": "Direct contact", "info": "Email, phone and address come from Settings > Store details." },
+    { "type": "text", "id": "rail_heading", "label": "Heading", "default": "Or reach the shop directly" },
+    { "type": "checkbox", "id": "show_phone", "label": "Show the store phone", "default": true },
+    { "type": "checkbox", "id": "show_address", "label": "Show the store address", "default": true },
+    { "type": "text", "id": "address_label", "label": "Address label", "default": "Post" }
+  ],
+  "blocks": [
+    {
+      "type": "answer",
+      "name": "Answer page",
+      "limit": 6,
+      "settings": [
+        { "type": "page", "id": "page", "label": "Page" },
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck-fast", "options": [
+          { "value": "truck-fast", "label": "Shipping" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "precision-fit", "label": "Tracking" },
+          { "value": "quote", "label": "Questions" },
+          { "value": "lock-secure", "label": "Privacy" },
+          { "value": "ticket-scallop", "label": "Ticket" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the page title." },
+        { "type": "text", "id": "text", "label": "Line", "info": "Optional. Describe the page; don't promise times or terms here." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Contact: the letterbox" }]
+}
+{% endschema %}

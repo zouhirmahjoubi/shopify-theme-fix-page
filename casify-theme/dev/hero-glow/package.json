@@ -1,0 +1,19 @@
+{
+  "name": "cv-hero-glow",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build script for the ThreeUI-powered hero ambient glow, bundled to assets/cv-hero-glow.js for the Casify Shopify theme.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@designcodeio/threeui": "^1.2.0",
+    "preact": "^10.29.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

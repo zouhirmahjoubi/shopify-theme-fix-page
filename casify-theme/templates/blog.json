@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-blog",
+      "settings": {
+        "eyebrow": "Field notes",
+        "subheading": "<p>Teardowns, drop tests, and what we learned building the thing.</p>",
+        "feature_first": true,
+        "show_tags": true,
+        "per_page": 12
+      }
+    }
+  },
+  "order": ["main"]
+}

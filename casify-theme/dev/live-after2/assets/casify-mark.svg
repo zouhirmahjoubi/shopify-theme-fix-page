@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Casify">
+  <title>Casify</title>
+  <defs>
+    <linearGradient id="cMarkBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C4302B"/>
+      <stop offset="1" stop-color="#7E1A17"/>
+    </linearGradient>
+    <linearGradient id="cMarkShell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDF9F1"/>
+      <stop offset="1" stop-color="#F0E2C2"/>
+    </linearGradient>
+    <radialGradient id="cMarkSheen" cx=".35" cy=".3" r=".7">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g class="c-mark">
+    <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#cMarkBg)"/>
+    <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#cMarkSheen)"/>
+
+    <g class="c-mark__ring" transform-origin="32 32">
+      <circle cx="32" cy="32" r="26" fill="none" stroke="#F0E2C2" stroke-opacity=".22" stroke-width="1" stroke-dasharray="3 4"/>
+    </g>
+
+    <g class="c-mark__c" transform-origin="32 32">
+      <path d="M44 24.5a13 13 0 1 0 0 15"
+            fill="none" stroke="url(#cMarkShell)" stroke-width="6.5" stroke-linecap="round"/>
+      <circle cx="44" cy="24.5" r="2.4" fill="#FDF9F1"/>
+    </g>
+
+    <g class="c-mark__spark" transform-origin="32 32">
+      <path d="M32 12 L33.5 14.5 L36 16 L33.5 17.5 L32 20 L30.5 17.5 L28 16 L30.5 14.5 Z" fill="#E7D3A8" opacity="0"/>
+    </g>
+  </g>
+</svg>

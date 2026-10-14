@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone frame</title>
+<style>
+  html, body { margin: 0; background: #222; }
+  iframe { display: block; border: 0; background: #fff; }
+</style>
+</head>
+<body>
+<script>
+  /* Harness: headless Chrome will not shrink its window below ~500px, so phone widths render in an iframe.
+     ?src=pages/contact.html&w=390&h=2800 */
+  var q = new URLSearchParams(location.search);
+  var f = document.createElement('iframe');
+  f.src = '../' + (q.get('src') || 'pages/collection.html');
+  f.width = q.get('w') || 390;
+  f.height = q.get('h') || 2800;
+  document.body.appendChild(f);
+</script>
+</body>
+</html>

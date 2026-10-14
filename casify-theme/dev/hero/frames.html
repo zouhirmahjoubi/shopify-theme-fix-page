@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>cv-hero at phone + tablet widths</title>
+<style>
+  body { margin: 0; padding: 16px; background: #d9d2c5; display: flex; gap: 16px; align-items: flex-start; font: 12px monospace; }
+  figure { margin: 0; }
+  figcaption { margin-bottom: 6px; }
+  iframe { display: block; border: 0; background: #fff; }
+</style>
+</head>
+<body>
+  <!-- Headless Chrome won't lay out a real 360/390px window; media queries inside an iframe use the iframe's width. -->
+  <figure><figcaption>360px</figcaption><iframe src="preview.html?frame=360" width="360" height="1320"></iframe></figure>
+  <figure><figcaption>390px</figcaption><iframe src="preview.html?frame=390" width="390" height="1320"></iframe></figure>
+  <figure><figcaption>768px</figcaption><iframe src="preview.html?frame=768" width="768" height="1320"></iframe></figure>
+  <script>
+    // Report horizontal overflow per frame into the caption.
+    document.querySelectorAll('iframe').forEach(function (f) {
+      f.addEventListener('load', function () {
+        setTimeout(function () {
+          var d = f.contentDocument.documentElement;
+          f.previousElementSibling.textContent += '  scrollW=' + d.scrollWidth + (d.scrollWidth > f.width ? '  OVERFLOW' : '  ok');
+        }, 2500);
+      });
+    });
+  </script>
+</body>
+</html>

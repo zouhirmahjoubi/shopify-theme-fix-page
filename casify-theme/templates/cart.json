@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-cart",
+      "settings": {
+        "eyebrow": "Your bag",
+        "heading": "Ready when you are",
+        "summary_title": "Order summary",
+        "checkout_label": "Secure checkout",
+        "free_ship_threshold": 0,
+        "show_note": true,
+        "note_label": "Add a note",
+        "empty_heading": "Your bag is empty",
+        "empty_body": "Nothing in here yet. Pick your phone model and the right case is one tap away.",
+        "empty_cta": "Start shopping"
+      },
+      "blocks": {
+        "t-0": { "type": "trust", "settings": { "icon": "lock-secure", "text": "Encrypted, secure checkout" } },
+        "t-1": { "type": "trust", "settings": { "icon": "truck-fast", "text": "Free shipping" } },
+        "t-2": { "type": "trust", "settings": { "icon": "returns", "text": "30-day returns" } },
+        "t-3": { "type": "trust", "settings": { "icon": "clock", "text": "Ships in 1-3 business days" } }
+      },
+      "block_order": ["t-0", "t-1", "t-2", "t-3"]
+    }
+  },
+  "order": ["main"]
+}

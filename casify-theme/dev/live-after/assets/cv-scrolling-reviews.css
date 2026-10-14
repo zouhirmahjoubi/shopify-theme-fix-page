@@ -1,0 +1,163 @@
+/* =========================================================================
+   Casify: scrolling reviews (sections/cv-scrolling-reviews.liquid).
+   Rows of die-cut paper tickets carrying short customer quotes. Static
+   state = horizontally scrollable rows; cv-scrolling-reviews.js adds
+   .is-looping and runs them as a seamless GSAP conveyor.
+   ========================================================================= */
+
+.cvsr {
+  --cvsr-ink: var(--cocoa-700);
+  --cvsr-body: var(--cocoa-600);
+  --cvsr-muted: var(--cocoa-400);
+  --cvsr-accent: var(--red-500);
+  --cvsr-gap: 16px;
+  padding: calc(var(--cvsr-pt, 56px) * .75) 0 calc(var(--cvsr-pb, 56px) * .75);
+  color: var(--cvsr-body);
+  overflow-x: clip;
+}
+.cvsr--tone-inset { background: var(--cream-200); }
+.cvsr--tone-cocoa {
+  --cvsr-ink: var(--cream-50);
+  --cvsr-body: var(--cream-200);
+  --cvsr-muted: var(--gold-300);
+  --cvsr-accent: var(--gold-400);
+  background: var(--cocoa-700);
+}
+@media (min-width: 750px) {
+  .cvsr { padding: var(--cvsr-pt, 56px) 0 var(--cvsr-pb, 56px); --cvsr-gap: 20px; }
+}
+
+.cvsr__sr {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- header ------------------------------------------------------------- */
+.cvsr__hd {
+  display: grid; justify-items: center; gap: 12px;
+  max-width: 760px; margin: 0 auto 26px; padding: 0 24px; text-align: center;
+}
+.cvsr__title {
+  margin: 0; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(30px, 4.2vw, 50px); line-height: 1.04; letter-spacing: -.025em;
+  color: var(--cvsr-ink); text-wrap: balance;
+}
+.cvsr__title em {
+  font-family: var(--font-script); font-style: normal; font-weight: 400;
+  font-size: 1.22em; letter-spacing: 0; color: var(--cvsr-accent);
+}
+.cvsr__lede { font: 15.5px/1.62 var(--font-body); color: var(--cvsr-body); max-width: 60ch; }
+.cvsr__lede p { margin: 0; }
+
+.cvsr__toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid currentColor; background: transparent; color: var(--cvsr-muted);
+  font-family: var(--font-label); font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  transition: color var(--duration-base, 240ms) var(--ease-standard, ease), background var(--duration-base, 240ms) var(--ease-standard, ease);
+}
+.cvsr__toggle[hidden] { display: none; }
+.cvsr__toggle:hover { color: var(--cvsr-ink); }
+.cvsr__toggle:focus-visible { outline: 3px solid var(--focus-ring, #4E7C7B); outline-offset: 3px; }
+.cvsr__toggle svg { width: 14px; height: 14px; fill: currentColor; }
+.cvsr__toggle-play { display: none; }
+.cvsr__toggle[aria-pressed="true"] .cvsr__toggle-play { display: block; }
+.cvsr__toggle[aria-pressed="true"] .cvsr__toggle-pause { display: none; }
+
+/* ---- rows --------------------------------------------------------------- */
+.cvsr__rows { display: grid; gap: calc(var(--cvsr-gap) * .5); }
+.cvsr__row {
+  overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+.cvsr__row::-webkit-scrollbar { display: none; }
+.cvsr__row.is-looping { overflow: hidden; }
+.cvsr__track {
+  display: flex; gap: var(--cvsr-gap); width: max-content;
+  margin: 0; padding: 12px 24px 18px; list-style: none;
+}
+.cvsr__row.is-looping .cvsr__track { padding-left: 0; padding-right: 0; will-change: transform; }
+
+/* ---- ticket ------------------------------------------------------------- */
+.cvsr-card {
+  position: relative; flex: none; display: flex; align-items: center; gap: 14px;
+  max-width: min(460px, 82vw);
+  padding: 12px 24px 12px 12px; border-radius: 999px;
+  background: var(--cream-50); color: var(--cocoa-600);
+  box-shadow: var(--shadow-diecut), 0 12px 24px -16px rgba(51, 35, 26, .45);
+}
+.cvsr-card::after {
+  content: ""; position: absolute; inset: 4px; border-radius: inherit; pointer-events: none;
+  border: 1px dashed rgba(74, 51, 36, .22);
+}
+.cvsr--tone-cocoa .cvsr-card { box-shadow: 0 1px 0 rgba(255, 253, 248, .6) inset, 0 14px 28px -14px rgba(0, 0, 0, .6); }
+
+.cvsr-card__avatar {
+  flex: none; display: grid; place-items: center; overflow: hidden;
+  width: 48px; height: 48px; border-radius: 50%;
+  font-family: var(--font-display); font-weight: 900; font-size: 16px; letter-spacing: .02em;
+  color: var(--cream-50); background: var(--red-500);
+  box-shadow: 0 0 0 2px var(--cream-50), 0 0 0 4px var(--gold-400);
+}
+.cvsr-card__avatar--1 { background: var(--teal-600); }
+.cvsr-card__avatar--2 { background: var(--cocoa-500); }
+.cvsr-card__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.cvsr-card__body { margin: 0; min-width: 0; display: grid; gap: 4px; }
+.cvsr-card__quote { margin: 0; }
+.cvsr-card__quote p {
+  margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.3;
+  color: var(--cocoa-700);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.cvsr-card__quote p::before { content: "\201C"; color: var(--red-500); }
+.cvsr-card__quote p::after { content: "\201D"; color: var(--red-500); }
+.cvsr-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.cvsr-card__name {
+  font-family: var(--font-label); font-size: 11.5px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--cocoa-400);
+}
+.cvsr-card__tag {
+  padding: 2px 8px; border-radius: 999px;
+  font-family: var(--font-label); font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
+  /* Deepened teal: --teal-600 on --teal-100 is only 4.0:1; this is 5.5:1. */
+  color: #426563; background: var(--teal-100);
+}
+
+/* Stars (same rules as snippets/cv-stars.liquid's product-page styles). */
+.cvsr .cv-stars {
+  --cv-star-empty: var(--gold-200); --cv-star-fill: var(--gold-500);
+  position: relative; display: inline-block; flex: none;
+  width: 5.72em; height: 1.12em; font-size: 12px;
+}
+.cvsr .cv-stars__row { position: absolute; inset: 0; display: flex; gap: .035em; }
+.cvsr .cv-stars__row svg { flex: 1 1 0; width: 20%; height: 100%; overflow: visible; }
+.cvsr .cv-stars__row path { fill: var(--cv-star-empty); }
+.cvsr .cv-stars__row--fill { clip-path: inset(-10% calc(100% - var(--fill, 0%)) -10% -10%); }
+.cvsr .cv-stars__row--fill path { fill: var(--cv-star-fill); }
+
+/* Editor-only placeholder for an empty review block. */
+.cvsr-card--empty {
+  padding: 18px 26px; background: transparent; box-shadow: none;
+  border: 1.5px dashed var(--border-dashed, rgba(74, 51, 36, .45));
+}
+.cvsr-card--empty::after { display: none; }
+.cvsr-card__hint { font-family: var(--font-label); font-size: 12px; letter-spacing: .06em; color: var(--cvsr-muted); }
+
+/* ---- phone -------------------------------------------------------------- */
+@media (max-width: 749px) {
+  .cvsr__hd { padding: 0 16px; margin-bottom: 20px; }
+  .cvsr__track { padding: 10px 16px 16px; }
+  .cvsr-card { gap: 12px; padding: 10px 18px 10px 10px; }
+  .cvsr-card__avatar { width: 42px; height: 42px; font-size: 14px; }
+  .cvsr-card__quote p { font-size: 15px; }
+}
+/* theme.css caps every h2 on small phones with !important; opt out like .halo-closer h2. */
+@media (max-width: 420px) {
+  .cvsr .cvsr__title { font-size: clamp(28px, 8vw, 34px) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvsr__toggle { transition: none; }
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "A desktop e-commerce HOME PAGE screenshot, 1440px wide browser viewport, landscape, crisp production web UI, not a poster or illustration. Reference image 1 is the site's real header: reuse it exactly as shown — a red-and-cream candy-striped awning with a scalloped edge and a thin ticker reading 'FREE SHIPPING · 30-DAY RETURNS · SHIPS IN 1-3 BUSINESS DAYS · EST. 1920' repeating, a cocoa-brown topbar, a cream nav bar with the CASIFY hanging shop sign between a red and a teal peppermint, nav links IPHONE SAMSUNG COLLECTIONS CONTACT, search/account/bag icons. Reference image 2 is an existing page in the same world: reuse its palette (warm cream paper ground, cocoa-brown ink, candy red, muted teal, brass gold) and its type character (heavy high-contrast serif display, typewriter small-caps labels, bookish serif body). Do not copy either reference's own content, only its chrome, palette, material and type.\n\nPAGE STRUCTURE, top to bottom, styled as looking straight into the shop's own glass display case: directly below the header, the whole first viewport is a wide glass-fronted display case shown face-on, a brass trim frame around the glass pane and a soft diagonal reflection highlight across it. Inside the case, three horizontal marble shelf tiers stack top to bottom, each lit from above and labelled on a small brass plaque at its left edge: 'IPHONE', 'SAMSUNG', 'PACKS'. Each tier holds a row of upright phone-case photos spaced evenly like sweets under glass, with a small hanging brass price tag in front of a couple of them. Below the display case, one dashed-border ticket strip lists three honest service facts with small line icons: 'Free shipping', '30-day returns', 'Ships in 1-3 business days'. The page ends with a red pill button reading 'Find my model' set on its own marble counter strip.\n\nNo star ratings, no review counts, no press logos, no drop-test or lab claims, no countdown timers, no discount codes, no people, no hands, no invented weights or measurements. Spell every text exactly as given.",
+  "tool": "KIE gpt-image-2-5-flare-image-to-image",
+  "aspect_ratio": "3:2",
+  "resolution": "2K",
+  "taskId": "057e6f73bb0f152bf91e6ebae15e89ac",
+  "input_urls": [
+    "https://tempfile.redpandaai.co/kieai/11683805/casify/home-refs/1789503422890-a3cajb1fysh.png",
+    "https://tempfile.redpandaai.co/kieai/11683805/casify/home-refs/1789503425946-w6fhc1r0mxo.png"
+  ],
+  "round": "home page structure (seed b816f826, dealt index 4)"
+}

@@ -1,0 +1,283 @@
+{%- comment -%}
+  Casify — review rail with rating summary (Chrismass design system).
+
+  A rebuild of the "Trustpilot Comment" snippet: a heading, a rating summary
+  (score, stars, review count), a horizontal rail of review letters, and a
+  "Based on N reviews" band.
+
+  Honest data only — nothing is pre-filled:
+    - the rating comes either from the merchant's review profile (score and
+      count typed in from it, and linked so shoppers can check), or from
+      Shopify's standard reviews.rating / reviews.rating_count metafields
+      (weighted average, same method as sections/cv-social-proof.liquid);
+    - with no rating, the summary and the band are not rendered;
+    - review blocks ship empty and never render until they have text and a
+      name; there are no invented timestamps, and "Verified" is opt-in;
+    - an @app block slot takes the review platform's official widget.
+
+  Motion: assets/cv-trustpilot.js (GSAP, ScrollTrigger, SplitText, Draggable,
+  InertiaPlugin, ScrollToPlugin). Styles: assets/cv-trustpilot.css.
+{%- endcomment -%}
+{{ 'cv-trustpilot.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+
+  assign review_count = 0
+  assign draft_count = 0
+  assign app_blocks = 0
+  for block in section.blocks
+    if block.type == 'review'
+      if block.settings.text != blank and block.settings.author != blank
+        assign review_count = review_count | plus: 1
+      else
+        assign draft_count = draft_count | plus: 1
+      endif
+    elsif block.type == '@app'
+      assign app_blocks = app_blocks | plus: 1
+    endif
+  endfor
+
+  assign score = 0
+  assign total = 0
+  assign scale = 5
+  if st.rating_source == 'profile'
+    assign score = st.score | plus: 0
+    assign total = st.total_reviews | plus: 0
+  elsif st.rating_source == 'shopify'
+    assign weighted_sum = 0
+    for item in collections.all.products
+      assign item_count = item.metafields.reviews.rating_count.value | default: 0
+      assign item_rating = item.metafields.reviews.rating.value
+      if item_count > 0 and item_rating != blank
+        assign scale = item_rating.scale_max | default: 5
+        assign item_weighted = item_rating.rating | times: item_count
+        assign weighted_sum = weighted_sum | plus: item_weighted
+        assign total = total | plus: item_count
+      endif
+    endfor
+    if total > 0
+      assign score = weighted_sum | divided_by: total | round: 1
+    endif
+  endif
+  assign score_fill = score | times: 100.0 | divided_by: scale | round: 1
+  assign profile = st.profile_url
+  if st.rating_source != 'profile'
+    assign profile = blank
+  endif
+-%}
+
+{%- if review_count > 0 or app_blocks > 0 or score > 0 or request.design_mode -%}
+<section
+  class="cvtr cvtr--tone-{{ st.tone }}"
+  data-cvtr
+  aria-labelledby="cvtr-title-{{ section.id }}"
+  style="--cvtr-pt: {{ st.padding_top }}px; --cvtr-pb: {{ st.padding_bottom }}px;"
+>
+  <div class="cvtr__inner">
+    <header class="cvtr__hd">
+      <h2 class="cvtr__title" id="cvtr-title-{{ section.id }}" data-cvtr-heading>{{ st.heading | default: 'What customers say' }}</h2>
+      {%- if st.subheading != blank -%}
+        <p class="cvtr__lede" data-cvtr-fade>{{ st.subheading | escape }}</p>
+      {%- endif -%}
+
+      {%- if score > 0 -%}
+        {%- capture summary_inner -%}
+          <span class="cvtr-plaque__score" aria-hidden="true" data-cvtr-score data-value="{{ score }}">{{ score }}</span>
+          <span class="cvtr-plaque__body" aria-hidden="true">
+            <span class="cvtr-plaque__stars" data-cvtr-stars aria-hidden="true">
+              {%- render 'cv-stars', fill: score_fill -%}
+            </span>
+            <span class="cvtr-plaque__meta">
+              out of {{ scale }}
+              {%- if total > 0 %} · <b data-cvtr-count data-value="{{ total }}">{{ total }}</b> {% if total == 1 %}review{% else %}reviews{% endif %}{% endif %}
+              {%- if st.rating_source == 'profile' and st.source_name != blank %} on {{ st.source_name | escape }}{% endif -%}
+            </span>
+          </span>
+          <span class="cvtr__sr">Rated {{ score }} out of {{ scale }}{% if total > 0 %} from {{ total }} reviews{% endif %}.{% if profile != blank %} Opens in a new window.{% endif %}</span>
+        {%- endcapture -%}
+        {%- if profile != blank -%}
+          <a class="cvtr-plaque" data-cvtr-plaque href="{{ profile | escape }}" target="_blank" rel="noopener noreferrer">{{ summary_inner }}</a>
+        {%- else -%}
+          <div class="cvtr-plaque" data-cvtr-plaque>{{ summary_inner }}</div>
+        {%- endif -%}
+      {%- endif -%}
+    </header>
+
+    {%- if review_count > 0 -%}
+      <div class="cvtr__rail-wrap">
+        <ul class="cvtr__rail" role="list" tabindex="0" aria-label="Customer reviews" data-cvtr-rail>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'review' and block.settings.text != blank and block.settings.author != blank -%}
+              {%- liquid
+                assign b = block.settings
+                assign rating = b.rating | plus: 0
+                assign rating_fill = rating | times: 20
+                assign initial = b.author | strip | slice: 0, 1 | upcase
+              -%}
+              <li class="cvtr-card" data-cvtr-card {{ block.shopify_attributes }}>
+                <article class="cvtr-card__paper">
+                  <span class="cvtr-card__edge" data-cvtr-edge aria-hidden="true"></span>
+                  <div class="cvtr-card__top">
+                    {%- if rating > 0 -%}
+                      <span class="cvtr-card__stars" aria-hidden="true">{% render 'cv-stars', fill: rating_fill %}</span>
+                      <span class="cvtr__sr">Rated {{ rating }} out of 5.</span>
+                    {%- endif -%}
+                    {%- if b.verified -%}
+                      <span class="cvtr-card__verified">
+                        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8.5l3 3 6-7"/></svg>
+                        Verified
+                      </span>
+                    {%- endif -%}
+                  </div>
+                  {%- if b.title != blank -%}
+                    <h3 class="cvtr-card__title">{{ b.title | escape }}</h3>
+                  {%- endif -%}
+                  <div class="cvtr-card__text">{{ b.text }}</div>
+                  <div class="cvtr-card__who">
+                    <span class="cvtr-card__avatar" aria-hidden="true">
+                      {%- if b.avatar != blank -%}
+                        {{ b.avatar | image_url: width: 88, height: 88, crop: 'center' | image_tag: loading: 'lazy', alt: '', width: 40, height: 40 }}
+                      {%- else -%}
+                        {{ initial | escape }}
+                      {%- endif -%}
+                    </span>
+                    <span class="cvtr-card__name">
+                      <cite>{{ b.author | escape }}</cite>
+                      {%- if b.date != blank -%}<span>{{ b.date | escape }}</span>{%- endif -%}
+                    </span>
+                  </div>
+                </article>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        <div class="cvtr__controls" data-cvtr-controls hidden>
+          <span class="cvtr__progress" aria-hidden="true"><span data-cvtr-progress></span></span>
+          <button type="button" class="cvtr__nav" data-cvtr-step="-1" aria-label="Previous reviews">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 5-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="cvtr__nav" data-cvtr-step="1" aria-label="Next reviews">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    {%- elsif app_blocks == 0 and request.design_mode -%}
+      <p class="cvtr__empty">Add review blocks with real reviews (copied from your review profile), or add your review app's block.</p>
+    {%- endif -%}
+
+    {%- if request.design_mode and draft_count > 0 -%}
+      <div class="cvtr__drafts">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            {%- if block.settings.text == blank or block.settings.author == blank -%}
+              <div class="cvtr__draft" {{ block.shopify_attributes }}>Review draft — add the review text and reviewer name to show it.</div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if app_blocks > 0 -%}
+      <div class="cvtr__apps">
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if total > 0 -%}
+    <div class="cvtr-band" data-cvtr-band>
+      <p class="cvtr-band__text">
+        Based on <span class="cvtr-band__num" data-value="{{ total }}">{{ total }}</span>
+        {%- if st.rating_source == 'profile' %} reviews{% if st.source_name != blank %} on {{ st.source_name | escape }}{% endif %}{% else %} published reviews{% endif -%}
+      </p>
+      {%- if profile != blank and st.link_label != blank -%}
+        <a class="cvtr-band__link" href="{{ profile | escape }}" target="_blank" rel="noopener noreferrer" data-cvtr-link>
+          {{ st.link_label | escape }}
+          <svg viewBox="0 0 28 16" aria-hidden="true" focusable="false"><path d="M1 8h23M17 1l7 7-7 7"/></svg>
+          <span class="cvtr__sr">(opens in a new window)</span>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Review rail",
+  "tag": "div",
+  "disabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "inline_richtext", "id": "heading", "label": "Heading",
+      "info": "Italic words are set in the script face — use it for one short flourish.",
+      "default": "Your <em>satisfaction</em> is our success"
+    },
+    { "type": "text", "id": "subheading", "label": "Sub-heading", "default": "We read every review." },
+    { "type": "header", "content": "Rating summary" },
+    {
+      "type": "select", "id": "rating_source", "label": "Rating comes from", "default": "none",
+      "options": [
+        { "value": "none", "label": "Don't show a rating" },
+        { "value": "profile", "label": "My review profile (enter below)" },
+        { "value": "shopify", "label": "Shopify product review data" }
+      ],
+      "info": "\"Shopify product review data\" averages the standard review metafields your reviews app publishes."
+    },
+    { "type": "text", "id": "source_name", "label": "Review platform name", "info": "E.g. the site your reviews live on. Used as \"… reviews on [name]\".", "default": "Trustpilot" },
+    { "type": "url", "id": "profile_url", "label": "Public review profile URL", "info": "Links the rating so shoppers can check it." },
+    { "type": "range", "id": "score", "label": "Score (from your profile)", "min": 0, "max": 5, "step": 0.1, "default": 0, "info": "Copy your current score. 0 hides the rating." },
+    { "type": "number", "id": "total_reviews", "label": "Total reviews (from your profile)", "info": "Leave blank to hide the count and the \"Based on\" band." },
+    { "type": "text", "id": "link_label", "label": "Profile link label", "default": "Read all reviews" },
+    { "type": "header", "content": "Style" },
+    {
+      "type": "select", "id": "tone", "label": "Background", "default": "page",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "cocoa", "label": "Cocoa" }
+      ]
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "paragraph", "content": "Copy a real review word for word, from your review profile or an order conversation." },
+        {
+          "type": "select", "id": "rating", "label": "Star rating", "default": "0",
+          "options": [
+            { "value": "0", "label": "No rating" },
+            { "value": "1", "label": "1 star" },
+            { "value": "2", "label": "2 stars" },
+            { "value": "3", "label": "3 stars" },
+            { "value": "4", "label": "4 stars" },
+            { "value": "5", "label": "5 stars" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Review title" },
+        { "type": "richtext", "id": "text", "label": "Review text" },
+        { "type": "text", "id": "author", "label": "Reviewer name" },
+        { "type": "text", "id": "date", "label": "Date", "info": "The date the review was posted, e.g. \"12 Sep 2026\"." },
+        { "type": "image_picker", "id": "avatar", "label": "Reviewer photo" },
+        { "type": "checkbox", "id": "verified", "label": "Show \"Verified\"", "info": "Only when the platform marks this review as verified.", "default": false }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "max_blocks": 16,
+  "presets": [
+    {
+      "name": "Review rail",
+      "blocks": [ { "type": "review" }, { "type": "review" }, { "type": "review" }, { "type": "review" } ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T22:04:51.2071856Z",
+  "title": "Design System: Casify Candy Shop",
+  "extensions": {
+    "colorMeta": {
+      "candy-red": { "role": "primary", "displayName": "Candy Red", "canonical": "#C4302B", "tonalRamp": ["#3A0B09", "#651310", "#7E1A17", "#A8231F", "#C4302B", "#D8564A", "#E58C82", "#F9E4E1"] },
+      "muted-teal": { "role": "secondary", "displayName": "Muted Teal", "canonical": "#6C9E9C", "tonalRamp": ["#173332", "#284E4D", "#4E7C7B", "#6C9E9C", "#86B0AE", "#A8C8C4", "#CDE3E0", "#E4F0EE"] },
+      "aged-gold": { "role": "tertiary", "displayName": "Aged Gold", "canonical": "#D2B57C", "tonalRamp": ["#372B16", "#5B4725", "#7E6438", "#B08F52", "#D2B57C", "#E7D3A8", "#F0E2C2", "#FBF4E5"] },
+      "paper": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#FDF9F1", "tonalRamp": ["#33231A", "#4A3324", "#6B4229", "#A87B58", "#DCC9A6", "#EADCBF", "#F5E9D3", "#FDF9F1"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Editorial Display", "purpose": "One dominant merchandising message per surface." },
+      "body": { "displayName": "Bookish Body", "purpose": "Product explanation, evidence and service copy." },
+      "script": { "displayName": "Shopkeeper Script", "purpose": "One short emotional flourish, never operational copy." },
+      "label": { "displayName": "Ticket Label", "purpose": "Actions, tabs, tags and compact metadata." }
+    },
+    "shadows": [
+      { "name": "die-cut", "value": "0 1px 0 rgba(255,253,248,.7) inset, 0 -1px 0 rgba(74,51,36,.14) inset, 0 2px 5px rgba(51,35,26,.16)", "purpose": "Tickets, punched-paper selectors and tactile labels." },
+      { "name": "small", "value": "0 1px 3px rgba(51,35,26,.14)", "purpose": "Navigation and resting controls." },
+      { "name": "lifted", "value": "0 14px 34px rgba(51,35,26,.24)", "purpose": "Product stages and deliberately floating shop objects." }
+    ],
+    "motion": [
+      { "name": "fast", "value": "160ms cubic-bezier(.4,0,.2,1)", "purpose": "Hover, focus and color response." },
+      { "name": "base", "value": "240ms cubic-bezier(.4,0,.2,1)", "purpose": "Default component state changes." },
+      { "name": "slow-soft", "value": "420ms cubic-bezier(0,0,.2,1)", "purpose": "Entrances, panels and scene transitions." },
+      { "name": "candy-spring", "value": "cubic-bezier(.34,1.56,.64,1)", "purpose": "Small stamps, bows and tactile delight only." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "620px" },
+      { "name": "stack", "value": "899px" },
+      { "name": "compact-desktop", "value": "1080px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main commercial action: red enamel, cream ticket type and a tactile lift.",
+      "html": "<button class=\"ds-btn-primary\">SHOP CASES <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-btn-primary{min-height:52px;padding:17px 22px;border:0;border-radius:999px;background:#C4302B;color:#FDF9F1;font:700 12px/1.2 'Special Elite','Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 3px 0 #7E1A17,0 10px 24px rgba(51,35,26,.2);transition:transform 160ms cubic-bezier(.34,1.56,.64,1),background-color 160ms cubic-bezier(.4,0,.2,1)}.ds-btn-primary:hover{background:#A8231F;transform:translateY(-2px)}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:3px solid #4E7C7B;outline-offset:3px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A quieter secondary action with a cocoa outline and physical inversion on hover.",
+      "html": "<button class=\"ds-btn-ghost\">VIEW DETAILS</button>",
+      "css": ".ds-btn-ghost{min-height:46px;padding:13px 24px;border:1.5px solid #6B4229;border-radius:999px;background:transparent;color:#33231A;font:700 12px/1.2 'Special Elite','Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;transition:background-color 160ms,color 160ms,transform 160ms}.ds-btn-ghost:hover{background:#33231A;color:#FDF9F1;transform:translateY(-1px)}.ds-btn-ghost:focus-visible{outline:3px solid #4E7C7B;outline-offset:3px}"
+    },
+    {
+      "name": "Ticket Selector",
+      "kind": "chip",
+      "refersTo": "ticket-card",
+      "description": "A compact model or offer selector with an active ticket-gold state.",
+      "html": "<button class=\"ds-ticket is-active\"><strong>18 PRO MAX</strong><span>Larger-frame fit</span></button>",
+      "css": ".ds-ticket{display:grid;gap:5px;min-width:150px;padding:12px 14px;text-align:left;border:1px solid rgba(74,51,36,.28);border-radius:6px;background:#FDF9F1;color:#4A3324;box-shadow:0 2px 5px rgba(51,35,26,.16)}.ds-ticket strong{font:700 11px/1.1 'Special Elite','Courier New',monospace;letter-spacing:.08em}.ds-ticket span{font:400 12px/1.35 'Libre Baskerville',Georgia,serif}.ds-ticket.is-active{background:#F0E2C2;border-color:#C4302B}.ds-ticket:focus-visible{outline:3px solid #4E7C7B;outline-offset:2px}"
+    },
+    {
+      "name": "Paper Card",
+      "kind": "card",
+      "refersTo": "ticket-card",
+      "description": "A raised cream information surface with a fine cocoa edge.",
+      "html": "<article class=\"ds-card\"><p class=\"ds-card-label\">IPHONE 18 PRO</p><h3>The fit, chosen exactly.</h3><p>Select the model before it reaches your bag.</p></article>",
+      "css": ".ds-card{max-width:360px;padding:20px;border:1px solid rgba(74,51,36,.28);border-radius:14px;background:#FDF9F1;color:#4A3324;box-shadow:0 3px 8px rgba(51,35,26,.16)}.ds-card-label{margin:0 0 7px;color:#A8231F;font:700 11px/1.2 'Special Elite','Courier New',monospace;letter-spacing:.12em}.ds-card h3{margin:0 0 8px;color:#33231A;font:800 24px/1.08 'Playfair Display',Georgia,serif}.ds-card p{margin:0;font:400 14px/1.55 'Libre Baskerville',Georgia,serif}"
+    },
+    {
+      "name": "Newsletter Field",
+      "kind": "input",
+      "description": "A warm-glass email field for use on dark cocoa surfaces.",
+      "html": "<label class=\"ds-field\"><span>EMAIL ADDRESS</span><input type=\"email\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;color:#FDF9F1;font:700 11px/1.2 'Special Elite','Courier New',monospace;letter-spacing:.12em}.ds-field input{height:44px;padding:0 16px;border:1.5px solid rgba(255,253,248,.28);border-radius:999px;background:rgba(255,253,248,.08);color:#FDF9F1;font:400 14px 'Libre Baskerville',Georgia,serif}.ds-field input::placeholder{color:rgba(245,233,211,.62)}.ds-field input:focus{outline:none;border-color:#D2B57C;box-shadow:0 0 0 3px rgba(210,181,124,.3)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Candy Shop Matinee",
+    "overview": "Casify presents modern phone cases through the material language of a warmly lit 1920s confectionery. The shop dressing creates recognition and delight, while the product photograph, model choice, price, and service facts remain direct and authoritative.",
+    "keyCharacteristics": [
+      "Warm paper-and-cocoa foundation with red as the primary commercial signal.",
+      "Real product imagery centered inside crafted shop displays.",
+      "Die-cut tickets, striped trims, brass accents, and glass highlights as recurring material cues.",
+      "Expressive motion that settles into a readable state and respects reduced motion."
+    ],
+    "rules": [
+      { "name": "The Red Means Action Rule", "body": "Preserve candy red for brand structure and high-value action so it remains immediately legible.", "section": "colors" },
+      { "name": "The One Flourish Rule", "body": "A composition may use one script-led flourish; all decisions and evidence stay in display, body, or label type.", "section": "typography" },
+      { "name": "The Physical Cause Rule", "body": "Every shadow should imply a real edge, hanging object, glass pane, or lifted card; never add glow solely for decoration.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do let real product photography remain the sharpest and most authoritative object in each shopping scene.",
+      "Do use the established cream, cocoa, candy red, muted teal, and aged-gold palette before introducing a new hue.",
+      "Do make model, price, shipping, returns, and dispatch facts readable before decorative detail.",
+      "Do give animation an explicit pause path when it auto-runs and a complete static fallback when JavaScript is unavailable."
+    ],
+    "donts": [
+      "Don't use generic gradient-heavy tech styling, neon glows, or a dark campaign world that detaches from the header and footer.",
+      "Don't invent product performance, review, shipping, or guarantee claims to fill a composition.",
+      "Don't place an eyebrow label above every heading; hierarchy should come from the heading, spacing, and content itself.",
+      "Don't shrink core mobile labels below practical reading size or truncate model-fit information."
+    ]
+  }
+}

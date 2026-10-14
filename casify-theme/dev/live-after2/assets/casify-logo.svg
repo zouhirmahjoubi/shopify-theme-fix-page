@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" role="img" aria-label="Casify">
+  <title>Casify</title>
+  <defs>
+    <linearGradient id="cwMarkBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C4302B"/>
+      <stop offset="1" stop-color="#7E1A17"/>
+    </linearGradient>
+    <linearGradient id="cwMarkShell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDF9F1"/>
+      <stop offset="1" stop-color="#F0E2C2"/>
+    </linearGradient>
+    <radialGradient id="cwMarkSheen" cx=".35" cy=".3" r=".7">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g class="cw-mark">
+    <rect x="2" y="2" width="76" height="76" rx="17" fill="url(#cwMarkBg)"/>
+    <rect x="2" y="2" width="76" height="76" rx="17" fill="url(#cwMarkSheen)"/>
+    <g class="cw-mark__ring" transform-origin="40 40">
+      <circle cx="40" cy="40" r="32" fill="none" stroke="#F0E2C2" stroke-opacity=".22" stroke-width="1.2" stroke-dasharray="3.5 5"/>
+    </g>
+    <g class="cw-mark__c" transform-origin="40 40">
+      <path d="M55 30.5a16 16 0 1 0 0 19"
+            fill="none" stroke="url(#cwMarkShell)" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="55" cy="30.5" r="2.8" fill="#FDF9F1"/>
+    </g>
+  </g>
+
+  <g class="cw-word" font-family="Playfair Display, Georgia, serif" font-weight="800" font-size="52" letter-spacing="-2">
+    <text x="96" y="55" fill="#33231A">casif<tspan class="cw-y" fill="#C4302B">y</tspan></text>
+    <line class="cw-underline" x1="96" y1="66" x2="248" y2="66" stroke="#C4302B" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 6"/>
+    <text x="96" y="78" font-family="Special Elite, Courier New, monospace" font-size="9" letter-spacing="3" fill="#6B4229">EST. 1920 · CASES WITH NUMBERS</text>
+  </g>
+</svg>

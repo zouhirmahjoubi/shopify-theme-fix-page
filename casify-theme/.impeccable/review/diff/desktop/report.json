@@ -1,0 +1,1197 @@
+{
+  "tool": "comp-diff",
+  "version": 1,
+  "createdAt": "2026-09-15T02:05:19.966Z",
+  "label": "desktop",
+  "comp": ".impeccable/mocks/revision/shop-counter-v2.png",
+  "build": ".impeccable\\review\\desktop.png",
+  "spec": ".impeccable\\build\\spec.json",
+  "compSize": "2016x1344",
+  "buildSize": "2016x5740",
+  "align": "top",
+  "overall": 0.82,
+  "verdict": "match",
+  "scores": {
+    "overall": 0.82,
+    "structure": 0.7315,
+    "color": 0.871,
+    "colorIntersection": 0.7403,
+    "paletteMatch": 0.9414,
+    "detail": 0.8223,
+    "detailRaw": 0.864,
+    "detailAdded": 0.0833,
+    "bands": 0.938
+  },
+  "palette": {
+    "comp": [
+      {
+        "hex": "#f5f4e8",
+        "coverage": 0.7677
+      },
+      {
+        "hex": "#d5c7bb",
+        "coverage": 0.1015
+      },
+      {
+        "hex": "#372617",
+        "coverage": 0.049
+      },
+      {
+        "hex": "#c72c2a",
+        "coverage": 0.0361
+      },
+      {
+        "hex": "#b8c4cc",
+        "coverage": 0.0257
+      },
+      {
+        "hex": "#dde2f2",
+        "coverage": 0.0201
+      }
+    ],
+    "build": [
+      {
+        "hex": "#f6f4ea",
+        "coverage": 0.7005
+      },
+      {
+        "hex": "#d7cabf",
+        "coverage": 0.1536
+      },
+      {
+        "hex": "#392819",
+        "coverage": 0.0559
+      },
+      {
+        "hex": "#c1362e",
+        "coverage": 0.0395
+      },
+      {
+        "hex": "#d3e0ec",
+        "coverage": 0.026
+      },
+      {
+        "hex": "#bda492",
+        "coverage": 0.0246
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "header",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 0.171,
+      "kind": "chrome",
+      "score": {
+        "overall": 0.7749,
+        "structure": 0.8666,
+        "color": 0.6734,
+        "colorIntersection": 0.4239,
+        "paletteMatch": 0.8077,
+        "detail": 0.7843,
+        "detailRaw": 0.8416,
+        "detailAdded": 0.1146,
+        "bands": 0.7143
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 2016,
+          "h": 230
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 2016,
+          "h": 230
+        }
+      }
+    },
+    {
+      "id": "breadcrumb",
+      "x": 0.024,
+      "y": 0.1778,
+      "w": 0.283,
+      "h": 0.0278,
+      "kind": "text",
+      "score": {
+        "overall": 0.8491,
+        "structure": 0.8955,
+        "color": 0.8704,
+        "colorIntersection": 0.7823,
+        "paletteMatch": 0.9179,
+        "detail": 0.6915,
+        "detailRaw": 0.7748,
+        "detailAdded": 0.1667,
+        "bands": 0.8
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 17,
+          "w": 554,
+          "h": 16
+        },
+        "build": {
+          "x": 8,
+          "y": 16,
+          "w": 529,
+          "h": 17
+        }
+      }
+    },
+    {
+      "id": "page-ground",
+      "x": 0.66,
+      "y": 0.3788,
+      "w": 0.06,
+      "h": 0.0413,
+      "kind": "texture",
+      "score": {
+        "overall": 0.9996,
+        "structure": 0.9979,
+        "color": 0.9998,
+        "colorIntersection": 0.9994,
+        "paletteMatch": 1,
+        "detail": 1,
+        "detailRaw": 1,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": null,
+        "build": null
+      }
+    },
+    {
+      "id": "thumb-rail",
+      "x": 0.0235,
+      "y": 0.2251,
+      "w": 0.0765,
+      "h": 0.6549,
+      "kind": "chrome",
+      "score": {
+        "overall": 0.5094,
+        "structure": 0.4781,
+        "color": 0.8144,
+        "colorIntersection": 0.5904,
+        "paletteMatch": 0.935,
+        "detail": 0.2182,
+        "detailRaw": 0.515,
+        "detailAdded": 0.5938,
+        "bands": 0.5596
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 10,
+          "y": 9,
+          "w": 136,
+          "h": 862
+        },
+        "build": {
+          "x": 9,
+          "y": 0,
+          "w": 139,
+          "h": 859
+        }
+      }
+    },
+    {
+      "id": "jar-lid",
+      "x": 0.0275,
+      "y": 0.3623,
+      "w": 0.0685,
+      "h": 0.1185,
+      "kind": "plate",
+      "score": {
+        "overall": 0.3569,
+        "structure": 0.3321,
+        "color": 0.7018,
+        "colorIntersection": 0.4689,
+        "paletteMatch": 0.8271,
+        "detail": 0.207,
+        "detailRaw": 0.5143,
+        "detailAdded": 0.6146,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 2,
+          "y": 0,
+          "w": 136,
+          "h": 159
+        },
+        "build": {
+          "x": 1,
+          "y": 0,
+          "w": 138,
+          "h": 159
+        }
+      }
+    },
+    {
+      "id": "thumb-1",
+      "x": 0.029,
+      "y": 0.2528,
+      "w": 0.066,
+      "h": 0.0968,
+      "kind": "image",
+      "score": {
+        "overall": 0.3999,
+        "structure": 0.3635,
+        "color": 0.7667,
+        "colorIntersection": 0.5373,
+        "paletteMatch": 0.8901,
+        "detail": 0.2614,
+        "detailRaw": 0.4749,
+        "detailAdded": 0.4271,
+        "bands": 0.5
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 130
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 130
+        }
+      }
+    },
+    {
+      "id": "thumb-2",
+      "x": 0.029,
+      "y": 0.3826,
+      "w": 0.066,
+      "h": 0.096,
+      "kind": "image",
+      "score": {
+        "overall": 0.3248,
+        "structure": 0.2529,
+        "color": 0.7318,
+        "colorIntersection": 0.4372,
+        "paletteMatch": 0.8904,
+        "detail": 0.1705,
+        "detailRaw": 0.4934,
+        "detailAdded": 0.6458,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 1,
+          "w": 134,
+          "h": 128
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 129
+        }
+      }
+    },
+    {
+      "id": "thumb-3",
+      "x": 0.029,
+      "y": 0.5131,
+      "w": 0.066,
+      "h": 0.096,
+      "kind": "image",
+      "score": {
+        "overall": 0.2353,
+        "structure": 0.2415,
+        "color": 0.6244,
+        "colorIntersection": 0.2882,
+        "paletteMatch": 0.8054,
+        "detail": 0.04,
+        "detailRaw": 0.4202,
+        "detailAdded": 0.7604,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 133,
+          "h": 129
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 129
+        }
+      }
+    },
+    {
+      "id": "thumb-4",
+      "x": 0.029,
+      "y": 0.6437,
+      "w": 0.066,
+      "h": 0.096,
+      "kind": "image",
+      "score": {
+        "overall": 0.2943,
+        "structure": 0.3027,
+        "color": 0.6393,
+        "colorIntersection": 0.3373,
+        "paletteMatch": 0.8018,
+        "detail": 0.1815,
+        "detailRaw": 0.5253,
+        "detailAdded": 0.6875,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 3,
+          "w": 134,
+          "h": 126
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 129
+        }
+      }
+    },
+    {
+      "id": "thumb-5",
+      "x": 0.029,
+      "y": 0.7742,
+      "w": 0.066,
+      "h": 0.096,
+      "kind": "image",
+      "score": {
+        "overall": 0.4274,
+        "structure": 0.4709,
+        "color": 0.7494,
+        "colorIntersection": 0.4595,
+        "paletteMatch": 0.9055,
+        "detail": 0.2596,
+        "detailRaw": 0.5043,
+        "detailAdded": 0.4896,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 4,
+          "w": 133,
+          "h": 125
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 134,
+          "h": 121
+        }
+      }
+    },
+    {
+      "id": "photo",
+      "x": 0.114,
+      "y": 0.2086,
+      "w": 0.4075,
+      "h": 0.7502,
+      "kind": "image",
+      "score": {
+        "overall": 0.4853,
+        "structure": 0.5196,
+        "color": 0.8396,
+        "colorIntersection": 0.6955,
+        "paletteMatch": 0.9171,
+        "detail": 0.29,
+        "detailRaw": 0.4202,
+        "detailAdded": 0.2604,
+        "bands": 0.85
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 9,
+          "w": 765,
+          "h": 952
+        },
+        "build": {
+          "x": 9,
+          "y": 12,
+          "w": 804,
+          "h": 991
+        }
+      }
+    },
+    {
+      "id": "zoom-chip",
+      "x": 0.414,
+      "y": 0.2198,
+      "w": 0.099,
+      "h": 0.0473,
+      "kind": "control",
+      "score": {
+        "overall": 0.7421,
+        "structure": 0.8111,
+        "color": 0.785,
+        "colorIntersection": 0.5925,
+        "paletteMatch": 0.8886,
+        "detail": 0.5121,
+        "detailRaw": 0.6007,
+        "detailAdded": 0.1771,
+        "bands": 0.6036
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 186,
+          "h": 64
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 191,
+          "h": 64
+        }
+      }
+    },
+    {
+      "id": "vendor-ticket",
+      "x": 0.5445,
+      "y": 0.1951,
+      "w": 0.0885,
+      "h": 0.0353,
+      "kind": "chrome",
+      "score": {
+        "overall": 0.591,
+        "structure": 0.4797,
+        "color": 0.6392,
+        "colorIntersection": 0.3375,
+        "paletteMatch": 0.8017,
+        "detail": 0.5831,
+        "detailRaw": 0.7237,
+        "detailAdded": 0.2813,
+        "bands": 0.7833
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 7,
+          "w": 163,
+          "h": 32
+        },
+        "build": {
+          "x": 9,
+          "y": 6,
+          "w": 166,
+          "h": 37
+        }
+      }
+    },
+    {
+      "id": "title",
+      "x": 0.5445,
+      "y": 0.2266,
+      "w": 0.308,
+      "h": 0.093,
+      "kind": "text",
+      "score": {
+        "overall": 0.6998,
+        "structure": 0.6178,
+        "color": 0.7554,
+        "colorIntersection": 0.5757,
+        "paletteMatch": 0.8522,
+        "detail": 0.7171,
+        "detailRaw": 0.7952,
+        "detailAdded": 0.1563,
+        "bands": 0.9455
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 10,
+          "w": 603,
+          "h": 100
+        },
+        "build": {
+          "x": 11,
+          "y": 11,
+          "w": 582,
+          "h": 101
+        }
+      }
+    },
+    {
+      "id": "rating",
+      "x": 0.5445,
+      "y": 0.3143,
+      "w": 0.2645,
+      "h": 0.0353,
+      "kind": "control",
+      "score": {
+        "overall": 0.8228,
+        "structure": 0.863,
+        "color": 0.8688,
+        "colorIntersection": 0.7605,
+        "paletteMatch": 0.9272,
+        "detail": 0.6516,
+        "detailRaw": 0.7349,
+        "detailAdded": 0.1667,
+        "bands": 0.7467
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 10,
+          "w": 514,
+          "h": 30
+        },
+        "build": {
+          "x": 12,
+          "y": 11,
+          "w": 510,
+          "h": 29
+        }
+      }
+    },
+    {
+      "id": "brass-tag",
+      "x": 0.865,
+      "y": 0.165,
+      "w": 0.1125,
+      "h": 0.162,
+      "kind": "plate",
+      "score": {
+        "overall": 0.7534,
+        "structure": 0.7619,
+        "color": 0.7987,
+        "colorIntersection": 0.6255,
+        "paletteMatch": 0.8919,
+        "detail": 0.7063,
+        "detailRaw": 0.7584,
+        "detailAdded": 0.1042,
+        "bands": 1
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 5,
+          "w": 227,
+          "h": 203
+        },
+        "build": {
+          "x": 0,
+          "y": 6,
+          "w": 227,
+          "h": 201
+        }
+      }
+    },
+    {
+      "id": "tag-price",
+      "x": 0.8885,
+      "y": 0.2326,
+      "w": 0.078,
+      "h": 0.0675,
+      "kind": "text",
+      "score": {
+        "overall": 0.684,
+        "structure": 0.6189,
+        "color": 0.7939,
+        "colorIntersection": 0.5975,
+        "paletteMatch": 0.8997,
+        "detail": 0.5067,
+        "detailRaw": 0.6161,
+        "detailAdded": 0.2188,
+        "bands": 1
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 157,
+          "h": 90
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 157,
+          "h": 90
+        }
+      }
+    },
+    {
+      "id": "style-label",
+      "x": 0.5445,
+      "y": 0.3473,
+      "w": 0.2335,
+      "h": 0.0263,
+      "kind": "text",
+      "score": {
+        "overall": 0.7606,
+        "structure": 0.7655,
+        "color": 0.8554,
+        "colorIntersection": 0.7502,
+        "paletteMatch": 0.9121,
+        "detail": 0.5601,
+        "detailRaw": 0.633,
+        "detailAdded": 0.1458,
+        "bands": 0.8
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 0,
+          "w": 454,
+          "h": 48
+        },
+        "build": {
+          "x": 10,
+          "y": 0,
+          "w": 431,
+          "h": 48
+        }
+      }
+    },
+    {
+      "id": "swatches",
+      "x": 0.5445,
+      "y": 0.3691,
+      "w": 0.0935,
+      "h": 0.0705,
+      "kind": "control",
+      "score": {
+        "overall": 0.6422,
+        "structure": 0.5365,
+        "color": 0.7961,
+        "colorIntersection": 0.666,
+        "paletteMatch": 0.8661,
+        "detail": 0.6108,
+        "detailRaw": 0.7046,
+        "detailAdded": 0.1875,
+        "bands": 0.3
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 10,
+          "w": 170,
+          "h": 77
+        },
+        "build": {
+          "x": 9,
+          "y": 11,
+          "w": 170,
+          "h": 78
+        }
+      }
+    },
+    {
+      "id": "model-label",
+      "x": 0.5445,
+      "y": 0.4389,
+      "w": 0.037,
+      "h": 0.024,
+      "kind": "text",
+      "score": {
+        "overall": 0.8067,
+        "structure": 0.8508,
+        "color": 0.8955,
+        "colorIntersection": 0.8198,
+        "paletteMatch": 0.9363,
+        "detail": 0.5832,
+        "detailRaw": 0.6509,
+        "detailAdded": 0.1354,
+        "bands": 0.7
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 0,
+          "w": 65,
+          "h": 48
+        },
+        "build": {
+          "x": 10,
+          "y": 0,
+          "w": 57,
+          "h": 32
+        }
+      }
+    },
+    {
+      "id": "model-select",
+      "x": 0.5445,
+      "y": 0.4621,
+      "w": 0.417,
+      "h": 0.0578,
+      "kind": "control",
+      "score": {
+        "overall": 0.7349,
+        "structure": 0.909,
+        "color": 0.6114,
+        "colorIntersection": 0.3174,
+        "paletteMatch": 0.7697,
+        "detail": 0.559,
+        "detailRaw": 0.5955,
+        "detailAdded": 0.0729,
+        "bands": 0.6
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 8,
+          "w": 825,
+          "h": 61
+        },
+        "build": {
+          "x": 9,
+          "y": 12,
+          "w": 825,
+          "h": 61
+        }
+      }
+    },
+    {
+      "id": "candy-box",
+      "x": 0.544,
+      "y": 0.5386,
+      "w": 0.136,
+      "h": 0.129,
+      "kind": "plate",
+      "score": {
+        "overall": 0.7169,
+        "structure": 0.6166,
+        "color": 0.8007,
+        "colorIntersection": 0.6646,
+        "paletteMatch": 0.874,
+        "detail": 0.7088,
+        "detailRaw": 0.7922,
+        "detailAdded": 0.1667,
+        "bands": 0.9636
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 26,
+          "w": 257,
+          "h": 138
+        },
+        "build": {
+          "x": 10,
+          "y": 28,
+          "w": 259,
+          "h": 137
+        }
+      }
+    },
+    {
+      "id": "pack-1",
+      "x": 0.571,
+      "y": 0.5754,
+      "w": 0.083,
+      "h": 0.072,
+      "kind": "text",
+      "score": {
+        "overall": 0.8065,
+        "structure": 0.8242,
+        "color": 0.8896,
+        "colorIntersection": 0.8073,
+        "paletteMatch": 0.9339,
+        "detail": 0.6867,
+        "detailRaw": 0.6971,
+        "detailAdded": 0.0208,
+        "bands": 0.69
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 32,
+          "y": 20,
+          "w": 104,
+          "h": 64
+        },
+        "build": {
+          "x": 36,
+          "y": 24,
+          "w": 99,
+          "h": 59
+        }
+      }
+    },
+    {
+      "id": "pack-2",
+      "x": 0.6845,
+      "y": 0.5281,
+      "w": 0.138,
+      "h": 0.138,
+      "kind": "control",
+      "score": {
+        "overall": 0.602,
+        "structure": 0.4747,
+        "color": 0.7498,
+        "colorIntersection": 0.541,
+        "paletteMatch": 0.8623,
+        "detail": 0.6296,
+        "detailRaw": 0.7441,
+        "detailAdded": 0.2292,
+        "bands": 0.8733
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 6,
+          "y": 3,
+          "w": 265,
+          "h": 175
+        },
+        "build": {
+          "x": 10,
+          "y": 0,
+          "w": 259,
+          "h": 181
+        }
+      }
+    },
+    {
+      "id": "candy-box-teal",
+      "x": 0.824,
+      "y": 0.5221,
+      "w": 0.139,
+      "h": 0.147,
+      "kind": "plate",
+      "score": {
+        "overall": 0.697,
+        "structure": 0.6192,
+        "color": 0.7756,
+        "colorIntersection": 0.5887,
+        "paletteMatch": 0.8762,
+        "detail": 0.6898,
+        "detailRaw": 0.7835,
+        "detailAdded": 0.1875,
+        "bands": 0.8429
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 13,
+          "y": 17,
+          "w": 257,
+          "h": 169
+        },
+        "build": {
+          "x": 12,
+          "y": 13,
+          "w": 259,
+          "h": 174
+        }
+      }
+    },
+    {
+      "id": "pack-3",
+      "x": 0.846,
+      "y": 0.5754,
+      "w": 0.098,
+      "h": 0.072,
+      "kind": "text",
+      "score": {
+        "overall": 0.8004,
+        "structure": 0.7486,
+        "color": 0.8466,
+        "colorIntersection": 0.733,
+        "paletteMatch": 0.9077,
+        "detail": 0.7628,
+        "detailRaw": 0.768,
+        "detailAdded": 0.0104,
+        "bands": 1
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 17,
+          "y": 19,
+          "w": 158,
+          "h": 65
+        },
+        "build": {
+          "x": 21,
+          "y": 24,
+          "w": 152,
+          "h": 59
+        }
+      }
+    },
+    {
+      "id": "savings-meter",
+      "x": 0.5445,
+      "y": 0.6714,
+      "w": 0.4145,
+      "h": 0.0338,
+      "kind": "control",
+      "score": {
+        "overall": 0.7369,
+        "structure": 0.7877,
+        "color": 0.7429,
+        "colorIntersection": 0.5706,
+        "paletteMatch": 0.8358,
+        "detail": 0.6118,
+        "detailRaw": 0.7003,
+        "detailAdded": 0.1771,
+        "bands": 0.4
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 12,
+          "w": 819,
+          "h": 24
+        },
+        "build": {
+          "x": 9,
+          "y": 12,
+          "w": 794,
+          "h": 26
+        }
+      }
+    },
+    {
+      "id": "add-to-bag",
+      "x": 0.5445,
+      "y": 0.7044,
+      "w": 0.2395,
+      "h": 0.0645,
+      "kind": "control",
+      "score": {
+        "overall": 0.7793,
+        "structure": 0.7771,
+        "color": 0.7975,
+        "colorIntersection": 0.5539,
+        "paletteMatch": 0.9287,
+        "detail": 0.7525,
+        "detailRaw": 0.8202,
+        "detailAdded": 0.1354,
+        "bands": 0.7429
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 483,
+          "h": 86
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 483,
+          "h": 86
+        }
+      }
+    },
+    {
+      "id": "buy-now",
+      "x": 0.781,
+      "y": 0.7044,
+      "w": 0.1815,
+      "h": 0.063,
+      "kind": "control",
+      "score": {
+        "overall": 0.6881,
+        "structure": 0.657,
+        "color": 0.7769,
+        "colorIntersection": 0.6235,
+        "paletteMatch": 0.8596,
+        "detail": 0.6027,
+        "detailRaw": 0.686,
+        "detailAdded": 0.1667,
+        "bands": 0.66
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 366,
+          "h": 84
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 366,
+          "h": 84
+        }
+      }
+    },
+    {
+      "id": "ship-by",
+      "x": 0.5445,
+      "y": 0.7667,
+      "w": 0.202,
+      "h": 0.0315,
+      "kind": "text",
+      "score": {
+        "overall": 0.6464,
+        "structure": 0.621,
+        "color": 0.7106,
+        "colorIntersection": 0.5253,
+        "paletteMatch": 0.8104,
+        "detail": 0.5752,
+        "detailRaw": 0.7471,
+        "detailAdded": 0.3438,
+        "bands": 0.72
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 9,
+          "y": 11,
+          "w": 389,
+          "h": 24
+        },
+        "build": {
+          "x": 12,
+          "y": 0,
+          "w": 395,
+          "h": 36
+        }
+      }
+    },
+    {
+      "id": "service-ribbon",
+      "x": 0.5445,
+      "y": 0.7952,
+      "w": 0.417,
+      "h": 0.057,
+      "kind": "chrome",
+      "score": {
+        "overall": 0.6454,
+        "structure": 0.692,
+        "color": 0.5589,
+        "colorIntersection": 0.2487,
+        "paletteMatch": 0.7259,
+        "detail": 0.5523,
+        "detailRaw": 0.646,
+        "detailAdded": 0.1875,
+        "bands": 0.8361
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 8,
+          "w": 824,
+          "h": 60
+        },
+        "build": {
+          "x": 9,
+          "y": 10,
+          "w": 825,
+          "h": 60
+        }
+      }
+    },
+    {
+      "id": "accordions",
+      "x": 0.5445,
+      "y": 0.8552,
+      "w": 0.417,
+      "h": 0.0975,
+      "kind": "control",
+      "score": {
+        "overall": 0.8583,
+        "structure": 0.9354,
+        "color": 0.9546,
+        "colorIntersection": 0.919,
+        "paletteMatch": 0.9738,
+        "detail": 0.5163,
+        "detailRaw": 0.5527,
+        "detailAdded": 0.0729,
+        "bands": 0.35
+      },
+      "verdict": "match",
+      "inkBox": {
+        "comp": {
+          "x": 8,
+          "y": 10,
+          "w": 824,
+          "h": 112
+        },
+        "build": {
+          "x": 9,
+          "y": 11,
+          "w": 825,
+          "h": 115
+        }
+      }
+    }
+  ],
+  "files": {
+    "sideBySide": ".impeccable\\review\\diff\\desktop\\side-by-side.png",
+    "heatmap": ".impeccable\\review\\diff\\desktop\\heatmap.png",
+    "regionFiles": [
+      ".impeccable\\review\\diff\\desktop\\regions\\header.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\breadcrumb.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\page-ground.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-rail.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\jar-lid.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-1.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-2.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-3.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-4.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\thumb-5.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\photo.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\zoom-chip.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\vendor-ticket.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\title.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\rating.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\brass-tag.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\tag-price.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\style-label.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\swatches.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\model-label.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\model-select.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\candy-box.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\pack-1.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\pack-2.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\candy-box-teal.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\pack-3.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\savings-meter.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\add-to-bag.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\buy-now.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\ship-by.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\service-ribbon.png",
+      ".impeccable\\review\\diff\\desktop\\regions\\accordions.png"
+    ]
+  }
+}

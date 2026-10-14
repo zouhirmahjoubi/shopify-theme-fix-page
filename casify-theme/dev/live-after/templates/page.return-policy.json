@@ -1,0 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "header_badge": "badge-ai-returns",
+        "toc_label": "On this page",
+        "show_rules": true,
+        "rules_label": "Shop policies",
+        "rule_handles": "shipping-policy,return-policy,privacy-policy,terms-and-conditions",
+        "show_help": true,
+        "help_title": "Something here unclear?",
+        "help_body": "Write to the shop and ask.",
+        "help_url": "/pages/contact",
+        "help_cta": "Ask the shop"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-page",
+      "settings": {
+        "show_help": true,
+        "help_title": "Still need a human?",
+        "help_body": "Support answers in under a business day, and can override anything on this page in your favour.",
+        "help_url": "/pages/contact",
+        "help_cta": "Contact support"
+      }
+    },
+    "hanging_cards": {
+      "type": "cv-hanging-cards",
+      "settings": {
+        "heading": "Where to next?",
+        "intro": "<p>Explore the shop or get a hand finding your fit.</p>"
+      },
+      "blocks": {
+        "collections": {
+          "type": "card",
+          "settings": {
+            "tone": "red",
+            "title": "Every collection",
+            "text": "Take a look through the shop’s aisles and see what is here.",
+            "link": "/collections",
+            "link_label": "See collections"
+          }
+        },
+        "cases": {
+          "type": "card",
+          "settings": {
+            "tone": "teal",
+            "title": "Find your case",
+            "text": "Open a case to check its available phone models and styles.",
+            "link": "/collections/all",
+            "link_label": "Browse cases"
+          }
+        },
+        "contact": {
+          "type": "card",
+          "settings": {
+            "tone": "gold",
+            "title": "Ask the shop",
+            "text": "Need help choosing? Send us a question through the contact page.",
+            "link": "/pages/contact",
+            "link_label": "Contact us"
+          }
+        }
+      },
+      "block_order": ["collections", "cases", "contact"]
+    }
+  },
+  "order": ["main", "hanging_cards"]
+}

@@ -1,0 +1,202 @@
+<section class="p3d" id="p3d-{{ section.id }}">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="p3d__heading" data-cm-reveal>{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="p3d__stage" data-p3d data-src="{{ section.settings.model | escape }}" data-spin="{{ section.settings.auto_rotate }}" data-clip="{{ section.settings.clip | escape }}" data-loop="{{ section.settings.loop_mode }}" data-speed="{{ section.settings.speed }}" data-fade="{{ section.settings.crossfade }}" data-clip-picker="{{ section.settings.clip_picker }}" style="--p3d-h:{{ section.settings.height }}px">
+    {%- if section.settings.model == blank -%}
+      <p class="p3d__empty">Upload a .glb model in the Theme Editor to preview it here.</p>
+    {%- endif -%}
+  </div>
+  <div class="p3d__clips" data-p3d-clips hidden>
+    <button type="button" class="p3d__toggle" data-p3d-toggle aria-pressed="true">Pause</button>
+    <div class="p3d__clip-list" role="group" aria-label="Animations" data-p3d-list></div>
+  </div>
+</section>
+
+<style>
+  .p3d{padding:48px 24px;max-width:1120px;margin:0 auto}
+  .p3d__heading{font-family:var(--font-display);text-align:center;margin:0 0 24px}
+  .p3d__stage{position:relative;height:var(--p3d-h);border-radius:12px;background:var(--cream-100);border:1px solid var(--border-hairline);overflow:hidden}
+  .p3d__stage canvas{display:block;width:100%;height:100%;cursor:grab}
+  .p3d__stage canvas:active{cursor:grabbing}
+  .p3d__clips{margin-top:12px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px;align-items:center}
+  .p3d__clips[hidden]{display:none}
+  .p3d__clip-list{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+  .p3d__clips button{font:inherit;font-size:13px;line-height:1;padding:8px 12px;min-height:36px;border-radius:999px;border:1px solid var(--border-hairline);background:var(--cream-100);color:var(--cocoa-500);cursor:pointer}
+  .p3d__clips button[aria-pressed="true"]:not(.p3d__toggle){background:var(--cocoa-500);color:var(--cream-100)}
+  .p3d__clips button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+  .p3d__empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--cocoa-500);font-size:14px;text-align:center;padding:0 24px}
+</style>
+
+{%- if section.settings.model != blank -%}
+  {%- comment -%} ponytail: a second copy of this section on the same page would emit a duplicate importmap, which browsers ignore — fine for the expected single-viewer-per-page case, revisit with a shared layout-level importmap if multi-instance is ever needed {%- endcomment -%}
+  <script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"
+  } }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    const stage = document.querySelector('#p3d-{{ section.id }} [data-p3d]');
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+    camera.position.set(0, 0, 4);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    const key = new THREE.DirectionalLight(0xffffff, 1.4);
+    key.position.set(3, 4, 5);
+    scene.add(key);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.autoRotate = stage.dataset.spin === 'true';
+    controls.autoRotateSpeed = 2;
+
+    // Animation clips baked into the .glb play through AnimationMixer -> AnimationAction.
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = new THREE.Timer();
+    let mixer = null;
+    let current = null;
+    let playing = false;
+    let visible = true;
+
+    const LOOPS = { repeat: THREE.LoopRepeat, pingpong: THREE.LoopPingPong, once: THREE.LoopOnce };
+    const fade = Math.max(0, parseFloat(stage.dataset.fade) || 0);
+    const speed = parseFloat(stage.dataset.speed) || 1;
+    const root = document.getElementById('p3d-{{ section.id }}');
+    const ui = root.querySelector('[data-p3d-clips]');
+    const list = root.querySelector('[data-p3d-list]');
+    const toggle = root.querySelector('[data-p3d-toggle]');
+
+    function setPlaying(on) {
+      playing = on && !!current;
+      if (mixer) mixer.timeScale = playing ? 1 : 0;
+      toggle.textContent = playing ? 'Pause' : 'Play';
+      toggle.setAttribute('aria-pressed', String(playing));
+    }
+
+    function makeAction(clip) {
+      const action = mixer.clipAction(clip);
+      const loop = stage.dataset.loop in LOOPS ? stage.dataset.loop : 'repeat';
+      action.setLoop(LOOPS[loop], loop === 'once' ? 1 : Infinity);
+      action.clampWhenFinished = loop === 'once';
+      action.timeScale = speed;
+      return action;
+    }
+
+    function playClip(clip) {
+      const next = makeAction(clip);
+      if (next === current) {
+        next.reset().play();
+      } else {
+        next.reset().setEffectiveWeight(1).play();
+        if (current && fade > 0) current.crossFadeTo(next, fade, false);
+        else if (current) current.stop();
+        current = next;
+      }
+      list.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.clip === clip.name)));
+      setPlaying(true);
+    }
+
+    new GLTFLoader().load(stage.dataset.src, (gltf) => {
+      const model = gltf.scene;
+      model.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3()).length() || 1;
+      const center = box.getCenter(new THREE.Vector3());
+      // Centre inside a pivot so the fit scale applies to the offset too.
+      const pivot = new THREE.Group();
+      model.position.sub(center);
+      pivot.add(model);
+      pivot.scale.setScalar(2 / size);
+      scene.add(pivot);
+
+      const clips = gltf.animations || [];
+      if (!clips.length) return;
+      mixer = new THREE.AnimationMixer(model);
+      mixer.addEventListener('finished', () => setPlaying(false));
+
+      const wanted = stage.dataset.clip.trim();
+      const first = (wanted && THREE.AnimationClip.findByName(clips, wanted)) || clips[0];
+
+      if (stage.dataset.clipPicker === 'true' && clips.length > 1) {
+        clips.forEach((clip, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.dataset.clip = clip.name;
+          b.textContent = clip.name || `Animation ${i + 1}`;
+          b.setAttribute('aria-pressed', 'false');
+          b.addEventListener('click', () => playClip(clip));
+          list.appendChild(b);
+        });
+      }
+      ui.hidden = false;
+      toggle.addEventListener('click', () => {
+        if (playing) return setPlaying(false);
+        if (!current.isRunning() && current.loop === THREE.LoopOnce) current.reset().play();
+        setPlaying(true);
+      });
+
+      // Show the first frame; only autoplay when the visitor hasn't asked for reduced motion.
+      playClip(first);
+      if (reduced) { mixer.update(0); setPlaying(false); }
+    });
+
+    function resize() {
+      const { clientWidth: w, clientHeight: h } = stage;
+      if (!w || !h) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    new ResizeObserver(resize).observe(stage);
+    resize();
+
+    // Skip work while the viewer is off screen.
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(stage);
+    if (reduced) controls.autoRotate = false;
+
+    (function tick(t) {
+      requestAnimationFrame(tick);
+      timer.update(t);
+      const dt = timer.getDelta();
+      if (!visible) return;
+      if (mixer) mixer.update(dt);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "3D product viewer",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Look inside" },
+    { "type": "text", "id": "model", "label": "3D model URL (.glb)", "info": "Paste a public URL to a .glb model. The viewer will load it via three.js." },
+    { "type": "range", "id": "height", "label": "Viewer height (px)", "min": 320, "max": 720, "step": 20, "default": 480 },
+    { "type": "checkbox", "id": "auto_rotate", "label": "Auto-rotate", "default": true },
+    { "type": "header", "content": "Model animation" },
+    { "type": "paragraph", "content": "Plays animation clips stored inside the .glb (three.js AnimationMixer / AnimationAction). Models without clips just show the static model." },
+    { "type": "text", "id": "clip", "label": "Clip to play first", "info": "Exact clip name from the .glb. Leave blank to play the first clip." },
+    { "type": "select", "id": "loop_mode", "label": "Loop", "default": "repeat", "options": [
+      { "value": "repeat", "label": "Repeat" },
+      { "value": "pingpong", "label": "Back and forth" },
+      { "value": "once", "label": "Play once, hold last frame" }
+    ] },
+    { "type": "range", "id": "speed", "label": "Speed", "min": 0.2, "max": 2, "step": 0.1, "default": 1 },
+    { "type": "range", "id": "crossfade", "label": "Crossfade between clips (seconds)", "min": 0, "max": 1, "step": 0.1, "default": 0.4 },
+    { "type": "checkbox", "id": "clip_picker", "label": "Show clip buttons when the model has several clips", "default": true }
+  ],
+  "presets": [{ "name": "3D product viewer" }]
+}
+{% endschema %}

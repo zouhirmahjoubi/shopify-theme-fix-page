@@ -1,0 +1,118 @@
+{%- comment -%}
+  Casify — blog index in the Chrismass design system.
+
+  The newest post takes a wide feature card; the rest cascade in beneath it.
+  Tag links come from the blog's own tag list, so the filter row only ever
+  offers tags that actually return posts.
+{%- endcomment -%}
+
+{%- paginate blog.articles by section.settings.per_page -%}
+<div class="cv-page-root cv-blog">
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current">{{ blog.title | escape }}</span>
+  </nav>
+
+  <header class="cv-blog__hd" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Field notes' | escape }}</span>
+    <h1 data-cv-split>{{ blog.title | escape }}</h1>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+    <div class="cv-blog__tags" data-cv-reveal data-cv-stagger>
+      <a class="cv-search__chip{% if current_tags == blank %} is-on{% endif %}" href="{{ blog.url }}">All</a>
+      {%- for tag in blog.all_tags -%}
+        <a class="cv-search__chip{% if current_tags contains tag %} is-on{% endif %}"
+           href="{{ blog.url }}/tagged/{{ tag | handleize }}">{{ tag | escape }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if blog.articles.size > 0 -%}
+    <div class="cv-blog__grid">
+      {%- for article in blog.articles -%}
+        {%- assign is_lead = false -%}
+        {%- if forloop.first and paginate.current_page == 1 and section.settings.feature_first -%}
+          {%- assign is_lead = true -%}
+        {%- endif -%}
+
+        <article class="cv-post{% if is_lead %} is-lead{% endif %}" data-cv-reveal style="--cv-i:{{ forloop.index0 }}">
+          <a class="cv-post__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 1200 }}"
+                   alt="{{ article.image.alt | default: article.title | escape }}"
+                   width="1200" height="700" loading="lazy" decoding="async">
+            {%- else -%}
+              <span class="cv-post__ph">{%- render 'cv-icon', name: 'quote', size: 28 -%}</span>
+            {%- endif -%}
+          </a>
+          <div class="cv-post__body">
+            <p class="cv-post__meta">
+              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%b %e, %Y' }}</time>
+              {%- if article.author != blank -%}
+                <span aria-hidden="true">·</span><span>{{ article.author | escape }}</span>
+              {%- endif -%}
+              {%- if article.tags.size > 0 -%}
+                <span aria-hidden="true">·</span><span>{{ article.tags.first | escape }}</span>
+              {%- endif -%}
+            </p>
+            <h2 class="cv-post__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+            <p class="cv-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 30 }}</p>
+            <span class="cv-post__go">Read it {%- render 'cv-icon', name: 'arrow-right', size: 14 -%}</span>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="cv-pager" aria-label="Pagination" data-cv-reveal>
+        {%- if paginate.previous -%}
+          <a class="cv-pager__step is-prev" href="{{ paginate.previous.url }}" rel="prev">
+            {%- render 'cv-icon', name: 'chevron-down', size: 16 -%}<span>Newer</span>
+          </a>
+        {%- endif -%}
+        <span class="cv-pager__pages">
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a class="cv-pager__n" href="{{ part.url }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="cv-pager__n is-current" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="cv-pager__n is-gap">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+        {%- if paginate.next -%}
+          <a class="cv-pager__step is-next" href="{{ paginate.next.url }}" rel="next">
+            <span>Older</span>{%- render 'cv-icon', name: 'chevron-down', size: 16 -%}
+          </a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- else -%}
+    <div class="cv-empty" data-cv-reveal>
+      <span class="cv-empty__ico">{%- render 'cv-icon', name: 'quote', size: 40, animate: true -%}</span>
+      <h2>Nothing published yet</h2>
+      <p>Posts will show up here as soon as the first one goes live.</p>
+    </div>
+  {%- endif -%}
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Field notes" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>Teardowns, drop tests, and what we learned building the thing.</p>" },
+    { "type": "checkbox", "id": "feature_first", "label": "Feature the newest post", "default": true },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tag filters", "default": true },
+    { "type": "range", "id": "per_page", "label": "Posts per page", "min": 4, "max": 24, "step": 2, "default": 12 }
+  ],
+  "presets": [{ "name": "Blog" }]
+}
+{% endschema %}

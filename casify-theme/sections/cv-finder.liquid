@@ -1,0 +1,75 @@
+{%- comment -%}
+  Casify — Converting PDP: device compatibility band.
+
+  Sits right under the buybox. Its only job is to kill the "does this even
+  fit my phone" hesitation before the reader gets deep into feature copy —
+  the real, functional model picker stays the one in cv-product.liquid.
+{%- endcomment -%}
+
+<section class="cv-sec cv-finder" id="cv-finder">
+  <div class="cv-sec__hd cv-sec__hd--tight" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Before you scroll' | escape }}</span>
+    <h2 data-cv-split>{{ section.settings.heading | default: 'Built for 200+ phones, not just yours' | escape }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="cv-finder__row" data-cv-stagger>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'brand' -%}
+        <div class="cv-finder__chip" data-cv-reveal="scale" style="--cv-i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <span class="cv-finder__chip-ico">{%- render 'cv-icon', name: 'device', size: 22 -%}</span>
+          <span class="cv-finder__chip-txt">
+            <b>{{ block.settings.name | escape }}</b>
+            <i>{{ block.settings.meta | escape }}</i>
+          </span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="cv-finder__foot" data-cv-reveal>
+    <p>{{ section.settings.footnote | default: "Not on the list? Message us before you order and we'll confirm your fit." | escape }}</p>
+    <button type="button" class="cv-cta cv-cta--ghost" data-cv-scroll-to-buy>
+      <span>{{ section.settings.cta_label | default: 'Find my model' | escape }}</span>
+      {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+    </button>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Convert — Device finder",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Before you scroll" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Built for 200+ phones, not just yours" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>Every case is cut from that exact model's CAD file. Here's what we cover.</p>" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Not on the list? Message us before you order and we'll confirm your fit." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Find my model" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand chip",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand / line", "default": "iPhone" },
+        { "type": "text", "id": "meta", "label": "Coverage", "default": "42 models · 12 to 17 series" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Convert — Device finder",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "iPhone", "meta": "42 models · 12 to 17 series" } },
+        { "type": "brand", "settings": { "name": "Galaxy", "meta": "38 models · S21 to S25, Z Fold/Flip" } },
+        { "type": "brand", "settings": { "name": "Pixel", "meta": "21 models · 6 to 10 series" } },
+        { "type": "brand", "settings": { "name": "OnePlus", "meta": "14 models · 9 to 13 series" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

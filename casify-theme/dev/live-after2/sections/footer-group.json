@@ -1,0 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {},
+      "blocks": {
+        "shop": {
+          "type": "link_list",
+          "settings": { "title": "Shop", "menu": "main-menu" }
+        },
+        "legal": {
+          "type": "link_list",
+          "settings": { "title": "Support", "menu": "footer" }
+        },
+        "company": {
+          "type": "contact",
+          "settings": { "title": "Company" }
+        }
+      },
+      "block_order": ["shop", "legal", "company"]
+    }
+  },
+  "order": ["footer"]
+}

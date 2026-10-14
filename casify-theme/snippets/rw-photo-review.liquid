@@ -1,0 +1,56 @@
+{% doc %}
+  A "Photo review" block in the review widget (sections/review-widget.liquid): the
+  customer's photo on a paper polaroid, then their full name, rating and words.
+  assets/review-motion.js lifts the polaroid into three.js (it drops in, tilts toward
+  the pointer and turns with the scroll, with sweets drifting round it) and reveals
+  the name letter by letter. Without motion it is a still polaroid; nothing is lost.
+
+  @param {object} block - The "Photo review" block.
+  @param {string} [verified_label] - Badge text.
+  @param {string} [product_label] - Words before the product name, e.g. "Review of".
+  @param {string} [here] - Handle of the product page it's shown on, if any.
+{% enddoc %}
+{%- liquid
+  assign s = block.settings
+  assign r = s.rating | default: 5 | plus: 0 | at_least: 1 | at_most: 5
+  assign star_fill = r | times: 20
+  assign who = s.author | strip
+  assign p = s.product
+  assign show_product = false
+  if p != blank and p.handle != here
+    assign show_product = true
+  endif
+-%}
+<article class="rw-spot" data-rw-spot {{ block.shopify_attributes }}>
+  <figure class="rw-spot__media">
+    <div class="rw-spot__polaroid" data-rw-spot-polaroid>
+      {%- if s.photo != blank -%}
+        {{ s.photo | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 400px, 72vw', alt: who, class: 'rw-spot__img' }}
+      {%- else -%}
+        <span class="rw-spot__initial" aria-hidden="true">{{ who | slice: 0 | upcase | escape }}</span>
+      {%- endif -%}
+      <span class="rw-spot__caption" aria-hidden="true">{{ who | escape }}</span>
+    </div>
+    <div class="rw-spot__three" data-rw-spot-three aria-hidden="true"></div>
+  </figure>
+
+  <div class="rw-spot__body">
+    <span class="rw-spot__stars" role="img" aria-label="{{ r }} out of 5 stars">{%- render 'cv-stars', fill: star_fill -%}</span>
+    {%- if s.title != blank -%}<h3 class="rw-spot__title">{{ s.title | escape }}</h3>{%- endif -%}
+    <blockquote class="rw-spot__quote"><p>{{ s.text | strip | escape | newline_to_br }}</p></blockquote>
+    <p class="rw-spot__name" data-rw-spot-name>{{ who | escape }}</p>
+    <p class="rw-spot__meta">
+      {%- if s.location != blank -%}<span>{{ s.location | escape }}</span>{%- endif -%}
+      {%- if s.date != blank -%}<span>{{ s.date | escape }}</span>{%- endif -%}
+      {%- if s.verified -%}
+        <span class="rw-spot__verified">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>
+          {{ verified_label | default: 'Verified buyer' | escape }}
+        </span>
+      {%- endif -%}
+      {%- if show_product -%}
+        <a class="rw-spot__product" href="{{ p.url }}">{{ product_label | default: 'Review of' | escape }} {{ p.title | escape }}</a>
+      {%- endif -%}
+    </p>
+  </div>
+</article>

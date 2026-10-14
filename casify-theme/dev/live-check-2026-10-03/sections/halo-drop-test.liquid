@@ -1,0 +1,177 @@
+<section class="halo-sec" id="halo-proof">
+  <div class="halo-sec__hd" data-halo-reveal>
+    <span class="tick">{{ section.settings.tick_label | default: 'Section 03 — the bench' }}</span>
+    <h2>{{ section.settings.heading | default: "Dropped until something broke. Then we thickened the corners." }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <p>{{ section.settings.subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="halo-drop">
+    <div class="halo-bars" id="haloBars">
+      {%- for block in section.blocks -%}
+        <div class="halo-brow{% if block.settings.highlight %} is-us{% endif %}" {{ block.shopify_attributes }}>
+          <span class="who">{{ block.settings.name | escape }}</span>
+          <span class="halo-btrack"><span class="halo-bfill" data-pct="{{ block.settings.pct }}"></span></span>
+          <span class="ft">{{ block.settings.feet | escape }}</span>
+        </div>
+      {%- endfor -%}
+      {%- if section.settings.method != blank -%}
+        <p class="halo-drop__note">{{ section.settings.method | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="halo-drop__copy" data-halo-reveal>
+      <h3>{{ section.settings.copy_heading | default: "Where the 12 feet actually comes from" }}</h3>
+      {%- if section.settings.copy_body != blank -%}
+        {{ section.settings.copy_body }}
+      {%- else -%}
+        <p>A drop isn't one impact, it's a chain of them. The corner hits, the frame flexes, and the flex is what cracks the screen from the inside.</p>
+        <p>DropCore puts a honeycomb of sealed air cells in the four corners. On impact the cells collapse in sequence rather than all at once, which stretches the deceleration over about 8 milliseconds instead of 2. The frame never flexes far enough to load the display.</p>
+        <p>The corners are 1.9 mm thicker than the back. That's the whole trade — Halo is thick exactly where physics needs it and thin everywhere your hand touches.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Halo — Drop test bars",
+  "blocks": [
+    {
+      "type": "bar",
+      "name": "Bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Case name",
+          "default": "Casify Halo"
+        },
+        {
+          "type": "text",
+          "id": "feet",
+          "label": "Drop height (ft)",
+          "default": "12.0 ft"
+        },
+        {
+          "type": "range",
+          "id": "pct",
+          "label": "Bar fill (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 100
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight (Casify)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "tick_label",
+      "label": "Section tick",
+      "default": "Section 03 — the bench"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Dropped until something broke. Then we thickened the corners."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "method",
+      "label": "Method note",
+      "default": "Method: MIL-STD-810G 516.6 Proc. IV · 26 drops · poured concrete · 3 units per model."
+    },
+    {
+      "type": "text",
+      "id": "copy_heading",
+      "label": "Copy heading",
+      "default": "Where the 12 feet actually comes from"
+    },
+    {
+      "type": "richtext",
+      "id": "copy_body",
+      "label": "Copy body"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halo — Drop test bars",
+      "blocks": [
+        {
+          "type": "bar",
+          "settings": {
+            "name": "Casify Halo",
+            "feet": "12.0 ft",
+            "pct": 100,
+            "highlight": true
+          }
+        },
+        {
+          "type": "bar",
+          "settings": {
+            "name": "Rugged bulk case",
+            "feet": "10.5 ft",
+            "pct": 88,
+            "highlight": false
+          }
+        },
+        {
+          "type": "bar",
+          "settings": {
+            "name": "Designer clear case",
+            "feet": "7.2 ft",
+            "pct": 60,
+            "highlight": false
+          }
+        },
+        {
+          "type": "bar",
+          "settings": {
+            "name": "Slim hard shell",
+            "feet": "5.1 ft",
+            "pct": 43,
+            "highlight": false
+          }
+        },
+        {
+          "type": "bar",
+          "settings": {
+            "name": "Marketplace case",
+            "feet": "2.9 ft",
+            "pct": 24,
+            "highlight": false
+          }
+        },
+        {
+          "type": "bar",
+          "settings": {
+            "name": "No case",
+            "feet": "0.9 ft",
+            "pct": 8,
+            "highlight": false
+          }
+        }
+      ],
+      "settings": {
+        "subheading": "<p>Every case in this chart was tested on the same rig, face-down and corner-first onto poured concrete, with a live phone inside. Height is where the phone first took damage.</p>"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "cv-404",
+      "settings": {
+        "heading": "This one took the drop",
+        "body": "The page you were after is gone. The cases, thankfully, are more durable.",
+        "placeholder": "Search for your phone model"
+      },
+      "blocks": {
+        "l-0": { "type": "link", "settings": { "icon": "bag", "label": "Shop all cases", "url": "/collections/all" } },
+        "l-1": { "type": "link", "settings": { "icon": "drop-shield", "label": "How the drop test works", "url": "/" } },
+        "l-2": { "type": "link", "settings": { "icon": "returns", "label": "Returns and refunds", "url": "/pages/return-policy" } },
+        "l-3": { "type": "link", "settings": { "icon": "truck-fast", "label": "Shipping times", "url": "/pages/shipping-policy" } }
+      },
+      "block_order": ["l-0", "l-1", "l-2", "l-3"]
+    }
+  },
+  "order": ["main"]
+}

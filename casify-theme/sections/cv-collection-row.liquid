@@ -1,0 +1,84 @@
+{%- comment -%}
+  Casify — featured product row in the Chrismass design system.
+
+  Points at one collection and renders the first N products as cards. On
+  desktop it is a grid; below 760px it becomes a snap rail so the row costs
+  one swipe instead of a screen of vertical scrolling.
+
+  Cards use the quick pick: a case with several colours or phone models asks
+  for both before adding (snippets/cv-quick-pick.liquid), so the row never
+  puts a guessed phone model in the bag.
+{%- endcomment -%}
+
+{%- liquid
+  assign coll = section.settings.collection
+  assign limit = section.settings.limit
+-%}
+
+<section class="cv-sec cv-row">
+  <div class="cv-row__hd" data-cv-reveal>
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="cv-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      <h2 data-cv-split>{{ section.settings.heading | default: 'Most protected this month' | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+    </div>
+    {%- if coll != blank -%}
+      <a class="cv-row__all" href="{{ coll.url }}">
+        <span>{{ section.settings.link_label | default: 'View all' | escape }}</span>
+        {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if coll != blank and coll.products.size > 0 -%}
+    <div class="cv-grid cv-grid--row" data-motion-dev="cards">
+      {%- comment -%}
+        One card per design: a design sold as several case types (e.g.
+        "Christmas Pickles Christmas Phone Case … | Tough Case" and "… |
+        Magnetic Impact-Resistant Case") shows once, as the first one in the
+        collection. The design is the title before " Phone Case", without a
+        trailing " Christmas".
+      {%- endcomment -%}
+      {%- assign shown = 0 -%}
+      {%- assign seen = '|' -%}
+      {%- for product in coll.products -%}
+        {%- if section.settings.one_per_design -%}
+          {%- assign design = product.title | split: ' Phone Case' | first | split: ' Christmas' | first | strip | downcase -%}
+          {%- assign design_key = '|' | append: design | append: '|' -%}
+          {%- if seen contains design_key -%}{%- continue -%}{%- endif -%}
+          {%- assign seen = seen | append: design | append: '|' -%}
+        {%- endif -%}
+        {%- render 'cv-card', product: product, index: shown, quick_pick: true -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <div class="cv-empty" data-cv-reveal>
+      <span class="cv-empty__ico">{%- render 'cv-icon', name: 'precision-fit', size: 36, animate: true -%}</span>
+      <h2>Pick a collection</h2>
+      <p>Choose a collection in the theme editor and its products appear here.</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Product row",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Best sellers" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Most protected this month" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View all" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "one_per_design", "label": "Show each design once", "default": true, "info": "A design sold as several case types (Tough, Magnetic, Clear) shows as one card, the first in the collection." }
+  ],
+  "presets": [{ "name": "Product row" }]
+}
+{% endschema %}

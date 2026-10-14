@@ -1,0 +1,295 @@
+{% doc %}
+  One showcase card (sections/cv-showcase.liquid).
+
+  A card bound to a product fills itself from that product: photo, title,
+  price, compare-at price, link, how many phones and colors it comes in, a
+  saving or "new" badge, and stars only when a review app has written a
+  rating. Copy typed on the card's block (title, line, badge, features)
+  replaces the derived copy; prices always come from the product. A card
+  without a product is the old hand-written card, rendered from its block.
+
+  @param {object} [item] - Product the card shows.
+  @param {object} [block] - The section block holding the card's typed copy.
+  @param {number} index - Position in the row (0-based), for tones and stagger.
+  @param {string} sid - Section id, for unique SVG ids.
+  @param {string} cta_label - Button label when the block has none.
+  @param {string} sale_badge - Saving badge, "[percent]" is replaced.
+  @param {string} new_badge - Badge for products added in the last 30 days.
+{% enddoc %}
+{%- liquid
+  assign has_block = false
+  if block != blank
+    assign has_block = true
+    assign s = block.settings
+  endif
+  assign has_item = false
+  if item != blank
+    assign has_item = true
+  endif
+
+  assign tone_i = index | modulo: 3
+  case tone_i
+    when 0
+      assign tone = 'cream'
+    when 1
+      assign tone = 'teal'
+    else
+      assign tone = 'dark'
+  endcase
+  assign button_tone = 'red'
+  assign odd = index | modulo: 2
+  if odd == 1
+    assign button_tone = 'teal'
+  endif
+  if has_block
+    assign tone = s.panel_tone | default: tone
+    assign button_tone = s.button_tone | default: button_tone
+  endif
+
+  assign title = ''
+  assign line = ''
+  assign card_image = blank
+  assign image_fit = 'cover'
+  assign url = routes.all_products_collection_url
+  assign label = cta_label
+  if has_block
+    assign title = s.title
+    assign line = s.description
+    assign card_image = s.image
+    assign image_fit = s.image_fit | default: 'cover'
+    if s.button_url != blank
+      assign url = s.button_url
+    endif
+    if s.button_label != blank
+      assign label = s.button_label
+    endif
+  endif
+
+  if has_item
+    if title == blank
+      assign title = item.title
+    endif
+    if line == blank
+      assign line = item.metafields.global.description_tag.value
+    endif
+    if line == blank
+      assign line = item.description | strip_html | strip | remove_first: 'Overview' | strip | truncatewords: 16, '…'
+    endif
+    if card_image == blank
+      assign card_image = item.featured_media.preview_image | default: item.featured_image
+    endif
+    assign url = item.url
+  endif
+  assign image_alt = title
+  if has_item
+    assign image_alt = item.title
+  endif
+  if card_image != blank and card_image.alt != blank
+    assign image_alt = card_image.alt
+  endif
+
+  comment
+    Badge: typed text wins; otherwise "new" for 30 days, then the real saving.
+  endcomment
+  assign badge = ''
+  assign badge_tone = 'red'
+  assign badge_cls = 'is-ribbon'
+  if has_block and s.badge_text != blank
+    assign badge = s.badge_text
+    assign badge_tone = s.badge_tone
+    if s.badge_style == 'pill'
+      assign badge_cls = 'is-pill'
+    endif
+  elsif has_item
+    assign now_s = 'now' | date: '%s' | plus: 0
+    assign made_s = item.created_at | date: '%s' | plus: 0
+    assign age = now_s | minus: made_s
+    if age < 2592000 and new_badge != blank
+      assign badge = new_badge
+      assign badge_tone = 'teal'
+      assign badge_cls = 'is-pill'
+    elsif item.compare_at_price > item.price and sale_badge != blank
+      assign save = item.compare_at_price | minus: item.price | times: 100.0 | divided_by: item.compare_at_price | round
+      assign badge = sale_badge | replace: '[percent]', save
+    endif
+  endif
+
+  comment
+    Features: typed pills win; otherwise read them off the product's title and tags.
+  endcomment
+  assign p1_text = ''
+  assign p1_icon = 'check'
+  assign p2_text = ''
+  assign p2_icon = 'check'
+  if has_block and s.pill_1_text != blank or has_block and s.pill_2_text != blank
+    assign p1_text = s.pill_1_text
+    assign p1_icon = s.pill_1_icon
+    assign p2_text = s.pill_2_text
+    assign p2_icon = s.pill_2_icon
+  elsif has_item
+    assign hay = item.tags | join: ' ' | prepend: ' ' | prepend: item.title | downcase
+    if hay contains 'magnet' or hay contains 'magsafe'
+      assign p1_text = 'Magnetic'
+      assign p1_icon = 'magnet-ring'
+    endif
+    if hay contains 'stand' or hay contains 'bracket'
+      assign p2_text = 'Built-in stand'
+    elsif hay contains 'tough' or hay contains 'shockproof' or hay contains 'anti-drop' or hay contains 'impact'
+      assign p2_text = 'Drop protection'
+      assign p2_icon = 'drop-shield'
+    endif
+  endif
+
+  comment
+    Facts: how many phones and colors, counted from the product's own options.
+  endcomment
+  assign models = 0
+  assign variety = 0
+  assign variety_label = 'styles'
+  if has_item
+    for option in item.options_with_values
+      assign oname = option.name | downcase
+      assign fv = option.values.first | downcase
+      if oname contains 'model' or oname contains 'phone' or oname contains 'device' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'samsung' or fv contains 'pixel'
+        assign models = option.values.size
+      elsif option.values.size > 1 and variety == 0
+        assign variety = option.values.size
+        if oname contains 'colo'
+          assign variety_label = 'colors'
+        elsif oname contains 'surface' or oname contains 'finish'
+          assign variety_label = 'finishes'
+        endif
+      endif
+    endfor
+    assign i_rating = item.metafields.reviews.rating.value
+    assign i_count = item.metafields.reviews.rating_count.value | default: 0
+  endif
+-%}
+<li class="cvsh-card cvsh-card--{{ tone }}{% if card_image != blank %} cvsh-card--has-image{% endif %}{% if has_item %} cvsh-card--product{% endif %}" data-cvsh-card style="--i:{{ index }}"{% if has_block %} {{ block.shopify_attributes }}{% endif %}>
+  <div class="cvsh-card__stage">
+    {%- if has_item -%}
+      <a class="cvsh-card__hit" href="{{ url }}" tabindex="-1" aria-hidden="true"></a>
+    {%- endif -%}
+    <span class="cvsh-card__ring" aria-hidden="true"></span>
+    {%- if card_image != blank -%}
+      <figure class="cvsh-card__media cvsh-card__media--{{ image_fit }}" data-cvsh-media>
+        {{ card_image | image_url: width: 960 | image_tag:
+          class: 'cvsh-card__image',
+          loading: 'lazy',
+          widths: '320, 480, 640, 800, 960',
+          sizes: '(min-width: 1100px) 380px, (min-width: 700px) 46vw, 84vw',
+          alt: image_alt
+        }}
+        <span class="cvsh-card__glass" aria-hidden="true"></span>
+      </figure>
+    {%- endif -%}
+    {%- if badge != blank -%}
+      <span class="cvsh-card__badge cvsh-card__badge--{{ badge_tone }} {{ badge_cls }}" data-cvsh-badge>{{ badge | escape }}</span>
+    {%- endif -%}
+
+    {%- if card_image == blank and has_block -%}
+      <span class="cvsh-card__icon" data-cvsh-fallback-icon>
+        {%- render 'cv-icon', name: s.icon, size: 68, animate: true -%}
+      </span>
+    {%- endif -%}
+
+    {%- if p1_text != blank or p2_text != blank -%}
+      <div class="cvsh-card__pills">
+        {%- if p1_text != blank -%}
+          <span class="cvsh-card__pill">
+            {%- render 'cv-icon', name: p1_icon, size: 12 -%}
+            {{ p1_text | escape }}
+          </span>
+        {%- endif -%}
+        {%- if p2_text != blank -%}
+          <span class="cvsh-card__pill">
+            {%- render 'cv-icon', name: p2_icon, size: 12 -%}
+            {{ p2_text | escape }}
+          </span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="cvsh-card__body">
+    {%- if has_item -%}
+      {%- if i_rating != blank and i_count > 0 -%}
+        {%- assign i_pct = i_rating.rating | times: 100.0 | divided_by: i_rating.scale_max | round: 1 -%}
+        <div class="cvsh-card__rating">
+          {%- render 'cv-stars', fill: i_pct, class: 'cvsh-card__stars' -%}
+          <span>{{ i_rating.rating | round: 1 }} <span class="cvsh-sr">out of {{ i_rating.scale_max }} stars,</span>({{ i_count }})</span>
+        </div>
+      {%- endif -%}
+    {%- elsif s.rating_count != blank -%}
+      <div class="cvsh-card__rating" data-cvsh-stars>
+        <span class="cvsh-stars">
+          {%- for i in (1..5) -%}
+            <svg class="cvsh-stars__star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg>
+          {%- endfor -%}
+        </span>
+        <span>({{ s.rating_count | escape }})</span>
+      </div>
+    {%- endif -%}
+
+    <h3 class="cvsh-card__title">
+      {%- if has_item -%}<a href="{{ url }}">{{ title | escape }}</a>{%- else -%}{{ title | escape }}{%- endif -%}
+    </h3>
+    {%- if line != blank -%}
+      <p class="cvsh-card__desc">{{ line | escape }}</p>
+    {%- endif -%}
+    {%- if models > 0 or variety > 0 -%}
+      <p class="cvsh-card__facts">
+        {%- if models > 0 -%}<span>{{ models }} {% if models == 1 %}model{% else %}models{% endif %}</span>{%- endif -%}
+        {%- if variety > 0 -%}<span>{{ variety }} {{ variety_label }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+
+    <div class="cvsh-card__price" data-cvsh-price>
+      {%- if has_item -%}
+        <span class="cvsh-card__now">{% if item.price_varies %}<small>From</small> {% endif %}{{ item.price_min | money }}</span>
+        {%- if item.compare_at_price > item.price -%}
+          <s class="cvsh-card__was"><span class="cvsh-sr">Regular price</span>{{ item.compare_at_price | money }}</s>
+        {%- endif -%}
+      {%- else -%}
+        <span class="cvsh-card__now">{{ s.price | escape }}</span>
+        {%- if s.compare_price != blank -%}
+          <s class="cvsh-card__was">{{ s.compare_price | escape }}</s>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <a href="{{ url }}" class="cvsh-card__cta cvsh-sign-cta cvsh-sign-cta--{{ button_tone }}" data-cvsh-cta{% if has_item %} aria-label="{{ label | escape }}: {{ title | escape }}"{% endif %}>
+      <svg class="cvsh-sign-cta__art" viewBox="0 0 320 60" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="cvsh-plaque-{{ sid }}-{{ index }}">
+            <path d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+          </clipPath>
+          <pattern id="cvsh-stripe-{{ sid }}-{{ index }}" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+            <rect width="9" height="18" class="cvsh-sign-cta__stripe-light"/>
+            <rect x="9" width="9" height="18" class="cvsh-sign-cta__stripe-dark"/>
+          </pattern>
+        </defs>
+        <path class="cvsh-sign-cta__base" d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+        <g clip-path="url(#cvsh-plaque-{{ sid }}-{{ index }})">
+          <rect class="cvsh-sign-cta__stripes" x="4" y="3" width="58" height="54" fill="url(#cvsh-stripe-{{ sid }}-{{ index }})"/>
+          <path class="cvsh-sign-cta__shade" d="M4 43c67 6 220 3 312-12v26H4Z"/>
+          <path class="cvsh-sign-cta__shine" data-cvsh-cta-shine d="M-48 1h30L4 59h-30Z"/>
+        </g>
+        <path class="cvsh-sign-cta__trim" d="M22 3h276c10 0 18 8 18 18v18c0 10-8 18-18 18H22C12 57 4 49 4 39V21C4 11 12 3 22 3Z"/>
+        <g class="cvsh-sign-cta__mint" data-cvsh-cta-mint transform="translate(31 30)">
+          <circle r="15" class="cvsh-sign-cta__mint-rim"/>
+          <circle r="11" class="cvsh-sign-cta__mint-paper"/>
+          <path class="cvsh-sign-cta__mint-swish" d="M0-10c5 0 9 4 10 8-4-2-8-1-10 2-2-4-2-7 0-10Z"/>
+          <path class="cvsh-sign-cta__mint-swish" d="M10 0c0 5-4 9-8 10 2-4 1-8-2-10 4-2 7-2 10 0Z"/>
+          <path class="cvsh-sign-cta__mint-swish" d="M0 10c-5 0-9-4-10-8 4 2 8 1 10-2 2 4 2 7 0 10Z"/>
+          <path class="cvsh-sign-cta__mint-swish" d="M-10 0c0-5 4-9 8-10-2 4-1 8 2 10-4 2-7 2-10 0Z"/>
+          <circle r="2.5" class="cvsh-sign-cta__mint-center"/>
+        </g>
+      </svg>
+      <span class="cvsh-sign-cta__label">{{ label | escape }}</span>
+      <svg class="cvsh-sign-cta__arrow" data-cvsh-cta-arrow viewBox="0 0 28 16" aria-hidden="true" focusable="false">
+        <path d="M1 8h23M17 1l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</li>

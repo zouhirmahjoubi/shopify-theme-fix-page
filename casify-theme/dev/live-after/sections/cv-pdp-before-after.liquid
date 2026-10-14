@@ -1,0 +1,182 @@
+{%- comment -%}
+  Casify product page: before & after (Chrismass design system).
+
+  Built from the before/after sources in the abcdef library ("Before and
+  after image slider", Shrine's before-after sections), reworked:
+    - the merchant's own photos (the library snippet hot-linked two dental
+      photos from other sites);
+    - one or more comparisons, shown as tabs when there is more than one;
+    - a real range input under the handle, so keyboard and screen-reader
+      users can compare too; pointer users can drag anywhere on the photo.
+  Without JavaScript each comparison shows at its start position, with no
+  handle (nothing would move), and every comparison is listed in turn.
+
+  Motion: assets/cv-pdp-before-after.js. Styles: assets/cv-pdp-before-after.css.
+{%- endcomment -%}
+{{ 'cv-pdp-before-after.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign ready = 0
+  for block in section.blocks
+    if block.settings.before_image != blank and block.settings.after_image != blank
+      assign ready = ready | plus: 1
+    endif
+  endfor
+  assign show_tabs = false
+  if ready > 1
+    assign show_tabs = true
+  endif
+-%}
+
+{%- if ready > 0 or request.design_mode -%}
+<section
+  class="cvba cvba--tone-{{ st.tone }} cvba--static"
+  data-cvba
+  aria-labelledby="cvba-title-{{ section.id }}"
+  style="--cvba-pt: {{ st.padding_top }}px; --cvba-pb: {{ st.padding_bottom }}px;"
+>
+  <div class="cvba__inner">
+    <header class="cvba__hd">
+      <h2 class="cvba__title" id="cvba-title-{{ section.id }}" data-cvba-heading>{{ st.heading | default: 'Before & after' }}</h2>
+      {%- if st.lede != blank -%}
+        <div class="cvba__lede" data-cvba-fade>{{ st.lede }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- if show_tabs -%}
+      <div class="cvba__tabs" role="tablist" aria-label="Comparisons" data-cvba-tabs hidden>
+        {%- assign tab_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.before_image != blank and block.settings.after_image != blank -%}
+            <button
+              type="button"
+              class="cvba__tab"
+              role="tab"
+              id="cvba-tab-{{ block.id }}"
+              aria-controls="cvba-panel-{{ block.id }}"
+              aria-selected="{% if tab_index == 0 %}true{% else %}false{% endif %}"
+              tabindex="{% if tab_index == 0 %}0{% else %}-1{% endif %}"
+              data-cvba-tab
+            >{{ block.settings.tab_label | default: block.settings.caption | default: 'Comparison' | escape }}</button>
+            {%- assign tab_index = tab_index | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="cvba__panels">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign complete = false
+          if b.before_image != blank and b.after_image != blank
+            assign complete = true
+          endif
+          assign ratio = 1.25
+          if b.after_image != blank and b.after_image.aspect_ratio > 0
+            assign ratio = b.after_image.aspect_ratio
+          endif
+          assign desc = b.caption | default: b.tab_label | default: 'this product'
+        -%}
+        {%- if complete -%}
+          <figure
+            class="cvba-cmp"
+            id="cvba-panel-{{ block.id }}"
+            data-cvba-cmp
+            data-start="{{ b.start }}"
+            {% if show_tabs %}role="tabpanel" aria-labelledby="cvba-tab-{{ block.id }}"{% endif %}
+            style="--pos: {{ b.start }}%; --ratio: {{ ratio }};"
+            {{ block.shopify_attributes }}
+          >
+            <div class="cvba-cmp__frame" data-cvba-frame>
+              {{ b.after_image | image_url: width: 1600 | image_tag:
+                class: 'cvba-cmp__img',
+                loading: 'lazy',
+                widths: '480, 720, 960, 1280, 1600',
+                sizes: '(min-width: 1000px) 900px, 100vw',
+                alt: b.after_alt
+              }}
+              <div class="cvba-cmp__before" data-cvba-before>
+                {{ b.before_image | image_url: width: 1600 | image_tag:
+                  class: 'cvba-cmp__img',
+                  loading: 'lazy',
+                  widths: '480, 720, 960, 1280, 1600',
+                  sizes: '(min-width: 1000px) 900px, 100vw',
+                  alt: b.before_alt
+                }}
+              </div>
+              <span class="cvba-cmp__label cvba-cmp__label--before" data-cvba-label-before>{{ b.before_label | escape }}</span>
+              <span class="cvba-cmp__label cvba-cmp__label--after" data-cvba-label-after>{{ b.after_label | escape }}</span>
+              <span class="cvba-cmp__line" data-cvba-line aria-hidden="true"></span>
+              <span class="cvba-cmp__knob" data-cvba-knob aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg>
+              </span>
+              <input
+                class="cvba-cmp__range"
+                type="range" min="0" max="100" step="1" value="{{ b.start }}"
+                aria-label="Compare {{ b.before_label | escape }} and {{ b.after_label | escape }}: {{ desc | escape }}"
+                aria-valuetext="{{ b.start }}% {{ b.before_label | escape }}"
+                data-cvba-range
+                hidden
+              >
+            </div>
+            {%- if b.caption != blank -%}
+              <figcaption class="cvba-cmp__caption">{{ b.caption | escape }}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- elsif request.design_mode -%}
+          <div class="cvba__draft" {{ block.shopify_attributes }}>Add a "before" and an "after" photo to show this comparison.</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: before & after",
+  "tag": "div",
+  "class": "section-cv-pdp-before-after",
+  "settings": [
+    {
+      "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "See the <em>difference</em>",
+      "info": "Italic words are set in the script face — use it for one short flourish."
+    },
+    { "type": "richtext", "id": "lede", "label": "Intro", "default": "<p>Drag the handle to compare.</p>" },
+    {
+      "type": "select", "id": "tone", "label": "Background", "default": "page",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "cocoa", "label": "Cocoa" }
+      ]
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison",
+      "limit": 4,
+      "settings": [
+        { "type": "paragraph", "content": "Use real, unedited photos of the same subject, taken from the same angle and light." },
+        { "type": "image_picker", "id": "before_image", "label": "Before photo" },
+        { "type": "text", "id": "before_label", "label": "Before label", "default": "Before" },
+        { "type": "text", "id": "before_alt", "label": "Before photo description", "info": "For screen readers." },
+        { "type": "image_picker", "id": "after_image", "label": "After photo" },
+        { "type": "text", "id": "after_label", "label": "After label", "default": "After" },
+        { "type": "text", "id": "after_alt", "label": "After photo description", "info": "For screen readers." },
+        { "type": "range", "id": "start", "label": "Handle start position", "min": 10, "max": 90, "step": 5, "unit": "%", "default": 50 },
+        { "type": "text", "id": "tab_label", "label": "Tab label", "info": "Shown when there is more than one comparison." },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Product: before & after", "blocks": [ { "type": "comparison" } ] }
+  ]
+}
+{% endschema %}

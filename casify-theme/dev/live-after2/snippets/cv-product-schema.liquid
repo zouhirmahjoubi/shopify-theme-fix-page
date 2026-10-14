@@ -1,0 +1,36 @@
+{% doc %}
+  Renders Product structured data for the shop counter.
+
+  @param {product} product - The product shown by the section.
+  @param {boolean} has_rating - Whether verified product rating data is available.
+  @param {object} rating - The product rating metafield value.
+  @param {number} rating_count - The verified rating count.
+{% enddoc %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  {%- if product.featured_image %}"image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+  {%- if product.description != blank %}"description": {{ product.description | strip_html | truncate: 300 | json }},{% endif %}
+  "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+  {%- if has_rating %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rating.rating | json }},
+    "bestRating": {{ rating.scale_max | json }},
+    "worstRating": {{ rating.scale_min | json }},
+    "ratingCount": {{ rating_count | json }}
+  },
+  {%- endif %}
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "lowPrice": {{ product.price_min | divided_by: 100.0 | json }},
+    "highPrice": {{ product.price_max | divided_by: 100.0 | json }},
+    "offerCount": {{ product.variants.size }},
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }
+}
+</script>

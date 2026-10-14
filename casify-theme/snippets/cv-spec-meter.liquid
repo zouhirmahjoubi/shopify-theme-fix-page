@@ -1,0 +1,109 @@
+{% doc %}
+  The Shop Counter's "Protection meter" block (sections/cv-product-counter.liquid):
+  two segmented bars on a paper ticket, impact level with its drop height and
+  thickness, each between two end labels. The bars can be candy-striped, and a
+  wrapped sweet can sit at the end of each fill.
+
+  A product's own metafields replace the block's numbers: custom.impact_level
+  and custom.thickness_level (whole numbers), custom.drop_height (text). With
+  "Show only on" filled in, the card shows on those products only.
+
+  Styles: assets/cv-spec-meter.css. Motion: assets/cv-spec-meter.js (GSAP deals
+  the ticket in, fills the bars, rolls the sweets and the drop height; three.js
+  drops a phone onto the impact bar). Without either the card is complete as
+  rendered.
+
+  @param {object} block - The spec_meter block.
+  @param {object} product - The product being shown.
+{% enddoc %}
+{%- liquid
+  assign s = block.settings
+  assign show_here = true
+  if s.products.size > 0
+    assign show_here = false
+    for p in s.products
+      if p.id == product.id
+        assign show_here = true
+        break
+      endif
+    endfor
+  endif
+
+  assign segs = s.segments | default: 6 | at_least: 2
+  assign impact_level = product.metafields.custom.impact_level.value | default: s.impact_level | at_least: 0 | at_most: segs
+  assign thick_level = product.metafields.custom.thickness_level.value | default: s.thickness_level | at_least: 0 | at_most: segs
+  assign impact_value = product.metafields.custom.drop_height.value | default: s.impact_value
+  assign tone = s.tone | default: 'candy'
+  assign pattern = s.pattern | default: 'stripes'
+-%}
+{%- if show_here -%}
+  {{ 'cv-spec-meter.css' | asset_url | stylesheet_tag }}
+  <script>
+    /* Hold the ticket back until cv-spec-meter.js has set its start state. Never under reduced motion, never for long. */
+    (function (root) {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      root.classList.add('cvm-pending');
+      setTimeout(function () { root.classList.remove('cvm-pending'); }, 1400);
+    })(document.documentElement);
+  </script>
+  <div class="cvm cvm--{{ tone }} cvm--{{ pattern }}" data-cvm{% if s.drop_test %} data-cvm-drop{% endif %} {{ block.shopify_attributes }}>
+    <span class="cvm__perf" data-cvm-perf aria-hidden="true"></span>
+    {%- for row in (1..2) -%}
+      {%- liquid
+        if row == 1
+          assign m_key = 'impact'
+          assign m_label = s.impact_label | default: 'Impact Level'
+          assign m_value = impact_value
+          assign m_level = impact_level
+          assign m_min = s.impact_min
+          assign m_max = s.impact_max
+          assign m_sweet = 'red'
+          if tone == 'teal'
+            assign m_sweet = 'teal'
+          endif
+        else
+          assign m_key = 'thickness'
+          assign m_label = s.thickness_label | default: 'Thickness'
+          assign m_value = s.thickness_value
+          assign m_level = thick_level
+          assign m_min = s.thickness_min
+          assign m_max = s.thickness_max
+          assign m_sweet = 'teal'
+          if tone == 'red'
+            assign m_sweet = 'red'
+          endif
+        endif
+        capture m_text
+          echo m_level | append: ' of ' | append: segs
+          if m_min != blank and m_max != blank
+            echo ', from ' | append: m_min | append: ' to ' | append: m_max
+          endif
+          if m_value != blank
+            echo '; ' | append: m_value
+          endif
+        endcapture
+        assign sweet_file = 'hero-sweet-wrapped-' | append: m_sweet | append: '.webp'
+      -%}
+      <div class="cvm__meter cvm__meter--{{ m_key }}" data-cvm-meter="{{ m_key }}" data-level="{{ m_level }}"
+           role="meter" aria-label="{{ m_label | escape }}" aria-valuemin="0" aria-valuemax="{{ segs }}" aria-valuenow="{{ m_level }}" aria-valuetext="{{ m_text | strip | escape }}">
+        <p class="cvm__head">
+          <span class="cvm__label">{{ m_label | escape }}</span>
+          {%- if m_value != blank -%}<span class="cvm__value" data-cvm-value>{{ m_value | escape }}</span>{%- endif -%}
+        </p>
+        <span class="cvm__bar" data-cvm-bar style="--cvm-segs: {{ segs }}; --cvm-level: {{ m_level }};">
+          {%- for i in (1..segs) -%}
+            <span class="cvm__seg{% if i <= m_level %} is-on{% endif %}" data-cvm-seg><i class="cvm__fill"></i></span>
+          {%- endfor -%}
+          <span class="cvm__sheen" data-cvm-sheen></span>
+          {%- if s.show_sweets and m_level > 0 -%}
+            <img class="cvm__sweet cvm__sweet--{{ m_sweet }}" data-cvm-sweet src="{{ sweet_file | asset_url }}" width="440" height="{% if m_sweet == 'teal' %}164{% else %}212{% endif %}" alt="" loading="lazy" decoding="async">
+          {%- endif -%}
+        </span>
+        {%- if m_min != blank or m_max != blank -%}
+          <span class="cvm__ends" data-cvm-ends><span>{{ m_min | escape }}</span><span>{{ m_max | escape }}</span></span>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  <script type="module" src="{{ 'cv-spec-meter.js' | asset_url }}"></script>
+{%- endif -%}

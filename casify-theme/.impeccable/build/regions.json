@@ -1,0 +1,371 @@
+{
+ "regions": [
+  {
+   "id": "header",
+   "kind": "chrome",
+   "box": {
+    "x": 0.0,
+    "y": 0.0,
+    "w": 1.0,
+    "h": 0.171
+   },
+   "note": "the existing site header section (awning, topbar, nav with the shop sign), already built from its own assets",
+   "container": true,
+   "codeDrawn": true
+  },
+  {
+   "id": "breadcrumb",
+   "kind": "text",
+   "box": {
+    "x": 0.024,
+    "y": 0.1778,
+    "w": 0.283,
+    "h": 0.0278
+   },
+   "note": "breadcrumb Home / Cases / product title in small typewriter type"
+  },
+  {
+   "id": "page-ground",
+   "kind": "texture",
+   "box": {
+    "x": 0.66,
+    "y": 0.3788,
+    "w": 0.06,
+    "h": 0.0413
+   },
+   "note": "cream paper page ground with faint grain, no ink"
+  },
+  {
+   "id": "thumb-rail",
+   "kind": "chrome",
+   "box": {
+    "x": 0.0235,
+    "y": 0.2251,
+    "w": 0.0765,
+    "h": 0.6549
+   },
+   "note": "vertical rail of five round glass jar-lid thumbnails",
+   "container": true,
+   "codeDrawn": true
+  },
+  {
+   "id": "jar-lid",
+   "kind": "plate",
+   "box": {
+    "x": 0.0275,
+    "y": 0.3623,
+    "w": 0.0685,
+    "h": 0.1185
+   },
+   "note": "empty round clear glass jar lid seen from the front: thick glass rim ring with a small glass knob on top, empty transparent centre where a thumbnail photo sits"
+  },
+  {
+   "id": "thumb-1",
+   "kind": "image",
+   "box": {
+    "x": 0.029,
+    "y": 0.2528,
+    "w": 0.066,
+    "h": 0.0968
+   },
+   "note": "selected thumbnail: real product photo inside a red candy-stripe ring"
+  },
+  {
+   "id": "thumb-2",
+   "kind": "image",
+   "box": {
+    "x": 0.029,
+    "y": 0.3826,
+    "w": 0.066,
+    "h": 0.096
+   },
+   "note": "thumbnail: real product photo"
+  },
+  {
+   "id": "thumb-3",
+   "kind": "image",
+   "box": {
+    "x": 0.029,
+    "y": 0.5131,
+    "w": 0.066,
+    "h": 0.096
+   },
+   "note": "thumbnail: real product photo"
+  },
+  {
+   "id": "thumb-4",
+   "kind": "image",
+   "box": {
+    "x": 0.029,
+    "y": 0.6437,
+    "w": 0.066,
+    "h": 0.096
+   },
+   "note": "thumbnail: real product photo"
+  },
+  {
+   "id": "thumb-5",
+   "kind": "image",
+   "box": {
+    "x": 0.029,
+    "y": 0.7742,
+    "w": 0.066,
+    "h": 0.096
+   },
+   "note": "thumbnail: real product photo"
+  },
+  {
+   "id": "photo",
+   "kind": "image",
+   "box": {
+    "x": 0.114,
+    "y": 0.2086,
+    "w": 0.4075,
+    "h": 0.7502
+   },
+   "note": "real product photo: two clear magnetic cases on a marble counter, rounded corners"
+  },
+  {
+   "id": "zoom-chip",
+   "kind": "control",
+   "box": {
+    "x": 0.414,
+    "y": 0.2198,
+    "w": 0.099,
+    "h": 0.0473
+   },
+   "note": "cream pill chip with magnifier icon: Tap to zoom",
+   "codeDrawn": true
+  },
+  {
+   "id": "vendor-ticket",
+   "kind": "chrome",
+   "box": {
+    "x": 0.5445,
+    "y": 0.1951,
+    "w": 0.0885,
+    "h": 0.0353
+   },
+   "note": "small cream ticket with dashed brown border: CASIFY CASES in typewriter type",
+   "codeDrawn": true
+  },
+  {
+   "id": "title",
+   "kind": "text",
+   "box": {
+    "x": 0.5445,
+    "y": 0.2266,
+    "w": 0.308,
+    "h": 0.093
+   },
+   "note": "product title in heavy high-contrast serif, two lines: Transparent Magnetic / Phone Case for iPhone"
+  },
+  {
+   "id": "rating",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.3143,
+    "w": 0.2645,
+    "h": 0.0353
+   },
+   "note": "five outlined brass stars, typewriter No reviews yet \u00b7 Write the first (underlined link)",
+   "codeDrawn": true
+  },
+  {
+   "id": "brass-tag",
+   "kind": "plate",
+   "box": {
+    "x": 0.865,
+    "y": 0.165,
+    "w": 0.1125,
+    "h": 0.162
+   },
+   "note": "hanging brass price tag on a thin string, tilted, blank face (price is text on top)"
+  },
+  {
+   "id": "tag-price",
+   "kind": "text",
+   "box": {
+    "x": 0.8885,
+    "y": 0.2326,
+    "w": 0.078,
+    "h": 0.0675
+   },
+   "note": "price $49.99 in heavy red serif, tilted with the tag"
+  },
+  {
+   "id": "style-label",
+   "kind": "text",
+   "box": {
+    "x": 0.5445,
+    "y": 0.3473,
+    "w": 0.2335,
+    "h": 0.0263
+   },
+   "note": "typewriter STYLE: Magnetic Case Camera Cutout Transparent"
+  },
+  {
+   "id": "swatches",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.3691,
+    "w": 0.0935,
+    "h": 0.0705
+   },
+   "note": "two round style swatches with real variant photos, selected one in a red candy-stripe ring, other teal-dashed",
+   "codeDrawn": true
+  },
+  {
+   "id": "model-label",
+   "kind": "text",
+   "box": {
+    "x": 0.5445,
+    "y": 0.4389,
+    "w": 0.037,
+    "h": 0.024
+   },
+   "note": "typewriter label MODEL"
+  },
+  {
+   "id": "model-select",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.4621,
+    "w": 0.417,
+    "h": 0.0578
+   },
+   "note": "model dropdown with thin cocoa border: iPhone 17 Pro / 18 Pro and chevron",
+   "codeDrawn": true
+  },
+  {
+   "id": "candy-box",
+   "kind": "plate",
+   "box": {
+    "x": 0.544,
+    "y": 0.5386,
+    "w": 0.136,
+    "h": 0.129
+   },
+   "note": "candy box frame: red and cream diagonal stripe border with a scalloped cream lid band dotted in red along the top, empty cream centre"
+  },
+  {
+   "id": "pack-1",
+   "kind": "text",
+   "box": {
+    "x": 0.571,
+    "y": 0.5754,
+    "w": 0.083,
+    "h": 0.072
+   },
+   "note": "1 case / $49.99 in heavy red serif"
+  },
+  {
+   "id": "pack-2",
+   "kind": "control",
+   "box": {
+    "x": 0.6845,
+    "y": 0.5281,
+    "w": 0.138,
+    "h": 0.138
+   },
+   "note": "selected pack: red Most popular flag on the lid, 2 cases / $40.99 each",
+   "codeDrawn": true
+  },
+  {
+   "id": "candy-box-teal",
+   "kind": "plate",
+   "box": {
+    "x": 0.824,
+    "y": 0.5221,
+    "w": 0.139,
+    "h": 0.147
+   },
+   "note": "candy box frame in teal and cream stripes with scalloped lid and a teal Best value flag tab"
+  },
+  {
+   "id": "pack-3",
+   "kind": "text",
+   "box": {
+    "x": 0.846,
+    "y": 0.5754,
+    "w": 0.098,
+    "h": 0.072
+   },
+   "note": "3 cases / $34.49 each in heavy red serif"
+  },
+  {
+   "id": "savings-meter",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.6714,
+    "w": 0.4145,
+    "h": 0.0338
+   },
+   "note": "thin candy-stripe progress bar two thirds filled, typewriter text 2 cases saves you $18.00 vs buying singly",
+   "codeDrawn": true
+  },
+  {
+   "id": "add-to-bag",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.7044,
+    "w": 0.2395,
+    "h": 0.0645
+   },
+   "note": "red pill button with bag icon: Add to bag \u00b7 $81.98, darker bottom edge",
+   "codeDrawn": true
+  },
+  {
+   "id": "buy-now",
+   "kind": "control",
+   "box": {
+    "x": 0.781,
+    "y": 0.7044,
+    "w": 0.1815,
+    "h": 0.063
+   },
+   "note": "deep cocoa pill button: Buy now with arrow, cream text",
+   "codeDrawn": true
+  },
+  {
+   "id": "ship-by",
+   "kind": "text",
+   "box": {
+    "x": 0.5445,
+    "y": 0.7667,
+    "w": 0.202,
+    "h": 0.0315
+   },
+   "note": "clock icon and typewriter Order today, ships by Fri, Sep 18"
+  },
+  {
+   "id": "service-ribbon",
+   "kind": "chrome",
+   "box": {
+    "x": 0.5445,
+    "y": 0.7952,
+    "w": 0.417,
+    "h": 0.057
+   },
+   "note": "candy-stripe dashed ribbon box with three items and icons: Free shipping | 30-day returns | Ships in 1-3 business days",
+   "codeDrawn": true
+  },
+  {
+   "id": "accordions",
+   "kind": "control",
+   "box": {
+    "x": 0.5445,
+    "y": 0.8552,
+    "w": 0.417,
+    "h": 0.0975
+   },
+   "note": "two collapsed rows Details and Shipping & returns in heavy serif with plus marks, dashed rules",
+   "codeDrawn": true
+  }
+ ]
+}

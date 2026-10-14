@@ -1,0 +1,195 @@
+/* =========================================================================
+   Casify — header (sections/header.liquid)
+   Awning + ticker, topbar, sticky nav with the hanging shop sign.
+   Motion lives in cv-header.js; everything here renders correctly without JS.
+   ========================================================================= */
+
+/* ---------- Sticky shell ----------
+   The section wrapper is the sticky element (schema "class": "cvh-root"). Its
+   negative top equals the nav's offset inside it, so the awning and topbar
+   scroll away while the nav — and the search panel under it — stay pinned.
+   cv-header.js measures the real offset; 72px is the desktop estimate. */
+.cvh-root {
+  position: sticky;
+  top: calc(var(--cvh-offset, 72px) * -1);
+  z-index: 91; /* above the sticky add-to-cart bar (90), below the cart drawer (94/95) */
+}
+.cvh-root .nav { position: relative; top: auto; transition: box-shadow var(--duration-base) var(--ease-standard); }
+.cvh-root .nav.is-stuck { box-shadow: 0 5px 0 rgba(196,48,43,.08), 0 10px 24px rgba(51,35,26,.14); }
+.cvh-root .cm-icon,
+.cvh-root .nav__link .cv-ico { display: inline-flex; } /* transformable by GSAP */
+
+/* Pieces that animate in stay hidden until cv-header.js sets their start state
+   (inline guard in header.liquid, capped at 1.2s). */
+.cvh-pending [data-cvh-enter] { opacity: 0; }
+
+/* ---------- Awning ---------- */
+.cvh-awning {
+  animation: none; /* stripe drift is GSAP-driven so scroll speed can push it */
+  background-position: var(--cvh-drift, 0px) 0;
+}
+.cvh-awning::before,
+.cvh-awning::after { content: none; }
+.cvh-awning__shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(51,35,26,.22) 0, rgba(51,35,26,0) 38%, rgba(255,253,248,.14) 62%, rgba(51,35,26,.14) 100%);
+}
+
+/* Each stripe ends in its own scallop; drifts with the stripes via --cvh-drift. */
+.cvh-awning__valance {
+  position: absolute; left: 0; right: 0; top: 100%; height: 9px;
+  transform-origin: 50% 0;
+  filter: drop-shadow(0 2px 1.5px rgba(51,35,26,.28));
+  pointer-events: none;
+}
+.cvh-awning__scallops {
+  display: block; height: 100%;
+  background: repeating-linear-gradient(90deg, var(--red-500) 0 18px, var(--cream-50) 18px 36px);
+  background-position: var(--cvh-drift, 0px) 0;
+  -webkit-mask: radial-gradient(circle at 9px 0, #000 8.6px, transparent 9.2px) 0 0 / 18px 9px repeat-x;
+          mask: radial-gradient(circle at 9px 0, #000 8.6px, transparent 9.2px) 0 0 / 18px 9px repeat-x;
+  -webkit-mask-position: var(--cvh-drift, 0px) 0;
+          mask-position: var(--cvh-drift, 0px) 0;
+}
+
+/* Ticker ribbon with a pinked bottom edge */
+.cvh-ticker {
+  position: absolute; left: 8px; right: 8px; top: 50%;
+  height: 15px; margin-top: -7.5px;
+  display: block; overflow: hidden;
+  background: var(--cream-100);
+  -webkit-mask: linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 3px) no-repeat,
+                conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) 0 100% / 6px 3px repeat-x;
+          mask: linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 3px) no-repeat,
+                conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) 0 100% / 6px 3px repeat-x;
+}
+.cvh-ticker__track { display: flex; align-items: center; width: max-content; height: calc(100% - 2px); }
+.cvh-ticker__track span {
+  font-family: var(--font-label); font-size: 10px; line-height: 1;
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--cocoa-700); white-space: nowrap; padding-right: .6em;
+}
+
+/* ---------- Hanging sign (snippets/casify-logo.liquid) ---------- */
+.nav .brand.casify-logo { filter: none; }
+.casify-sign {
+  --sign-h: 54px; --mint: 34px;
+  display: inline-flex; align-items: center; line-height: 0;
+  transform-origin: 0 50%;
+}
+.casify-sign__plaque {
+  display: block; height: var(--sign-h); width: auto; max-width: none;
+  position: relative; z-index: 1;
+  transform-origin: 50% 0; /* swings from its top edge */
+  filter: drop-shadow(0 2px 0 rgba(126,26,23,.22)) drop-shadow(0 6px 10px rgba(51,35,26,.16));
+}
+.casify-sign__mint {
+  position: relative; z-index: 2; flex: none;
+  width: var(--mint); height: var(--mint); border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(51,35,26,.24);
+}
+.casify-sign__mint img { display: block; width: 100%; height: 100%; }
+/* Gloss sits on the wrapper so it stays put while the candy face spins. */
+.casify-sign__mint::after {
+  content: ""; position: absolute; inset: 9%; border-radius: 50%; pointer-events: none;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255,253,248,.85) 0 9%, rgba(255,253,248,0) 30%),
+    radial-gradient(circle at 70% 78%, rgba(51,35,26,.18), rgba(51,35,26,0) 55%);
+}
+.casify-sign__mint--red { margin-right: calc(var(--mint) * -.42); }
+.casify-sign__mint--teal { margin-left: calc(var(--mint) * -.42); }
+
+/* ---------- Scroll progress along the nav's bottom edge ---------- */
+.cvh-progress { position: absolute; left: 0; right: 0; bottom: -3px; height: 4px; overflow: hidden; pointer-events: none; }
+.cvh-progress__fill {
+  display: block; height: 100%;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: repeating-linear-gradient(-45deg, var(--red-500) 0 5px, var(--cream-50) 5px 10px);
+  box-shadow: inset 0 -1px 0 rgba(126,26,23,.35);
+}
+html.cvh-has-progress .cv-progress { display: none; } /* the nav bar replaces cv-motion's page bar */
+
+/* ---------- Menu hover animation ----------
+   Section setting "nav_style" (data-nav-fx on .nav); cv-header.js positions the
+   pieces and adds .cvh-fx-on once it runs. Without it (no GSAP, reduced motion)
+   the layer stays hidden and the links keep their red underline. The layer sits
+   at z-index -1 inside the nav's stacking context: over the nav's background,
+   under the links. */
+.cvh-fx { display: none; }
+.cvh-fx-on .cvh-fx { display: block; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.cvh-fx-on .nav__links .cm-underline::after { content: none; }
+.cvh-fx__defs { position: absolute; width: 0; height: 0; }
+.cvh-fx__spot,
+.cvh-fx__bubble,
+.cvh-fx__goo,
+.cvh-fx__dot { position: absolute; left: 0; top: 0; visibility: hidden; opacity: 0; }
+
+/* Spotlight: a lamp on the nav's top edge, a beam down to the link, a pool of light under it */
+.cvh-fx__spot { width: 100px; height: 60px; }
+.cvh-fx__lamp {
+  position: absolute; top: 0; left: 50%; width: 34px; height: 4px; margin-left: -17px;
+  border-radius: 0 0 4px 4px; background: var(--red-500);
+  box-shadow: 0 0 8px 1px rgba(196,48,43,.7), 0 0 20px 4px rgba(196,48,43,.3);
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--red-500) 70%, transparent), 0 0 20px 4px color-mix(in srgb, var(--red-500) 30%, transparent);
+}
+.cvh-fx__beam {
+  position: absolute; inset: 0;
+  clip-path: polygon(calc(50% - 17px) 0, calc(50% + 17px) 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(196,48,43,.24), rgba(196,48,43,.08) 60%, rgba(196,48,43,0));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--red-500) 24%, transparent), color-mix(in srgb, var(--red-500) 8%, transparent) 60%, transparent);
+}
+.cvh-fx__spot::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 20px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(196,48,43,.2), rgba(196,48,43,0) 72%);
+  background: radial-gradient(50% 50% at 50% 50%, color-mix(in srgb, var(--red-500) 20%, transparent), transparent 72%);
+}
+
+/* Bubble: a raised peppermint-red sweet that carries the link's icon */
+.cvh-fx__bubble {
+  width: 30px; height: 30px; border-radius: 50%;
+  color: var(--cream-50);
+  background: radial-gradient(circle at 34% 28%, rgba(255,253,248,.6) 0 8%, rgba(255,253,248,0) 32%), var(--red-500);
+  box-shadow: 0 2px 0 var(--red-700), 0 8px 16px rgba(126,26,23,.3);
+}
+.cvh-fx__bubble-ico { position: absolute; inset: 0; display: grid; place-items: center; }
+.cvh-fx__bubble-ico .cv-ico { display: inline-flex; }
+.nav[data-nav-fx="bubble"] .nav__link { gap: 14px; padding-left: 5px; } /* room for the sweet; set up front so the links don't shift when JS starts */
+.cvh-fx-on[data-nav-fx="bubble"] .nav__link .cv-ico { transition: opacity var(--duration-fast) var(--ease-standard); }
+.cvh-fx-on[data-nav-fx="bubble"] .nav__link.is-fx-at .cv-ico { opacity: 0; }
+
+/* Liquid blob: candy-pink pills merged by the #cvh-goo filter (header.liquid), and a dot under the link */
+.cvh-fx__goo { right: 0; bottom: 0; filter: url(#cvh-goo); }
+.cvh-fx__goo-pill,
+.cvh-fx__goo-drop { position: absolute; left: 0; top: 0; background: #F6DAD2; background: color-mix(in srgb, var(--red-500) 17%, var(--cream-50)); }
+.cvh-fx__goo-pill { width: 80px; height: 32px; border-radius: 999px; }
+.cvh-fx__goo-drop { width: 12px; height: 12px; border-radius: 50%; }
+.cvh-fx__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--red-500); }
+
+/* ---------- Mobile drawer links ---------- */
+.cm-mobile-nav__body { padding: 18px 24px; }
+.cm-mobile-nav__link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 0; border-bottom: 1px solid var(--border-hairline);
+  font-family: var(--font-label); font-size: 11px;
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--cocoa-600);
+}
+.cm-mobile-nav__link .cv-ico { color: var(--red-500); }
+
+/* ---------- GSAP owns these transitions when it's running ---------- */
+.cvh-motion .cm-mobile-nav { transition: none; }
+.cvh-motion .cm-mobile-nav.is-open { animation: none; }
+.cvh-motion .nav .iconbtn .badge { transition: none; }
+.cvh-motion .nav .iconbtn .badge.is-bump { animation: none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .casify-sign { --sign-h: 46px; --mint: 29px; }
+}
+@media (max-width: 768px) {
+  .cvh-ticker { height: 13px; margin-top: -6.5px; }
+  .cvh-ticker__track span { font-size: 9px; }
+}
+@media (max-width: 420px) {
+  .casify-sign { --sign-h: 40px; --mint: 25px; }
+}

@@ -1,0 +1,131 @@
+{%- comment -%}
+  Casify: generic page and the shop's policy pages, "The rule book".
+
+  One measured reading column beside an "On this page" rail built from the
+  page's own headings, with a candy-stripe rail that fills as you read and the
+  current heading marked. The body text never animates: fading paragraphs in
+  while someone reads a returns policy is hostile.
+
+  A "Last updated" first paragraph in the page body is lifted into the header,
+  so the date shows once, where people look for it. The shop-rules row links
+  the policy pages to each other. All wording comes from the pages themselves
+  in Shopify admin; this section adds no terms of its own.
+
+  Behaviour + motion: assets/cv-pages.js (ruleBook). Styles: assets/cv-pages.css.
+{%- endcomment -%}
+{{ 'cv-badges.css' | asset_url | stylesheet_tag }}
+{{ 'cv-pages.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign doc_title = page.title
+  assign doc_body = page.content
+  assign doc_handle = page.handle
+
+  assign updated_line = ''
+  assign first_chunk = doc_body | split: '</p>' | first
+  if first_chunk contains 'Last updated'
+    assign updated_text = first_chunk | split: '<p>' | last
+    assign updated_html = '<p>' | append: updated_text | append: '</p>'
+    if doc_body contains updated_html
+      assign updated_line = updated_text | strip_html | strip
+      assign doc_body = doc_body | remove_first: updated_html
+    endif
+  endif
+
+  assign rule_handles = section.settings.rule_handles | remove: ' ' | split: ','
+-%}
+
+<div class="cv-page-root cvd" data-cvd>
+  <nav class="cv-crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span aria-hidden="true">/</span>
+    <span class="is-current" aria-current="page">{{ doc_title | escape }}</span>
+  </nav>
+
+  <header class="cvd__hd">
+    {%- if section.settings.header_badge != blank and section.settings.header_badge != 'none' -%}
+      <img class="cvd__badge" src="{{ section.settings.header_badge | append: '.png' | asset_url }}" alt="" width="112" height="112" loading="eager" data-cvd-badge>
+    {%- endif -%}
+    <div class="cvd__hd-text">
+      <h1 class="cvd__title">{{ doc_title | escape }}</h1>
+      {%- if updated_line != blank -%}
+        <p class="cvd__meta">{%- render 'cv-icon', name: 'clock', size: 15 -%}<span>{{ updated_line | escape }}</span></p>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- if section.settings.show_rules and rule_handles.size > 0 -%}
+    {%- capture rules_items -%}
+      {%- for h in rule_handles -%}
+        {%- assign p = pages[h] -%}
+        {%- if p.title != blank -%}
+          <li><a class="cvd__rule" href="{{ p.url }}"{% if h == doc_handle %} aria-current="page"{% endif %}>{{ p.title | escape }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if rules_items != blank -%}
+      <nav class="cvd__rules" aria-label="{{ section.settings.rules_label | default: 'Shop policies' | escape }}">
+        <ul role="list">{{ rules_items }}</ul>
+      </nav>
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="cvd__layout">
+    <aside class="cvd__toc" data-cvd-toc hidden>
+      <details class="cvd__toc-box" data-cvd-toc-box open>
+        <summary class="cvd__toc-q">{{ section.settings.toc_label | default: 'On this page' | escape }}</summary>
+        <div class="cvd__toc-a">
+          <span class="cvd__toc-rail" aria-hidden="true"><span class="cvd__toc-fill" data-cvd-fill></span></span>
+          <ol class="cvd__toc-list" role="list" data-cvd-toc-list></ol>
+        </div>
+      </details>
+    </aside>
+
+    <div class="cvd__body rte" data-cvd-body>
+      {{ doc_body }}
+    </div>
+  </div>
+
+  {%- if section.settings.show_help -%}
+    <aside class="cvd__help">
+      <img class="cvd__help-bell" src="{{ 'contact-bell.webp' | asset_url }}" width="420" height="376" alt="" loading="lazy" data-cvd-bell>
+      <div>
+        <h2>{{ section.settings.help_title | default: 'Something here unclear?' | escape }}</h2>
+        {%- if section.settings.help_body != blank -%}<p>{{ section.settings.help_body | escape }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.help_url != blank -%}
+        <a class="cvd__help-cta" href="{{ section.settings.help_url }}">
+          <span>{{ section.settings.help_cta | default: 'Ask the shop' | escape }}</span>
+          {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+        </a>
+      {%- endif -%}
+    </aside>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Page: the rule book",
+  "settings": [
+    { "type": "select", "id": "header_badge", "label": "Header badge illustration", "options": [
+      { "value": "none", "label": "None" },
+      { "value": "badge-ai-returns", "label": "Returns" },
+      { "value": "badge-ai-shipping-policy", "label": "Shipping" },
+      { "value": "badge-ai-terms", "label": "Terms" },
+      { "value": "badge-ai-privacy", "label": "Privacy" }
+    ], "default": "none" },
+    { "type": "text", "id": "toc_label", "label": "Contents label", "default": "On this page", "info": "The list is built from the page's headings and hidden when there are fewer than two." },
+    { "type": "header", "content": "Shop policies row" },
+    { "type": "checkbox", "id": "show_rules", "label": "Link the policy pages to each other", "default": false },
+    { "type": "text", "id": "rules_label", "label": "Label for screen readers", "default": "Shop policies" },
+    { "type": "text", "id": "rule_handles", "label": "Page handles", "default": "shipping-policy,return-policy,privacy-policy,terms-and-conditions", "info": "Separated by commas. Pages that don't exist are skipped." },
+    { "type": "header", "content": "Help panel" },
+    { "type": "checkbox", "id": "show_help", "label": "Show help panel", "default": true },
+    { "type": "text", "id": "help_title", "label": "Title", "default": "Something here unclear?" },
+    { "type": "textarea", "id": "help_body", "label": "Body", "default": "Write to the shop and ask.", "info": "Keep it true: don't promise reply times or exceptions here." },
+    { "type": "url", "id": "help_url", "label": "Button link" },
+    { "type": "text", "id": "help_cta", "label": "Button label", "default": "Ask the shop" }
+  ],
+  "presets": [{ "name": "Page: the rule book" }]
+}
+{% endschema %}

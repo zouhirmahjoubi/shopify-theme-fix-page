@@ -1,0 +1,85 @@
+{%- comment -%}
+  Casify — Converting PDP: how it works.
+
+  A short numbered process between "why it wins" and the drop-test story —
+  it answers "is this easy to actually get and use" before asking for more
+  scroll attention.
+{%- endcomment -%}
+
+<section class="cv-sec cv-howto" id="cv-howto">
+  <div class="cv-sec__hd" data-cv-reveal>
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'How it works' | escape }}</span>
+    <h2 data-cv-split>{{ section.settings.heading | default: 'From checkout to drop-tested in one trip' | escape }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <div class="cv-sec__lede">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="cv-howto__grid" data-cv-stagger>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'step' -%}
+        <div class="cv-step" data-cv-reveal style="--cv-i:{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <span class="cv-step__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="cv-step__ico">{%- render 'cv-icon', name: block.settings.icon, size: 30, animate: true -%}</span>
+          <h3>{{ block.settings.title | escape }}</h3>
+          <p>{{ block.settings.body | escape }}</p>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="cv-howto__foot" data-cv-reveal>
+      <button type="button" class="cv-cta cv-cta--ghost" data-cv-scroll-to-buy>
+        <span>{{ section.settings.cta_label | escape }}</span>
+        {%- render 'cv-icon', name: 'arrow-right', size: 15 -%}
+      </button>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Convert — How it works",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How it works" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From checkout to drop-tested in one trip" },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading", "default": "<p>No guesswork on fit, no learning curve on install.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Pick my model" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "precision-fit", "options": [
+          { "value": "precision-fit", "label": "Precision fit" },
+          { "value": "check", "label": "Check" },
+          { "value": "truck-fast", "label": "Shipping" },
+          { "value": "drop-shield", "label": "Protection" },
+          { "value": "warranty-seal", "label": "Warranty" },
+          { "value": "magnet-ring", "label": "Magnet" },
+          { "value": "no-yellow", "label": "No yellowing" },
+          { "value": "returns", "label": "Returns" },
+          { "value": "lock-secure", "label": "Secure" },
+          { "value": "gift", "label": "Gift" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Pick your exact model" },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Cut from your phone's own CAD file, not a universal shell. Choose your model above and the fit is exact." }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Convert — How it works",
+      "blocks": [
+        { "type": "step", "settings": { "icon": "precision-fit", "title": "Pick your exact model", "body": "Cut from your phone's own CAD file, not a universal shell. Choose your model above and the fit is exact, down to the camera lip." } },
+        { "type": "step", "settings": { "icon": "check", "title": "Snap it on in seconds", "body": "No stretching, no adhesive, no learning curve. It clicks into place and every button still feels factory-tight." } },
+        { "type": "step", "settings": { "icon": "truck-fast", "title": "Ships protected, same day", "body": "Order before 2pm CT and it leaves Austin today — backed by the Screen Promise and a 2-year warranty from the day it arrives." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

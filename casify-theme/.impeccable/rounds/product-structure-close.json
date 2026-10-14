@@ -1,0 +1,20 @@
+{
+  "title": "Locked: both templates",
+  "question": "Building The Order Slip as the default product template first, then The Shop Counter as the second template. Nothing else to choose here; add a steer if something should change, or close this tab.",
+  "followup": false,
+  "options": [
+    {
+      "id": "confirmed",
+      "label": "Build both",
+      "thesis": "The Order Slip first, then The Shop Counter, sharing one cart and pack logic.",
+      "palette": ["#FDF9F1", "#4A3324", "#C4302B", "#6C9E9C", "#D2B57C"],
+      "materials": ["order-pad slip", "marble counter"],
+      "viewport": "Each template matches its approved comp's first viewport.",
+      "risk": "Two builds to review before anything ships.",
+      "comp": ".impeccable/mocks/decision/order-slip.webp"
+    }
+  ],
+  "reroll": false,
+  "steer": true,
+  "canon": false
+}

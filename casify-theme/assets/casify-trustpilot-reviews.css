@@ -1,0 +1,90 @@
+/* Trustpilot reviews — builds on casify-customer-reviews.css (.ccr*) for the
+ * section shell, heading, carousel rail and controls. Only the summary and cards live here. */
+
+.cvtp .cv-stars { --cv-star-empty: var(--gold-200); --cv-star-fill: var(--gold-500); position: relative; display: inline-block; flex: none; width: 5.72em; height: 1.12em; vertical-align: -0.16em; }
+.cvtp .cv-stars__row { position: absolute; inset: 0; display: flex; gap: .035em; }
+.cvtp .cv-stars__row svg { flex: 1 1 0; width: 20%; height: 100%; overflow: visible; }
+.cvtp .cv-stars__row path { fill: var(--cv-star-empty); stroke: none; }
+.cvtp .cv-stars__row--fill { clip-path: inset(-10% calc(100% - var(--fill, 0%)) -10% -10%); }
+.cvtp .cv-stars__row--fill path { fill: var(--cv-star-fill); }
+
+.cvtp__summary { gap: 6px 10px; padding: 10px 17px; text-decoration: none; }
+a.cvtp__summary { transition: border-color var(--duration-fast) ease-out, transform var(--duration-fast) ease-out; }
+a.cvtp__summary:hover { border-color: var(--ccr-red); transform: translateY(-1px); }
+a.cvtp__summary:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.cvtp__score { color: var(--ccr-red); font-size: .9rem; }
+.cvtp__summary .cvtp__stars { font-size: 1.05rem; line-height: 1; }
+.cvtp__source { color: var(--ccr-body); }
+
+.cvtp__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: 20px;
+}
+.cvtp__grid .cvtp__card { flex-basis: auto; }
+
+.cvtp__card {
+  gap: 12px;
+  padding: 24px 22px 20px;
+  border-top: 5px solid var(--ccr-gold);
+}
+.cvtp__stars--card { font-size: 1.15rem; line-height: 1; }
+.cvtp__title { margin: 2px 0 0; color: var(--ccr-ink); font: 800 1.12rem/1.25 var(--font-display); text-wrap: balance; }
+.cvtp__text { flex: 1; color: var(--ccr-ink); font: .95rem/1.6 var(--font-body); overflow-wrap: anywhere; }
+.cvtp__text > :first-child { margin-top: 0; }
+.cvtp__text > :last-child { margin-bottom: 0; }
+
+.cvtp__author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-dashed, rgba(74,51,36,.45));
+}
+.cvtp__avatar {
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 50%;
+  color: var(--ccr-ink);
+  background: var(--cream-300);
+  font: 700 1rem/1 var(--font-display);
+}
+.cvtp__avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cvtp__who { display: grid; gap: 2px; min-width: 0; }
+.cvtp__who cite { color: var(--ccr-ink); font: 700 .75rem/1.3 var(--font-label); font-style: normal; }
+.cvtp__who span { color: var(--ccr-muted); font: .76rem/1.3 var(--font-body); }
+
+.cvtp__more { margin: clamp(22px, 3vw, 34px) 0 0; text-align: center; }
+.cvtp__more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 2px solid var(--ccr-red);
+  border-radius: 999px;
+  color: var(--ccr-red);
+  background: var(--ccr-card);
+  font: 700 .74rem/1.2 var(--font-label);
+  letter-spacing: .06em;
+  text-decoration: none;
+  transition: background var(--duration-fast) ease-out, color var(--duration-fast) ease-out;
+}
+.cvtp__more a:hover { color: var(--cream-50); background: var(--ccr-red); }
+.cvtp__more a:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+
+.cvtp__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .cvtp__card { padding: 20px 18px 18px; }
+  .cvtp__more a { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.cvtp__summary, .cvtp__more a { transition: none; }
+  a.cvtp__summary:hover { transform: none; }
+}

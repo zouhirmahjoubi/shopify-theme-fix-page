@@ -1,0 +1,178 @@
+{%- comment -%}
+  Casify — scrolling reviews (Chrismass design system).
+
+  A rebuild of the "Scrolling Reviews" snippet: rows of short customer quotes
+  running across the page in opposite directions, like ribbon candy on a
+  conveyor. Each quote is a die-cut paper ticket with a monogram (or photo)
+  in a brass ring, star rating and name.
+
+  Content is merchant-entered only: the preset ships empty review blocks so
+  nothing invented reaches the storefront. Empty blocks render a placeholder
+  in the theme editor and nothing on the live store.
+
+  Without JavaScript (or with reduced motion) each row is a plain,
+  horizontally scrollable list. With JS, cv-scrolling-reviews.js clones the
+  row for a seamless loop, couples its speed and direction to page scroll,
+  eases it down on hover/focus and gives visitors a pause button.
+  Styles: assets/cv-scrolling-reviews.css.
+{%- endcomment -%}
+{{ 'cv-scrolling-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign rows = st.rows | plus: 0
+  assign filled = 0
+  for block in section.blocks
+    if block.settings.quote != blank
+      assign filled = filled | plus: 1
+    endif
+  endfor
+  assign render_any = false
+  if filled > 0 or request.design_mode
+    assign render_any = true
+  endif
+-%}
+
+{%- if render_any -%}
+<section
+  class="cvsr cvsr--tone-{{ st.tone }}"
+  data-cvsr
+  data-cvsr-speed="{{ st.speed }}"
+  style="--cvsr-pt: {{ st.padding_top }}px; --cvsr-pb: {{ st.padding_bottom }}px;"
+  aria-labelledby="cvsr-title-{{ section.id }}"
+>
+  <div class="cvsr__hd">
+    {%- if st.heading != blank -%}
+      <h2 class="cvsr__title" id="cvsr-title-{{ section.id }}" data-cvsr-heading>{{ st.heading }}</h2>
+    {%- else -%}
+      <h2 class="cvsr__sr" id="cvsr-title-{{ section.id }}">Customer reviews</h2>
+    {%- endif -%}
+    {%- if st.subheading != blank -%}
+      <div class="cvsr__lede" data-cvsr-fade>{{ st.subheading }}</div>
+    {%- endif -%}
+    <button type="button" class="cvsr__toggle" data-cvsr-toggle aria-pressed="false" hidden>
+      <svg class="cvsr__toggle-pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.5 3h2.5v10H4.5zM9 3h2.5v10H9z"/></svg>
+      <svg class="cvsr__toggle-play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 3l8 5-8 5z"/></svg>
+      <span data-cvsr-toggle-label>Pause reviews</span>
+    </button>
+  </div>
+
+  <div class="cvsr__rows">
+    {%- for r in (1..rows) -%}
+      {%- assign row_index = forloop.index0 -%}
+      <div class="cvsr__row" data-cvsr-row data-cvsr-dir="{% if forloop.index0 == 1 %}1{% else %}-1{% endif %}">
+        <ul class="cvsr__track" role="list" data-cvsr-track>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign b = block.settings
+              assign slot = forloop.index0 | modulo: rows
+              if slot != row_index
+                continue
+              endif
+              if b.quote == blank and request.design_mode == false
+                continue
+              endif
+              assign initials = ''
+              assign name_parts = b.name | strip | split: ' '
+              for part in name_parts limit: 2
+                assign letter = part | slice: 0, 1
+                assign initials = initials | append: letter
+              endfor
+              assign ring_tone = forloop.index0 | modulo: 3
+            -%}
+            <li class="cvsr-card{% if b.quote == blank %} cvsr-card--empty{% endif %}" data-cvsr-card {{ block.shopify_attributes }}>
+              {%- if b.quote == blank -%}
+                <span class="cvsr-card__hint">Add a real customer quote to this review block</span>
+              {%- else -%}
+                <span class="cvsr-card__avatar cvsr-card__avatar--{{ ring_tone }}" aria-hidden="true">
+                  {%- if b.photo != blank -%}
+                    {{ b.photo | image_url: width: 96, height: 96, crop: 'center' | image_tag: loading: 'lazy', alt: '', width: 48, height: 48 }}
+                  {%- else -%}
+                    {{ initials | upcase | default: '★' }}
+                  {%- endif -%}
+                </span>
+                <figure class="cvsr-card__body">
+                  <blockquote class="cvsr-card__quote"><p>{{ b.quote | escape }}</p></blockquote>
+                  <figcaption class="cvsr-card__meta">
+                    {%- if b.rating > 0 -%}
+                      {%- assign fill = b.rating | times: 20 -%}
+                      {% render 'cv-stars', fill: fill, class: 'cvsr-card__stars' %}
+                      <span class="cvsr__sr">Rated {{ b.rating }} out of 5.</span>
+                    {%- endif -%}
+                    {%- if b.name != blank -%}
+                      <span class="cvsr-card__name">{{ b.name | escape }}</span>
+                    {%- endif -%}
+                    {%- if b.verified -%}
+                      <span class="cvsr-card__tag">Verified buyer</span>
+                    {%- endif -%}
+                  </figcaption>
+                </figure>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Scrolling reviews",
+  "tag": "div",
+  "disabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Italic words are set in the script face — use it for one short flourish.",
+      "default": "Our customers <em>love</em> their cases"
+    },
+    { "type": "richtext", "id": "subheading", "label": "Sub-heading" },
+    {
+      "type": "select", "id": "rows", "label": "Rows", "default": "2",
+      "info": "Reviews are dealt across the rows in order. Rows run in opposite directions.",
+      "options": [ { "value": "1", "label": "One" }, { "value": "2", "label": "Two" }, { "value": "3", "label": "Three" } ]
+    },
+    {
+      "type": "range", "id": "speed", "label": "Scroll speed", "min": 20, "max": 120, "step": 10, "unit": "px",
+      "info": "Pixels per second. Scrolling the page speeds the rows up briefly.", "default": 50
+    },
+    {
+      "type": "select", "id": "tone", "label": "Background", "default": "page",
+      "options": [
+        { "value": "page", "label": "Page cream" },
+        { "value": "inset", "label": "Inset cream" },
+        { "value": "cocoa", "label": "Cocoa" }
+      ]
+    },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "info": "Use a real customer's words. Short quotes read best while moving." },
+        { "type": "text", "id": "name", "label": "Customer name", "info": "E.g. first name and last initial." },
+        { "type": "range", "id": "rating", "label": "Star rating", "min": 0, "max": 5, "step": 1, "default": 5, "info": "0 hides the stars." },
+        { "type": "image_picker", "id": "photo", "label": "Customer photo", "info": "Optional. Without one, the customer's initials are shown." },
+        { "type": "checkbox", "id": "verified", "label": "Show \"Verified buyer\"", "info": "Only tick this for a confirmed order.", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling reviews",
+      "blocks": [
+        { "type": "review" }, { "type": "review" }, { "type": "review" },
+        { "type": "review" }, { "type": "review" }, { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}
