@@ -32,26 +32,28 @@
     {%- endif -%}
   </header>
 
-  {%- if section.blocks.size > 0 -%}
+  {%- comment -%} Only pages that exist in this store are listed; with none, the heading goes too. {%- endcomment -%}
+  {%- capture answer_items -%}
+    {%- for b in section.blocks -%}
+      {%- assign target = b.settings.page -%}
+      {%- if target != blank and target.url != blank -%}
+        <li {{ b.shopify_attributes }}>
+          <a class="cvct__link" href="{{ target.url }}">
+            <span class="cvct__link-ico">{%- render 'cv-icon', name: b.settings.icon, size: 26 -%}</span>
+            <span class="cvct__link-text">
+              <b>{{ b.settings.title | default: target.title | escape }}</b>
+              {%- if b.settings.text != blank -%}<span>{{ b.settings.text | escape }}</span>{%- endif -%}
+            </span>
+            {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if answer_items != blank -%}
     <nav class="cvct__answers" aria-labelledby="cvctAnswers-{{ section.id }}">
       <h2 class="cvct__h2" id="cvctAnswers-{{ section.id }}">{{ section.settings.answers_heading | default: 'It may already be answered' | escape }}</h2>
-      <ul class="cvct__links" role="list">
-        {%- for b in section.blocks -%}
-          {%- assign target = b.settings.page -%}
-          {%- if target != blank and target.url != blank -%}
-            <li {{ b.shopify_attributes }}>
-              <a class="cvct__link" href="{{ target.url }}">
-                <span class="cvct__link-ico">{%- render 'cv-icon', name: b.settings.icon, size: 26 -%}</span>
-                <span class="cvct__link-text">
-                  <b>{{ b.settings.title | default: target.title | escape }}</b>
-                  {%- if b.settings.text != blank -%}<span>{{ b.settings.text | escape }}</span>{%- endif -%}
-                </span>
-                {%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
-              </a>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
+      <ul class="cvct__links" role="list">{{ answer_items }}</ul>
     </nav>
   {%- endif -%}
 

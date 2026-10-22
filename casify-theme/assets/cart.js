@@ -123,8 +123,15 @@
     }).then(function () { window.location.reload(); });
   }
 
+  /* The bag link's accessible name carries the count ("Cart, 2 items"); the
+     badge is only visual, so the label has to follow every count change. */
+  function labelBag(count) {
+    var bag = $('#bagBtn');
+    if (bag && typeof count === 'number') bag.setAttribute('aria-label', 'Cart, ' + count + (count === 1 ? ' item' : ' items'));
+  }
   function updateCartCount() {
     fetch('/cart.js').then(function (r) { return r.json(); }).then(function (cart) {
+      labelBag(cart.item_count);
       $$('[data-cart-count]').forEach(function (el) {
         el.textContent = cart.item_count;
         if (cart.item_count === 0) { el.hidden = true; } else { el.hidden = false; }
@@ -132,7 +139,7 @@
           el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump');
         }
       });
-    });
+    }).catch(function () {});
   }
   updateCartCount();
 
@@ -160,8 +167,11 @@
     refreshTimer = setTimeout(function () { updateCartCount(); refreshDrawer(); }, 0);
   }
   document.addEventListener('cart:refresh', refreshCart);
-  /* The quick pick (cv-quick-pick.js) updates the badge itself; only the drawer is stale. */
-  document.addEventListener('cv:cart', function () { refreshDrawer(); });
+  /* The quick pick (cv-quick-pick.js) updates the badge itself; only the drawer and the bag label are stale. */
+  document.addEventListener('cv:cart', function (e) {
+    if (e.detail && e.detail.cart) labelBag(e.detail.cart.item_count);
+    refreshDrawer();
+  });
   window.CasifyCart = window.CasifyCart || {};
   window.CasifyCart.refresh = refreshCart;
 

@@ -152,6 +152,13 @@
   }
 
   /* ---------- Toasts ---------- */
+  /* Titles and bodies arrive from cart responses (product titles, error
+     descriptions), so they are inserted as text, never as markup. */
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
   function toast(title, body) {
     var host = $('#cm-toast-host');
     if (!host) {
@@ -162,7 +169,8 @@
     }
     var t = document.createElement('div');
     t.className = 'toast';
-    t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg><div><strong>' + title + '</strong>' + body + '</div>';
+    t.setAttribute('role', 'status');
+    t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><div><strong>' + escapeHtml(title) + '</strong>' + escapeHtml(body) + '</div>';
     host.appendChild(t);
     setTimeout(function () {
       t.classList.add('toast--leaving');

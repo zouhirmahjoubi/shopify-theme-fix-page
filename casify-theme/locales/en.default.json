@@ -1,6 +1,6 @@
 {
   "general": {
-    "search": { "search": "Search", "placeholder": "Search sweets, gifts, and flavours", "submit": "Search" },
+    "search": { "search": "Search", "placeholder": "Search cases or phone models", "submit": "Search" },
     "cart":   { "title": "Your bag" },
     "newsletter": { "label": "Email address", "placeholder": "you@sweetmail.com", "submit": "Sign up", "confirmation": "You're in. See you soon." },
     "account_fallback": "Account",
@@ -15,6 +15,24 @@
       "home_description": "{{ shop }}: phone cases for iPhone and Samsung, chosen for your exact model. Free shipping on every order, 30-day returns and dispatch in 1–3 business days.",
       "product_description": "{{ title }} from {{ shop }}. Free shipping on every order, 30-day returns and dispatch in 1–3 business days.",
       "listing_description": "{{ title }} at {{ shop }}, phone cases for iPhone and Samsung. Free shipping on every order, 30-day returns and dispatch in 1–3 business days."
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your {{ value }} gift card for {{ shop }}",
+      "eyebrow": "Gift card balance",
+      "initial_value": "Original value: {{ value }}",
+      "expired": "Expired",
+      "disabled": "No longer active",
+      "expiration_date": "Expires on {{ expires_on }}",
+      "how_to_use": "Enter this code at checkout to pay with your gift card.",
+      "inactive_note": "This gift card can't be used any more. If you have a question about it, contact the shop.",
+      "copy_code": "Copy code",
+      "copy_code_success": "Code copied",
+      "qr_image_alt": "QR code for this gift card",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "print": "Print",
+      "shop_link": "Start shopping"
     }
   },
   "products": {
@@ -157,6 +175,32 @@
     },
     "feature_tabs": { "play": "Play video", "pause": "Pause video", "editor_hint": "Add a tab with a label to show this section." },
     "vs": { "vs": "VS", "editor_row": "Fill in both sides of this row to show it on the storefront." },
+    "reel_showcase": {
+      "carousel_label": "Explore Casify case designs",
+      "copy": "A little personality. Everywhere you go.",
+      "shop_design": "Shop this design",
+      "previous": "Previous design",
+      "next": "Next design",
+      "play": "Play designs",
+      "pause": "Pause designs",
+      "select_design": "Show {{ design }}",
+      "picker_label": "Choose a case design",
+      "collection_heading": "Pick your personality.",
+      "collection_copy": "From a clear look to a little sparkle. Four ways to make it yours.",
+      "browse_all": "Browse all cases",
+      "editorial_heading": "Your phone. Your point of view.",
+      "editorial_copy": "The thing you carry every day should feel like you. Find your design, then find your fit.",
+      "find_case": "Find your case",
+      "story_label": "How to choose your case",
+      "step_one_title": "Pick your personality.",
+      "step_one_copy": "Explore the designs and choose the one that feels like you.",
+      "step_two_title": "Find your exact fit.",
+      "step_two_copy": "Choose your phone model on the product page before adding your case.",
+      "step_three_title": "Make it your everyday.",
+      "step_three_copy": "Check your chosen model, then add your fitted case to your bag.",
+      "empty_title": "Choose your Casify designs",
+      "empty_copy": "Select a product with a real product photo in each Case design block. When no products are selected, this section uses up to four products from your catalog."
+    },
     "campaign_guide": {
       "heading": "Find the right case for your phone.",
       "intro": "Check the fit, see the details, then choose one case or build a pack. Here is what to know before you decide.",

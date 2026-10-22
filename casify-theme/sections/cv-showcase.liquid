@@ -20,8 +20,11 @@
 
   "Only the cards below" keeps the original hand-written cards, for a card
   without a product.
+
+  With no cards at all (an empty shop or collection) shoppers see nothing,
+  not a "0 pieces" heading over an empty counter; the theme editor shows a
+  hint instead.
 {%- endcomment -%}
-{{ 'cv-showcase.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign coll = section.settings.collection | default: collections.all
@@ -65,6 +68,8 @@
   {%- endif -%}
 {%- endcapture -%}
 
+{%- if total > 0 -%}
+{{ 'cv-showcase.css' | asset_url | stylesheet_tag }}
 <section class="cv-sec cv-showcase cvsh{% if total > 3 %} cvsh--rail{% endif %}" data-cvsh data-section-id="{{ section.id }}">
   {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
     <div class="cv-row__hd" data-cv-reveal>
@@ -108,6 +113,15 @@
     <ul class="cvsh__row" role="list" data-cvsh-row>{{ cards }}</ul>
   {%- endif -%}
 </section>
+{%- elsif request.design_mode -%}
+<section class="cv-sec">
+  <div class="cv-empty">
+    <span class="cv-empty__ico">{%- render 'cv-icon', name: 'precision-fit', size: 36 -%}</span>
+    <h2>No cases to show yet</h2>
+    <p>Add products to the shop or the chosen collection, or add cards with a product. Shoppers don't see this section until it has a card.</p>
+  </div>
+</section>
+{%- endif -%}
 
 {% schema %}
 {

@@ -14,16 +14,22 @@
     {%- else -%}
       {%- for item in cart.items -%}
         <div class="cart-drawer-item" data-key="{{ item.key }}">
-          <a href="{{ item.url }}"><img src="{{ item | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="60" height="60"></a>
+          <a href="{{ item.url }}" class="cart-drawer-item__media" tabindex="-1" aria-hidden="true">
+            {%- if item.image != blank -%}
+              <img src="{{ item.image | image_url: width: 160 }}" alt="" width="60" height="60" loading="lazy">
+            {%- endif -%}
+          </a>
           <div>
             <a href="{{ item.url }}"><strong>{{ item.product.title | escape }}</strong></a>
-            <p style="margin:0;color:var(--cocoa-500);font-size:13px">{{ item.variant.title | escape }}</p>
+            {%- unless item.product.has_only_default_variant -%}
+              <p style="margin:0;color:var(--cocoa-500);font-size:13px">{{ item.variant.title | escape }}</p>
+            {%- endunless -%}
             <p style="margin:6px 0 0;font:700 14px var(--font-display);color:var(--cocoa-600)">{{ item.final_line_price | money }}</p>
           </div>
           <div class="cm-stepper" style="margin:0;height:36px;border-radius:6px">
-            <button type="button" data-qty-decrease style="width:36px;height:36px">-</button>
-            <input type="number" data-cart-line-qty="{{ item.key }}" value="{{ item.quantity }}" min="0" style="height:36px;font-size:13px">
-            <button type="button" data-qty-increase style="width:36px;height:36px">+</button>
+            <button type="button" data-qty-decrease style="width:36px;height:36px" aria-label="Decrease quantity of {{ item.product.title | escape }}">-</button>
+            <input type="number" data-cart-line-qty="{{ item.key }}" value="{{ item.quantity }}" min="0" style="height:36px;font-size:13px" aria-label="Quantity of {{ item.product.title | escape }}">
+            <button type="button" data-qty-increase style="width:36px;height:36px" aria-label="Increase quantity of {{ item.product.title | escape }}">+</button>
           </div>
         </div>
       {%- endfor -%}
@@ -35,12 +41,23 @@
       <strong style="font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)">Subtotal</strong>
       <strong style="font:700 22px var(--font-display);color:var(--cocoa-600)">{{ cart.total_price | money }}</strong>
     </div>
-    <a href="{{ routes.cart_url }}" class="btn btn--block" style="text-decoration:none">Checkout</a>
+    {%- comment -%} "Checkout" goes to checkout; the full bag page (order note, pack savings) stays one link away. {%- endcomment -%}
+    <form action="{{ routes.cart_url }}" method="post" class="cart-drawer__checkout">
+      <button type="submit" name="checkout" class="btn btn--block">Checkout</button>
+    </form>
+    <a href="{{ routes.cart_url }}" class="cart-drawer__view">View bag</a>
   </div>
   {%- endif -%}
 </aside>
 
 <style>
-  .cart-drawer-item{display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-hairline)}
-  .cart-drawer-item .cm-stepper{margin:0;height:36px}
+  .cart-drawer-item{display:grid;grid-template-columns:60px 1fr;gap:8px 12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-hairline)}
+  .cart-drawer-item__media{grid-row:span 2;display:block;width:60px;height:60px;border-radius:6px;overflow:hidden;background:var(--cream-200)}
+  .cart-drawer-item__media img{display:block;width:100%;height:100%;object-fit:cover}
+  .cart-drawer-item .cm-stepper{grid-column:2;justify-self:start;margin:0;height:36px}
+  .cart-drawer-item .cm-stepper input{width:44px;padding:0;border:0;background:transparent;text-align:center;font:700 13px var(--font-display);color:var(--cocoa-600);-moz-appearance:textfield;appearance:textfield}
+  .cart-drawer-item .cm-stepper input::-webkit-inner-spin-button,.cart-drawer-item .cm-stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+  .cart-drawer__checkout{margin:0}
+  .cart-drawer__view{display:block;margin-top:10px;text-align:center;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600);text-underline-offset:3px}
+  .cart-drawer__view:hover{color:var(--red-600)}
 </style>

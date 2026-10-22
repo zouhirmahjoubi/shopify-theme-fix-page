@@ -3,7 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>{% if page_title %}{{ page_title }} | {% endif %}{{ shop.name }}</title>
+    {%- comment -%} The page holds a redeemable code: keep it out of search results. {%- endcomment -%}
+    <meta name="robots" content="noindex, nofollow">
+    {%- assign gc_title_value = gift_card.initial_value | money_without_trailing_zeros | strip_html -%}
+    <title>{{ 'gift_cards.issued.title' | t: value: gc_title_value, shop: shop.name }}</title>
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 48, height: 48 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" href="{{ 'casify-logo-mark.png' | asset_url }}">
+    {%- endif -%}
     {%- render 'cv-fonts' -%}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {%- render 'palette-vars' -%}

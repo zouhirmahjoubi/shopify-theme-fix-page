@@ -99,11 +99,14 @@
         </div>
 
         <ul class="cvsp__tickets" aria-label="Shop service highlights">
+          {%- comment -%} A live count only: an empty catalogue shows no "0 case designs" ticket. {%- endcomment -%}
+          {%- if design_count > 0 -%}
           <li class="cvsp__ticket cvsp__ticket--designs" data-cvsp-ticket>
             <span class="cvsp__ticket-pin" aria-hidden="true"></span>
             <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'designs', size: 28 %}</span>
-            <span class="cvsp__ticket-copy"><b data-cvsp-count data-cv-count="{{ design_count }}">{{ design_count }}</b><small>case designs</small></span>
+            <span class="cvsp__ticket-copy"><b data-cvsp-count data-cv-count="{{ design_count }}">{{ design_count }}</b><small>{% if design_count == 1 %}case design{% else %}case designs{% endif %}</small></span>
           </li>
+          {%- endif -%}
           <li class="cvsp__ticket cvsp__ticket--packs" data-cvsp-ticket>
             <span class="cvsp__ticket-pin" aria-hidden="true"></span>
             <span class="cvsp__ticket-icon">{% render 'cvsp-icon', name: 'bundle', size: 28 %}</span>

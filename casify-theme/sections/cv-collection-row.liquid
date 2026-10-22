@@ -8,13 +8,21 @@
   Cards use the quick pick: a case with several colours or phone models asks
   for both before adding (snippets/cv-quick-pick.liquid), so the row never
   puts a guessed phone model in the bag.
+
+  With no collection, or an empty one, the row shows a "pick a collection"
+  hint in the theme editor only; shoppers never see the editor instruction.
 {%- endcomment -%}
 
 {%- liquid
   assign coll = section.settings.collection
   assign limit = section.settings.limit
+  assign has_products = false
+  if coll != blank and coll.products.size > 0
+    assign has_products = true
+  endif
 -%}
 
+{%- if has_products or request.design_mode -%}
 <section class="cv-sec cv-row">
   <div class="cv-row__hd" data-cv-reveal>
     <div>
@@ -34,7 +42,7 @@
     {%- endif -%}
   </div>
 
-  {%- if coll != blank and coll.products.size > 0 -%}
+  {%- if has_products -%}
     <div class="cv-grid cv-grid--row" data-motion-dev="cards">
       {%- comment -%}
         One card per design: a design sold as several case types (e.g.
@@ -61,10 +69,11 @@
     <div class="cv-empty" data-cv-reveal>
       <span class="cv-empty__ico">{%- render 'cv-icon', name: 'precision-fit', size: 36, animate: true -%}</span>
       <h2>Pick a collection</h2>
-      <p>Choose a collection in the theme editor and its products appear here.</p>
+      <p>Choose a collection with products in it and they appear here. Shoppers don't see this row until then.</p>
     </div>
   {%- endif -%}
 </section>
+{%- endif -%}
 
 {% schema %}
 {

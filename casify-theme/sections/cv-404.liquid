@@ -4,6 +4,9 @@
   A dead end is still a page someone landed on, so it does the two useful
   things: search, and a short list of places worth going. The numerals drift
   apart on a slow float so the page does not feel frozen.
+
+  A link to a /pages/ handle this store doesn't have is skipped, so the 404
+  page never sends someone to another 404.
 {%- endcomment -%}
 
 <div class="cv-page-root cv-404">
@@ -17,26 +20,38 @@
 
     <form class="cv-search__form cv-404__search" action="{{ routes.search_url }}" method="get" role="search">
       <span class="cv-search__ico" aria-hidden="true">{%- render 'cv-icon', name: 'precision-fit', size: 18 -%}</span>
-      <input type="search" name="q" placeholder="{{ section.settings.placeholder | default: 'Search for your phone model' | escape }}" autocomplete="off">
+      {%- assign search_placeholder = section.settings.placeholder | default: 'Search for your phone model' -%}
+      <input type="search" name="q" placeholder="{{ search_placeholder | escape }}" aria-label="{{ search_placeholder | escape }}" autocomplete="off">
       <button type="submit" class="cv-search__go" aria-label="Search">
         <span>Search</span>{%- render 'cv-icon', name: 'arrow-right', size: 16 -%}
       </button>
     </form>
 
-    {%- assign link_count = 0 -%}
-    {%- for b in section.blocks -%}{%- if b.type == 'link' -%}{%- assign link_count = link_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
-    {%- if link_count > 0 -%}
-      <div class="cv-404__links" data-cv-stagger>
-        {%- for b in section.blocks -%}
-          {%- if b.type == 'link' -%}
-            <a class="cv-404__link" href="{{ b.settings.url | default: routes.root_url }}" {{ b.shopify_attributes }}>
+    {%- capture links_markup -%}
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'link' -%}
+          {%- liquid
+            assign link_url = b.settings.url | default: routes.root_url
+            assign link_live = true
+            if link_url contains '/pages/'
+              assign link_handle = link_url | split: '/pages/' | last | split: '?' | first | split: '#' | first
+              if pages[link_handle].id == blank
+                assign link_live = false
+              endif
+            endif
+          -%}
+          {%- if link_live or request.design_mode -%}
+            <a class="cv-404__link" href="{{ link_url }}" {{ b.shopify_attributes }}>
               {%- render 'cv-icon', name: b.settings.icon, size: 17 -%}
               <span>{{ b.settings.label | escape }}</span>
               {%- render 'cv-icon', name: 'arrow-right', size: 14, class: 'cv-404__link-go' -%}
             </a>
           {%- endif -%}
-        {%- endfor -%}
-      </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if links_markup != blank -%}
+      <div class="cv-404__links" data-cv-stagger>{{ links_markup }}</div>
     {%- endif -%}
   </div>
 </div>

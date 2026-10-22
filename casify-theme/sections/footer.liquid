@@ -60,7 +60,7 @@
               <h4>{{ block.settings.title | escape }}</h4>
               <ul>
                 {%- for link in linklists[block.settings.menu].links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  <li><a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
                 {%- endfor -%}
               </ul>
             </div>
@@ -70,11 +70,12 @@
             <h4>{{ block.settings.title | escape }}</h4>
             <ul>
               {%- if shop.address.address1 != blank -%}
-                <li>{{ shop.address.address1 }}{% if shop.address.address2 != blank %}, {{ shop.address.address2 }}{% endif %}</li>
-                <li>{{ shop.address.city }}{% if shop.address.province_code != blank %}, {{ shop.address.province_code }}{% endif %} {{ shop.address.zip }}, {{ shop.address.country }}</li>
+                <li>{{ shop.address.address1 | escape }}{% if shop.address.address2 != blank %}, {{ shop.address.address2 | escape }}{% endif %}</li>
+                <li>{{ shop.address.city | escape }}{% if shop.address.province_code != blank %}, {{ shop.address.province_code | escape }}{% endif %} {{ shop.address.zip | escape }}, {{ shop.address.country }}</li>
               {%- endif -%}
               {%- if shop.phone != blank -%}
-                <li><a href="tel:{{ shop.phone }}">{{ shop.phone }}</a></li>
+                {%- assign footer_phone_digits = shop.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+                <li><a href="tel:{{ footer_phone_digits }}">{{ shop.phone | escape }}</a></li>
               {%- endif -%}
               <li><a href="mailto:{{ shop.email }}">{{ shop.email }}</a></li>
             </ul>

@@ -24,11 +24,22 @@
 
   No WebGL, no JS or reduced motion: the plain card grid and the perks row are
   the whole experience.
+
+  With no products to stand on the turntable the section renders only in the
+  theme editor (with a "pick a collection" hint), so shoppers never see an
+  empty turntable or the editor instruction, and three.js isn't loaded.
 {%- endcomment -%}
+{%- liquid
+  assign coll = section.settings.collection | default: collections.frontpage
+  assign has_products = false
+  if coll != blank and coll.products.size > 0
+    assign has_products = true
+  endif
+-%}
+{%- if has_products or request.design_mode -%}
 {{ 'cv-orbit.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign coll = section.settings.collection | default: collections.frontpage
   assign limit = section.settings.limit | default: 6
   assign kw_list = 'magsafe:MagSafe,magnetic:Magnetic,shockproof:Shockproof,stand:Stand,wallet:Wallet,glitter:Glitter,transparent:Transparent,leather:Leather,rugged:Rugged,slim:Slim' | split: ','
   assign sweets = 'hero-sweet-wrapped-red.webp,hero-sweet-lollipop.webp,hero-sweet-wrapped-teal.webp,hero-sweet-cane.webp,hero-sweet-coin.webp' | split: ','
@@ -64,7 +75,7 @@
     {%- endif -%}
   </div>
 
-  {%- if coll != blank and coll.products.size > 0 -%}
+  {%- if has_products -%}
     <div class="cvorbit__wrap" data-cvorbit-wrap>
       <span class="cvorbit__backdrop" aria-hidden="true"></span>
 
@@ -158,7 +169,7 @@
     <div class="cv-empty" data-cv-reveal>
       <span class="cv-empty__ico">{%- render 'cv-icon', name: 'precision-fit', size: 36, animate: true -%}</span>
       <h2>Pick a collection</h2>
-      <p>Choose a collection in the theme editor and its cases spin up here.</p>
+      <p>Choose a collection with products in it and its cases spin up here. Shoppers don't see this section until then.</p>
     </div>
   {%- endif -%}
 
@@ -195,6 +206,7 @@
     {%- endif -%}
   </ul>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
