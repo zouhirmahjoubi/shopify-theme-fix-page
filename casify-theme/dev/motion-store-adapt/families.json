@@ -1,0 +1,131 @@
+{
+ "buybox-counter": [
+  "cv-product-counter"
+ ],
+ "buybox-alt": [
+  "main-best-product",
+  "cv-product",
+  "main-halo-product",
+  "bundle-buybox",
+  "cv-home-conversion",
+  "halo-xsell"
+ ],
+ "cart-search-coll": [
+  "cv-cart",
+  "cv-cart-drawer",
+  "predictive-search",
+  "cv-search",
+  "cv-collection",
+  "cv-collections-list",
+  "cv-collection-row"
+ ],
+ "pdp-1": [
+  "cv-pdp-carousel",
+  "cv-pdp-delivery",
+  "cv-pdp-ugc",
+  "cv-pdp-set",
+  "cv-pdp-ribbon",
+  "cv-pdp-fit"
+ ],
+ "pdp-2": [
+  "cv-pdp-before-after",
+  "cv-pdp-journey",
+  "cv-pdp-showcase",
+  "cv-pdp-details",
+  "cv-pdp-guarantee",
+  "cv-pdp-snap"
+ ],
+ "pdp-3": [
+  "cv-pdp-trust",
+  "cv-pdp-spotlight",
+  "cv-pdp-compare",
+  "cv-pdp-reviews",
+  "cv-pdp-closer",
+  "cv-pdp-promises"
+ ],
+ "pdp-4": [
+  "cv-pdp-reel",
+  "cv-pdp-row",
+  "cv-pdp-shelf",
+  "cv-pdp-value",
+  "cv-pdp-video-reviews",
+  "product-3d-viewer"
+ ],
+ "home-1": [
+  "casify-hero",
+  "cv-hero",
+  "cv-orbit",
+  "cv-phone-scan",
+  "cv-showcase",
+  "cv-spotlight"
+ ],
+ "home-2": [
+  "cv-collage",
+  "cv-feature-tabs",
+  "cv-vs",
+  "cv-value-stack",
+  "cv-guarantee",
+  "cv-trust-bar"
+ ],
+ "home-3": [
+  "cv-social-proof",
+  "cv-ugc",
+  "cv-signup-banner",
+  "cv-offer-courier",
+  "cv-case-wheel",
+  "cv-finder"
+ ],
+ "reviews-1": [
+  "review-widget",
+  "review-carousel",
+  "customer-reviews-carousel",
+  "cs-customer-proof",
+  "cv-scrolling-reviews",
+  "trustpilot-reviews"
+ ],
+ "reviews-2": [
+  "facebook-testimonials",
+  "facebook-comments",
+  "facebook-reviews",
+  "amazon-styled-reviews",
+  "cv-trustpilot",
+  "cv-page-video-reviews"
+ ],
+ "halo-1": [
+  "halo-closer",
+  "halo-comparison",
+  "halo-drop-test",
+  "halo-faq",
+  "halo-press",
+  "halo-reviews"
+ ],
+ "halo-2": [
+  "halo-three-fixes",
+  "halo-why-love",
+  "halo-yellowing",
+  "cv-compare",
+  "cv-cost-compare",
+  "cv-customer-experience"
+ ],
+ "pages-1": [
+  "cv-page",
+  "cv-404",
+  "cv-article",
+  "cv-blog",
+  "cv-contact",
+  "cv-hanging-cards"
+ ],
+ "pages-2": [
+  "cv-campaign-guide",
+  "cv-reel-showcase",
+  "cv-sales-note",
+  "cv-howto",
+  "cv-story",
+  "cv-apps"
+ ],
+ "shell": [
+  "header",
+  "footer",
+  "custom-section"
+ ]
+}

@@ -1,0 +1,396 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-product (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[{"id":41001,"title":"Russet Brown / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro Max"],"available":true},{"id":41002,"title":"Russet Brown / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro"],"available":true},{"id":41003,"title":"Russet Brown / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17"],"available":true},{"id":41004,"title":"Black / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17 Pro Max"],"available":true},{"id":41005,"title":"Black / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17 Pro"],"available":true},{"id":41006,"title":"Black / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17"],"available":false},{"id":41007,"title":"Blue / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17 Pro Max"],"available":true},{"id":41008,"title":"Blue / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17 Pro"],"available":true},{"id":41009,"title":"Blue / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17"],"available":true}],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"cv-product":"<div id=\"shopify-section-main\" class=\"shopify-section\"><link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-slip.css\" media=\"all\">\r\n<script>\r\n  /* Hide the slip's stamps, tape and total until cv-pdp-slip-motion.js has set their start\r\n     states. Never under reduced motion, and never for long. */\r\n  (function (root) {\r\n    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;\r\n    root.classList.add('cvs-pending');\r\n    setTimeout(function () { root.classList.remove('cvs-pending'); }, 1400);\r\n  })(document.documentElement);\r\n<\/script><section class=\"cvs\" id=\"cvPdp\" data-cv-pdp\r\n         style=\"--cvs-frame: url('../../../../assets/pdp-slip-frame.webp'); --cvs-paper: url('../../../../assets/pdp-slip-paper.png');\"\r\n         data-variants=\"[{&#34;id&#34;:41001,&#34;title&#34;:&#34;Russet Brown / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41001&#34;},{&#34;id&#34;:41002,&#34;title&#34;:&#34;Russet Brown / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41002&#34;},{&#34;id&#34;:41003,&#34;title&#34;:&#34;Russet Brown / iPhone 17&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41003&#34;},{&#34;id&#34;:41004,&#34;title&#34;:&#34;Black / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41004&#34;},{&#34;id&#34;:41005,&#34;title&#34;:&#34;Black / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41005&#34;},{&#34;id&#34;:41006,&#34;title&#34;:&#34;Black / iPhone 17&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:false,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41006&#34;},{&#34;id&#34;:41007,&#34;title&#34;:&#34;Blue / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41007&#34;},{&#34;id&#34;:41008,&#34;title&#34;:&#34;Blue / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41008&#34;},{&#34;id&#34;:41009,&#34;title&#34;:&#34;Blue / iPhone 17&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41009&#34;}]\"\r\n         data-current-options=\"[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro Max&#34;]\"\r\n         data-money-format=\"${{amount}}\">\r\n  <div class=\"cvs__inner\">\r\n    <nav class=\"cvs__crumbs\" aria-label=\"Breadcrumb\">\r\n      <a href=\"/\">Home<\/a>\r\n      <span aria-hidden=\"true\">/<\/span><a href=\"/collections/all\">Cases<\/a><span aria-hidden=\"true\">/<\/span>\r\n      <span aria-current=\"page\">Tech Fabric Magnetic Phone Case for iPhone<\/span>\r\n    <\/nav>\r\n\r\n    <div class=\"cvs__grid\"><div class=\"cvs__gallery\">\r\n        <div class=\"cvs__window\">\r\n          <div class=\"cvs__stage\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"Fixture photo: case detail\" class=\"cvs__photo\" id=\"cvMainImage\" sizes=\"(min-width: 990px) 520px, calc(100vw - 48px)\"><\/div>\r\n        <\/div><div class=\"cvs__thumbs\" role=\"tablist\" aria-label=\"Product photos\"><button type=\"button\" class=\"cvs__thumb\" role=\"tab\"\r\n                        aria-selected=\"true\"\r\n                        aria-label=\"Photo 1 of 3\"\r\n                        data-cv-full=\"../../../../assets/best-case-detail.png\">\r\n                  <img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"98\" height=\"97\" loading=\"lazy\">\r\n                <\/button><button type=\"button\" class=\"cvs__thumb\" role=\"tab\"\r\n                        aria-selected=\"false\"\r\n                        aria-label=\"Photo 2 of 3\"\r\n                        data-cv-full=\"../../../../assets/best-case-in-hand.png\">\r\n                  <img src=\"../../../../assets/best-case-in-hand.png\" alt=\"\" width=\"98\" height=\"97\" loading=\"lazy\">\r\n                <\/button><button type=\"button\" class=\"cvs__thumb\" role=\"tab\"\r\n                        aria-selected=\"false\"\r\n                        aria-label=\"Photo 3 of 3\"\r\n                        data-cv-full=\"../../../../assets/best-case-magnetic.png\">\r\n                  <img src=\"../../../../assets/best-case-magnetic.png\" alt=\"\" width=\"98\" height=\"97\" loading=\"lazy\">\r\n                <\/button><\/div><\/div><form class=\"cvs__slip\" id=\"cvAddForm\" method=\"post\" action=\"/cart/add\" data-cvs-slip>\r\n        <input type=\"hidden\" name=\"id\" id=\"cvVariantId\" value=\"41001\">\r\n        <input type=\"hidden\" name=\"quantity\" id=\"cvQuantity\" value=\"2\">\r\n        <span class=\"cvs__holes\" aria-hidden=\"true\"><\/span>\r\n        <img class=\"cvs__tape\" src=\"../../../../assets/pdp-slip-tape.webp\" width=\"363\" height=\"257\" alt=\"\" loading=\"eager\">\r\n\r\n        <h1 class=\"cvs__title\">Tech Fabric Magnetic Phone Case for iPhone<\/h1>\r\n        <p class=\"cvs__price\">\r\n          <span id=\"cvPriceNow\">$49.99<\/span>\r\n          <s id=\"cvPriceWas\" hidden>$0.00<\/s>\r\n        <\/p><div class=\"cvs__line cvs__line--phone\">\r\n            <span class=\"cvs__stamp\" aria-hidden=\"true\">1<\/span>\r\n            <div class=\"cvs__phone\">\r\n              <div>\r\n                <span class=\"cvs__label\" id=\"cvsPhoneLabel-main\">Your phone<\/span>\r\n                <span class=\"cvs__answer\" data-cv-opt-out=\"1\">iPhone 17 Pro Max<\/span>\r\n              <\/div><button type=\"button\" class=\"cvs__change\" aria-expanded=\"false\" aria-controls=\"cvsModels-main\" data-cvs-change>Change<\/button><\/div><div class=\"cvs__models\" id=\"cvsModels-main\" role=\"radiogroup\" aria-labelledby=\"cvsPhoneLabel-main\" hidden data-cvs-models><button type=\"button\" class=\"cvs__model\" role=\"radio\"\r\n                          aria-checked=\"true\"\r\n                          data-cv-option-index=\"1\"\r\n                          data-cv-value=\"iPhone 17 Pro Max\"\r\n                          data-cv-stock=\"\">iPhone 17 Pro Max<\/button><button type=\"button\" class=\"cvs__model\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-option-index=\"1\"\r\n                          data-cv-value=\"iPhone 17 Pro\"\r\n                          data-cv-stock=\"\">iPhone 17 Pro<\/button><button type=\"button\" class=\"cvs__model\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-option-index=\"1\"\r\n                          data-cv-value=\"iPhone 17\"\r\n                          data-cv-stock=\"\">iPhone 17<\/button><\/div><\/div><div class=\"cvs__line cvs__line--style\">\r\n              <span class=\"cvs__stamp\" aria-hidden=\"true\">2<\/span>\r\n              <span class=\"cvs__label\" id=\"cvsOpt0-main\">Style<\/span>\r\n              <div class=\"cvs__pills\" role=\"radiogroup\" aria-labelledby=\"cvsOpt0-main\"><button type=\"button\" class=\"cvs__pill\" role=\"radio\"\r\n                          aria-checked=\"true\"\r\n                          data-cv-option-index=\"0\"\r\n                          data-cv-value=\"Russet Brown\"\r\n                          data-cv-stock=\"\">Russet Brown<\/button><button type=\"button\" class=\"cvs__pill\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-option-index=\"0\"\r\n                          data-cv-value=\"Black\"\r\n                          data-cv-stock=\"\">Black<\/button><button type=\"button\" class=\"cvs__pill\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-option-index=\"0\"\r\n                          data-cv-value=\"Blue\"\r\n                          data-cv-stock=\"\">Blue<\/button><\/div>\r\n            <\/div><div class=\"cvs__line cvs__line--packs\">\r\n            <span class=\"cvs__stamp\" aria-hidden=\"true\">3<\/span>\r\n            <span class=\"cvs__label\" id=\"cvsPacks-main\">How many cases<\/span>\r\n            <div class=\"cvs__packs\" role=\"radiogroup\" aria-labelledby=\"cvsPacks-main\"><button type=\"button\" class=\"cvs__pack\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-qty=\"1\"\r\n                          data-cv-discount=\"0\"\r\n                          data-fixture-block=\"tier-1\"><span>1 case<\/span>\r\n                    <span class=\"cvs__pack-each\" data-cv-tier-each>$49.99<\/span>\r\n                  <\/button><button type=\"button\" class=\"cvs__pack\" role=\"radio\"\r\n                          aria-checked=\"true\"\r\n                          data-cv-qty=\"2\"\r\n                          data-cv-discount=\"18\"\r\n                          data-fixture-block=\"tier-2\"><span class=\"cvs__flag\">Save 18%<\/span><span>2 cases<\/span>\r\n                    <span class=\"cvs__pack-each\" data-cv-tier-each>$40.99 each<\/span>\r\n                  <\/button><button type=\"button\" class=\"cvs__pack\" role=\"radio\"\r\n                          aria-checked=\"false\"\r\n                          data-cv-qty=\"3\"\r\n                          data-cv-discount=\"31\"\r\n                          data-fixture-block=\"tier-3\"><span class=\"cvs__flag\">Best value<\/span><span>3 cases<\/span>\r\n                    <span class=\"cvs__pack-each\" data-cv-tier-each>$34.49 each<\/span>\r\n                  <\/button><\/div><link rel=\"stylesheet\" href=\"../../../../assets/cv-pack-slots.css\" media=\"all\">\n<div class=\"cvpk cvpk--slip\" data-cv-slots\n     data-fallback-img=\"../../../../assets/best-case-detail.png\"\n     data-template-legend=\"Your [qty] cases\"\n     data-template-bad=\"Case [n] is sold out in that choice\"\n     data-sold-suffix=\" (sold out)\" data-missing-suffix=\" (unavailable)\">\n  <div class=\"cvpk__tray\" aria-hidden=\"true\">\n    <ul class=\"cvpk__cases\" data-cv-slots-tray><li class=\"cvpk__case\" data-cv-slot-case=\"0\">\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">1<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><li class=\"cvpk__case\" data-cv-slot-case=\"1\">\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">2<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><li class=\"cvpk__case\" data-cv-slot-case=\"2\" hidden>\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">3<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><\/ul>\n  <\/div>\n\n  <fieldset class=\"cvpk__rows\">\n    <legend class=\"cvpk__legend\" data-cv-slots-legend>Your 2 cases<\/legend><p class=\"cvpk__hint\">Pick a colour and phone for each case. Mix them however you like.<\/p><div class=\"cvpk__row\" data-cv-slot=\"0\">\n        <span class=\"cvpk__name\" id=\"cvpkName0-main\">Case 1<\/span><p class=\"cvpk__first\">\n            <span data-cv-slot-summary>Russet Brown· iPhone 17 Pro Max<\/span><small>chosen above<\/small><\/p><\/div><div class=\"cvpk__row\" data-cv-slot=\"1\">\n        <span class=\"cvpk__name\" id=\"cvpkName1-main\">Case 2<\/span><div class=\"cvpk__fields\" role=\"group\" aria-labelledby=\"cvpkName1-main\"><span class=\"cvpk__select\">\n                <select data-cv-slot-option=\"0\" aria-label=\"Case : Color\"><option value=\"Russet Brown\" selected>Russet Brown<\/option><option value=\"Black\">Black<\/option><option value=\"Blue\">Blue<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><span class=\"cvpk__select\">\n                <select data-cv-slot-option=\"1\" aria-label=\"Case : Model\"><option value=\"iPhone 17 Pro Max\" selected>iPhone 17 Pro Max<\/option><option value=\"iPhone 17 Pro\">iPhone 17 Pro<\/option><option value=\"iPhone 17\">iPhone 17<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><\/div>\n          <button type=\"button\" class=\"cvpk__same\" data-cv-slot-same hidden>Same as case 1<\/button><\/div><div class=\"cvpk__row\" data-cv-slot=\"2\" hidden>\n        <span class=\"cvpk__name\" id=\"cvpkName2-main\">Case 3<\/span><div class=\"cvpk__fields\" role=\"group\" aria-labelledby=\"cvpkName2-main\"><span class=\"cvpk__select\">\n                <select data-cv-slot-option=\"0\" aria-label=\"Case : Color\"><option value=\"Russet Brown\" selected>Russet Brown<\/option><option value=\"Black\">Black<\/option><option value=\"Blue\">Blue<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><span class=\"cvpk__select\">\n                <select data-cv-slot-option=\"1\" aria-label=\"Case : Model\"><option value=\"iPhone 17 Pro Max\" selected>iPhone 17 Pro Max<\/option><option value=\"iPhone 17 Pro\">iPhone 17 Pro<\/option><option value=\"iPhone 17\">iPhone 17<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><\/div>\n          <button type=\"button\" class=\"cvpk__same\" data-cv-slot-same hidden>Same as case 1<\/button><\/div><\/fieldset>\n<\/div><\/div><p class=\"cvs__total\">\r\n          <span class=\"cvs__total-label\">Total<\/span>\r\n          <span class=\"cvs__total-value\" id=\"cvTotal\">$81.98<\/span>\r\n        <\/p>\r\n        <button type=\"submit\" class=\"cvs__cta\" id=\"cvAddBtn\">\r\n          <span id=\"cvCtaLabel\" data-label-default=\"Add to bag\">Add to bag<\/span>\r\n        <\/button>\r\n        <p class=\"cvs__status\" id=\"cvStatus\" role=\"status\" aria-live=\"polite\"><\/p><p class=\"cvs__service\">Free shipping · 30-day returns · Ships in 1-3 business days<\/p><\/form>\r\n    <\/div>\r\n  <\/div><div class=\"cvs-sticky\" id=\"cvSticky\" aria-hidden=\"true\">\r\n    <div class=\"cvs-sticky__info\">\r\n      <span class=\"cvs-sticky__name\">Tech Fabric Magnetic Phone Case for iPhone<\/span>\r\n      <span class=\"cvs-sticky__meta\"><span data-cv-opt-out-sticky>Russet Brown / iPhone 17 Pro Max<\/span> · <b id=\"cvStickyTotal\">$81.98<\/b><\/span>\r\n    <\/div>\r\n    <button type=\"button\" class=\"cvs-sticky__btn\" id=\"cvStickyBtn\" tabindex=\"-1\">Add to bag<\/button>\r\n  <\/div>\r\n<\/section>\r\n\r\n<script type=\"application/ld+json\">\r\n{\r\n  \"@context\": \"https://schema.org\",\r\n  \"@type\": \"Product\",\r\n  \"name\": \"Tech Fabric Magnetic Phone Case for iPhone\",\"image\": \"https:../../../../assets/best-case-detail.png\",\r\n  \"brand\": { \"@type\": \"Brand\", \"name\": \"Casify\" },\r\n  \"offers\": {\r\n    \"@type\": \"AggregateOffer\",\r\n    \"priceCurrency\": \"USD\",\r\n    \"lowPrice\": 49.99,\r\n    \"highPrice\": 49.99,\r\n    \"offerCount\": 9,\r\n    \"availability\": \"https://schema.org/InStock\"\r\n  }\r\n}\r\n<\/script>\r\n\r\n\r\n<\/div>"}};</script>
+<script src="../../tools/stub-fetch.js"></script>
+<script src="../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-main" class="shopify-section"><link rel="stylesheet" href="../../../../assets/cv-pdp-slip.css" media="all">
+<script>
+  /* Hide the slip's stamps, tape and total until cv-pdp-slip-motion.js has set their start
+     states. Never under reduced motion, and never for long. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvs-pending');
+    setTimeout(function () { root.classList.remove('cvs-pending'); }, 1400);
+  })(document.documentElement);
+</script><section class="cvs" id="cvPdp" data-cv-pdp
+         style="--cvs-frame: url('../../../../assets/pdp-slip-frame.webp'); --cvs-paper: url('../../../../assets/pdp-slip-paper.png');"
+         data-variants="[{&#34;id&#34;:41001,&#34;title&#34;:&#34;Russet Brown / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41001&#34;},{&#34;id&#34;:41002,&#34;title&#34;:&#34;Russet Brown / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41002&#34;},{&#34;id&#34;:41003,&#34;title&#34;:&#34;Russet Brown / iPhone 17&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case detail&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Russet Brown / iPhone 17&#34;,&#34;public_title&#34;:&#34;Russet Brown / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41003&#34;},{&#34;id&#34;:41004,&#34;title&#34;:&#34;Black / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41004&#34;},{&#34;id&#34;:41005,&#34;title&#34;:&#34;Black / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41005&#34;},{&#34;id&#34;:41006,&#34;title&#34;:&#34;Black / iPhone 17&#34;,&#34;options&#34;:[&#34;Black&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:false,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo: case in hand&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Black / iPhone 17&#34;,&#34;public_title&#34;:&#34;Black / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41006&#34;},{&#34;id&#34;:41007,&#34;title&#34;:&#34;Blue / iPhone 17 Pro Max&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17 Pro Max&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro Max&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17 Pro Max&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17 Pro Max&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41007&#34;},{&#34;id&#34;:41008,&#34;title&#34;:&#34;Blue / iPhone 17 Pro&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17 Pro&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17 Pro&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17 Pro&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17 Pro&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41008&#34;},{&#34;id&#34;:41009,&#34;title&#34;:&#34;Blue / iPhone 17&#34;,&#34;options&#34;:[&#34;Blue&#34;,&#34;iPhone 17&#34;],&#34;option1&#34;:&#34;Blue&#34;,&#34;option2&#34;:&#34;iPhone 17&#34;,&#34;option3&#34;:null,&#34;price&#34;:4999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:3,&#34;preview_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9102,&#34;src&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-magnetic.png&#34;,&#34;alt&#34;:&#34;Fixture photo: magnetic ring&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Tech Fabric Magnetic Phone Case for iPhone - Blue / iPhone 17&#34;,&#34;public_title&#34;:&#34;Blue / iPhone 17&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/tech-fabric-magnetic-phone-case-for-iphone?variant=41009&#34;}]"
+         data-current-options="[&#34;Russet Brown&#34;,&#34;iPhone 17 Pro Max&#34;]"
+         data-money-format="${{amount}}">
+  <div class="cvs__inner">
+    <nav class="cvs__crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span><a href="/collections/all">Cases</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Tech Fabric Magnetic Phone Case for iPhone</span>
+    </nav>
+
+    <div class="cvs__grid"><div class="cvs__gallery">
+        <div class="cvs__window">
+          <div class="cvs__stage"><img src="../../../../assets/best-case-detail.png" alt="Fixture photo: case detail" class="cvs__photo" id="cvMainImage" sizes="(min-width: 990px) 520px, calc(100vw - 48px)"></div>
+        </div><div class="cvs__thumbs" role="tablist" aria-label="Product photos"><button type="button" class="cvs__thumb" role="tab"
+                        aria-selected="true"
+                        aria-label="Photo 1 of 3"
+                        data-cv-full="../../../../assets/best-case-detail.png">
+                  <img src="../../../../assets/best-case-detail.png" alt="" width="98" height="97" loading="lazy">
+                </button><button type="button" class="cvs__thumb" role="tab"
+                        aria-selected="false"
+                        aria-label="Photo 2 of 3"
+                        data-cv-full="../../../../assets/best-case-in-hand.png">
+                  <img src="../../../../assets/best-case-in-hand.png" alt="" width="98" height="97" loading="lazy">
+                </button><button type="button" class="cvs__thumb" role="tab"
+                        aria-selected="false"
+                        aria-label="Photo 3 of 3"
+                        data-cv-full="../../../../assets/best-case-magnetic.png">
+                  <img src="../../../../assets/best-case-magnetic.png" alt="" width="98" height="97" loading="lazy">
+                </button></div></div><form class="cvs__slip" id="cvAddForm" method="post" action="/cart/add" data-cvs-slip>
+        <input type="hidden" name="id" id="cvVariantId" value="41001">
+        <input type="hidden" name="quantity" id="cvQuantity" value="2">
+        <span class="cvs__holes" aria-hidden="true"></span>
+        <img class="cvs__tape" src="../../../../assets/pdp-slip-tape.webp" width="363" height="257" alt="" loading="eager">
+
+        <h1 class="cvs__title">Tech Fabric Magnetic Phone Case for iPhone</h1>
+        <p class="cvs__price">
+          <span id="cvPriceNow">$49.99</span>
+          <s id="cvPriceWas" hidden>$0.00</s>
+        </p><div class="cvs__line cvs__line--phone">
+            <span class="cvs__stamp" aria-hidden="true">1</span>
+            <div class="cvs__phone">
+              <div>
+                <span class="cvs__label" id="cvsPhoneLabel-main">Your phone</span>
+                <span class="cvs__answer" data-cv-opt-out="1">iPhone 17 Pro Max</span>
+              </div><button type="button" class="cvs__change" aria-expanded="false" aria-controls="cvsModels-main" data-cvs-change>Change</button></div><div class="cvs__models" id="cvsModels-main" role="radiogroup" aria-labelledby="cvsPhoneLabel-main" hidden data-cvs-models><button type="button" class="cvs__model" role="radio"
+                          aria-checked="true"
+                          data-cv-option-index="1"
+                          data-cv-value="iPhone 17 Pro Max"
+                          data-cv-stock="">iPhone 17 Pro Max</button><button type="button" class="cvs__model" role="radio"
+                          aria-checked="false"
+                          data-cv-option-index="1"
+                          data-cv-value="iPhone 17 Pro"
+                          data-cv-stock="">iPhone 17 Pro</button><button type="button" class="cvs__model" role="radio"
+                          aria-checked="false"
+                          data-cv-option-index="1"
+                          data-cv-value="iPhone 17"
+                          data-cv-stock="">iPhone 17</button></div></div><div class="cvs__line cvs__line--style">
+              <span class="cvs__stamp" aria-hidden="true">2</span>
+              <span class="cvs__label" id="cvsOpt0-main">Style</span>
+              <div class="cvs__pills" role="radiogroup" aria-labelledby="cvsOpt0-main"><button type="button" class="cvs__pill" role="radio"
+                          aria-checked="true"
+                          data-cv-option-index="0"
+                          data-cv-value="Russet Brown"
+                          data-cv-stock="">Russet Brown</button><button type="button" class="cvs__pill" role="radio"
+                          aria-checked="false"
+                          data-cv-option-index="0"
+                          data-cv-value="Black"
+                          data-cv-stock="">Black</button><button type="button" class="cvs__pill" role="radio"
+                          aria-checked="false"
+                          data-cv-option-index="0"
+                          data-cv-value="Blue"
+                          data-cv-stock="">Blue</button></div>
+            </div><div class="cvs__line cvs__line--packs">
+            <span class="cvs__stamp" aria-hidden="true">3</span>
+            <span class="cvs__label" id="cvsPacks-main">How many cases</span>
+            <div class="cvs__packs" role="radiogroup" aria-labelledby="cvsPacks-main"><button type="button" class="cvs__pack" role="radio"
+                          aria-checked="false"
+                          data-cv-qty="1"
+                          data-cv-discount="0"
+                          data-fixture-block="tier-1"><span>1 case</span>
+                    <span class="cvs__pack-each" data-cv-tier-each>$49.99</span>
+                  </button><button type="button" class="cvs__pack" role="radio"
+                          aria-checked="true"
+                          data-cv-qty="2"
+                          data-cv-discount="18"
+                          data-fixture-block="tier-2"><span class="cvs__flag">Save 18%</span><span>2 cases</span>
+                    <span class="cvs__pack-each" data-cv-tier-each>$40.99 each</span>
+                  </button><button type="button" class="cvs__pack" role="radio"
+                          aria-checked="false"
+                          data-cv-qty="3"
+                          data-cv-discount="31"
+                          data-fixture-block="tier-3"><span class="cvs__flag">Best value</span><span>3 cases</span>
+                    <span class="cvs__pack-each" data-cv-tier-each>$34.49 each</span>
+                  </button></div><link rel="stylesheet" href="../../../../assets/cv-pack-slots.css" media="all">
+<div class="cvpk cvpk--slip" data-cv-slots
+     data-fallback-img="../../../../assets/best-case-detail.png"
+     data-template-legend="Your [qty] cases"
+     data-template-bad="Case [n] is sold out in that choice"
+     data-sold-suffix=" (sold out)" data-missing-suffix=" (unavailable)">
+  <div class="cvpk__tray" aria-hidden="true">
+    <ul class="cvpk__cases" data-cv-slots-tray><li class="cvpk__case" data-cv-slot-case="0">
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">1</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li><li class="cvpk__case" data-cv-slot-case="1">
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">2</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li><li class="cvpk__case" data-cv-slot-case="2" hidden>
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">3</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li></ul>
+  </div>
+
+  <fieldset class="cvpk__rows">
+    <legend class="cvpk__legend" data-cv-slots-legend>Your 2 cases</legend><p class="cvpk__hint">Pick a colour and phone for each case. Mix them however you like.</p><div class="cvpk__row" data-cv-slot="0">
+        <span class="cvpk__name" id="cvpkName0-main">Case 1</span><p class="cvpk__first">
+            <span data-cv-slot-summary>Russet Brown· iPhone 17 Pro Max</span><small>chosen above</small></p></div><div class="cvpk__row" data-cv-slot="1">
+        <span class="cvpk__name" id="cvpkName1-main">Case 2</span><div class="cvpk__fields" role="group" aria-labelledby="cvpkName1-main"><span class="cvpk__select">
+                <select data-cv-slot-option="0" aria-label="Case : Color"><option value="Russet Brown" selected>Russet Brown</option><option value="Black">Black</option><option value="Blue">Blue</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span><span class="cvpk__select">
+                <select data-cv-slot-option="1" aria-label="Case : Model"><option value="iPhone 17 Pro Max" selected>iPhone 17 Pro Max</option><option value="iPhone 17 Pro">iPhone 17 Pro</option><option value="iPhone 17">iPhone 17</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span></div>
+          <button type="button" class="cvpk__same" data-cv-slot-same hidden>Same as case 1</button></div><div class="cvpk__row" data-cv-slot="2" hidden>
+        <span class="cvpk__name" id="cvpkName2-main">Case 3</span><div class="cvpk__fields" role="group" aria-labelledby="cvpkName2-main"><span class="cvpk__select">
+                <select data-cv-slot-option="0" aria-label="Case : Color"><option value="Russet Brown" selected>Russet Brown</option><option value="Black">Black</option><option value="Blue">Blue</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span><span class="cvpk__select">
+                <select data-cv-slot-option="1" aria-label="Case : Model"><option value="iPhone 17 Pro Max" selected>iPhone 17 Pro Max</option><option value="iPhone 17 Pro">iPhone 17 Pro</option><option value="iPhone 17">iPhone 17</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span></div>
+          <button type="button" class="cvpk__same" data-cv-slot-same hidden>Same as case 1</button></div></fieldset>
+</div></div><p class="cvs__total">
+          <span class="cvs__total-label">Total</span>
+          <span class="cvs__total-value" id="cvTotal">$81.98</span>
+        </p>
+        <button type="submit" class="cvs__cta" id="cvAddBtn">
+          <span id="cvCtaLabel" data-label-default="Add to bag">Add to bag</span>
+        </button>
+        <p class="cvs__status" id="cvStatus" role="status" aria-live="polite"></p><p class="cvs__service">Free shipping · 30-day returns · Ships in 1-3 business days</p></form>
+    </div>
+  </div><div class="cvs-sticky" id="cvSticky" aria-hidden="true">
+    <div class="cvs-sticky__info">
+      <span class="cvs-sticky__name">Tech Fabric Magnetic Phone Case for iPhone</span>
+      <span class="cvs-sticky__meta"><span data-cv-opt-out-sticky>Russet Brown / iPhone 17 Pro Max</span> · <b id="cvStickyTotal">$81.98</b></span>
+    </div>
+    <button type="button" class="cvs-sticky__btn" id="cvStickyBtn" tabindex="-1">Add to bag</button>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Tech Fabric Magnetic Phone Case for iPhone","image": "https:../../../../assets/best-case-detail.png",
+  "brand": { "@type": "Brand", "name": "Casify" },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": 49.99,
+    "highPrice": 49.99,
+    "offerCount": 9,
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+
+
+</div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../assets/casify-data.js" defer></script>
+<script src="../../../../assets/theme.js" defer></script>
+<script src="../../../../assets/cv-motion.js" defer></script>
+<script src="../../../../assets/cv-product.js" defer></script>
+<script src="../../../../assets/cv-pack-motion.js" defer></script>
+<script src="../../../../assets/cv-pdp-slip-motion.js" defer></script>
+<script src="../../../../assets/cart.js" defer></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+Editor-cycle listener trace (fix round 2). Source: console.json editorResult.trace, ?trace=1.
+Key: document:visibilitychange:b. Baseline = count after cycle 1 settles.
+
+## cv-product-counter/shots-editor1  ?editor=1&trace=1
+  at load 1; after each cycle [2, 2]
+  firstRegistration (info): ['document:visibilitychange:b 1 -> 2']
+  grew (leak, fails shoot.py): []
+    add       407 ms  boot      at xb (/assets/gsap-ScrollTrigger.min.js:10:11448)
+    add      1638 ms  cycle 1   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+    remove   3139 ms  cycle 2   at /assets/cv-pdp-promises.js:763:40
+    add      3233 ms  cycle 2   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+
+## cv-product-counter/shots-editor4  ?editor=4&trace=1
+  at load 1; after each cycle [2, 2, 2, 2]
+  firstRegistration (info): ['document:visibilitychange:b 1 -> 2']
+  grew (leak, fails shoot.py): []
+    add       467 ms  boot      at xb (/assets/gsap-ScrollTrigger.min.js:10:11448)
+    add      1689 ms  cycle 1   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+    remove   3170 ms  cycle 2   at /assets/cv-pdp-promises.js:763:40
+    add      3279 ms  cycle 2   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+    remove   3913 ms  cycle 3   at /assets/cv-pdp-promises.js:763:40
+    add      4020 ms  cycle 3   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+    remove   4635 ms  cycle 4   at /assets/cv-pdp-promises.js:763:40
+    add      4736 ms  cycle 4   at cvprScene (/assets/cv-pdp-promises.js:762:12)
+
+## negative/shots-leak  ?editor=4&trace=1
+  at load 1; after each cycle [2, 3, 4, 5]
+  firstRegistration (info): ['document:visibilitychange:b 1 -> 2']
+  grew (leak, fails shoot.py): ['document:visibilitychange:b 2 -> 5 (per cycle: 2, 3, 4, 5)']
+    add        21 ms  boot      at boot (/dev/motion-store-adapt/kit-proof/negative/leak.html?editor=4&trace=1:126:32)
+    add       829 ms  cycle 1   at HTMLDocument.boot (/dev/motion-store-adapt/kit-proof/negative/leak.html?editor=4&trace=1:126:32)
+    add      2536 ms  cycle 2   at HTMLDocument.boot (/dev/motion-store-adapt/kit-proof/negative/leak.html?editor=4&trace=1:126:32)
+    add      3042 ms  cycle 3   at HTMLDocument.boot (/dev/motion-store-adapt/kit-proof/negative/leak.html?editor=4&trace=1:126:32)
+    add      3549 ms  cycle 4   at HTMLDocument.boot (/dev/motion-store-adapt/kit-proof/negative/leak.html?editor=4&trace=1:126:32)
+

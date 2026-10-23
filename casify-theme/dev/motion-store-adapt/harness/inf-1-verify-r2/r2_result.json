@@ -1,0 +1,129 @@
+{
+ "T1_one_model_blank_liquid": {
+  "state": {
+   "c": true,
+   "v": "iPhone 17 Pro Max",
+   "opt": [
+    "Russet Brown",
+    "iPhone 17 Pro Max"
+   ],
+   "out": "iPhone 17 Pro Max",
+   "checked": null,
+   "attr": "true",
+   "input": "41001"
+  },
+  "posts": [
+   {
+    "items": [
+     {
+      "id": 41001,
+      "quantity": 2
+     }
+    ]
+   }
+  ],
+  "ev": [
+   "cvs:added",
+   "cart:added"
+  ],
+  "errs": []
+ },
+ "T2_multi_blank": {
+  "state": {
+   "c": false,
+   "v": null,
+   "opt": [
+    "Russet Brown",
+    ""
+   ],
+   "out": "iPhone 17 Pro Max",
+   "checked": "iPhone 17 Pro Max",
+   "attr": "false",
+   "input": ""
+  },
+  "posts": [],
+  "ev": [
+   "cvs:needmodel"
+  ],
+  "errs": []
+ },
+ "T3_multi_blank_urlvariant": {
+  "target": [
+   41002,
+   [
+    "Russet Brown",
+    "iPhone 17 Pro"
+   ],
+   true
+  ],
+  "state": {
+   "c": true,
+   "v": "iPhone 17 Pro",
+   "opt": [
+    "Russet Brown",
+    "iPhone 17 Pro"
+   ],
+   "out": "iPhone 17 Pro",
+   "checked": "iPhone 17 Pro",
+   "attr": "true",
+   "input": "41002"
+  },
+  "posts": [
+   {
+    "items": [
+     {
+      "id": 41002,
+      "quantity": 2
+     }
+    ]
+   }
+  ],
+  "errs": []
+ },
+ "T4_buy_head": {
+  "has_buy": false,
+  "posts": [],
+  "url": "dev/motion-store-adapt/harness/inf-1-verify/slip-one-model.html",
+  "errs": []
+ },
+ "T4_buy_new": {
+  "has_buy": false,
+  "posts": [],
+  "url": "dev/motion-store-adapt/harness/inf-1-verify/slip-one-model.html",
+  "errs": []
+ },
+ "T5_add_head": {
+  "posts": [
+   {
+    "items": [
+     {
+      "id": 41001,
+      "quantity": 2
+     }
+    ]
+   }
+  ],
+  "errs": []
+ },
+ "T5_add_new": {
+  "posts": [
+   {
+    "items": [
+     {
+      "id": 41001,
+      "quantity": 2
+     }
+    ]
+   }
+  ],
+  "errs": []
+ },
+ "T6_no_model": {
+  "state": {
+   "hasModel": false,
+   "modelConfirmed": true,
+   "canBuy": true
+  },
+  "errs": []
+ }
+}

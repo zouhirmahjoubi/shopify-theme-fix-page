@@ -1,0 +1,187 @@
+{
+  "template_name": "product",
+  "product": {
+    "title": "Tech Fabric Magnetic Phone Case for iPhone",
+    "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+    "vendor": "Casify",
+    "options": [
+      "Color",
+      "Model"
+    ],
+    "media": [
+      {
+        "src": "asset:best-case-detail.png",
+        "alt": "Fixture photo: case detail"
+      },
+      {
+        "src": "asset:best-case-in-hand.png",
+        "alt": "Fixture photo: case in hand"
+      },
+      {
+        "src": "asset:best-case-magnetic.png",
+        "alt": "Fixture photo: magnetic ring"
+      }
+    ],
+    "variants": [
+      {
+        "id": 41001,
+        "options": [
+          "Russet Brown",
+          "iPhone 17 Pro Max"
+        ],
+        "price": 4999,
+        "media": 0
+      },
+      {
+        "id": 41002,
+        "options": [
+          "Russet Brown",
+          "iPhone 17 Pro"
+        ],
+        "price": 4999,
+        "media": 0
+      },
+      {
+        "id": 41003,
+        "options": [
+          "Russet Brown",
+          "iPhone 17"
+        ],
+        "price": 4999,
+        "media": 0
+      },
+      {
+        "id": 41004,
+        "options": [
+          "Black",
+          "iPhone 17 Pro Max"
+        ],
+        "price": 4999,
+        "media": 1
+      },
+      {
+        "id": 41005,
+        "options": [
+          "Black",
+          "iPhone 17 Pro"
+        ],
+        "price": 4999,
+        "media": 1
+      },
+      {
+        "id": 41006,
+        "options": [
+          "Black",
+          "iPhone 17"
+        ],
+        "price": 4999,
+        "available": false,
+        "media": 1
+      },
+      {
+        "id": 41007,
+        "options": [
+          "Blue",
+          "iPhone 17 Pro Max"
+        ],
+        "price": 4999,
+        "media": 2
+      },
+      {
+        "id": 41008,
+        "options": [
+          "Blue",
+          "iPhone 17 Pro"
+        ],
+        "price": 4999,
+        "media": 2
+      },
+      {
+        "id": 41009,
+        "options": [
+          "Blue",
+          "iPhone 17"
+        ],
+        "price": 4999,
+        "media": 2
+      }
+    ],
+    "metafields": {
+      "reviews": {},
+      "custom": {}
+    }
+  },
+  "_note": "INF-4 fixture: product copied from harness/inf-1/fixture-fit.json (Tech Fabric case, Color + Model). Stored set settings; recommendations: a strap (one variant, any phone) and a clear case per model.",
+  "template": {
+    "file": "templates/product.json",
+    "key": "set"
+  },
+  "globals": {
+    "recommendations": {
+      "performed?": true,
+      "products_count": 2,
+      "intent": "complementary",
+      "products": [
+        {
+          "id": 52001,
+          "available": true,
+          "url": "/products/fixture-case-charm-strap",
+          "featured_image": null,
+          "title": "Fixture: Case Charm Strap",
+          "price_varies": false,
+          "price_min": 1999,
+          "compare_at_price_min": 0,
+          "variants": [
+            {
+              "id": 52011,
+              "options": [
+                "Russet Brown"
+              ],
+              "available": true
+            }
+          ]
+        },
+        {
+          "id": 52002,
+          "available": true,
+          "url": "/products/fixture-clear-magsafe-case",
+          "featured_image": null,
+          "title": "Fixture: Clear MagSafe Case",
+          "price_varies": false,
+          "price_min": 2999,
+          "compare_at_price_min": 0,
+          "variants": [
+            {
+              "id": 52021,
+              "options": [
+                "Clear",
+                "iPhone 17 Pro Max"
+              ],
+              "available": true
+            },
+            {
+              "id": 52022,
+              "options": [
+                "Clear",
+                "iPhone 17 Pro"
+              ],
+              "available": true
+            },
+            {
+              "id": 52023,
+              "options": [
+                "Clear",
+                "iPhone 17"
+              ],
+              "available": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "harness": {
+    "js": [],
+    "stub": false
+  }
+}

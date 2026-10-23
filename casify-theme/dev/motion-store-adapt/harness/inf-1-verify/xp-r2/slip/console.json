@@ -1,0 +1,503 @@
+{
+  "page": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\slip.html",
+  "query": "",
+  "runs": [
+    {
+      "variant": "default",
+      "width": 375,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 375, 'cw': 375, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 834, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'In your bag', 'cls': 'cvs__cta is-done', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 834, 'bottom': 900, 'vh': 812, 'btnTab': -1, 'ev': 0, 'sw': 375, 'cw': 375}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727183598
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727188779
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727188912
+        }
+      ],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 768,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 768, 'cw': 768, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 1040, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'In your bag', 'cls': 'cvs__cta is-done', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 1040, 'bottom': 1106, 'vh': 1024, 'btnTab': -1, 'ev': 0, 'sw': 768, 'cw': 768}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727194928
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727201428
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727201559
+        }
+      ],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 1440,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 1440, 'cw': 1440, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 916, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'Add to bag', 'cls': 'cvs__cta', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 916, 'bottom': 982, 'vh': 900, 'btnTab': -1, 'ev': 0, 'sw': 1440, 'cw': 1440}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727208150
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727213949
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727214080
+        }
+      ],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 375,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 375, 'cw': 375, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 834, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'Add to bag', 'cls': 'cvs__cta', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 834, 'bottom': 900, 'vh': 812, 'btnTab': -1, 'ev': 0, 'sw': 375, 'cw': 375}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727221190
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727226912
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727227040
+        }
+      ],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 768,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 768, 'cw': 768, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 1040, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'Add to bag', 'cls': 'cvs__cta', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 1040, 'bottom': 1106, 'vh': 1024, 'btnTab': -1, 'ev': 0, 'sw': 768, 'cw': 768}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727240360
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727256105
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727256236
+        }
+      ],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 1440,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 1440, 'cw': 1440, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 916, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': 'false', 'optOut': ['iPhone 17 Pro Max']}",
+        "press1 {'ev': ['cvs:needmodel'], 'active': 'cvs__model', 'status': 'Choose your phone model first', 'outline': 'solid 2px', 'boxShadow': 'none', 'focusVisible': True, 'models': {'hidden': False}, 'posts': 0}",
+        "afterpick {'c': True, 'v': 'iPhone 17 Pro', 'status': 'Choose your phone model first', 'optOut': ['iPhone 17 Pro']}",
+        "adding {'label': 'In your bag', 'dis': True, 'cls': 'cvs__cta is-done'}",
+        "after {'label': 'Add to bag', 'cls': 'cvs__cta', 'status': '2 cases added to your bag.', 'ev': ['cvs:needmodel', 'cvs:adding', 'cvs:added', 'cart:added'], 'posts': 1, 'active': ''}",
+        "settled {'label': 'Add to bag', 'cls': 'cvs__cta', 'dis': False}",
+        "sticky {'ariaHidden': 'true', 'cls': 'cvs-sticky', 'vis': 'visible', 'op': '1', 'top': 916, 'bottom': 982, 'vh': 900, 'btnTab': -1, 'ev': 0, 'sw': 1440, 'cw': 1440}"
+      ],
+      "expect_failed": [],
+      "calls": [
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727274795
+        },
+        {
+          "url": "/cart/add.js",
+          "path": "/cart/add.js",
+          "method": "POST",
+          "body": {
+            "items": [
+              {
+                "id": 41002,
+                "quantity": 2
+              }
+            ]
+          },
+          "status": 200,
+          "ok": true,
+          "at": 1792727280287
+        },
+        {
+          "url": "/cart.js",
+          "path": "/cart.js",
+          "method": "GET",
+          "body": {},
+          "status": 200,
+          "ok": true,
+          "at": 1792727280408
+        }
+      ],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 375,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 375, 'cw': 375, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 834, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': None, 'optOut': ['iPhone 17 Pro Max']}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 768,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 768, 'cw': 768, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 1040, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': None, 'optOut': ['iPhone 17 Pro Max']}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 1440,
+      "url": "http://127.0.0.1:58519/dev/motion-store-adapt/harness/inf-1-verify/slip.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "geo {'sw': 1440, 'cw': 1440, 'sticky': {'ariaHidden': 'true', 'vis': 'visible', 'op': '1', 'top': 916, 'btnTab': -1}, 'status': {'role': 'status', 'live': 'polite', 'text': ''}, 'add': {'dis': False, 'text': 'Add to bag'}, 'sel': None, 'confirmed': None, 'optOut': ['iPhone 17 Pro Max']}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    }
+  ],
+  "shots": [
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-375-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-375-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-375-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-375-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-768-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-768-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-768-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-768-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-1440-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-1440-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-1440-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\default-1440-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-375-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-375-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-375-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-375-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-768-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-768-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-768-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-768-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-1440-press1.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-1440-adding.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-1440-after.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\rm-1440-sticky.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\nojs-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\nojs-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-1-verify\\xp-r2\\slip\\nojs-1440.png"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "netErrorCount": 0,
+  "allowedCount": 0,
+  "expectFailedCount": 0,
+  "leakCount": 0
+}

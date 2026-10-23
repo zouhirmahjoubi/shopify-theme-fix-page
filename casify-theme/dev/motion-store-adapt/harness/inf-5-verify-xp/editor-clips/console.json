@@ -1,0 +1,571 @@
+{
+  "page": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify\\clips.html",
+  "query": "editor=4",
+  "runs": [
+    {
+      "variant": "default",
+      "width": 375,
+      "url": "http://127.0.0.1:53148/dev/motion-store-adapt/harness/inf-5-verify/clips.html?editor=4",
+      "console": [],
+      "pageErrors": [],
+      "network": [
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        }
+      ],
+      "actions_log": [],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 4,
+        "errors": [],
+        "editorResult": {
+          "requested": 4,
+          "cycles": 4,
+          "baseline": "after cycle 1",
+          "listenersAtLoad": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "listenersBefore": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "listenersAfter": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "perCycle": [
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            }
+          ],
+          "firstRegistration": [],
+          "grew": [],
+          "stuck": [],
+          "trace": null
+        },
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4"
+      ],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 1440,
+      "url": "http://127.0.0.1:53148/dev/motion-store-adapt/harness/inf-5-verify/clips.html?editor=4",
+      "console": [],
+      "pageErrors": [],
+      "network": [
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+          "failure": "net::ERR_ABORTED"
+        },
+        {
+          "url": "http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+          "failure": "net::ERR_ABORTED"
+        }
+      ],
+      "actions_log": [],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 4,
+        "errors": [],
+        "editorResult": {
+          "requested": 4,
+          "cycles": 4,
+          "baseline": "after cycle 1",
+          "listenersAtLoad": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "listenersBefore": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "listenersAfter": {
+            "window:load:b": 2,
+            "document:pointercancel:b": 1,
+            "document:touchcancel:b": 2,
+            "window:pointermove:b": 1,
+            "window:touchmove:b": 1,
+            "document:contextmenu:b": 2,
+            "window:wheel:b": 3,
+            "document:scroll:b": 1,
+            "document:pointerdown:b": 1,
+            "document:touchstart:b": 1,
+            "document:mousedown:b": 1,
+            "document:pointerup:b": 1,
+            "document:touchend:b": 1,
+            "document:mouseup:b": 1,
+            "document:visibilitychange:b": 3,
+            "document:DOMContentLoaded:b": 1,
+            "window:resize:b": 1,
+            "document:shopify:section:load:b": 4,
+            "document:shopify:section:unload:b": 4,
+            "document:shopify:section:select:b": 1,
+            "document:shopify:block:select:b": 1,
+            "document:shopify:block:deselect:b": 1,
+            "gsap:ScrollTrigger": 3
+          },
+          "perCycle": [
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            },
+            {
+              "window:load:b": 2,
+              "document:pointercancel:b": 1,
+              "document:touchcancel:b": 2,
+              "window:pointermove:b": 1,
+              "window:touchmove:b": 1,
+              "document:contextmenu:b": 2,
+              "window:wheel:b": 3,
+              "document:scroll:b": 1,
+              "document:pointerdown:b": 1,
+              "document:touchstart:b": 1,
+              "document:mousedown:b": 1,
+              "document:pointerup:b": 1,
+              "document:touchend:b": 1,
+              "document:mouseup:b": 1,
+              "document:visibilitychange:b": 3,
+              "document:DOMContentLoaded:b": 1,
+              "window:resize:b": 1,
+              "document:shopify:section:load:b": 4,
+              "document:shopify:section:unload:b": 4,
+              "document:shopify:section:select:b": 1,
+              "document:shopify:block:select:b": 1,
+              "document:shopify:block:deselect:b": 1,
+              "gsap:ScrollTrigger": 3
+            }
+          ],
+          "firstRegistration": [],
+          "grew": [],
+          "stuck": [],
+          "trace": null
+        },
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-snap-on.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-in-hand.mp4",
+        "net::ERR_ABORTED http://127.0.0.1:53148/assets/pdp-ugc-on-table.mp4"
+      ],
+      "allowed": [],
+      "leaks": []
+    }
+  ],
+  "shots": [
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\editor-clips\\default-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\editor-clips\\default-1440.png"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "netErrorCount": 27,
+  "allowedCount": 0,
+  "expectFailedCount": 0,
+  "leakCount": 0
+}

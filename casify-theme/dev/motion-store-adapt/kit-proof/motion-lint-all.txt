@@ -1,0 +1,75 @@
+  ! assets/best-product.js R5: runtime CDN import
+  ! assets/cv-pack-motion.js R2: inits per root but has no shopify:section:load listener
+  ! assets/cv-pdp-counter-motion.js R2: inits per root but has no shopify:section:load listener
+  ! assets/cv-pdp-counter-motion.js R3: setInterval at line 341
+  ! assets/cv-pdp-delivery.js R3: setInterval at line 176
+  ! assets/cv-pdp-home-motion.js R2: inits per root but has no shopify:section:load listener
+  ! assets/cv-pdp-slip-motion.js R2: inits per root but has no shopify:section:load listener
+  ! assets/cv-value-stack-motion.js R2: inits per root but has no shopify:section:load listener
+  ~ assets/best-product.css R8: unscoped opacity:0 start state: .best-model input,.best-style input
+  ! assets/casify-facebook-testimonials.css R7: animation/@keyframes without a prefers-reduced-motion: reduce override
+  ~ assets/cv-collage.css R8: unscoped opacity:0 start state: .cvcl-tile__img--alt
+  ~ assets/cv-compare-lab.css R8: unscoped opacity:0 start state: .cvcx__three
+  ! assets/cv-header.css R7: animation/@keyframes without a prefers-reduced-motion: reduce override
+  ~ assets/cv-header.css R8: unscoped opacity:0 start state: .cvh-fx__spot,
+.cvh-fx__bubble,
+.cvh-fx__goo,
+.cvh-fx__dot
+  ~ assets/cv-hero-glow.css R8: unscoped opacity:0 start state: .cv-hero__glow-3d
+  ~ assets/cv-offer-courier.css R8: unscoped opacity:0 start state: .cvoc__bubble--before
+  ~ assets/cv-pack-slots.css R8: unscoped opacity:0 start state: .cvpk__lid
+  ~ assets/cv-pack-slots.css R8: unscoped opacity:0 start state: .cvpk__lid
+  ~ assets/cv-pages.css R8: unscoped opacity:0 start state: .cvpm__photo
+  ~ assets/cv-pages.css R8: unscoped opacity:0 start state: .cvl__check input
+  ~ assets/cv-pages.css R8: unscoped opacity:0 start state: .cvct__chip input
+  ~ assets/cv-pdp-before-after.css R8: unscoped opacity:0 start state: .cvba-cmp__range
+  ~ assets/cv-pdp-delivery.css R8: unscoped opacity:0 start state: .cvdl__parcel
+  ~ assets/cv-pdp-home.css R8: unscoped opacity:0 start state: .cvw-spot__beam
+  ~ assets/cv-pdp-home.css R8: unscoped opacity:0 start state: .cvw-ugc__expand
+  ~ assets/cv-pdp-reviews.css R8: unscoped opacity:0 start state: .cvw-reviews__three
+  ~ assets/cv-pdp-video-reviews.css R8: unscoped opacity:0 start state: .cvvr__video
+  ~ assets/cv-pdp-video-reviews.css R8: unscoped opacity:0 start state: .cvvr__play
+  ~ assets/cv-pdp-video-reviews.css R8: unscoped opacity:0 start state: .cvvr-lb__step:disabled
+  ~ assets/cv-phone-scan.css R8: unscoped opacity:0 start state: .cvps__model-input
+  ~ assets/cv-reel-showcase.css R8: unscoped opacity:0 start state: .crs__art [data-crs-pattern]
+  ~ assets/cv-reel-showcase.css R8: unscoped opacity:0 start state: .crs__pick-name svg
+  ~ assets/cv-reel-showcase.css R8: unscoped opacity:0 start state: .crs__pick-arrow
+  ~ assets/cv-showcase.css R8: unscoped opacity:0 start state: .cvsh-sign-cta__shine
+  ~ assets/cv-social-proof.css R8: unscoped opacity:0 start state: .cvp-proof__three
+  ! assets/cv-spec-meter.css R7: animation/@keyframes without a prefers-reduced-motion: reduce override
+  ~ assets/review-widget.css R8: unscoped opacity:0 start state: .rw__three
+  ~ assets/review-widget.css R8: unscoped opacity:0 start state: .rw-rate__star input
+  ~ assets/review-widget.css R8: unscoped opacity:0 start state: .rw-spot__three
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .acc__panel
+  ~ assets/theme.css R8: unscoped opacity:0 start state: [data-cm-reveal]
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cm-stagger-cm > *
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cm-reveal
+  ~ assets/theme.css R8: unscoped opacity:0 start state: [data-cv-reveal]
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-split .cv-word
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-thumb__label
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-callout
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-ugc__stat
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-ugc__nav:disabled
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-clip
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-clip__video
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-clip__expand
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-story__flash
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-story__ring
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-story__verdict
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-cmp__row
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-card__img--alt
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-search__chip
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cm-mobile-nav__scrim, .cart-drawer__scrim
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-method
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .cv-hero__metrics li
+  ~ assets/theme.css R8: unscoped opacity:0 start state: [data-halo-reveal]
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .halo-stagger > *
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .casify-logo__word .cm-letter
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .casify-logo .cm-mark__sheen
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .casify-logo__img-wrap
+  ~ assets/theme.css R8: unscoped opacity:0 start state: .build-box__step-check
+  ! sections/header.liquid R7: animation/@keyframes without a prefers-reduced-motion: reduce override
+  ~ sections/header.liquid R8: unscoped opacity:0 start state: .cm-mobile-nav__scrim
+  ~ sections/header.liquid R8: unscoped opacity:0 start state: .cart-drawer__scrim
+  ~ sections/review-carousel.liquid R8: unscoped opacity:0 start state: .rc-three
+motion-lint (--all): 282 files, 12 errors, 59 flags: FAIL

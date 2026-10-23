@@ -1,0 +1,14 @@
+tc-compare: theme check on a clean copy of layout, sections, snippets, templates, locales, config, blocks, assets
+  current: 0 errors, 8 warnings, 8 offenses
+  baseline: 0 errors, 8 warnings
+  known (in baseline): 8
+    = sections/amazon-styled-reviews.liquid:471 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:736 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:523 LiquidComplexity (warning)
+    = sections/review-widget.liquid:477 ExcessiveSettingsCount (warning)
+    = snippets/cv-fonts.liquid:9 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:10 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:11 RemoteAsset (warning)
+    = snippets/cv-showcase-card.liquid:337 UnclosedHTMLElement (warning)
+  no new offenses
+tc-compare: PASS

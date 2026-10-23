@@ -1,0 +1,9 @@
+render-section: cv-product-counter -> D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\model.html
+  assets: ../../../../assets/  blocks: 8  product: Tech Fabric Magnetic Phone Case for iPhone (Color, Model)  cart items: 0
+exit=0
+render-section: cv-product-counter -> D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\no-model.html
+  assets: ../../../../assets/  blocks: 8  product: Fixture: Case Charm Strap (Color)  cart items: 0
+exit=0
+render-section: cv-cart-drawer -> D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-cart-drawer\drawer.html
+  assets: ../../../../assets/  blocks: 0  product: Tech Fabric Magnetic Phone Case for iPhone (Color, Model)  cart items: 1
+exit=0

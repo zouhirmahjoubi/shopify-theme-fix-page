@@ -1,0 +1,29 @@
+## from tools/, theme-relative (the PLAN 5 step 4 invocation): finds the file; FAIL is the real finding (dashes in cv-guarantee, a later unit's job)
+
+shopper hits by file:
+    11  sections/cv-guarantee.liquid
+shopper total: 11 in 1 files; editor-only: 3 in 1 files
+dash-scan: FAIL
+exit=1
+liquid-balance: 1 files, 0 unbalanced: PASS
+exit=0
+motion-lint (files): 1 files, 0 errors, 0 flags: PASS
+exit=0
+## clean file from tools/
+
+shopper hits by file:
+shopper total: 0 in 0 files; editor-only: 0 in 0 files
+dash-scan: PASS
+exit=0
+## missing file
+dash-scan: sections/nope.liquid not found (tried D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\tools\sections\nope.liquid and D:\Shopify Theme Fix & Page\casify-theme\sections\nope.liquid)
+exit=1
+## 7g regression
+STORE-FACTS 7g check:
+  ok   locales/en.default.json: expected 4, found 4
+  ok   templates/index.json: expected 26, found 26
+  ok   templates/product.json: expected 4, found 4
+  ok   templates/page.campaign-guide.json: expected 2, found 2
+  ok   templates/page.json: expected 2, found 2
+  ok   templates/search.json: expected 1, found 1
+dash-scan 7g: PASS

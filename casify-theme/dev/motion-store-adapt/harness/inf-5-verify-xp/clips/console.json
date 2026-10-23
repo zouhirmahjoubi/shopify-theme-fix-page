@@ -1,0 +1,233 @@
+{
+  "page": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify\\clips.html",
+  "query": "",
+  "runs": [
+    {
+      "variant": "default",
+      "width": 375,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': 3, 'overflow': ['cvw-ugc__clip:420', 'cvw-ugc__screen:420', 'cvw-ugc__video:427', 'cvw-ugc__glass:420', 'cvw-ugc__open:420', 'cvw-ugc__expand:410', 'cv-ico :403', 'svg:403', 'path:400', 'cvw-ugc__bar:420', 'cvw-ugc__tag:386', 'cvw-ugc__clip:626'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 768,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': 3, 'overflow': ['cvw-ugc__clip:811', 'cvw-ugc__screen:811', 'cvw-ugc__video:820', 'cvw-ugc__glass:811', 'cvw-ugc__open:811', 'cvw-ugc__expand:801', 'cv-ico :793', 'svg:793', 'path:791', 'cvw-ugc__bar:811'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 1440,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': 3, 'overflow': [], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 375,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': 0, 'overflow': ['cvw-ugc__clip:420', 'cvw-ugc__screen:420', 'cvw-ugc__video:420', 'cvw-ugc__glass:420', 'cvw-ugc__open:420', 'cvw-ugc__expand:410', 'cv-ico :403', 'svg:403', 'path:400', 'cvw-ugc__bar:420', 'cvw-ugc__tag:386', 'cvw-ugc__clip:626'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 768,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': 0, 'overflow': ['cvw-ugc__clip:811', 'cvw-ugc__screen:811', 'cvw-ugc__video:811', 'cvw-ugc__glass:811', 'cvw-ugc__open:811', 'cvw-ugc__expand:801', 'cv-ico :793', 'svg:793', 'path:791', 'cvw-ugc__bar:811'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 1440,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': 0, 'overflow': [], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 375,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': -1, 'overflow': ['cvw-ugc__clip:420', 'cvw-ugc__screen:420', 'cvw-ugc__video:420', 'cvw-ugc__glass:420', 'cvw-ugc__open:420', 'cvw-ugc__expand:410', 'cv-ico :403', 'svg:403', 'path:400', 'cvw-ugc__bar:420', 'cvw-ugc__tag:386', 'cvw-ugc__clip:626'], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 768,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': -1, 'overflow': ['cvw-ugc__clip:811', 'cvw-ugc__screen:811', 'cvw-ugc__video:811', 'cvw-ugc__glass:811', 'cvw-ugc__open:811', 'cvw-ugc__expand:801', 'cv-ico :793', 'svg:793', 'path:791', 'cvw-ugc__bar:811'], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 1440,
+      "url": "http://127.0.0.1:52155/dev/motion-store-adapt/harness/inf-5-verify/clips.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': -1, 'overflow': [], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    }
+  ],
+  "shots": [
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\default-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\default-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\default-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\rm-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\rm-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\rm-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\nojs-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\nojs-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\clips\\nojs-1440.png"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "netErrorCount": 0,
+  "allowedCount": 0,
+  "expectFailedCount": 0,
+  "leakCount": 0
+}

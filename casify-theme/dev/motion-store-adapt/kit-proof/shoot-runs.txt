@@ -1,0 +1,126 @@
+## model
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 13 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-model; console.json written; PASS
+exit=0
+## no-model (no --actions: actions-counter.py targets the Model product)
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 9 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-no-model; console.json written; PASS
+exit=0
+## counter fail=1
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 2
+shoot: 2 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-fail; console.json written; PASS
+exit=0
+## counter editor=2
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-editor; console.json written; PASS
+exit=0
+## drawer
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 21 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-cart-drawer\shots; console.json written; PASS
+exit=0
+## drawer fail=all
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+shoot: 3 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-cart-drawer\shots-fail; console.json written; PASS
+exit=0
+
+# Fix round 2 (editor baseline after cycle 1; harness pages re-rendered)
+## counter model --rm --nojs --actions actions-counter.py
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 13 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-model; console.json written; PASS
+exit=0
+## counter no-model --rm --nojs
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 9 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-no-model; console.json written; PASS
+exit=0
+## drawer --rm --nojs --actions actions-drawer.py
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 3
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 21 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-cart-drawer\shots; console.json written; PASS
+exit=0
+## counter model --rm --only rm --actions actions-mq.py
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-mq; console.json written; PASS
+exit=0
+## counter ?editor=2
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+      editor: requested 2, ran 2 cycles, baseline after cycle 1; grew 0; stuck 0; first registration (load -> cycle 1, not a leak): none
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-editor; console.json written; PASS
+exit=0
+## counter ?editor=1&trace=1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+      editor: requested 1, ran 2 cycles, baseline after cycle 1; grew 0; stuck 0; first registration (load -> cycle 1, not a leak): document:visibilitychange:b 1 -> 2
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-editor1; console.json written; PASS
+exit=0
+## counter ?editor=4&trace=1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+      editor: requested 4, ran 4 cycles, baseline after cycle 1; grew 0; stuck 0; first registration (load -> cycle 1, not a leak): document:visibilitychange:b 1 -> 2
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-product-counter\shots-editor4; console.json written; PASS
+exit=0
+## drawer ?editor=4
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+      editor: requested 4, ran 4 cycles, baseline after cycle 1; grew 0; stuck 0; first registration (load -> cycle 1, not a leak): none
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\cv-cart-drawer\shots-editor4; console.json written; PASS
+exit=0
+## NEGATIVE leak.html ?editor=4&trace=1 (expect FAIL)
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+      editor: requested 4, ran 4 cycles, baseline after cycle 1; grew 1; stuck 0; first registration (load -> cycle 1, not a leak): document:visibilitychange:b 1 -> 2
+      ! leak: document:visibilitychange:b 2 -> 5 (per cycle: 2, 3, 4, 5)
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\negative\shots-leak; console.json written; FAIL
+exit=1
+## NEGATIVE leak.html ?editor=4 --allow-leak document:visibilitychange (expect PASS)
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 1  calls 0
+      editor: requested 4, ran 4 cycles, baseline after cycle 1; grew 1; stuck 0; first registration (load -> cycle 1, not a leak): document:visibilitychange:b 1 -> 2
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\negative\shots-leak-allowed; console.json written; PASS
+exit=0
+## NEGATIVE CONTROL lazy.html ?editor=1 (expect PASS)
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+      editor: requested 1, ran 2 cycles, baseline after cycle 1; grew 0; stuck 0; first registration (load -> cycle 1, not a leak): document:visibilitychange:b 0 -> 2
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\negative\shots-lazy; console.json written; PASS
+exit=0

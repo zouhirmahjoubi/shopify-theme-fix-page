@@ -1,0 +1,20 @@
+{
+  "_note": "Fixture for sections/cv-cart-drawer.liquid (Section Rendering wrapper around snippets/cart-drawer.liquid). One line in the bag; stub_cart is the bag after a second case is added, served by stub-fetch.js as the ?sections=cv-cart-drawer response. The drawer CSS lives in sections/header.liquid and is borrowed.",
+  "template_name": "index",
+  "product": {
+    "title": "Tech Fabric Magnetic Phone Case for iPhone",
+    "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+    "options": ["Color", "Model"],
+    "media": [ { "src": "asset:best-case-detail.png", "alt": "Fixture photo" } ],
+    "variants": [
+      { "id": 41001, "options": ["Russet Brown", "iPhone 17 Pro Max"], "price": 4999, "media": 0 },
+      { "id": 41002, "options": ["Russet Brown", "iPhone 17 Pro"], "price": 4999, "media": 0 }
+    ]
+  },
+  "cart": { "items": [ { "variant_id": 41001, "quantity": 1 } ] },
+  "stub_cart": { "items": [ { "variant_id": 41002, "quantity": 1 }, { "variant_id": 41001, "quantity": 1 } ] },
+  "harness": {
+    "js": ["theme.js", "cart.js"],
+    "borrow_css": [ { "file": "sections/header.liquid", "contains": [".cart-drawer", ".cm-scroll-lock"] } ]
+  }
+}

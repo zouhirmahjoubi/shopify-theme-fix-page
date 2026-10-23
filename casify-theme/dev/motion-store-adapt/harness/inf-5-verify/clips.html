@@ -1,0 +1,307 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-pdp-ugc (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[{"id":41001,"title":"Russet Brown / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro Max"],"available":true},{"id":41002,"title":"Russet Brown / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro"],"available":true},{"id":41003,"title":"Russet Brown / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17"],"available":true},{"id":41004,"title":"Black / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17 Pro Max"],"available":true},{"id":41005,"title":"Black / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17 Pro"],"available":true},{"id":41006,"title":"Black / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-in-hand.png","options":["Black","iPhone 17"],"available":false},{"id":41007,"title":"Blue / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17 Pro Max"],"available":true},{"id":41008,"title":"Blue / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17 Pro"],"available":true},{"id":41009,"title":"Blue / iPhone 17","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric-magnetic-phone-case-for-iphone","image":"../../../../assets/best-case-magnetic.png","options":["Blue","iPhone 17"],"available":true}],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"cv-pdp-ugc":"<div id=\"shopify-section-clips\" class=\"shopify-section\"><link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-story.css\" media=\"all\">\n<link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-home.css\" media=\"all\"><section class=\"cvw cvw-ugc\" data-cvw-ugc aria-labelledby=\"cvwUgcTitle-clips\">\n    <div class=\"cvp__inner\">\n      <div class=\"cvw-head\">\n        <h2 class=\"cvp__h2\" id=\"cvwUgcTitle-clips\" data-cvw-split>Three clips from the counter<\/h2><p class=\"cvp__lede\">Short clips of this case being handled: the snap, the turn in your hand, the everyday.<\/p><\/div>\n\n      <ol class=\"cvw-ugc__rail\" role=\"list\" data-cvw-ugc-rail style=\"--n:3\"><li class=\"cvw-ugc__clip\" data-cvw-ugc-clip style=\"--cv-i:0\" data-fixture-block=\"c-snap\">\n                <div class=\"cvw-ugc__screen\" data-cvw-ugc-screen><video class=\"cvw-ugc__video\"\n                           data-cvw-ugc-video\n                           muted playsinline loop preload=\"metadata\"\n                           poster=\"../../../../assets/pdp-ugc-snap-on-poster.webp\"\n                           aria-label=\"Snapping it on\"><source src=\"../../../../assets/pdp-ugc-snap-on.mp4\" type=\"video/mp4\"><\/video><span class=\"cvw-ugc__glass\" aria-hidden=\"true\"><\/span><button type=\"button\" class=\"cvw-ugc__open\" data-cvw-ugc-open\n                            aria-label=\"Open this clip large: Snapping it on\">\n                      <span class=\"cvw-ugc__expand\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:15px;height:15px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15\"/>\n      <\/svg><\/span><\/span>\n                    <\/button>\n\n                    <div class=\"cvw-ugc__controls\">\n                      <button type=\"button\" class=\"cvw-ugc__btn\" data-cvw-ugc-play aria-pressed=\"false\"\n                              data-play-label=\"Play this clip\"\n                              data-pause-label=\"Pause this clip\"\n                              aria-label=\"Play this clip\">\n                        <span class=\"cvw-ugc__ico is-play\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <path d=\"M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z\"/>\n      <\/svg><\/span><\/span>\n                        <span class=\"cvw-ugc__ico is-pause\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <rect x=\"7\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n        <rect x=\"13.4\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n      <\/svg><\/span><\/span>\n                      <\/button>\n                    <\/div>\n\n                    <span class=\"cvw-ugc__bar\" aria-hidden=\"true\"><i data-cvw-ugc-bar><\/i><\/span><\/div><p class=\"cvw-ugc__tag\"><span>Snapping it on<\/span><\/p><\/li><li class=\"cvw-ugc__clip\" data-cvw-ugc-clip style=\"--cv-i:1\" data-fixture-block=\"c-hand\">\n                <div class=\"cvw-ugc__screen\" data-cvw-ugc-screen><video class=\"cvw-ugc__video\"\n                           data-cvw-ugc-video\n                           muted playsinline loop preload=\"metadata\"\n                           poster=\"../../../../assets/pdp-ugc-in-hand-poster.webp\"\n                           aria-label=\"In the hand\"><source src=\"../../../../assets/pdp-ugc-in-hand.mp4\" type=\"video/mp4\"><\/video><span class=\"cvw-ugc__glass\" aria-hidden=\"true\"><\/span><button type=\"button\" class=\"cvw-ugc__open\" data-cvw-ugc-open\n                            aria-label=\"Open this clip large: In the hand\">\n                      <span class=\"cvw-ugc__expand\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:15px;height:15px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15\"/>\n      <\/svg><\/span><\/span>\n                    <\/button>\n\n                    <div class=\"cvw-ugc__controls\">\n                      <button type=\"button\" class=\"cvw-ugc__btn\" data-cvw-ugc-play aria-pressed=\"false\"\n                              data-play-label=\"Play this clip\"\n                              data-pause-label=\"Pause this clip\"\n                              aria-label=\"Play this clip\">\n                        <span class=\"cvw-ugc__ico is-play\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <path d=\"M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z\"/>\n      <\/svg><\/span><\/span>\n                        <span class=\"cvw-ugc__ico is-pause\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <rect x=\"7\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n        <rect x=\"13.4\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n      <\/svg><\/span><\/span>\n                      <\/button>\n                    <\/div>\n\n                    <span class=\"cvw-ugc__bar\" aria-hidden=\"true\"><i data-cvw-ugc-bar><\/i><\/span><\/div><p class=\"cvw-ugc__tag\"><span>In the hand<\/span><\/p><\/li><li class=\"cvw-ugc__clip\" data-cvw-ugc-clip style=\"--cv-i:2\" data-fixture-block=\"c-table\">\n                <div class=\"cvw-ugc__screen\" data-cvw-ugc-screen><video class=\"cvw-ugc__video\"\n                           data-cvw-ugc-video\n                           muted playsinline loop preload=\"metadata\"\n                           poster=\"../../../../assets/pdp-ugc-on-table-poster.webp\"\n                           aria-label=\"On the table\"><source src=\"../../../../assets/pdp-ugc-on-table.mp4\" type=\"video/mp4\"><\/video><span class=\"cvw-ugc__glass\" aria-hidden=\"true\"><\/span><button type=\"button\" class=\"cvw-ugc__open\" data-cvw-ugc-open\n                            aria-label=\"Open this clip large: On the table\">\n                      <span class=\"cvw-ugc__expand\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:15px;height:15px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15\"/>\n      <\/svg><\/span><\/span>\n                    <\/button>\n\n                    <div class=\"cvw-ugc__controls\">\n                      <button type=\"button\" class=\"cvw-ugc__btn\" data-cvw-ugc-play aria-pressed=\"false\"\n                              data-play-label=\"Play this clip\"\n                              data-pause-label=\"Pause this clip\"\n                              aria-label=\"Play this clip\">\n                        <span class=\"cvw-ugc__ico is-play\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <path d=\"M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z\"/>\n      <\/svg><\/span><\/span>\n                        <span class=\"cvw-ugc__ico is-pause\" aria-hidden=\"true\"><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <rect x=\"7\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n        <rect x=\"13.4\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n      <\/svg><\/span><\/span>\n                      <\/button>\n                    <\/div>\n\n                    <span class=\"cvw-ugc__bar\" aria-hidden=\"true\"><i data-cvw-ugc-bar><\/i><\/span><\/div><p class=\"cvw-ugc__tag\"><span>On the table<\/span><\/p><\/li><\/ol>\n\n      <span class=\"cvw-ugc__counter\" aria-hidden=\"true\"><\/span><div class=\"cvw-ugc__foot\">\n          <button type=\"button\" class=\"cvs__cta cvw-ugc__cta\" data-cvp-back><span>Back to the case<\/span><\/button>\n        <\/div><\/div><dialog class=\"cvw-ugc__dialog\" data-cvw-ugc-dialog aria-label=\"Three clips from the counter\">\n      <div class=\"cvw-ugc__box\">\n        <div class=\"cvw-ugc__stage\" data-cvw-ugc-stage><\/div>\n        <button type=\"button\" class=\"cvw-ugc__close\" data-cvw-ugc-close aria-label=\"Close\"><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\">\n        <path d=\"M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8\"/>\n      <\/svg><\/span><\/button>\n      <\/div>\n    <\/dialog>\n  <\/section><\/div>"}};</script>
+<script src="../../tools/stub-fetch.js"></script>
+<script src="../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-clips" class="shopify-section"><link rel="stylesheet" href="../../../../assets/cv-pdp-story.css" media="all">
+<link rel="stylesheet" href="../../../../assets/cv-pdp-home.css" media="all"><section class="cvw cvw-ugc" data-cvw-ugc aria-labelledby="cvwUgcTitle-clips">
+    <div class="cvp__inner">
+      <div class="cvw-head">
+        <h2 class="cvp__h2" id="cvwUgcTitle-clips" data-cvw-split>Three clips from the counter</h2><p class="cvp__lede">Short clips of this case being handled: the snap, the turn in your hand, the everyday.</p></div>
+
+      <ol class="cvw-ugc__rail" role="list" data-cvw-ugc-rail style="--n:3"><li class="cvw-ugc__clip" data-cvw-ugc-clip style="--cv-i:0" data-fixture-block="c-snap">
+                <div class="cvw-ugc__screen" data-cvw-ugc-screen><video class="cvw-ugc__video"
+                           data-cvw-ugc-video
+                           muted playsinline loop preload="metadata"
+                           poster="../../../../assets/pdp-ugc-snap-on-poster.webp"
+                           aria-label="Snapping it on"><source src="../../../../assets/pdp-ugc-snap-on.mp4" type="video/mp4"></video><span class="cvw-ugc__glass" aria-hidden="true"></span><button type="button" class="cvw-ugc__open" data-cvw-ugc-open
+                            aria-label="Open this clip large: Snapping it on">
+                      <span class="cvw-ugc__expand" aria-hidden="true"><span class="cv-ico " style="width:15px;height:15px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15"/>
+      </svg></span></span>
+                    </button>
+
+                    <div class="cvw-ugc__controls">
+                      <button type="button" class="cvw-ugc__btn" data-cvw-ugc-play aria-pressed="false"
+                              data-play-label="Play this clip"
+                              data-pause-label="Pause this clip"
+                              aria-label="Play this clip">
+                        <span class="cvw-ugc__ico is-play" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z"/>
+      </svg></span></span>
+                        <span class="cvw-ugc__ico is-pause" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+        <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+      </svg></span></span>
+                      </button>
+                    </div>
+
+                    <span class="cvw-ugc__bar" aria-hidden="true"><i data-cvw-ugc-bar></i></span></div><p class="cvw-ugc__tag"><span>Snapping it on</span></p></li><li class="cvw-ugc__clip" data-cvw-ugc-clip style="--cv-i:1" data-fixture-block="c-hand">
+                <div class="cvw-ugc__screen" data-cvw-ugc-screen><video class="cvw-ugc__video"
+                           data-cvw-ugc-video
+                           muted playsinline loop preload="metadata"
+                           poster="../../../../assets/pdp-ugc-in-hand-poster.webp"
+                           aria-label="In the hand"><source src="../../../../assets/pdp-ugc-in-hand.mp4" type="video/mp4"></video><span class="cvw-ugc__glass" aria-hidden="true"></span><button type="button" class="cvw-ugc__open" data-cvw-ugc-open
+                            aria-label="Open this clip large: In the hand">
+                      <span class="cvw-ugc__expand" aria-hidden="true"><span class="cv-ico " style="width:15px;height:15px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15"/>
+      </svg></span></span>
+                    </button>
+
+                    <div class="cvw-ugc__controls">
+                      <button type="button" class="cvw-ugc__btn" data-cvw-ugc-play aria-pressed="false"
+                              data-play-label="Play this clip"
+                              data-pause-label="Pause this clip"
+                              aria-label="Play this clip">
+                        <span class="cvw-ugc__ico is-play" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z"/>
+      </svg></span></span>
+                        <span class="cvw-ugc__ico is-pause" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+        <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+      </svg></span></span>
+                      </button>
+                    </div>
+
+                    <span class="cvw-ugc__bar" aria-hidden="true"><i data-cvw-ugc-bar></i></span></div><p class="cvw-ugc__tag"><span>In the hand</span></p></li><li class="cvw-ugc__clip" data-cvw-ugc-clip style="--cv-i:2" data-fixture-block="c-table">
+                <div class="cvw-ugc__screen" data-cvw-ugc-screen><video class="cvw-ugc__video"
+                           data-cvw-ugc-video
+                           muted playsinline loop preload="metadata"
+                           poster="../../../../assets/pdp-ugc-on-table-poster.webp"
+                           aria-label="On the table"><source src="../../../../assets/pdp-ugc-on-table.mp4" type="video/mp4"></video><span class="cvw-ugc__glass" aria-hidden="true"></span><button type="button" class="cvw-ugc__open" data-cvw-ugc-open
+                            aria-label="Open this clip large: On the table">
+                      <span class="cvw-ugc__expand" aria-hidden="true"><span class="cv-ico " style="width:15px;height:15px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3.6H3.6V9M15 3.6h5.4V9M9 20.4H3.6V15M15 20.4h5.4V15"/>
+      </svg></span></span>
+                    </button>
+
+                    <div class="cvw-ugc__controls">
+                      <button type="button" class="cvw-ugc__btn" data-cvw-ugc-play aria-pressed="false"
+                              data-play-label="Play this clip"
+                              data-pause-label="Pause this clip"
+                              aria-label="Play this clip">
+                        <span class="cvw-ugc__ico is-play" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z"/>
+      </svg></span></span>
+                        <span class="cvw-ugc__ico is-pause" aria-hidden="true"><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+        <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+      </svg></span></span>
+                      </button>
+                    </div>
+
+                    <span class="cvw-ugc__bar" aria-hidden="true"><i data-cvw-ugc-bar></i></span></div><p class="cvw-ugc__tag"><span>On the table</span></p></li></ol>
+
+      <span class="cvw-ugc__counter" aria-hidden="true"></span><div class="cvw-ugc__foot">
+          <button type="button" class="cvs__cta cvw-ugc__cta" data-cvp-back><span>Back to the case</span></button>
+        </div></div><dialog class="cvw-ugc__dialog" data-cvw-ugc-dialog aria-label="Three clips from the counter">
+      <div class="cvw-ugc__box">
+        <div class="cvw-ugc__stage" data-cvw-ugc-stage></div>
+        <button type="button" class="cvw-ugc__close" data-cvw-ugc-close aria-label="Close"><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+        <path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8"/>
+      </svg></span></button>
+      </div>
+    </dialog>
+  </section></div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../assets/cv-pdp-home-motion.js" defer></script>
+<script type="module" src="../../../../assets/cv-pdp-sales.js"></script>
+<script type="module" src="../../../../assets/cv-pdp-promises.js"></script>
+<script type="module" src="../../../../assets/cv-case-features.js"></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

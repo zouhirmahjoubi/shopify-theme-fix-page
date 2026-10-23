@@ -1,0 +1,266 @@
+{
+  "page": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify\\ribbon.html",
+  "query": "",
+  "runs": [
+    {
+      "variant": "default",
+      "width": 375,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': True, 'btnHidden': False, 'btnDisplay': 'grid', 'pressed': 'false', 'label': 'Pause the moving ribbon', 'cls': 'cvw cvw-ribbon is-marquee', 'hscroll': False, 'sw': 375, 'cw': 375, 'tf': 'matrix(1, 0, 0, 1, -295.63, 0)', 'st': 2}",
+        "moving before click True matrix(1, 0, 0, 1, -408.63, 0) matrix(1, 0, 0, 1, -449.9, 0)",
+        "focused pause after tabs True 0",
+        "pressed after Enter true",
+        "stopped after pause True matrix(1, 0, 0, 1, -458.702, 0) matrix(1, 0, 0, 1, -458.702, 0)",
+        "resumed False false",
+        "offscreen {'cls': 'cvw cvw-ribbon is-marquee is-paused', 'rect': 112}"
+      ],
+      "expect_failed": [
+        "marquee resumes on second press"
+      ],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 768,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': True, 'btnHidden': False, 'btnDisplay': 'grid', 'pressed': 'false', 'label': 'Pause the moving ribbon', 'cls': 'cvw cvw-ribbon is-marquee', 'hscroll': False, 'sw': 768, 'cw': 768, 'tf': 'matrix(1, 0, 0, 1, -266.945, 0)', 'st': 2}",
+        "moving before click True matrix(1, 0, 0, 1, -386.363, 0) matrix(1, 0, 0, 1, -438.754, 0)",
+        "focused pause after tabs True 0",
+        "pressed after Enter true",
+        "stopped after pause True matrix(1, 0, 0, 1, -486.698, 0) matrix(1, 0, 0, 1, -486.698, 0)",
+        "resumed False false",
+        "offscreen {'cls': 'cvw cvw-ribbon is-marquee is-paused', 'rect': 118}"
+      ],
+      "expect_failed": [
+        "marquee resumes on second press"
+      ],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 1440,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': True, 'btnHidden': False, 'btnDisplay': 'grid', 'pressed': 'false', 'label': 'Pause the moving ribbon', 'cls': 'cvw cvw-ribbon is-marquee', 'hscroll': False, 'sw': 1440, 'cw': 1440, 'tf': 'matrix(1, 0, 0, 1, -194.083, 0)', 'st': 2}",
+        "moving before click True matrix(1, 0, 0, 1, -268.141, 0) matrix(1, 0, 0, 1, -304.351, 0)",
+        "focused pause after tabs True 0",
+        "pressed after Enter true",
+        "stopped after pause True matrix(1, 0, 0, 1, -342.151, 0) matrix(1, 0, 0, 1, -342.151, 0)",
+        "resumed False false",
+        "offscreen {'cls': 'cvw cvw-ribbon is-marquee is-paused', 'rect': 118}"
+      ],
+      "expect_failed": [
+        "marquee resumes on second press"
+      ],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 375,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 375, 'cw': 375, 'tf': 'none', 'st': 0}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 768,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 768, 'cw': 768, 'tf': 'none', 'st': 0}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 1440,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 1440, 'cw': 1440, 'tf': 'none', 'st': 0}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 375,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 375, 'cw': 375, 'tf': 'none', 'st': -1}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 768,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 768, 'cw': 768, 'tf': 'none', 'st': -1}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 1440,
+      "url": "http://127.0.0.1:52149/dev/motion-store-adapt/harness/inf-5-verify/ribbon.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "initial {'hasRoot': True, 'btn': False, 'btnHidden': None, 'btnDisplay': None, 'pressed': None, 'label': None, 'cls': 'cvw cvw-ribbon', 'hscroll': False, 'sw': 1440, 'cw': 1440, 'tf': 'none', 'st': -1}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    }
+  ],
+  "shots": [
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-375-ribbon-moving.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-375-ribbon-focus.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-375-ribbon-paused.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-768-ribbon-moving.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-768-ribbon-focus.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-768-ribbon-paused.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-1440-ribbon-moving.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-1440-ribbon-focus.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\default-1440-ribbon-paused.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\rm-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\rm-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\rm-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\nojs-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\nojs-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\ribbon\\nojs-1440.png"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "netErrorCount": 0,
+  "allowedCount": 0,
+  "expectFailedCount": 3,
+  "leakCount": 0
+}

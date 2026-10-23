@@ -1,0 +1,233 @@
+{
+  "page": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify\\reel.html",
+  "query": "",
+  "runs": [
+    {
+      "variant": "default",
+      "width": 375,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': 0, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:542', 'cvw-reel__figure:534', 'cvw-reel__pic:534', 'IMG:534', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'cvw-reel__cap:616'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 768,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': 0, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'IMG:790'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "default",
+      "width": 1440,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "default 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': 1, 'overflow': [], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": false,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 375,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': 0, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:542', 'cvw-reel__figure:534', 'cvw-reel__pic:534', 'IMG:534', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'cvw-reel__cap:616'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 768,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': 0, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'IMG:790'], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "rm",
+      "width": 1440,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?rm=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "rm 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': 0, 'overflow': [], 'invisible': [], 'errors': []}"
+      ],
+      "expect_failed": [],
+      "calls": [],
+      "harness": {
+        "rm": true,
+        "nojs": false,
+        "editor": 0,
+        "errors": [],
+        "editorResult": null,
+        "htmlClass": "js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 375,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 375 {'hscroll': False, 'sw': 375, 'cw': 375, 'pending': 0, 'st': -1, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:542', 'cvw-reel__figure:534', 'cvw-reel__pic:534', 'IMG:534', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'IMG:790', 'cvw-reel__cap:616'], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 768,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 768 {'hscroll': False, 'sw': 768, 'cw': 768, 'pending': 0, 'st': -1, 'overflow': ['cvw-reel__strip:804', 'cvw-reel__frame:798', 'cvw-reel__figure:790', 'cvw-reel__pic:790', 'IMG:790'], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    },
+    {
+      "variant": "nojs",
+      "width": 1440,
+      "url": "http://127.0.0.1:52152/dev/motion-store-adapt/harness/inf-5-verify/reel.html?nojs=1",
+      "console": [],
+      "pageErrors": [],
+      "network": [],
+      "actions_log": [
+        "nojs 1440 {'hscroll': False, 'sw': 1440, 'cw': 1440, 'pending': 0, 'st': -1, 'overflow': [], 'invisible': [], 'errors': None}"
+      ],
+      "expect_failed": [],
+      "calls": null,
+      "harness": {
+        "htmlClass": "no-js"
+      },
+      "consoleErrors": [],
+      "netErrors": [],
+      "allowed": [],
+      "leaks": []
+    }
+  ],
+  "shots": [
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\default-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\default-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\default-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\rm-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\rm-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\rm-1440.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\nojs-375.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\nojs-768.png",
+    "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\motion-store-adapt\\harness\\inf-5-verify-xp\\reel\\nojs-1440.png"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "netErrorCount": 0,
+  "allowedCount": 0,
+  "expectFailedCount": 0,
+  "leakCount": 0
+}

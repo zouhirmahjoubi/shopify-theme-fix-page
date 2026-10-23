@@ -1,0 +1,9 @@
+## old /reduce/ stub restored in a copy of model.html: actions-mq must FAIL (exit 1)
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 5  allowed 0  calls 1
+      ! expect: (prefers-reduced-motion: no-preference) should be False: {'stubbed': True, 'harnessRm': True, 'reduce': True, 'nopref': True, 'bool': True, 'compoundNopref': True, 'compoundReduce': True, 'notReduce': True, 'gsap': {'nopref': True, 'reduce': True, 'ctx': {'ok': True, 'rm': True}}}
+      ! expect: compound no-preference should be False: {'stubbed': True, 'harnessRm': True, 'reduce': True, 'nopref': True, 'bool': True, 'compoundNopref': True, 'compoundReduce': True, 'notReduce': True, 'gsap': {'nopref': True, 'reduce': True, 'ctx': {'ok': True, 'rm': True}}}
+      ! expect: not all and reduce should be False: {'stubbed': True, 'harnessRm': True, 'reduce': True, 'nopref': True, 'bool': True, 'compoundNopref': True, 'compoundReduce': True, 'notReduce': True, 'gsap': {'nopref': True, 'reduce': True, 'ctx': {'ok': True, 'rm': True}}}
+      ! expect: gsap no-preference branch ran=True, want False
+      ! expect: gsap conditions {'ok': True, 'rm': True}
+shoot: 1 screenshots in D:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\negative\shots-old-stub; console.json written; FAIL
+exit=1
