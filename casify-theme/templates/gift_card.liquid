@@ -1,0 +1,136 @@
+{%- comment -%}
+  Casify: the gift card page, the link in a customer's gift card email
+  (/gift_cards/…). Shows the live balance, the code with a copy button and a
+  QR code for paying in person, the expiry date when there is one, and Apple
+  Wallet when Shopify offers a pass. A disabled or expired card keeps its code
+  on the page for support, without the "how to use" steps.
+
+  Layout: layout/gift_card.liquid (fonts, theme.css, palette, title).
+{%- endcomment -%}
+{% layout 'gift_card' %}
+
+{%- liquid
+  assign gc_active = true
+  if gift_card.enabled == false or gift_card.expired
+    assign gc_active = false
+  endif
+  assign gc_balance = gift_card.balance | money_with_currency
+  assign gc_initial = gift_card.initial_value | money_with_currency
+-%}
+
+<div class="cvgc">
+  <header class="cvgc__head">
+    <a class="cvgc__brand" href="{{ routes.root_url }}">
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 360 | image_tag: class: 'cvgc__logo', alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        {{ shop.name | escape }}
+      {%- endif -%}
+    </a>
+  </header>
+
+  <section class="cvgc__card{% unless gc_active %} is-inactive{% endunless %}" aria-labelledby="cvgcBalance">
+    <p class="cvgc__eyebrow">{{ 'gift_cards.issued.eyebrow' | t }}</p>
+    <h1 class="cvgc__balance" id="cvgcBalance">{{ gc_balance }}</h1>
+    {%- if gift_card.balance != gift_card.initial_value -%}
+      <p class="cvgc__initial">{{ 'gift_cards.issued.initial_value' | t: value: gc_initial }}</p>
+    {%- endif -%}
+    {%- unless gc_active -%}
+      <p class="cvgc__badge">
+        {%- if gift_card.expired -%}{{ 'gift_cards.issued.expired' | t }}{%- else -%}{{ 'gift_cards.issued.disabled' | t }}{%- endif -%}
+      </p>
+    {%- endunless -%}
+    {%- if gift_card.expires_on -%}
+      {%- assign gc_expiry = gift_card.expires_on | date: '%B %e, %Y' -%}
+      <p class="cvgc__expiry">{{ 'gift_cards.issued.expiration_date' | t: expires_on: gc_expiry }}</p>
+    {%- endif -%}
+
+    <div class="cvgc__code-row">
+      <code class="cvgc__code">{{ gift_card.code | format_code }}</code>
+      {%- if gc_active -%}
+        <button type="button" class="cvgc__btn cvgc__btn--ghost" data-cvgc-copy="{{ gift_card.code | escape }}" hidden>{{ 'gift_cards.issued.copy_code' | t }}</button>
+      {%- endif -%}
+    </div>
+    <p class="cvgc__status" role="status" data-cvgc-status></p>
+
+    {%- if gc_active -%}
+      <p class="cvgc__how">{{ 'gift_cards.issued.how_to_use' | t }}</p>
+      <div class="cvgc__qr" data-cvgc-qr data-identifier="{{ gift_card.qr_identifier | escape }}"></div>
+    {%- else -%}
+      <p class="cvgc__how">{{ 'gift_cards.issued.inactive_note' | t }}</p>
+    {%- endif -%}
+  </section>
+
+  <div class="cvgc__actions">
+    {%- if gc_active and gift_card.pass_url -%}
+      <a class="cvgc__wallet" href="{{ gift_card.pass_url }}">
+        <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t | escape }}" loading="lazy">
+      </a>
+    {%- endif -%}
+    <a class="cvgc__btn" href="{{ routes.root_url }}">{{ 'gift_cards.issued.shop_link' | t }}</a>
+    <button type="button" class="cvgc__btn cvgc__btn--ghost" data-cvgc-print hidden>{{ 'gift_cards.issued.print' | t }}</button>
+  </div>
+</div>
+
+<style>
+  .cvgc{max-width:560px;margin:0 auto;padding:clamp(28px,6vw,64px) 20px 56px;text-align:center;color:var(--text-body)}
+  .cvgc__head{margin-bottom:28px}
+  .cvgc__brand{display:inline-block;font:900 clamp(28px,5vw,36px)/1.1 var(--font-display);color:var(--red-600);text-decoration:none}
+  .cvgc__logo{display:block;max-width:180px;height:auto;margin:0 auto}
+  .cvgc__card{position:relative;padding:clamp(24px,5vw,40px) clamp(18px,5vw,36px);border:2px solid var(--red-500);border-radius:18px;background:var(--surface-card);box-shadow:var(--shadow-md)}
+  .cvgc__card::before{content:"";position:absolute;inset:8px;border:1.5px dashed var(--border-dashed);border-radius:12px;pointer-events:none}
+  .cvgc__card.is-inactive{border-color:var(--cocoa-400)}
+  .cvgc__eyebrow{margin:0 0 10px;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-500)}
+  .cvgc__balance{margin:0;font:900 clamp(38px,9vw,56px)/1.05 var(--font-display);color:var(--text-heading);overflow-wrap:anywhere}
+  .cvgc__card.is-inactive .cvgc__balance{color:var(--cocoa-500)}
+  .cvgc__initial,.cvgc__expiry{margin:10px 0 0;font-size:14px;color:var(--text-muted)}
+  .cvgc__badge{display:inline-block;margin:14px 0 0;padding:5px 12px;border-radius:999px;background:var(--cocoa-600);color:var(--cream-50);font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase}
+  .cvgc__code-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin-top:24px}
+  .cvgc__code{padding:10px 14px;border-radius:8px;background:var(--surface-inset);font:700 clamp(15px,4vw,18px)/1.3 var(--font-label);letter-spacing:.12em;color:var(--cocoa-700);overflow-wrap:anywhere}
+  .cvgc__status{min-height:1.4em;margin:8px 0 0;font-size:13px;color:var(--state-success)}
+  .cvgc__how{max-width:38ch;margin:6px auto 0;font-size:14px;line-height:1.6}
+  .cvgc__qr{display:flex;justify-content:center;margin-top:18px}
+  .cvgc__qr img,.cvgc__qr canvas{width:96px;height:96px;padding:6px;border-radius:8px;background:#fff}
+  .cvgc__actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;margin-top:28px}
+  .cvgc__btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 20px;border:2px solid var(--red-500);border-radius:999px;background:var(--red-500);color:var(--cream-50);font:700 12px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;text-decoration:none;cursor:pointer}
+  .cvgc__btn:hover{background:var(--red-600);border-color:var(--red-600)}
+  .cvgc__btn--ghost{background:transparent;color:var(--red-600)}
+  .cvgc__btn--ghost:hover{background:var(--cream-200);color:var(--red-700)}
+  .cvgc__btn[hidden]{display:none}
+  .cvgc__btn:focus-visible,.cvgc__brand:focus-visible,.cvgc__wallet:focus-visible{outline:3px solid var(--focus-ring);outline-offset:3px}
+  .cvgc__wallet{display:inline-block;line-height:0}
+  @media print{
+    .cvgc__actions,[data-cvgc-copy],.cvgc__status{display:none !important}
+    .cvgc__card{box-shadow:none}
+  }
+</style>
+
+<script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var status = document.querySelector('[data-cvgc-status]');
+    var copy = document.querySelector('[data-cvgc-copy]');
+    if (copy && navigator.clipboard && window.isSecureContext) {
+      copy.hidden = false;
+      copy.addEventListener('click', function () {
+        navigator.clipboard.writeText(copy.getAttribute('data-cvgc-copy')).then(function () {
+          if (status) status.textContent = {{ 'gift_cards.issued.copy_code_success' | t | json }};
+        }).catch(function () {});
+      });
+    }
+    var print = document.querySelector('[data-cvgc-print]');
+    if (print && typeof window.print === 'function') {
+      print.hidden = false;
+      print.addEventListener('click', function () { window.print(); });
+    }
+    var qr = document.querySelector('[data-cvgc-qr]');
+    if (qr && typeof window.QRCode === 'function') {
+      new window.QRCode(qr, {
+        text: qr.getAttribute('data-identifier'),
+        width: 120,
+        height: 120,
+        imageAltText: {{ 'gift_cards.issued.qr_image_alt' | t | json }}
+      });
+    }
+  });
+</script>

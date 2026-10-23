@@ -1,0 +1,243 @@
+{%- liquid
+  assign slide_count = 0
+  assign use_catalog = true
+  assign copy_fallback = 'sections.reel_showcase.copy' | t
+  assign cta_fallback = 'sections.reel_showcase.shop_design' | t
+  assign collection_heading_fallback = 'sections.reel_showcase.collection_heading' | t
+  assign editorial_heading_fallback = 'sections.reel_showcase.editorial_heading' | t
+  assign editorial_copy_fallback = 'sections.reel_showcase.editorial_copy' | t
+  assign cta_label = section.settings.cta_label | default: cta_fallback
+  assign collection_heading = section.settings.collection_heading | default: collection_heading_fallback
+  assign editorial_heading = section.settings.editorial_heading | default: editorial_heading_fallback
+  assign editorial_copy = section.settings.editorial_copy | default: editorial_copy_fallback
+  assign collection_url = section.settings.collection.url | default: routes.all_products_collection_url
+  assign first_bg = '#E8D6BD'
+  assign first_ink = '#33231A'
+  assign first_accent = '#C4302B'
+  assign first_pattern = 'contour'
+  assign first_name = blank
+  assign first_title = blank
+  assign first_copy = blank
+  assign first_url = blank
+  assign slides_markup = blank
+  assign picks_markup = blank
+  assign noscript_markup = blank
+
+  for block in section.blocks
+    assign candidate = block.settings.product
+    assign candidate_image = block.settings.image | default: candidate.featured_image
+    if candidate != blank and candidate_image != blank
+      assign use_catalog = false
+      break
+    endif
+  endfor
+
+  assign reel_items = section.blocks
+  if use_catalog
+    assign reel_items = collections.all.products
+  endif
+-%}
+
+{%- for item in reel_items limit: 4 -%}
+  {%- liquid
+    assign reel_product = item.settings.product
+    assign reel_image = item.settings.image | default: reel_product.featured_image
+    assign reel_name = item.settings.display_name | default: reel_product.title
+    assign reel_copy = item.settings.copy | default: copy_fallback
+    assign reel_bg = item.settings.background | default: '#E8D6BD'
+    assign reel_ink = item.settings.foreground | default: '#33231A'
+    assign reel_accent = item.settings.accent | default: '#C4302B'
+    assign reel_pattern = item.settings.pattern | default: 'contour'
+    if use_catalog
+      assign reel_product = item
+      assign reel_image = reel_product.featured_image
+      assign reel_name = reel_product.title
+      assign reel_copy = copy_fallback
+      case forloop.index
+        when 2
+          assign reel_bg = '#D8E2DC'
+          assign reel_pattern = 'wave'
+        when 3
+          assign reel_bg = '#F1D6DE'
+          assign reel_pattern = 'petal'
+        when 4
+          assign reel_bg = '#E7CCAF'
+          assign reel_pattern = 'flame'
+      endcase
+    endif
+    assign reel_title = item.settings.caption_title | default: reel_name
+    assign reel_card_description = item.settings.card_description
+    assign reel_url = item.settings.link | default: reel_product.url
+  -%}
+  {%- if reel_product != blank and reel_image != blank -%}
+    {%- liquid
+      assign slide_id = 'ReelSlide-' | append: section.id | append: '-' | append: slide_count
+      assign reel_alt = reel_image.alt | default: reel_product.title
+      assign image_loading = 'lazy'
+      assign image_priority = 'auto'
+      if slide_count == 0
+        assign first_name = reel_name
+        assign first_title = reel_title
+        assign first_copy = reel_copy
+        assign first_url = reel_url
+        assign first_bg = reel_bg
+        assign first_ink = reel_ink
+        assign first_accent = reel_accent
+        assign first_pattern = reel_pattern
+        if section.index == nil or section.index <= 2
+          assign image_loading = 'eager'
+          assign image_priority = 'high'
+        endif
+      endif
+    -%}
+    {%- capture slide_markup -%}
+      <div
+        id="{{ slide_id }}"
+        class="crs__slide{% if slide_count == 0 %} is-active{% endif %}"
+        data-crs-slide
+        data-name="{{ reel_name | escape }}"
+        data-title="{{ reel_title | escape }}"
+        data-copy="{{ reel_copy | escape }}"
+        data-url="{{ reel_url | escape }}"
+        data-cta="{{ cta_label | escape }}"
+        data-bg="{{ reel_bg | escape }}"
+        data-ink="{{ reel_ink | escape }}"
+        data-accent="{{ reel_accent | escape }}"
+        data-pattern="{{ reel_pattern | escape }}"
+        {% if slide_count > 0 %}hidden{% endif %}
+        {% unless use_catalog %}{{ item.shopify_attributes }}{% endunless %}
+      >
+        {{ reel_image | image_url: width: 1000 | image_tag: class: 'crs__case-image', widths: '300, 450, 600, 800, 1000', sizes: '(min-width: 1000px) 36vw, 76vw', loading: image_loading, fetchpriority: image_priority, alt: reel_alt }}
+      </div>
+    {%- endcapture -%}
+    {%- capture pick_markup -%}
+      <button
+        type="button"
+        class="crs__pick{% if slide_count == 0 %} is-active{% endif %}"
+        data-crs-pick="{{ slide_count }}"
+        aria-pressed="{% if slide_count == 0 %}true{% else %}false{% endif %}"
+        aria-controls="{{ slide_id }}"
+        aria-label="{{ 'sections.reel_showcase.select_design' | t: design: reel_name | escape }}"
+        style="--crs-pick-bg: {{ reel_bg | escape }}; --crs-pick-ink: {{ reel_ink | escape }}"
+      >
+        <span class="crs__pick-image">
+          {{ reel_image | image_url: width: 360 | image_tag: widths: '120, 180, 240, 360', sizes: '(min-width: 1000px) 18vw, 40vw', loading: 'lazy', alt: '' }}
+        </span>
+        <span class="crs__pick-name">{{ reel_name | escape }}<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span>
+        {%- if reel_card_description != blank -%}<span class="crs__pick-description">{{ reel_card_description | escape }}</span>{%- endif -%}
+      </button>
+    {%- endcapture -%}
+    {%- capture noscript_link -%}<li><a href="{{ reel_url | escape }}">{{ reel_name | escape }}</a></li>{%- endcapture -%}
+    {%- liquid
+      assign slides_markup = slides_markup | append: slide_markup
+      assign picks_markup = picks_markup | append: pick_markup
+      assign noscript_markup = noscript_markup | append: noscript_link
+      assign slide_count = slide_count | plus: 1
+    -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if slide_count > 0 -%}
+  {{ 'cv-reel-showcase.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cv-reel-showcase.js' | asset_url }}" defer="defer"></script>
+  <casify-reel-showcase
+    class="crs"
+    data-autoplay="{{ section.settings.autoplay }}"
+    style="--crs-bg: {{ first_bg | escape }}; --crs-ink: {{ first_ink | escape }}; --crs-accent: {{ first_accent | escape }}"
+  >
+    <section class="crs__hero" aria-label="{{ 'sections.reel_showcase.carousel_label' | t | escape }}">
+      <div class="crs__art" data-crs-art data-pattern="{{ first_pattern | escape }}" aria-hidden="true"></div>
+      <div class="crs__word" data-crs-word aria-hidden="true">{{ first_name | escape }}</div>
+      <div class="crs__stage">{{ slides_markup }}</div>
+      <div class="crs__caption">
+        <h1 class="crs__title" data-crs-title>{{ first_title | escape }}</h1>
+        <p class="crs__copy" data-crs-copy>{{ first_copy | escape }}</p>
+        <a class="crs__link" data-crs-link href="{{ first_url | escape }}"><span data-crs-link-label>{{ cta_label | escape }}</span><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+      </div>
+      <div class="crs__controls">
+        <span class="crs__counter" aria-hidden="true"><span data-crs-current>01</span><span class="crs__counter-line"></span><span data-crs-count>{% if slide_count < 10 %}0{% endif %}{{ slide_count }}</span></span>
+        <button type="button" data-crs-prev aria-label="{{ 'sections.reel_showcase.previous' | t | escape }}"{% if slide_count < 2 %} disabled{% endif %}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+        <button type="button" data-crs-next aria-label="{{ 'sections.reel_showcase.next' | t | escape }}"{% if slide_count < 2 %} disabled{% endif %}><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+        <button type="button" class="crs__play" data-crs-play data-label-play="{{ 'sections.reel_showcase.play' | t | escape }}" data-label-pause="{{ 'sections.reel_showcase.pause' | t | escape }}" aria-label="{{ 'sections.reel_showcase.play' | t | escape }}"{% if slide_count < 2 %} disabled{% endif %}><span class="crs__sr-only" data-crs-play-label>{{ 'sections.reel_showcase.play' | t }}</span><svg data-crs-play-icon viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg><svg data-crs-pause-icon viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" hidden><path d="M8 5v14M16 5v14"/></svg></button>
+      </div>
+      <p class="crs__sr-only" data-crs-status aria-live="polite" aria-atomic="true"></p>
+    </section>
+    <section class="crs__collection" aria-labelledby="ReelCollection-{{ section.id }}">
+      <div class="crs__collection-heading">
+        <h2 id="ReelCollection-{{ section.id }}">{{ collection_heading | escape }}</h2>
+        <div class="crs__collection-intro">
+          <p>{{ 'sections.reel_showcase.collection_copy' | t }}</p>
+          <a class="crs__browse" href="{{ collection_url | escape }}">{{ 'sections.reel_showcase.browse_all' | t }} <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+        </div>
+      </div>
+      <div class="crs__picker" role="group" aria-label="{{ 'sections.reel_showcase.picker_label' | t | escape }}">{{ picks_markup }}</div>
+      <noscript><ul class="crs__noscript">{{ noscript_markup }}</ul></noscript>
+    </section>
+    <section class="crs__editorial" aria-labelledby="ReelStory-{{ section.id }}">
+      <h2 id="ReelStory-{{ section.id }}">{{ editorial_heading | escape }}</h2>
+      <div class="crs__editorial-intro">
+        <p>{{ editorial_copy | escape }}</p>
+        <a href="{{ collection_url | escape }}">{{ 'sections.reel_showcase.find_case' | t }} <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+      </div>
+    </section>
+    <ol class="crs__story" aria-label="{{ 'sections.reel_showcase.story_label' | t | escape }}">
+      <li class="crs__details"><span class="crs__step" aria-hidden="true">01</span><h3>{{ 'sections.reel_showcase.step_one_title' | t }}</h3><p>{{ 'sections.reel_showcase.step_one_copy' | t }}</p></li>
+      <li class="crs__details"><span class="crs__step" aria-hidden="true">02</span><h3>{{ 'sections.reel_showcase.step_two_title' | t }}</h3><p>{{ 'sections.reel_showcase.step_two_copy' | t }}</p></li>
+      <li class="crs__details"><span class="crs__step" aria-hidden="true">03</span><h3>{{ 'sections.reel_showcase.step_three_title' | t }}</h3><p>{{ 'sections.reel_showcase.step_three_copy' | t }}</p></li>
+    </ol>
+  </casify-reel-showcase>
+{%- elsif request.design_mode -%}
+  <div class="page-width" style="padding: 4rem 2rem">
+    <h2>{{ 'sections.reel_showcase.empty_title' | t }}</h2>
+    <p>{{ 'sections.reel_showcase.empty_copy' | t }}</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Casify design showcase",
+  "tag": "section",
+  "class": "section-reel-showcase",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "Automatically cycle designs", "default": false },
+    { "type": "text", "id": "cta_label", "label": "Product link label" },
+    { "type": "text", "id": "collection_heading", "label": "Collection heading" },
+    { "type": "collection", "id": "collection", "label": "Browse all collection" },
+    { "type": "text", "id": "editorial_heading", "label": "Story heading" },
+    { "type": "textarea", "id": "editorial_copy", "label": "Story text" }
+  ],
+  "blocks": [
+    {
+      "type": "design",
+      "name": "Case design",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "image", "label": "Product image", "info": "Use a real photo of this case. Uses the product's featured image when empty." },
+        { "type": "text", "id": "display_name", "label": "Oversized design name", "info": "Keep this short: one or two words." },
+        { "type": "text", "id": "caption_title", "label": "Caption heading" },
+        { "type": "textarea", "id": "copy", "label": "Supporting text" },
+        { "type": "textarea", "id": "card_description", "label": "Design card description" },
+        { "type": "url", "id": "link", "label": "Product link override" },
+        { "type": "color", "id": "background", "label": "Background", "default": "#E8D6BD" },
+        { "type": "color", "id": "foreground", "label": "Text", "default": "#33231A" },
+        { "type": "color", "id": "accent", "label": "Artwork", "default": "#C4302B" },
+        { "type": "select", "id": "pattern", "label": "Artwork pattern", "default": "contour", "options": [
+          { "value": "contour", "label": "Contour" },
+          { "value": "wave", "label": "Wave" },
+          { "value": "petal", "label": "Petal" },
+          { "value": "flame", "label": "Flame" }
+        ] }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Casify design showcase", "blocks": [
+      { "type": "design", "settings": { "background": "#E8D6BD", "pattern": "contour" } },
+      { "type": "design", "settings": { "background": "#D8E2DC", "pattern": "wave" } },
+      { "type": "design", "settings": { "background": "#F1D6DE", "pattern": "petal" } },
+      { "type": "design", "settings": { "background": "#E7CCAF", "pattern": "flame" } }
+    ] }
+  ]
+}
+{% endschema %}

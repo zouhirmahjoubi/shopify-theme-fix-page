@@ -1,0 +1,70 @@
+{
+  "sections": {
+    "showcase": {
+      "type": "cv-reel-showcase",
+      "settings": {
+        "autoplay": true
+      },
+      "blocks": {
+        "silver": {
+          "type": "design",
+          "settings": {
+            "product": "two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+            "display_name": "Silver",
+            "caption_title": "The Space Case",
+            "copy": "A silver finish, a magnetic mount and a built-in kickstand. Meet the Two-in-One Space Case.",
+            "card_description": "Silver finish. Magnetic mount and kickstand.",
+            "background": "#DFE8D0",
+            "foreground": "#273C2B",
+            "accent": "#698445",
+            "pattern": "contour"
+          }
+        },
+        "clear": {
+          "type": "design",
+          "settings": {
+            "product": "transparent-magnetic-phone-case-for-iphone",
+            "display_name": "Clear",
+            "caption_title": "Clearly yours",
+            "copy": "A transparent magnetic case for iPhone. Let your phone take the spotlight.",
+            "card_description": "Transparent design. Magnetic case for iPhone.",
+            "background": "#DCEBEA",
+            "foreground": "#173F46",
+            "accent": "#4D8790",
+            "pattern": "wave"
+          }
+        },
+        "glitter": {
+          "type": "design",
+          "settings": {
+            "product": "four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design",
+            "display_name": "Glitter",
+            "caption_title": "A little sparkle",
+            "copy": "A glitter finish with a magnetic stand. A little shine for your everyday carry.",
+            "card_description": "Glitter design. Four-corner airbag case with stand.",
+            "background": "#F0D8BF",
+            "foreground": "#67351B",
+            "accent": "#AE652F",
+            "pattern": "flame"
+          }
+        },
+        "rose": {
+          "type": "design",
+          "settings": {
+            "product": "mobile-phone-case-apple",
+            "display_name": "Rose",
+            "caption_title": "A rosy outlook",
+            "copy": "A clear look with rose-toned details. Explore the case and choose your exact model.",
+            "card_description": "Clear look. Rose-toned ring and camera details.",
+            "background": "#F0D8DE",
+            "foreground": "#642F45",
+            "accent": "#A14B63",
+            "pattern": "petal"
+          }
+        }
+      },
+      "block_order": ["silver", "clear", "glitter", "rose"]
+    }
+  },
+  "order": ["showcase"]
+}
