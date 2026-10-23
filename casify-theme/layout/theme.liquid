@@ -1,7 +1,28 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
     <meta charset="utf-8">
+    {%- comment -%}
+      Reveal safety (INF-0). theme.css hides reveal start states ([data-cv-reveal],
+      [data-cm-reveal], [data-halo-reveal], .cv-split words, .cv-callout) only under
+      html.js, so without JavaScript every node is visible. html.cv-reveal-timeout
+      switches those start states off again: it is set here when a reveal engine
+      (cv-motion.js, theme.js) has not booted once the deferred scripts have run,
+      or 2.5 s after this line, whichever comes first; by cv-motion.js if its boot
+      throws; and by halo.js's onerror below.
+    {%- endcomment -%}
+    <script>
+      (function (d, w) {
+        var h = d.documentElement;
+        h.className = h.className.replace('no-js', 'js');
+        function check() {
+          var ok = w.CVMotion && w.CVMotion.ready && w.CASIFY_FNS && w.CASIFY_FNS.revealReady;
+          if (!ok) h.classList.add('cv-reveal-timeout');
+        }
+        w.setTimeout(check, 2500);
+        d.addEventListener('DOMContentLoaded', function () { w.setTimeout(check, 0); });
+      })(document, window);
+    </script>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="canonical" href="{{ canonical_url }}">
     {%- comment -%}
@@ -18,11 +39,11 @@
         if current_tags
           assign joined_tags = current_tags | join: ', '
           assign tagged_label = 'general.meta.tagged' | t: tags: joined_tags
-          assign seo_title = seo_title | append: ' – ' | append: tagged_label
+          assign seo_title = seo_title | append: ', ' | append: tagged_label
         endif
         if current_page != 1
           assign page_label = 'general.meta.page' | t: page: current_page
-          assign seo_title = seo_title | append: ' – ' | append: page_label
+          assign seo_title = seo_title | append: ', ' | append: page_label
         endif
         unless seo_title contains shop.name
           assign seo_title = seo_title | append: ' | ' | append: shop.name
@@ -151,6 +172,16 @@
     {%- endif -%}
     {%- render 'cv-fonts' -%}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      Commerce motion slot (INF-3 creates cv-commerce-motion.css and .js: fly to
+      the bag, button morphs, drawer entrance). The file name is assembled so
+      theme check's MissingAsset does not fail before INF-3 adds the files; INF-3
+      may switch both tags to literal names. Until then the two requests 404 and
+      nothing else changes: the script is deferred, nothing calls it at parse,
+      and every other script listens for its events instead of requiring it.
+    {%- endcomment -%}
+    {%- assign commerce_motion = 'cv-commerce-motion' -%}
+    {{ commerce_motion | append: '.css' | asset_url | stylesheet_tag }}
     {%- render 'palette-vars' -%}
     <script>window.themeMoneyFormat = {{ shop.money_format | json }};</script>
     {%- comment -%}
@@ -159,6 +190,9 @@
       section-specific script below loads only when that section is on the
       page. In the theme editor (request.design_mode) everything loads, because
       a section added there is injected without re-rendering this layout.
+      Generic GSAP plugin opt-ins: a section prints data-cv-gsap-drag or
+      data-cv-gsap-flip anywhere in its first server render (Flip also brings
+      MotionPathPlugin), so no unit edits this layout for a plugin.
     {%- endcomment -%}
     {%- liquid
       assign editor = request.design_mode
@@ -167,11 +201,11 @@
         assign shop_page = true
       endif
       assign gsap_drag = false
-      if editor or content_for_layout contains 'data-cvtr'
+      if editor or content_for_layout contains 'data-cvtr' or content_for_layout contains 'data-cv-gsap-drag'
         assign gsap_drag = true
       endif
       assign gsap_flip = false
-      if editor or shop_page or template.name == 'product'
+      if editor or shop_page or template.name == 'product' or content_for_layout contains 'data-cv-gsap-flip'
         assign gsap_flip = true
       endif
       assign gsap_path = gsap_flip
@@ -214,7 +248,8 @@
     <script src="{{ 'casify-data.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     {%- if editor or content_for_layout contains 'halo-' -%}
-      <script src="{{ 'halo.js' | asset_url }}" defer></script>
+      {%- comment -%} halo.js is the only engine for [data-halo-reveal]: if it fails to load, show those nodes. {%- endcomment -%}
+      <script src="{{ 'halo.js' | asset_url }}" defer onerror="document.documentElement.classList.add('cv-reveal-timeout')"></script>
     {%- endif -%}
     {%- comment -%} Shared design-system motion: every page opts in by attribute. {%- endcomment -%}
     <script src="{{ 'cv-motion.js' | asset_url }}" defer></script>
@@ -252,8 +287,8 @@
       {%- comment -%} "Scrolling reviews" (sections/cv-scrolling-reviews.liquid). {%- endcomment -%}
       <script src="{{ 'cv-scrolling-reviews.js' | asset_url }}" defer></script>
     {%- endif -%}
-    {%- if gsap_drag -%}
-      {%- comment -%} "Review rail" (sections/cv-trustpilot.liquid). {%- endcomment -%}
+    {%- if editor or content_for_layout contains 'data-cvtr' -%}
+      {%- comment -%} "Review rail" (sections/cv-trustpilot.liquid). Gated on its own marker, not gsap_drag, so the generic drag opt-in does not ship it. {%- endcomment -%}
       <script src="{{ 'cv-trustpilot.js' | asset_url }}" defer></script>
     {%- endif -%}
     {%- if editor or content_for_layout contains 'data-csv' -%}
@@ -340,6 +375,8 @@
       <script src="{{ 'cv-pages.js' | asset_url }}" defer></script>
     {%- endif -%}
     <script src="{{ 'cart.js' | asset_url }}" defer></script>
+    {%- comment -%} Commerce motion slot, right after cart.js (see the stylesheet slot in <head>). {%- endcomment -%}
+    <script src="{{ commerce_motion | append: '.js' | asset_url }}" defer></script>
     {%- if editor or content_for_layout contains 'data-build-box' -%}
       <script src="{{ 'build-box.js' | asset_url }}" defer></script>
     {%- endif -%}

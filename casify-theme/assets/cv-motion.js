@@ -1,59 +1,90 @@
-/* Casify — shared motion engine for the Chrismass design system.
+/* Casify: shared motion engine (attribute API), loaded on every page.
  *
- * Loaded on every page. Three modules, each of which no-ops when its markup
- * is absent, so any section can opt in just by using the attributes:
+ * Three modules, each of which no-ops when its markup is absent, so any
+ * section can opt in just by using the attributes:
  *
- *   motion — reveals, stagger, split headings, counters, bars, parallax,
- *            tilt, magnetic buttons, page scroll progress, marquees
- *   story  — scroll-scrubbed sequences (a sticky stage driven by --cv-p)
- *   ugc    — customer video rails: autoplay in view, sound, lightbox
+ *   motion: reveals, stagger, split headings, counters, bars, parallax,
+ *           tilt, magnetic buttons, page scroll progress, scroll-to-buy
+ *   story:  scroll-scrubbed sequences (a sticky stage driven by --cv-p)
+ *   ugc:    customer video rails: autoplay in view, sound, lightbox
  *
- * Commerce behaviour for the converting PDP lives in cv-product.js.
+ * The page is complete without this file: layout/theme.liquid swaps
+ * html.no-js for html.js before first paint, and theme.css hides reveal
+ * start states only under html.js. If this file never finishes booting, the
+ * layout (and the catch below) add html.cv-reveal-timeout, which resolves
+ * every reveal to its finished state.
+ *
+ * Public API (window.CVMotion):
+ *   CVMotion.scan(root)    wire every attribute inside root (idempotent)
+ *   CVMotion.finish(root)  jump every reveal, count and bar in root to its end
+ *   CVMotion.ready         true once the first scan of the document finished
+ * Theme editor: shopify:section:load rescans the section,
+ * shopify:section:select and shopify:block:select finish it,
+ * shopify:section:unload releases its story / ugc listeners.
+ * Reduced motion is live: switching it on mid-visit resolves everything.
+ *
+ * Commerce behaviour lives in cv-product.js and cart.js; nothing here
+ * changes prices, variants or the cart.
  *
  * Attribute reference:
  *   data-cv-reveal[="left|right|scale|blur"]  fade/slide in once on scroll
  *   data-cv-stagger                            index children for cascade
- *   data-cv-split                              stagger a heading word by word
- *   data-cv-count="12" data-cv-suffix="ft"     count up when revealed
+ *   data-cv-split                              stagger a plain-text heading
+ *                                              word by word (headings with
+ *                                              child elements keep their markup)
+ *   data-cv-count="12" data-cv-suffix="ft"     count up when revealed; the
+ *                                              final value is written first
  *   data-cv-pct="80"                           grow a bar to this width
+ *   data-cv-bars                               fill bars / counts in a group
  *   data-cv-parallax="0.12"                    drift against scroll
  *   data-cv-tilt                               3D tilt toward the pointer
+ *   data-cv-scroll-to-buy                      scroll to the buy box; hidden
+ *                                              when the page has none
+ *   data-cv-video-reduced-motion="pause"       no autoplay under reduced motion
  */
 (function () {
   'use strict';
 
+  var html = document.documentElement;
+
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
   function clamp(n, lo, hi) { return n < lo ? lo : (n > hi ? hi : n); }
+  /* Elements matching sel inside scope, plus scope itself when it matches. */
+  function within(sel, scope) {
+    scope = scope || document;
+    var list = $$(sel, scope);
+    if (scope !== document && scope.matches && scope.matches(sel)) list.unshift(scope);
+    return list;
+  }
 
   var reduceMotionQuery = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
   var reduceMotion = !!(reduceMotionQuery && reduceMotionQuery.matches);
   var finePointer = !(window.matchMedia && window.matchMedia('(hover: none)').matches);
+  function timedOut() { return html.classList.contains('cv-reveal-timeout'); }
 
-  // Decorative background video (e.g. the hero): never autoplay motion a
-  // visitor has asked to reduce — fall back to the poster frame instead.
-  if (reduceMotion) {
-    $$('[data-cv-video-reduced-motion="pause"]').forEach(function (v) {
-      v.removeAttribute('autoplay');
-      v.pause();
-    });
-  }
-
-  /* One shared rAF ticker so scroll work never stacks up. */
+  /* One shared rAF ticker so scroll work never stacks up. A job tied to an
+     element is dropped once that element leaves the document (theme editor). */
   var scrollJobs = [];
   var ticking = false;
   function onScrollFrame() {
     ticking = false;
-    for (var i = 0; i < scrollJobs.length; i++) scrollJobs[i]();
+    for (var i = scrollJobs.length - 1; i >= 0; i--) {
+      var job = scrollJobs[i];
+      if (job.el && !job.el.isConnected) { scrollJobs.splice(i, 1); continue; }
+    }
+    for (var j = 0; j < scrollJobs.length; j++) scrollJobs[j].fn();
   }
   function requestScrollFrame() {
     if (ticking) return;
     ticking = true;
     window.requestAnimationFrame(onScrollFrame);
   }
-  function addScrollJob(fn) {
-    scrollJobs.push(fn);
-    if (scrollJobs.length === 1) {
+  var scrollListening = false;
+  function addScrollJob(fn, el) {
+    scrollJobs.push({ fn: fn, el: el || null });
+    if (!scrollListening) {
+      scrollListening = true;
       window.addEventListener('scroll', requestScrollFrame, { passive: true });
       window.addEventListener('resize', requestScrollFrame, { passive: true });
     }
@@ -63,18 +94,32 @@
   // ===========================================================================
   // MOTION
   // ===========================================================================
-  (function motion() {
-    // ---- split headings into staggered words ------------------------------
-    $$('[data-cv-split]').forEach(function (el) {
-      if (el.querySelector('.cv-word')) return;
-      var text = (el.textContent || '').trim();
+
+  // ---- decorative video ------------------------------------------------------
+  // Never autoplay motion a visitor has asked to reduce: fall back to the poster.
+  function pauseReducedVideos(scope) {
+    if (!reduceMotion) return;
+    within('[data-cv-video-reduced-motion="pause"]', scope).forEach(function (v) {
+      v.removeAttribute('autoplay');
+      if (v.pause) v.pause();
+    });
+  }
+
+  // ---- split headings into staggered words ---------------------------------
+  function splitHeadings(scope) {
+    within('[data-cv-split]', scope).forEach(function (el) {
+      if (el.querySelector('.cv-word')) return;   // already split
+      if (el.children.length) return;            // keep inline markup (em, br, links)
+      var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
       if (!text) return;
-      var words = text.split(/\s+/);
-      if (words.length > 40) return; // not a headline — leave it alone
+      var words = text.split(' ');
+      if (words.length > 40) return;              // not a headline: leave it alone
+      el.setAttribute('aria-label', text);
       el.textContent = '';
       words.forEach(function (w, i) {
         var span = document.createElement('span');
         span.className = 'cv-word';
+        span.setAttribute('aria-hidden', 'true');
         span.style.setProperty('--cv-i', i);
         span.textContent = w;
         el.appendChild(span);
@@ -82,171 +127,257 @@
       });
       el.classList.add('cv-split');
     });
+  }
 
-    // ---- index children of stagger containers -----------------------------
-    $$('[data-cv-stagger]').forEach(function (group) {
+  // ---- index children of stagger containers --------------------------------
+  function indexStagger(scope) {
+    within('[data-cv-stagger]', scope).forEach(function (group) {
       Array.prototype.forEach.call(group.children, function (child, i) {
         if (!child.style.getPropertyValue('--cv-i')) child.style.setProperty('--cv-i', i);
       });
     });
+  }
 
-    // ---- counters ---------------------------------------------------------
-    function animateCount(el) {
+  // ---- counters --------------------------------------------------------------
+  function countParts(el) {
+    var target = parseFloat(el.getAttribute('data-cv-count'));
+    if (isNaN(target)) return null;
+    return {
+      target: target,
+      suffix: el.getAttribute('data-cv-suffix') || '',
+      decimals: (String(target).split('.')[1] || '').length
+    };
+  }
+  function writeFinal(el) {
+    var c = countParts(el);
+    if (c) el.textContent = c.target.toFixed(c.decimals) + c.suffix;
+  }
+  /* The final value is on the page before any animation: the count never
+     sits at 0 if the reveal never fires. */
+  function primeCounts(scope) {
+    within('[data-cv-count]', scope).forEach(function (el) {
       if (el.getAttribute('data-cv-counted') === '1') return;
-      el.setAttribute('data-cv-counted', '1');
+      writeFinal(el);
+    });
+  }
+  function animateCount(el) {
+    if (el.getAttribute('data-cv-counted') === '1') return;
+    el.setAttribute('data-cv-counted', '1');
+    var c = countParts(el);
+    if (!c) return;
+    if (reduceMotion || document.visibilityState === 'hidden') { writeFinal(el); return; }
 
-      var target = parseFloat(el.getAttribute('data-cv-count'));
-      var suffix = el.getAttribute('data-cv-suffix') || '';
-      if (isNaN(target)) return;
-
-      var decimals = (String(target).split('.')[1] || '').length;
-      if (reduceMotion) {
-        el.textContent = target.toFixed(decimals) + suffix;
-        return;
-      }
-
-      var duration = 1100;
-      var start = null;
-      function step(ts) {
-        if (start === null) start = ts;
-        var p = Math.min((ts - start) / duration, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        var current = target * eased;
-        el.textContent = (decimals ? current.toFixed(decimals) : Math.round(current).toString()) + suffix;
-        if (p < 1) window.requestAnimationFrame(step);
-      }
-      window.requestAnimationFrame(step);
+    var duration = 1100;
+    var start = null;
+    function step(ts) {
+      if (el.getAttribute('data-cv-counted') !== '1') return;
+      if (reduceMotion) { writeFinal(el); return; }
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var current = c.target * eased;
+      el.textContent = (c.decimals ? current.toFixed(c.decimals) : Math.round(current).toString()) + c.suffix;
+      if (p < 1) window.requestAnimationFrame(step);
+      else writeFinal(el);
     }
+    el.textContent = (c.decimals ? (0).toFixed(c.decimals) : '0') + c.suffix;
+    window.requestAnimationFrame(step);
+  }
+  function finishCount(el) {
+    el.setAttribute('data-cv-counted', '1');
+    writeFinal(el);
+  }
 
-    function fillBars(scope) {
-      $$('[data-cv-pct]', scope).forEach(function (bar) {
-        var pct = parseFloat(bar.getAttribute('data-cv-pct'));
-        if (isNaN(pct)) pct = 0;
-        bar.style.width = clamp(pct, 0, 100) + '%';
-      });
+  function fillBars(scope) {
+    within('[data-cv-pct]', scope).forEach(function (bar) {
+      var pct = parseFloat(bar.getAttribute('data-cv-pct'));
+      if (isNaN(pct)) pct = 0;
+      bar.style.width = clamp(pct, 0, 100) + '%';
+    });
+  }
+
+  // ---- reveal on scroll --------------------------------------------------------
+  var revealIO = null;
+  var barsIO = null;
+  var REVEAL_SEL = '[data-cv-reveal], [data-cv-split]';
+
+  function revealNow(el) {
+    el.classList.add('is-revealed');
+    $$('[data-cv-count]', el).forEach(animateCount);
+    fillBars(el);
+  }
+  function settle(el) {
+    el.classList.add('is-revealed');
+    if (revealIO) revealIO.unobserve(el);
+  }
+
+  function observeReveals(scope) {
+    var targets = within(REVEAL_SEL, scope).filter(function (el) { return !el.classList.contains('is-revealed'); });
+    var bars = within('[data-cv-bars]', scope).filter(function (g) { return !g.hasAttribute('data-cv-reveal'); });
+
+    if (!('IntersectionObserver' in window) || reduceMotion || timedOut()) {
+      targets.forEach(settle);
+      finishScope(scope);
+      return;
     }
-
-    // ---- reveal on scroll -------------------------------------------------
-    var revealTargets = $$('[data-cv-reveal], [data-cv-split]');
-
-    if ('IntersectionObserver' in window && !reduceMotion) {
-      var io = new IntersectionObserver(function (entries) {
+    if (!revealIO) {
+      revealIO = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-          var el = entry.target;
-          el.classList.add('is-revealed');
-          $$('[data-cv-count]', el).forEach(animateCount);
-          fillBars(el);
-          io.unobserve(el);
+          revealIO.unobserve(entry.target);
+          revealNow(entry.target);
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      revealTargets.forEach(function (el) { io.observe(el); });
-
-      // Bar groups that are not themselves reveal targets.
-      $$('[data-cv-bars]').forEach(function (group) {
-        if (group.hasAttribute('data-cv-reveal')) return;
-        var bio = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            fillBars(entry.target);
-            $$('[data-cv-count]', entry.target).forEach(animateCount);
-            bio.unobserve(entry.target);
-          });
-        }, { threshold: 0.2 });
-        bio.observe(group);
-      });
-    } else {
-      revealTargets.forEach(function (el) { el.classList.add('is-revealed'); });
-      $$('[data-cv-count]').forEach(function (el) {
-        var t = parseFloat(el.getAttribute('data-cv-count'));
-        var suffix = el.getAttribute('data-cv-suffix') || '';
-        if (!isNaN(t)) {
-          var d = (String(t).split('.')[1] || '').length;
-          el.textContent = t.toFixed(d) + suffix;
-        }
-      });
-      fillBars(document);
     }
+    targets.forEach(function (el) { revealIO.observe(el); });
 
-    // ---- page scroll progress --------------------------------------------
-    if (!reduceMotion && document.querySelector('.cv-page-root')) {
-      var progress = document.createElement('div');
-      progress.className = 'cv-progress';
-      progress.setAttribute('aria-hidden', 'true');
-      var progressBar = document.createElement('span');
-      progress.appendChild(progressBar);
-      document.body.appendChild(progress);
-
-      addScrollJob(function () {
-        var doc = document.documentElement;
-        var max = doc.scrollHeight - window.innerHeight;
-        var p = max > 0 ? clamp(window.pageYOffset / max, 0, 1) : 0;
-        progressBar.style.transform = 'scaleX(' + p + ')';
-      });
+    // Bar groups that are not themselves reveal targets.
+    if (bars.length && !barsIO) {
+      barsIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          barsIO.unobserve(entry.target);
+          fillBars(entry.target);
+          $$('[data-cv-count]', entry.target).forEach(animateCount);
+        });
+      }, { threshold: 0.2 });
     }
+    bars.forEach(function (g) { barsIO.observe(g); });
+  }
 
-    // ---- parallax ---------------------------------------------------------
-    var parallaxEls = $$('[data-cv-parallax]');
-    if (parallaxEls.length && !reduceMotion) {
-      addScrollJob(function () {
-        var vh = window.innerHeight;
-        parallaxEls.forEach(function (el) {
-          var rect = el.getBoundingClientRect();
-          if (rect.bottom < -200 || rect.top > vh + 200) return;
-          var depth = parseFloat(el.getAttribute('data-cv-parallax')) || 0.12;
-          var centre = rect.top + rect.height / 2 - vh / 2;
-          el.style.setProperty('--cv-shift', (-centre * depth).toFixed(2) + 'px');
-        });
-      });
+  /* Everything in scope at its finished state, now. */
+  function finishScope(scope) {
+    scope = scope || document;
+    within(REVEAL_SEL, scope).forEach(settle);
+    within('[data-cv-bars]', scope).forEach(function (g) { if (barsIO) barsIO.unobserve(g); });
+    within('[data-cv-count]', scope).forEach(finishCount);
+    fillBars(scope);
+  }
+
+  // ---- page scroll progress ----------------------------------------------------
+  var progressBar = null;
+  function setupProgress() {
+    if (reduceMotion || progressBar || !document.querySelector('.cv-page-root')) return;
+    var progress = document.createElement('div');
+    progress.className = 'cv-progress';
+    progress.setAttribute('aria-hidden', 'true');
+    progressBar = document.createElement('span');
+    progress.appendChild(progressBar);
+    document.body.appendChild(progress);
+
+    addScrollJob(function () {
+      if (reduceMotion) return;
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var p = max > 0 ? clamp(window.pageYOffset / max, 0, 1) : 0;
+      progressBar.style.transform = 'scaleX(' + p + ')';
+    });
+  }
+
+  // ---- parallax ----------------------------------------------------------------
+  var parallaxEls = [];
+  var parallaxJob = false;
+  function parallaxFrame() {
+    if (reduceMotion) return;
+    var vh = window.innerHeight;
+    for (var i = parallaxEls.length - 1; i >= 0; i--) {
+      var el = parallaxEls[i];
+      if (!el.isConnected) { parallaxEls.splice(i, 1); continue; }
+      var rect = el.getBoundingClientRect();
+      if (rect.bottom < -200 || rect.top > vh + 200) continue;
+      var depth = parseFloat(el.getAttribute('data-cv-parallax')) || 0.12;
+      var centre = rect.top + rect.height / 2 - vh / 2;
+      el.style.setProperty('--cv-shift', (-centre * depth).toFixed(2) + 'px');
     }
+  }
+  function setupParallax(scope) {
+    within('[data-cv-parallax]', scope).forEach(function (el) {
+      if (parallaxEls.indexOf(el) === -1) parallaxEls.push(el);
+    });
+    if (!parallaxEls.length) return;
+    if (!parallaxJob) { parallaxJob = true; addScrollJob(parallaxFrame); }
+    else parallaxFrame();
+  }
 
-    // ---- pointer tilt + magnetic CTAs -------------------------------------
-    if (finePointer && !reduceMotion) {
-      $$('[data-cv-tilt]').forEach(function (el) {
-        el.addEventListener('pointermove', function (e) {
-          var r = el.getBoundingClientRect();
-          var px = (e.clientX - r.left) / r.width - 0.5;
-          var py = (e.clientY - r.top) / r.height - 0.5;
-          el.style.setProperty('--cv-rx', (-py * 7).toFixed(2) + 'deg');
-          el.style.setProperty('--cv-ry', (px * 9).toFixed(2) + 'deg');
-        });
-        el.addEventListener('pointerleave', function () {
-          el.style.setProperty('--cv-rx', '0deg');
-          el.style.setProperty('--cv-ry', '0deg');
-        });
+  // ---- pointer tilt + magnetic CTAs -------------------------------------------
+  function bindPointer(scope) {
+    if (!finePointer) return;
+    within('[data-cv-tilt]', scope).forEach(function (el) {
+      if (el.__cvTilt) return;
+      el.__cvTilt = true;
+      el.addEventListener('pointermove', function (e) {
+        if (reduceMotion) return;
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty('--cv-rx', (-py * 7).toFixed(2) + 'deg');
+        el.style.setProperty('--cv-ry', (px * 9).toFixed(2) + 'deg');
       });
-
-      $$('.cv-cta').forEach(function (btn) {
-        btn.addEventListener('pointermove', function (e) {
-          var r = btn.getBoundingClientRect();
-          var px = (e.clientX - r.left) / r.width - 0.5;
-          var py = (e.clientY - r.top) / r.height - 0.5;
-          btn.style.setProperty('--cv-mx', (px * 7).toFixed(2) + 'px');
-          btn.style.setProperty('--cv-my', (py * 4).toFixed(2) + 'px');
-        });
-        btn.addEventListener('pointerleave', function () {
-          btn.style.setProperty('--cv-mx', '0px');
-          btn.style.setProperty('--cv-my', '0px');
-        });
+      el.addEventListener('pointerleave', function () {
+        el.style.setProperty('--cv-rx', '0deg');
+        el.style.setProperty('--cv-ry', '0deg');
       });
-    }
+    });
 
-    // ---- "scroll back to the buybox" buttons ------------------------------
+    within('.cv-cta', scope).forEach(function (btn) {
+      if (btn.__cvMagnet) return;
+      btn.__cvMagnet = true;
+      btn.addEventListener('pointermove', function (e) {
+        if (reduceMotion) return;
+        var r = btn.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        btn.style.setProperty('--cv-mx', (px * 7).toFixed(2) + 'px');
+        btn.style.setProperty('--cv-my', (py * 4).toFixed(2) + 'px');
+      });
+      btn.addEventListener('pointerleave', function () {
+        btn.style.setProperty('--cv-mx', '0px');
+        btn.style.setProperty('--cv-my', '0px');
+      });
+    });
+  }
+  function resetPointer() {
+    $$('[data-cv-tilt]').forEach(function (el) {
+      el.style.setProperty('--cv-rx', '0deg');
+      el.style.setProperty('--cv-ry', '0deg');
+    });
+    $$('.cv-cta').forEach(function (btn) {
+      btn.style.setProperty('--cv-mx', '0px');
+      btn.style.setProperty('--cv-my', '0px');
+    });
+  }
+
+  // ---- "scroll back to the buy box" buttons -----------------------------------
+  function buyTarget() { return $('.cv-buy') || $('#cvPdp'); }
+  /* A page without a buy box hides the buttons instead of offering a dead
+     click. Re-checked on every scan: the editor can add or remove the buy box. */
+  function syncScrollToBuy(scope) {
+    var hasTarget = !!buyTarget();
     $$('[data-cv-scroll-to-buy]').forEach(function (btn) {
+      if (!hasTarget) {
+        if (!btn.hidden) { btn.hidden = true; btn.setAttribute('data-cv-stb-hidden', ''); }
+      } else if (btn.hasAttribute('data-cv-stb-hidden')) {
+        btn.hidden = false;
+        btn.removeAttribute('data-cv-stb-hidden');
+      }
+    });
+    within('[data-cv-scroll-to-buy]', scope).forEach(function (btn) {
+      if (btn.__cvStb) return;
+      btn.__cvStb = true;
       btn.addEventListener('click', function () {
-        var target = $('.cv-buy') || $('#cvPdp');
+        var target = buyTarget();
         if (!target) return;
         target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       });
     });
-  })();
+  }
 
   // ===========================================================================
-  // STORY — scroll-scrubbed sequence
+  // STORY: scroll-scrubbed sequence
   // ===========================================================================
-  (function story() {
-    var section = $('[data-cv-story]');
-    if (!section) return;
+  function initStory(section) {
+    if (!section || section.__cvStory) return;
+    section.__cvStory = true;
 
     var stage = $('[data-cv-story-stage]', section);
     var heightOut = $('[data-cv-story-height]', section);
@@ -288,14 +419,14 @@
       if (travel > 40) {
         p = clamp(-rect.top / travel, 0, 1);
       } else {
-        // Section shorter than the viewport — fall back to a simple in-view ramp.
+        // Section shorter than the viewport: fall back to a simple in-view ramp.
         p = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
       }
 
-      // Free fall covers distance in proportion to t², so the phone creeps at
-      // first and then arrives all at once. `--cv-fall` drives the sprite,
-      // `--cv-drop` is the measured distance from the release point to the
-      // ground line so the landing is exact at any stage size.
+      // Free fall covers distance in proportion to t squared, so the phone
+      // creeps at first and then arrives all at once. `--cv-fall` drives the
+      // sprite, `--cv-drop` is the measured distance from the release point to
+      // the ground line so the landing is exact at any stage size.
       var fallP = clamp(p / 0.68, 0, 1);
       var eased = fallP * fallP;
 
@@ -334,19 +465,36 @@
         c.classList.toggle('is-active', i === activeIndex);
         c.classList.toggle('is-past', i < activeIndex);
       });
-    });
-  })();
+    }, section);
+  }
 
   // ===========================================================================
-  // UGC — customer video rail
+  // UGC: customer video rail
   // ===========================================================================
-  (function ugc() {
-    var section = $('[data-cv-ugc]');
-    if (!section) return;
+  /* Window/document listeners carry an AbortSignal so shopify:section:unload
+     releases them; element listeners go away with the replaced markup. */
+  function listenOpts(signal, extra) {
+    var o = extra || {};
+    if (signal) o.signal = signal;
+    return o;
+  }
+
+  function initUgc(section) {
+    if (!section || section.__cvUgc) return;
+    section.__cvUgc = true;
 
     var rail = $('[data-cv-ugc-rail]', section);
     var clips = $$('[data-cv-clip]', section);
     if (!rail || !clips.length) return;
+
+    var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var signal = ctrl ? ctrl.signal : null;
+    var playIO = null;
+    section.__cvUgcDestroy = function () {
+      if (ctrl) ctrl.abort();
+      if (playIO) playIO.disconnect();
+      delete section.__cvUgcDestroy;
+    };
 
     // ---- rail arrows ------------------------------------------------------
     $$('[data-cv-ugc-scroll]', section).forEach(function (btn) {
@@ -366,14 +514,14 @@
       });
     }
     rail.addEventListener('scroll', syncArrows, { passive: true });
-    window.addEventListener('resize', syncArrows, { passive: true });
+    window.addEventListener('resize', syncArrows, listenOpts(signal, { passive: true }));
     syncArrows();
 
     // ---- autoplay only what is actually on screen -------------------------
     function videoOf(clip) { return $('.cv-clip__video', clip); }
 
     if ('IntersectionObserver' in window && !reduceMotion) {
-      var playIO = new IntersectionObserver(function (entries) {
+      playIO = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           var clip = entry.target;
           var video = videoOf(clip);
@@ -382,7 +530,7 @@
             clip.classList.add('is-live');
             if (video.preload === 'none') video.preload = 'metadata';
             var playing = video.play();
-            if (playing && playing.catch) playing.catch(function () { /* autoplay refused — poster stays */ });
+            if (playing && playing.catch) playing.catch(function () { /* autoplay refused: poster stays */ });
           } else {
             clip.classList.remove('is-live');
             video.pause();
@@ -530,6 +678,78 @@
       if (e.key === 'Escape') { closeLb(); }
       else if (e.key === 'ArrowRight') { openAt(current + 1); }
       else if (e.key === 'ArrowLeft') { openAt(current - 1); }
-    });
-  })();
+    }, listenOpts(signal));
+  }
+
+  // ===========================================================================
+  // Public API, boot and lifecycle
+  // ===========================================================================
+  function scan(root) {
+    root = root || document;
+    pauseReducedVideos(root);
+    splitHeadings(root);
+    indexStagger(root);
+    primeCounts(root);
+    observeReveals(root);
+    setupProgress();
+    setupParallax(root);
+    bindPointer(root);
+    syncScrollToBuy(root);
+    within('[data-cv-story]', root).forEach(initStory);
+    within('[data-cv-ugc]', root).forEach(initUgc);
+  }
+
+  function finish(root) {
+    finishScope(root || document);
+  }
+
+  var api = window.CVMotion = window.CVMotion || {};
+  api.scan = scan;
+  api.finish = finish;
+  api.ready = false;
+
+  function boot() {
+    try {
+      scan(document);
+      api.ready = true;
+    } catch (err) {
+      /* Never leave revealed content hidden because the engine broke. */
+      html.classList.add('cv-reveal-timeout');
+      finishScope(document);
+      throw err;
+    }
+  }
+
+  document.addEventListener('shopify:section:load', function (e) { scan(e.target); });
+  document.addEventListener('shopify:section:unload', function (e) {
+    within('[data-cv-ugc]', e.target).forEach(function (s) { if (s.__cvUgcDestroy) s.__cvUgcDestroy(); });
+    within(REVEAL_SEL, e.target).forEach(function (el) { if (revealIO) revealIO.unobserve(el); });
+    within('[data-cv-bars]', e.target).forEach(function (g) { if (barsIO) barsIO.unobserve(g); });
+  });
+  document.addEventListener('shopify:section:select', function (e) { finish(e.target); });
+  document.addEventListener('shopify:block:select', function (e) {
+    var section = e.target.closest ? e.target.closest('.shopify-section') : null;
+    finish(section || e.target);
+  });
+
+  /* Live reduced motion: switching it on resolves everything visible at once;
+     switching it off lets content added later animate again. */
+  if (reduceMotionQuery) {
+    var onReduceChange = function (q) {
+      reduceMotion = !!q.matches;
+      if (reduceMotion) {
+        finishScope(document);
+        pauseReducedVideos(document);
+        resetPointer();
+      } else {
+        setupProgress();
+        parallaxFrame();
+      }
+    };
+    if (reduceMotionQuery.addEventListener) reduceMotionQuery.addEventListener('change', onReduceChange);
+    else if (reduceMotionQuery.addListener) reduceMotionQuery.addListener(onReduceChange);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();

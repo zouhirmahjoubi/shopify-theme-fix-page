@@ -1,39 +1,120 @@
-/* Casify — product PDP renderer + cart interactions
-   Reads window.CASIFY_ART (case-art SVGs) and window.CASIFY (product data).
-   Honors prefers-reduced-motion for all animations. */
+/* Casify: shared page helpers (loaded on every page, defer).
+   - Toasts: window.CASIFY_FNS.toastQuick(title, body, tone). tone 'danger'
+     adds .toast--danger and role="alert"; anything else is a success toast
+     (role="status").
+   - [data-cm-reveal] reveal on scroll, rescanned on shopify:section:load.
+   - Legacy PDP demo bindings (thumbs, swatches, chips, tabs, stepper,
+     stock row, heart) that read window.CASIFY_ART / window.CASIFY from
+     casify-data.js. Each no-ops without its markup.
+   Toasts and reveals do not depend on casify-data.js, so a failed data file
+   never leaves [data-cm-reveal] content hidden. Honors prefers-reduced-motion
+   through the CSS mirror in theme.css. */
 (function () {
   'use strict';
-  if (!window.CASIFY_ART || !window.CASIFY) return;
-
-  var A = window.CASIFY_ART;
-  var C = window.CASIFY;
-  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var state = { family: 'iphone', model: C.models.iphone[0].name, color: 'candy', bundle: 0, qty: 1, bag: 0 };
-  var artMap = A.artMap;
 
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
-  function money(c) { return '$' + (c / 100).toFixed(2).replace(/\.00$/, ''); }
 
-  /* ---------- Thumbnail switcher ---------- */
-  function bindThumbs(root) {
-    $$('.cm-thumb', root || document).forEach(function (thumb) {
+  /* ---------- Toasts ---------- */
+  /* Titles and bodies arrive from cart responses (product titles, error
+     descriptions), so they are inserted as text, never as markup. */
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+  var ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>';
+  var ICON_DANGER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.6"/></svg>';
+
+  function toast(title, body, tone) {
+    var danger = tone === 'danger';
+    var host = $('#cm-toast-host');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'cm-toast-host';
+      host.className = 'toast-host';
+      document.body.appendChild(host);
+    }
+    var t = document.createElement('div');
+    t.className = danger ? 'toast toast--danger' : 'toast';
+    t.setAttribute('role', danger ? 'alert' : 'status');
+    t.innerHTML = (danger ? ICON_DANGER : ICON_OK) + '<div><strong>' + escapeHtml(title) + '</strong>' + escapeHtml(body) + '</div>';
+    host.appendChild(t);
+    /* Errors stay a little longer so they can be read. */
+    setTimeout(function () {
+      t.classList.add('toast--leaving');
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 280);
+    }, danger ? 4000 : 2400);
+    return t;
+  }
+  window.CASIFY_FNS = window.CASIFY_FNS || {};
+  window.CASIFY_FNS.toastQuick = toast;
+
+  /* ---------- Reveal on scroll: [data-cm-reveal] ---------- */
+  var revealIO = null;
+  function reveal(scope) {
+    var els = $$('[data-cm-reveal]:not(.is-revealed)', scope || document);
+    if (scope && scope.matches && scope.matches('[data-cm-reveal]:not(.is-revealed)')) els.unshift(scope);
+    if (!els.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-revealed'); });
+      return;
+    }
+    if (!revealIO) {
+      revealIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-revealed'); revealIO.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+    }
+    els.forEach(function (el) { revealIO.observe(el); });
+  }
+
+  /* Theme editor: a section added or re-rendered there is new markup. */
+  document.addEventListener('shopify:section:load', function (e) {
+    reveal(e.target);
+    /* halo.js observes [data-halo-reveal] once at boot and has no editor rescan,
+       so a section added or re-rendered in the editor shows its halo copy finished. */
+    $$('[data-halo-reveal]:not(.is-revealed)', e.target).forEach(function (el) { el.classList.add('is-revealed'); });
+  });
+  function finishReveal(e) {
+    $$('[data-cm-reveal]', e.target).forEach(function (el) {
+      el.classList.add('is-revealed');
+      if (revealIO) revealIO.unobserve(el);
+    });
+  }
+  document.addEventListener('shopify:section:select', finishReveal);
+  document.addEventListener('shopify:block:select', finishReveal);
+  /* A visitor who switches reduced motion on mid-visit sees everything at once. */
+  var rmQuery = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (rmQuery) {
+    var onRm = function (q) { if (q.matches) finishReveal({ target: document }); };
+    if (rmQuery.addEventListener) rmQuery.addEventListener('change', onRm);
+    else if (rmQuery.addListener) rmQuery.addListener(onRm);
+  }
+
+  /* ---------- Legacy PDP demo bindings ---------- */
+  function bindLegacy() {
+    if (!window.CASIFY_ART || !window.CASIFY) return;
+    var A = window.CASIFY_ART;
+    var C = window.CASIFY;
+    var artMap = A.artMap || {};
+    var state = { color: 'candy', qty: 1 };
+
+    $$('.cm-thumb').forEach(function (thumb) {
       thumb.addEventListener('click', function () {
-        $$('.cm-thumb', root || document).forEach(function (t) { t.classList.remove('is-active'); });
+        $$('.cm-thumb').forEach(function (t) { t.classList.remove('is-active'); });
         thumb.classList.add('is-active');
         var art = thumb.dataset.art;
         var host = $('#caseArt');
         if (host && artMap[art]) host.innerHTML = artMap[art];
       });
     });
-  }
 
-  /* ---------- Swatch picker ---------- */
-  function bindSwatches(root) {
-    $$('.swatch', root || document).forEach(function (sw) {
+    $$('.swatch').forEach(function (sw) {
       sw.addEventListener('click', function () {
-        $$('.swatch', root || document).forEach(function (s) { s.classList.remove('is-selected'); });
+        $$('.swatch').forEach(function (s) { s.classList.remove('is-selected'); });
         sw.classList.add('is-selected');
         var cn = $('#colourName');
         if (cn) cn.textContent = sw.dataset.name;
@@ -44,167 +125,68 @@
         renderStock();
       });
     });
-  }
 
-  /* ---------- Chip picker ---------- */
-  function bindChips(root) {
-    $$('.chip', root || document).forEach(function (ch) {
+    $$('.chip').forEach(function (ch) {
       ch.addEventListener('click', function () {
-        $$('.chip', root || document).forEach(function (c) { c.classList.remove('is-selected'); });
+        $$('.chip').forEach(function (c) { c.classList.remove('is-selected'); });
         ch.classList.add('is-selected');
       });
     });
-  }
 
-  /* ---------- Tabs ---------- */
-  function bindTabs(root) {
-    $$('.tab', root || document).forEach(function (tab) {
+    $$('.tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
-        $$('.tab', root || document).forEach(function (t) { t.classList.remove('is-active'); });
+        $$('.tab').forEach(function (t) { t.classList.remove('is-active'); });
         tab.classList.add('is-active');
       });
     });
-  }
 
-  /* ---------- Qty stepper ---------- */
-  function bindStepper(root) {
-    var minus = $('#qtyMinus', root || document);
-    var plus = $('#qtyPlus', root || document);
-    var qtyVal = $('#qtyVal', root || document);
-    if (!minus || !plus || !qtyVal) return;
-    function bump() { qtyVal.classList.remove('is-bumped'); void qtyVal.offsetWidth; qtyVal.classList.add('is-bumped'); }
-    minus.addEventListener('click', function () {
-      if (state.qty > 1) { state.qty--; qtyVal.textContent = state.qty; bump(); }
-    });
-    plus.addEventListener('click', function () {
-      state.qty++; qtyVal.textContent = state.qty; bump();
-    });
-  }
-
-  /* ---------- Stock + scarcity ---------- */
-  function renderStock() {
-    var n = (C.stockByColor && C.stockByColor[state.color]) || 0;
-    var row = $('#stockRow');
-    var fill = $('.cm-scarcity__fill');
-    if (!row) return;
-    if (n === 0) {
-      row.innerHTML = '<span class="low" style="color:var(--cocoa-500)">Sold out in this colour. Other colours still in stock.</span>';
-      if (fill) { fill.style.width = '100%'; fill.style.background = 'var(--cocoa-500)'; }
-    } else {
-      var scarcity = Math.min(100, Math.max(8, 100 - n * 4));
-      row.innerHTML = '<span class="dot-live"></span><span class="low">In stock &middot; only ' + n + ' left in ' + (state.color || 'candy') + '</span>';
-      if (fill) { fill.style.width = scarcity + '%'; fill.style.background = 'var(--red-500)'; }
+    var minus = $('#qtyMinus');
+    var plus = $('#qtyPlus');
+    var qtyVal = $('#qtyVal');
+    if (minus && plus && qtyVal) {
+      var bump = function () { qtyVal.classList.remove('is-bumped'); void qtyVal.offsetWidth; qtyVal.classList.add('is-bumped'); };
+      minus.addEventListener('click', function () {
+        if (state.qty > 1) { state.qty--; qtyVal.textContent = state.qty; bump(); }
+      });
+      plus.addEventListener('click', function () {
+        state.qty++; qtyVal.textContent = state.qty; bump();
+      });
     }
-  }
 
-  /* ---------- Heart toggle ---------- */
-  function bindHeart() {
-    var heart = $('.heart');
-    if (!heart) return;
-    heart.addEventListener('click', function (e) {
-      var b = e.currentTarget;
-      b.classList.toggle('is-saved');
-      var svg = b.querySelector('svg');
-      if (svg) svg.setAttribute('fill', b.classList.contains('is-saved') ? 'currentColor' : 'none');
-    });
-  }
-
-  /* ---------- Add to bag with bag-fly animation + toast ---------- */
-  function addToBag(srcEl) {
-    state.bag += state.qty;
-    var badge = $('#bagBadge');
-    if (badge) {
-      badge.textContent = state.bag;
-      badge.classList.remove('is-bump');
-      void badge.offsetWidth;
-      badge.classList.add('is-bump');
-    }
-    var host = $('#addPillHost');
-    if (host) {
-      var pill = document.createElement('span');
-      pill.className = 'cm-add-pill';
-      pill.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg> Added to bag';
-      host.appendChild(pill);
-      setTimeout(function () { if (pill.parentNode) pill.parentNode.removeChild(pill); }, 1700);
-    }
-    if (!REDUCED) {
-      var bag = $('#bagBtn');
-      if (bag) {
-        var rect = (srcEl && srcEl.getBoundingClientRect) || bag.getBoundingClientRect();
-        var start = srcEl ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height } : bag.getBoundingClientRect();
-        var flyer = document.createElement('div');
-        flyer.className = 'cm-bag-fly';
-        flyer.style.left = (start.left + start.width / 2 - 24) + 'px';
-        flyer.style.top = (start.top + start.height / 2 - 24) + 'px';
-        flyer.innerHTML = '<svg viewBox="0 0 48 48" width="48" height="48"><path d="M14 16 h20 l-2 22 h-16 z M18 16 v-2 a6 6 0 0 1 12 0 v2" fill="#C4302B" stroke="#4A3324" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        document.body.appendChild(flyer);
-        setTimeout(function () { if (flyer.parentNode) flyer.parentNode.removeChild(flyer); }, 720);
+    function renderStock() {
+      var n = (C.stockByColor && C.stockByColor[state.color]) || 0;
+      var row = $('#stockRow');
+      var fill = $('.cm-scarcity__fill');
+      if (!row) return;
+      if (n === 0) {
+        row.innerHTML = '<span class="low" style="color:var(--cocoa-500)">Sold out in this colour. Other colours still in stock.</span>';
+        if (fill) { fill.style.width = '100%'; fill.style.background = 'var(--cocoa-500)'; }
+      } else {
+        var scarcity = Math.min(100, Math.max(8, 100 - n * 4));
+        row.innerHTML = '<span class="dot-live"></span><span class="low">In stock &middot; only ' + n + ' left in ' + (state.color || 'candy') + '</span>';
+        if (fill) { fill.style.width = scarcity + '%'; fill.style.background = 'var(--red-500)'; }
       }
     }
-    toast('Added to bag', C.currentProduct.title);
-  }
+    renderStock();
 
-  function bindAdd() {
-    var add = $('#addBtn');
-    var addM = $('#addBtnMobile');
-    if (add) add.addEventListener('click', function (e) { addToBag(e.currentTarget); });
-    if (addM) addM.addEventListener('click', function (e) { addToBag(e.currentTarget); });
-  }
-
-  /* ---------- Toasts ---------- */
-  /* Titles and bodies arrive from cart responses (product titles, error
-     descriptions), so they are inserted as text, never as markup. */
-  function escapeHtml(value) {
-    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
-    });
-  }
-  function toast(title, body) {
-    var host = $('#cm-toast-host');
-    if (!host) {
-      host = document.createElement('div');
-      host.id = 'cm-toast-host';
-      host.className = 'toast-host';
-      document.body.appendChild(host);
-    }
-    var t = document.createElement('div');
-    t.className = 'toast';
-    t.setAttribute('role', 'status');
-    t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg><div><strong>' + escapeHtml(title) + '</strong>' + escapeHtml(body) + '</div>';
-    host.appendChild(t);
-    setTimeout(function () {
-      t.classList.add('toast--leaving');
-      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 280);
-    }, 2400);
-  }
-  window.CASIFY_FNS = window.CASIFY_FNS || {};
-  window.CASIFY_FNS.toastQuick = toast;
-
-  /* ---------- Reveal on scroll ---------- */
-  function reveal() {
-    if (!('IntersectionObserver' in window)) {
-      $$('[data-cm-reveal]').forEach(function (el) { el.classList.add('is-revealed'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-revealed'); io.unobserve(e.target); }
+    var heart = $('.heart');
+    if (heart) {
+      heart.addEventListener('click', function (e) {
+        var b = e.currentTarget;
+        b.classList.toggle('is-saved');
+        var svg = b.querySelector('svg');
+        if (svg) svg.setAttribute('fill', b.classList.contains('is-saved') ? 'currentColor' : 'none');
       });
-    }, { threshold: 0.12 });
-    $$('[data-cm-reveal]').forEach(function (el) { io.observe(el); });
+    }
   }
 
   /* ---------- Init ---------- */
   function init() {
-    bindThumbs();
-    bindSwatches();
-    bindChips();
-    bindTabs();
-    bindStepper();
-    bindHeart();
-    bindAdd();
-    renderStock();
-    reveal();
+    reveal(document);
+    /* The layout's reveal check (layout/theme.liquid) reads this flag together
+       with CVMotion.ready; without it every page gets html.cv-reveal-timeout. */
+    window.CASIFY_FNS.revealReady = true;
+    bindLegacy();
   }
 
   if (document.readyState === 'loading') {

@@ -166,8 +166,11 @@ input, select { font: inherit; }
   -webkit-mask-repeat: repeat-x;
           mask-repeat: repeat-x;
 }
+/* The old hard-coded ticker text claimed a $40 free-shipping threshold that the
+   store does not have (map/header.md finding 1), so the pseudo element renders
+   nothing. Ticker copy belongs in section markup, from merchant settings. */
 .awning::after {
-  content: "EST. 1920 · FREE SHIPPING OVER $40 · 30-DAY RETURNS · EST. 1920 · FREE SHIPPING OVER $40 · 30-DAY RETURNS ·";
+  content: none;
   position: absolute; inset: 0;
   display: flex; align-items: center;
   font-family: var(--font-label);
@@ -890,9 +893,23 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
 @keyframes cm-toast-out { to { opacity: 0; transform: translateY(8px); } }
 .toast svg { width: 16px; height: 16px; color: var(--teal-600); flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .toast strong { font: 700 10px/1 var(--font-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--teal-600); display: block; margin-bottom: 2px; }
+/* Error toast: theme.js toast(title, body, 'danger'). Red, never the success teal. */
+.toast--danger { border-color: var(--red-500); }
+.toast--danger svg,
+.toast--danger strong { color: var(--red-600); }
 
-/* ---------- 18. Reveal + stagger ---------- */
-[data-cm-reveal] { opacity: 0; transform: translateY(6px); transition: opacity 420ms var(--ease-out-soft), transform 420ms var(--ease-out-soft); }
+/* A "back to the buy box" button hidden by cv-motion.js (no .cv-buy / #cvPdp on
+   the page) must stay hidden: .cv-cta and .cvcx__cta set display, which beats [hidden]. */
+[data-cv-scroll-to-buy][hidden] { display: none !important; }
+/* The button only works through cv-motion.js, so without JS it is removed. */
+.no-js [data-cv-scroll-to-buy] { display: none !important; }
+
+/* ---------- 18. Reveal + stagger ----------
+   Reveal safety: hidden start states apply only under html.js (layout/theme.liquid
+   swaps no-js for js) and stop applying under html.cv-reveal-timeout (set when a
+   reveal engine has not booted), so the finished state is the CSS default.
+   :where() keeps each selector's old specificity. */
+:where(.js:not(.cv-reveal-timeout)) [data-cm-reveal] { opacity: 0; transform: translateY(6px); transition: opacity 420ms var(--ease-out-soft), transform 420ms var(--ease-out-soft); }
 [data-cm-reveal].is-revealed { opacity: 1; transform: none; }
 .cm-stagger-cm > * { opacity: 0; transform: translateY(6px); animation: cm-rise 360ms var(--ease-out-soft) both; }
 .cm-stagger-cm > *:nth-child(1) { animation-delay: 0ms; }
@@ -953,7 +970,7 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
 }
 
 /* Class-based reveal + stagger aliases (build-box used these names) */
-.cm-reveal { opacity: 0; transform: translateY(6px); transition: opacity var(--duration-slow) var(--ease-out-soft), transform var(--duration-slow) var(--ease-out-soft); }
+:where(.js:not(.cv-reveal-timeout)) .cm-reveal { opacity: 0; transform: translateY(6px); transition: opacity var(--duration-slow) var(--ease-out-soft), transform var(--duration-slow) var(--ease-out-soft); }
 .cm-reveal.is-revealed { opacity: 1; transform: none; }
 .cm-stagger-sm > * { animation: cm-rise 320ms var(--ease-out-soft) both; }
 .cm-stagger-sm > *:nth-child(1) { animation-delay: 0ms; }
@@ -1069,22 +1086,24 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
 /* ---------- Motion primitives ----------
    `data-cv-reveal` takes an optional direction; `data-cv-split` staggers the
    words of a heading; `data-cv-stagger` indexes its own children so any group
-   can cascade. Everything keys off --cv-i, which JS or Liquid supplies. */
-[data-cv-reveal] {
+   can cascade. Everything keys off --cv-i, which JS or Liquid supplies.
+   Start states are hidden only under html.js and not under
+   html.cv-reveal-timeout (see section 18), so no-JS visitors see the copy. */
+:where(.js:not(.cv-reveal-timeout)) [data-cv-reveal] {
   opacity: 0; transform: translateY(16px);
   transition: opacity var(--duration-slow) var(--ease-out-soft),
               transform var(--duration-slow) var(--ease-out-soft),
               filter var(--duration-slow) var(--ease-out-soft);
   transition-delay: calc(var(--cv-i, 0) * 55ms);
 }
-[data-cv-reveal="left"] { transform: translate3d(-32px, 0, 0); }
-[data-cv-reveal="right"] { transform: translate3d(32px, 0, 0); }
-[data-cv-reveal="scale"] { transform: scale(.94); }
-[data-cv-reveal="blur"] { transform: translateY(10px); filter: blur(8px); }
+:where(.js:not(.cv-reveal-timeout)) [data-cv-reveal="left"] { transform: translate3d(-32px, 0, 0); }
+:where(.js:not(.cv-reveal-timeout)) [data-cv-reveal="right"] { transform: translate3d(32px, 0, 0); }
+:where(.js:not(.cv-reveal-timeout)) [data-cv-reveal="scale"] { transform: scale(.94); }
+:where(.js:not(.cv-reveal-timeout)) [data-cv-reveal="blur"] { transform: translateY(10px); filter: blur(8px); }
 [data-cv-reveal].is-revealed { opacity: 1; transform: none; filter: none; }
 
-.cv-split .cv-word {
-  display: inline-block;
+.cv-split .cv-word { display: inline-block; }
+:where(.js:not(.cv-reveal-timeout)) .cv-split .cv-word {
   opacity: 0; transform: translateY(.42em) rotate(1.6deg);
   transition: opacity 500ms var(--ease-out-soft), transform 560ms var(--ease-candy);
   transition-delay: calc(var(--cv-i, 0) * 40ms);
@@ -1100,7 +1119,7 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
   transition: transform 240ms var(--ease-out-soft), box-shadow var(--duration-base) var(--ease-standard);
 }
 
-/* Page-length scroll progress, injected by cv-product.js. */
+/* Page-length scroll progress, injected by cv-motion.js (.cv-page-root opts in). */
 .cv-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 120; pointer-events: none; }
 .cv-progress span {
   display: block; height: 100%; transform: scaleX(0); transform-origin: 0 50%;
@@ -1633,7 +1652,8 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
 }
 
 /* ---------- Floating fact callouts (shared: cv-spotlight, cv-pdp-spotlight, cv-social-proof) ---------- */
-.cv-callout { position: absolute; max-width: 168px; opacity: 0; animation: cv-callout-in var(--duration-slow) var(--ease-out-soft) both; animation-delay: calc(var(--cv-i, 0) * 140ms + 400ms); }
+.cv-callout { position: absolute; max-width: 168px; }
+:where(.js) .cv-callout { opacity: 0; animation: cv-callout-in var(--duration-slow) var(--ease-out-soft) both; animation-delay: calc(var(--cv-i, 0) * 140ms + 400ms); }
 .cv-callout--tl { top: 7%; left: -9%; }
 .cv-callout--tr { top: 24%; right: -13%; }
 .cv-callout--bl { bottom: 32%; left: -13%; }
@@ -1826,6 +1846,8 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
   padding: 10px 16px; border-radius: 999px;
   background: var(--surface-card); border: 1px solid var(--border-hairline);
   box-shadow: var(--shadow-xs);
+}
+:where(.js:not(.cv-reveal-timeout)) .cv-ugc__stat {
   opacity: 0; transform: translateY(10px);
   transition: opacity 460ms var(--ease-out-soft), transform 460ms var(--ease-candy);
   transition-delay: calc(var(--cv-i, 0) * 80ms);
@@ -1862,6 +1884,8 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
 /* ---------- One clip ---------- */
 .cv-clip {
   flex: 0 0 min(238px, 63vw); scroll-snap-align: start;
+}
+:where(.js:not(.cv-reveal-timeout)) .cv-clip {
   opacity: 0; transform: translateY(20px);
   transition: opacity 540ms var(--ease-out-soft), transform 540ms var(--ease-candy);
   transition-delay: calc(var(--cv-i, 0) * 65ms);
@@ -2170,7 +2194,8 @@ iframe.cv-lightbox__media { width: min(430px, 90vw); border: 0; }
   letter-spacing: .1em; text-transform: uppercase; opacity: .66;
 }
 
-.cv-cmp__row {
+/* Start state only under html.js before the reveal timeout (INF-0, section 18). */
+:where(.js:not(.cv-reveal-timeout)) .cv-cmp__row {
   opacity: 0; transform: translateY(10px);
   transition: opacity 460ms var(--ease-out-soft), transform 460ms var(--ease-out-soft);
   transition-delay: calc(var(--cv-i, 0) * 45ms);
@@ -2383,6 +2408,11 @@ a.cv-pager__n:hover { background: var(--cream-200); color: var(--cocoa-700); }
   border: 1px solid var(--border-hairline); background: var(--surface-card);
   color: var(--cocoa-600); font-family: var(--font-label); font-size: 10.5px;
   letter-spacing: .06em; text-transform: uppercase;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+/* Entrance start state only under html.js and before the reveal timeout (INF-0):
+   without JS, or when cv-motion.js never adds .is-revealed, the chips show. */
+:where(.js:not(.cv-reveal-timeout)) .cv-search__chip {
   opacity: 0; transform: translateY(8px);
   transition: opacity 400ms var(--ease-out-soft), transform 400ms var(--ease-candy),
               background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
@@ -2870,6 +2900,9 @@ input[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 5px 0 va
   display: grid; grid-template-columns: auto 1fr; gap: 13px; align-items: start;
   padding: 17px 18px; border-radius: 12px;
   background: var(--surface-card); border: 1px solid var(--border-hairline); box-shadow: var(--shadow-xs);
+}
+/* Start state only under html.js before the reveal timeout (INF-0, section 18). */
+:where(.js:not(.cv-reveal-timeout)) .cv-method {
   opacity: 0; transform: translateY(12px);
   transition: opacity 460ms var(--ease-out-soft), transform 460ms var(--ease-candy);
   transition-delay: calc(var(--cv-i, 0) * 70ms);
@@ -2923,8 +2956,9 @@ input[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 5px 0 va
   gap: 10px; list-style: none; margin: 10px 0 0; padding: 16px 0 0;
   width: 100%; border-top: 1px dashed var(--border-dashed);
 }
-.cv-hero__metrics li {
-  display: grid; gap: 2px;
+.cv-hero__metrics li { display: grid; gap: 2px; }
+/* Start state only under html.js before the reveal timeout (INF-0, section 18). */
+:where(.js:not(.cv-reveal-timeout)) .cv-hero__metrics li {
   opacity: 0; transform: translateY(10px);
   transition: opacity 460ms var(--ease-out-soft), transform 460ms var(--ease-candy);
   transition-delay: calc(var(--cv-i, 0) * 80ms);
@@ -3245,6 +3279,9 @@ input[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 5px 0 va
   .cv-search__chip,
   .cv-method,
   .cv-hero__metrics li { opacity: 1; transform: none; transition: none; }
+  /* The callout entrance waits 400 ms+ before it starts (fill: both holds opacity 0), and the
+     global reduce block only shortens duration, not delay: remove the animation outright. */
+  .cv-callout { animation: none !important; opacity: 1; transform: none; }
   .cv-hero__ring, .cv-404__code em, .cv-hero__cue .cv-ico { animation: none !important; }
   .cv-card:hover .cv-card__img,
   .cv-col-card:hover .cv-col-card__media img,
@@ -3903,7 +3940,10 @@ input[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 5px 0 va
 }
 
 /* ---------- 41. Halo motion primitives ---------- */
-[data-halo-reveal] { opacity: 0; transform: translateY(8px); transition: opacity 420ms var(--ease-out-soft), transform 420ms var(--ease-out-soft); }
+/* Start state only under html.js, before the reveal timeout, and on a page that
+   carries .halo-tpl (halo.js returns early without it), so no-JS visitors and
+   pages where halo.js cannot run still see the copy (INF-0). */
+:where(.js:not(.cv-reveal-timeout):has(.halo-tpl)) [data-halo-reveal] { opacity: 0; transform: translateY(8px); transition: opacity 420ms var(--ease-out-soft), transform 420ms var(--ease-out-soft); }
 [data-halo-reveal].is-revealed { opacity: 1; transform: none; }
 .halo-stagger > * { opacity: 0; transform: translateY(8px); animation: cm-rise 360ms var(--ease-out-soft) both; }
 .halo-stagger > *:nth-child(1) { animation-delay: 0ms; }
