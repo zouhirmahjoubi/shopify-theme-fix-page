@@ -83,6 +83,22 @@
 .cvw-ribbon:not(.is-marquee) .cvw-ribbon__track { gap: 10px 28px; }
 .cvw-ribbon:not(.is-marquee) .cvw-ribbon__sep { display: none; }
 .cvw-ribbon:not(.is-marquee) .cvw-ribbon__item { padding-inline: 0; }
+/* The marquee's pause toggle (made by cv-pdp-home-motion.js, or printed by the section as
+   [data-cvw-ribbon-pause]); it only exists while the band moves. aria-pressed="true" = paused. */
+.cvw-ribbon__pause {
+  position: absolute; z-index: 2; top: 50%; right: 12px; translate: 0 -50%;
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 2px solid var(--cream-50); border-radius: 999px; cursor: pointer;
+  color: var(--red-600); background: var(--cream-50);
+  box-shadow: 0 0 0 2px var(--red-600), 0 8px 16px -8px rgba(126, 26, 23, .6);
+}
+.cvw-ribbon__pause svg { display: block; fill: currentColor; }
+.cvw-ribbon__pause .is-play,
+.cvw-ribbon__pause[aria-pressed="true"] .is-pause { display: none; }
+.cvw-ribbon__pause[aria-pressed="true"] .is-play { display: block; }
+.cvw-ribbon__pause:hover { background: var(--cream-100); }
+.cvw-ribbon__pause:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+.cvw-ribbon:not(.is-marquee) .cvw-ribbon__pause { display: none; }
 
 /* ---------- Spotlight: the case under glass ---------- */
 .cvw-spot__grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 40px 56px; align-items: center; }
@@ -104,7 +120,7 @@
   clip-path: polygon(46% 0%, 58% 0%, 100% 100%, 0% 100%);
   background: linear-gradient(180deg, rgba(255, 226, 158, .85) 0%, rgba(255, 226, 158, .32) 46%, rgba(255, 226, 158, 0) 100%);
   mix-blend-mode: screen;
-  opacity: 0; pointer-events: none;
+  pointer-events: none; /* lit by default: cv-pdp-home-motion.js sets the dark start state only when it runs */
 }
 .cvw-spot__card { /* the product photo, printed and stood on the plate under the glass */
   position: absolute; z-index: 3; left: 25%; bottom: 38.4%;
@@ -322,6 +338,17 @@
 .cvw-reel__figure { position: relative; width: clamp(240px, 28vw, 400px); margin: 0; }
 .cvw-reel__pic { display: block; aspect-ratio: 1; overflow: hidden; border-radius: 3px; background: var(--cream-200); }
 .cvw-reel__img { display: block; width: 114%; max-width: none; height: 100%; margin-left: -7%; object-fit: cover; }
+/* Prev/next for the reel: [data-cvw-reel-prev] / [data-cvw-reel-next], printed `hidden` by the
+   section and shown by cv-pdp-home-motion.js (they step one frame, pinned or not). */
+.cvw-reel__nav {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 1.5px dashed var(--cvw-rule); border-radius: 50%; background: var(--cream-50); color: var(--cvw-ink);
+  cursor: pointer; transition: border-color 150ms var(--ease-standard), background-color 150ms var(--ease-standard);
+}
+.cvw-reel__nav:hover { border-style: solid; border-color: var(--red-500); background: var(--cream-100); }
+.cvw-reel__nav:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 2px; }
+.cvw-reel__nav[aria-disabled="true"] { opacity: .45; cursor: default; }
+.cvw-reel__nav.is-prev svg { rotate: 180deg; }
 .cvw-reel__cap {
   position: absolute; left: 10px; bottom: 10px;
   padding: 3px 10px; border-radius: 999px;
@@ -710,8 +737,21 @@
   .cvw .cvw-board__title { font-size: 28px !important; }
 }
 
+/* ---------- Motion states (cv-pdp-home-motion.js) ---------- */
+/* .cvw-pending: an entrance is armed and GSAP holds the start state; no CSS transition fights it. */
+.cvw-pending .cvw-row__box, .cvw-pending .cvw-stop { transition: none; }
+/* .is-offscreen: the section is out of view; .is-paused: the ribbon is held (toggle, hover, focus).
+   Every infinite CSS animation inside a .cvw section (the animated cv-icons) waits. */
+.cvw.is-offscreen .cv-ico--anim *,
+.cvw-ribbon.is-paused .cv-ico--anim * { animation-play-state: paused !important; }
+
 @media (prefers-reduced-motion: reduce) {
-  .cvw-stop, .cvw-row__box, .cvw-card__img, .cvw-compare__choose { transition: none; }
+  /* no infinite animation runs inside these sections; the icons rest drawn */
+  .cvw .cv-ico--anim .cv-ico__pulse,
+  .cvw .cv-ico--anim .cv-ico__fall { animation: none !important; }
+  .cvw .cv-ico--anim .cv-ico__draw { animation: none !important; stroke-dashoffset: 0; }
+  .cvw-ribbon__pause { display: none; }
+  .cvw-stop, .cvw-row__box, .cvw-card__img, .cvw-compare__choose, .cvw-reel__nav { transition: none; }
   /* the clips hold their poster until the shopper presses play (cv-pdp-story.js) */
   .cvw-ugc__screen, .cvw-ugc__expand { transition: none; }
   .cvw-ugc__expand { opacity: 1; }
