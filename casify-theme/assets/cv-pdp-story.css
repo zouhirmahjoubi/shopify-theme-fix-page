@@ -152,6 +152,8 @@
 
 /* ---------- Shelf ---------- */
 .cvp-shelf:not(.is-filled) { display: none; }
+/* cv-pdp-story.js hides a set or shelf left with no card, and a shelf card shown higher on the page. */
+.cvp-shelf[hidden], .cvp-set[hidden], .cvp-shelf__item[hidden] { display: none !important; }
 .cvp-shelf__row {
   position: relative; list-style: none; margin: 32px 0 0; padding: 0 0 26px;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
@@ -223,4 +225,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cvp-fit__model, .cvp-shelf__media, .cvp-faq__mark { transition: none; }
+  .cvp-fit__model:hover, .cvp-shelf__card:hover .cvp-shelf__media, .cvp .cvs__cta:hover { transform: none; }
 }
