@@ -1,0 +1,323 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INF-2 cart preview (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[{"id":41001,"title":"Russet Brown / iPhone 17 Pro Max","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric","image":"../../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro Max"],"available":true},{"id":41002,"title":"Russet Brown / iPhone 17 Pro","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric","image":"../../../../../assets/best-case-detail.png","options":["Russet Brown","iPhone 17 Pro"],"available":true},{"id":41003,"title":"Sage Green / iPhone 16","price":4999,"product_title":"Tech Fabric Magnetic Phone Case for iPhone","product_handle":"tech-fabric","image":"../../../../../assets/best-case-detail.png","options":["Sage Green","iPhone 16"],"available":true}],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"page":"<div id=\"shopify-section-page\" class=\"shopify-section\"><header style=\"display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #ccc\">\n  <strong>fixture header<\/strong>\n  <a id=\"bagBtn\" href=\"/cart\" data-cart-drawer-open aria-label=\"Cart, 5 items\">Bag <span data-cart-count>5<\/span><\/a>\n<\/header>\n<main style=\"padding:16px;display:grid;gap:12px;max-width:520px\">\n  <div class=\"fixture-card\">\n    <img data-cvm-fly-img src=\"../../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\">\n    <a href=\"/products/tech-fabric\" id=\"qpBuy\" data-cvqp-open data-handle=\"tech-fabric\" data-url=\"/products/tech-fabric\" data-cvqp-buy-now>Quick add (with Buy now)<\/a>\n    <a href=\"/products/tech-fabric\" id=\"qpPlain\" data-cvqp-open data-handle=\"tech-fabric\" data-url=\"/products/tech-fabric\">Quick add<\/a>\n  <\/div>\n  <form data-cart-add-form id=\"cardForm\" action=\"/cart/add\" method=\"post\"><input type=\"hidden\" name=\"id\" value=\"41003\"><button type=\"submit\" id=\"cardAdd\">Add single case (fixture)<\/button><\/form>\n  <button type=\"button\" id=\"legacy\">fire legacy cart:updated<\/button>\n  <a href=\"#after\" id=\"after\">link after drawer<\/a>\n<\/main>\n<link rel=\"stylesheet\" href=\"../../../../../assets/cv-cart-drawer.css\" media=\"all\"><div class=\"cart-drawer__scrim\" id=\"cm-cart-drawer-scrim\" data-cart-drawer-close><\/div>\n<aside class=\"cart-drawer\" id=\"cm-cart-drawer\" aria-label=\"Your bag\" role=\"dialog\" aria-modal=\"true\" aria-hidden=\"true\" inert\n  data-i18n-adding=\"translation missing: en.general.cart.adding\"\n  data-i18n-added=\"translation missing: en.general.cart.added\"\n  data-i18n-add-error=\"translation missing: en.general.cart.add_error\"\n  data-i18n-change-error=\"translation missing: en.general.cart.change_error\"\n  data-i18n-bag-one=\"translation missing: en.general.cart.bag_label_one\"\n  data-i18n-bag-other=\"translation missing: en.general.cart.bag_label_other\">\n  <div class=\"cart-drawer__head\">\n    <div class=\"cart-drawer__head-inner\">\n      <h3>Your bag<\/h3>\n      <button type=\"button\" class=\"cart-drawer__close\" data-cart-drawer-close aria-label=\"translation missing: en.general.cart.close\">\n        <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6 6 18\"/><\/svg>\n      <\/button>\n    <\/div>\n  <\/div>\n  <div class=\"cart-drawer__body\" id=\"cm-cart-drawer-content\"><div class=\"cart-drawer-item\" data-key=\"41002:fixture\" data-qty=\"1\" data-cvm-line>\n          <a href=\"/products/tech-fabric?variant=41002\" class=\"cart-drawer-item__media\" tabindex=\"-1\" aria-hidden=\"true\"><\/a>\n          <div class=\"cart-drawer-item__info\">\n            <a class=\"cart-drawer-item__title\" href=\"/products/tech-fabric?variant=41002\"><strong>Tech Fabric Magnetic Phone Case for iPhone<\/strong><\/a><p class=\"cart-drawer-item__opt cart-drawer-item__opt--phone\"><span class=\"cart-drawer-item__opt-name\">translation missing: en.general.cart.phone_label:<\/span> iPhone 17 Pro<\/p><p class=\"cart-drawer-item__opt\"><span class=\"cart-drawer-item__opt-name\">Color:<\/span> Russet Brown<\/p><p class=\"cart-drawer-item__price\">$49.99<\/p>\n          <\/div>\n          <div class=\"cart-drawer-item__controls\">\n            <div class=\"cm-stepper\">\n              <button type=\"button\" data-qty-decrease aria-label=\"translation missing: en.general.cart.decrease_label\">-<\/button>\n              <input type=\"number\" inputmode=\"numeric\" data-cart-line-qty=\"41002:fixture\" value=\"1\" min=\"0\" aria-label=\"translation missing: en.general.cart.quantity_label\">\n              <button type=\"button\" data-qty-increase aria-label=\"translation missing: en.general.cart.increase_label\">+<\/button>\n            <\/div>\n            <button type=\"button\" class=\"cart-drawer-item__remove\" data-cart-remove=\"41002:fixture\" aria-label=\"translation missing: en.general.cart.remove_label\">translation missing: en.general.cart.remove<\/button>\n          <\/div>\n        <\/div><div class=\"cart-drawer-item\" data-key=\"41001:fixture\" data-qty=\"4\" data-cvm-line>\n          <a href=\"/products/tech-fabric?variant=41001\" class=\"cart-drawer-item__media\" tabindex=\"-1\" aria-hidden=\"true\"><\/a>\n          <div class=\"cart-drawer-item__info\">\n            <a class=\"cart-drawer-item__title\" href=\"/products/tech-fabric?variant=41001\"><strong>Tech Fabric Magnetic Phone Case for iPhone<\/strong><\/a><p class=\"cart-drawer-item__opt cart-drawer-item__opt--phone\"><span class=\"cart-drawer-item__opt-name\">translation missing: en.general.cart.phone_label:<\/span> iPhone 17 Pro Max<\/p><p class=\"cart-drawer-item__opt\"><span class=\"cart-drawer-item__opt-name\">Color:<\/span> Russet Brown<\/p><p class=\"cart-drawer-item__price\">$199.96<\/p>\n          <\/div>\n          <div class=\"cart-drawer-item__controls\">\n            <div class=\"cm-stepper\">\n              <button type=\"button\" data-qty-decrease aria-label=\"translation missing: en.general.cart.decrease_label\">-<\/button>\n              <input type=\"number\" inputmode=\"numeric\" data-cart-line-qty=\"41001:fixture\" value=\"4\" min=\"0\" aria-label=\"translation missing: en.general.cart.quantity_label\">\n              <button type=\"button\" data-qty-increase aria-label=\"translation missing: en.general.cart.increase_label\">+<\/button>\n            <\/div>\n            <button type=\"button\" class=\"cart-drawer-item__remove\" data-cart-remove=\"41001:fixture\" aria-label=\"translation missing: en.general.cart.remove_label\">translation missing: en.general.cart.remove<\/button>\n          <\/div>\n        <\/div><\/div><div class=\"cart-drawer__footer\" data-cvm-drawer-foot><dl class=\"cart-drawer__rows\">\n      <div class=\"cart-drawer__row\">\n        <dt>translation missing: en.general.cart.subtotal<\/dt>\n        <dd>$249.95<\/dd>\n      <\/div><div class=\"cart-drawer__row cart-drawer__row--discount\" data-cart-discount>\n          <dt>fixture: 3 case pack 31% off<\/dt>\n          <dd>-$77.48<\/dd>\n        <\/div><div class=\"cart-drawer__row cart-drawer__row--total\">\n        <dt>translation missing: en.general.cart.total<\/dt>\n        <dd data-cart-total data-cents=\"17247\" aria-live=\"polite\">$172.47<\/dd>\n      <\/div>\n    <\/dl><form action=\"/cart\" method=\"post\" class=\"cart-drawer__checkout\">\n      <button type=\"submit\" name=\"checkout\" class=\"btn btn--block\">translation missing: en.general.cart.checkout<\/button>\n    <\/form>\n    <a href=\"/cart\" class=\"cart-drawer__view\">translation missing: en.general.cart.view_bag<\/a>\n  <\/div><\/aside>\n\n<link rel=\"stylesheet\" href=\"../../../../../assets/cv-quick-pick.css\" media=\"all\"><style>.cvqp__buy[hidden]{display:none}<\/style>\n<dialog class=\"cvqp\" id=\"cvqp-h\" aria-labelledby=\"cvqpTitle-h\" data-cvqp\n        data-money-format=\"${{amount}}\"\n        data-t-add=\"translation missing: en.general.quick_pick.add\"\n        data-t-adding=\"translation missing: en.general.quick_pick.adding\"\n        data-t-added=\"translation missing: en.general.quick_pick.added\"\n        data-t-sold=\"translation missing: en.general.quick_pick.sold_out\"\n        data-t-missing=\"translation missing: en.general.quick_pick.missing\"\n        data-t-loading=\"translation missing: en.general.quick_pick.loading\"\n        data-t-error=\"translation missing: en.general.quick_pick.error\"\n        data-t-buy=\"translation missing: en.general.quick_pick.buy_now\"\n        data-t-buying=\"translation missing: en.general.quick_pick.buying\"\n        data-t-choose-phone=\"translation missing: en.general.quick_pick.choose_phone\"\n        data-t-choose-option=\"translation missing: en.general.quick_pick.choose_option\"\n        data-t-phone-label=\"translation missing: en.general.quick_pick.phone_label\"\n        data-t-sold-suffix=\"translation missing: en.general.quick_pick.sold_out_suffix\"\n        data-t-none-suffix=\"translation missing: en.general.quick_pick.unavailable_suffix\"\n        data-t-in-bag=\"translation missing: en.general.quick_pick.in_bag\"\n        data-t-add-failed=\"translation missing: en.general.quick_pick.add_failed\">\n  <div class=\"cvqp__sheet\">\n    <button type=\"button\" class=\"cvqp__close\" data-cvqp-close aria-label=\"Close\">\n      <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6 6 18\"/><\/svg>\n    <\/button>\n    <div class=\"cvqp__media\">\n      <img data-cvqp-img alt=\"\" width=\"600\" height=\"600\" hidden>\n    <\/div>\n    <div class=\"cvqp__body\">\n      <h2 class=\"cvqp__title\" id=\"cvqpTitle-h\" data-cvqp-title><\/h2>\n      <p class=\"cvqp__price\"><span data-cvqp-price><\/span> <s data-cvqp-was hidden><\/s><\/p>\n      <div class=\"cvqp__options\" data-cvqp-options><\/div>\n      <button type=\"button\" class=\"cvqp__add\" data-cvqp-add disabled>\n        <svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6a3 3 0 0 1 6 0v2\"/><\/svg>\n        <span data-cvqp-add-label>translation missing: en.general.quick_pick.add<\/span>\n      <\/button>\n      <button type=\"button\" class=\"cvqp__buy btn btn--ghost btn--block\" data-cvqp-buy disabled hidden>\n        <span data-cvqp-buy-label>translation missing: en.general.quick_pick.buy_now<\/span>\n      <\/button>\n      <p class=\"cvqp__status\" data-cvqp-status role=\"status\" aria-live=\"polite\"><\/p>\n      <a class=\"cvqp__more\" href=\"/collections/all\" data-cvqp-more>translation missing: en.general.quick_pick.more<\/a>\n    <\/div>\n  <\/div>\n<\/dialog>\n\n<\/div>"}};</script>
+<script src="../../../tools/stub-fetch.js"></script>
+<script src="../../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-page" class="shopify-section"><header style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #ccc">
+  <strong>fixture header</strong>
+  <a id="bagBtn" href="/cart" data-cart-drawer-open aria-label="Cart, 5 items">Bag <span data-cart-count>5</span></a>
+</header>
+<main style="padding:16px;display:grid;gap:12px;max-width:520px">
+  <div class="fixture-card">
+    <img data-cvm-fly-img src="../../../../../assets/best-case-detail.png" alt="" width="120" height="120">
+    <a href="/products/tech-fabric" id="qpBuy" data-cvqp-open data-handle="tech-fabric" data-url="/products/tech-fabric" data-cvqp-buy-now>Quick add (with Buy now)</a>
+    <a href="/products/tech-fabric" id="qpPlain" data-cvqp-open data-handle="tech-fabric" data-url="/products/tech-fabric">Quick add</a>
+  </div>
+  <form data-cart-add-form id="cardForm" action="/cart/add" method="post"><input type="hidden" name="id" value="41003"><button type="submit" id="cardAdd">Add single case (fixture)</button></form>
+  <button type="button" id="legacy">fire legacy cart:updated</button>
+  <a href="#after" id="after">link after drawer</a>
+</main>
+<link rel="stylesheet" href="../../../../../assets/cv-cart-drawer.css" media="all"><div class="cart-drawer__scrim" id="cm-cart-drawer-scrim" data-cart-drawer-close></div>
+<aside class="cart-drawer" id="cm-cart-drawer" aria-label="Your bag" role="dialog" aria-modal="true" aria-hidden="true" inert
+  data-i18n-adding="translation missing: en.general.cart.adding"
+  data-i18n-added="translation missing: en.general.cart.added"
+  data-i18n-add-error="translation missing: en.general.cart.add_error"
+  data-i18n-change-error="translation missing: en.general.cart.change_error"
+  data-i18n-bag-one="translation missing: en.general.cart.bag_label_one"
+  data-i18n-bag-other="translation missing: en.general.cart.bag_label_other">
+  <div class="cart-drawer__head">
+    <div class="cart-drawer__head-inner">
+      <h3>Your bag</h3>
+      <button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="translation missing: en.general.cart.close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="cart-drawer__body" id="cm-cart-drawer-content"><div class="cart-drawer-item" data-key="41002:fixture" data-qty="1" data-cvm-line>
+          <a href="/products/tech-fabric?variant=41002" class="cart-drawer-item__media" tabindex="-1" aria-hidden="true"></a>
+          <div class="cart-drawer-item__info">
+            <a class="cart-drawer-item__title" href="/products/tech-fabric?variant=41002"><strong>Tech Fabric Magnetic Phone Case for iPhone</strong></a><p class="cart-drawer-item__opt cart-drawer-item__opt--phone"><span class="cart-drawer-item__opt-name">translation missing: en.general.cart.phone_label:</span> iPhone 17 Pro</p><p class="cart-drawer-item__opt"><span class="cart-drawer-item__opt-name">Color:</span> Russet Brown</p><p class="cart-drawer-item__price">$49.99</p>
+          </div>
+          <div class="cart-drawer-item__controls">
+            <div class="cm-stepper">
+              <button type="button" data-qty-decrease aria-label="translation missing: en.general.cart.decrease_label">-</button>
+              <input type="number" inputmode="numeric" data-cart-line-qty="41002:fixture" value="1" min="0" aria-label="translation missing: en.general.cart.quantity_label">
+              <button type="button" data-qty-increase aria-label="translation missing: en.general.cart.increase_label">+</button>
+            </div>
+            <button type="button" class="cart-drawer-item__remove" data-cart-remove="41002:fixture" aria-label="translation missing: en.general.cart.remove_label">translation missing: en.general.cart.remove</button>
+          </div>
+        </div><div class="cart-drawer-item" data-key="41001:fixture" data-qty="4" data-cvm-line>
+          <a href="/products/tech-fabric?variant=41001" class="cart-drawer-item__media" tabindex="-1" aria-hidden="true"></a>
+          <div class="cart-drawer-item__info">
+            <a class="cart-drawer-item__title" href="/products/tech-fabric?variant=41001"><strong>Tech Fabric Magnetic Phone Case for iPhone</strong></a><p class="cart-drawer-item__opt cart-drawer-item__opt--phone"><span class="cart-drawer-item__opt-name">translation missing: en.general.cart.phone_label:</span> iPhone 17 Pro Max</p><p class="cart-drawer-item__opt"><span class="cart-drawer-item__opt-name">Color:</span> Russet Brown</p><p class="cart-drawer-item__price">$199.96</p>
+          </div>
+          <div class="cart-drawer-item__controls">
+            <div class="cm-stepper">
+              <button type="button" data-qty-decrease aria-label="translation missing: en.general.cart.decrease_label">-</button>
+              <input type="number" inputmode="numeric" data-cart-line-qty="41001:fixture" value="4" min="0" aria-label="translation missing: en.general.cart.quantity_label">
+              <button type="button" data-qty-increase aria-label="translation missing: en.general.cart.increase_label">+</button>
+            </div>
+            <button type="button" class="cart-drawer-item__remove" data-cart-remove="41001:fixture" aria-label="translation missing: en.general.cart.remove_label">translation missing: en.general.cart.remove</button>
+          </div>
+        </div></div><div class="cart-drawer__footer" data-cvm-drawer-foot><dl class="cart-drawer__rows">
+      <div class="cart-drawer__row">
+        <dt>translation missing: en.general.cart.subtotal</dt>
+        <dd>$249.95</dd>
+      </div><div class="cart-drawer__row cart-drawer__row--discount" data-cart-discount>
+          <dt>fixture: 3 case pack 31% off</dt>
+          <dd>-$77.48</dd>
+        </div><div class="cart-drawer__row cart-drawer__row--total">
+        <dt>translation missing: en.general.cart.total</dt>
+        <dd data-cart-total data-cents="17247" aria-live="polite">$172.47</dd>
+      </div>
+    </dl><form action="/cart" method="post" class="cart-drawer__checkout">
+      <button type="submit" name="checkout" class="btn btn--block">translation missing: en.general.cart.checkout</button>
+    </form>
+    <a href="/cart" class="cart-drawer__view">translation missing: en.general.cart.view_bag</a>
+  </div></aside>
+
+<link rel="stylesheet" href="../../../../../assets/cv-quick-pick.css" media="all"><style>.cvqp__buy[hidden]{display:none}</style>
+<dialog class="cvqp" id="cvqp-h" aria-labelledby="cvqpTitle-h" data-cvqp
+        data-money-format="${{amount}}"
+        data-t-add="translation missing: en.general.quick_pick.add"
+        data-t-adding="translation missing: en.general.quick_pick.adding"
+        data-t-added="translation missing: en.general.quick_pick.added"
+        data-t-sold="translation missing: en.general.quick_pick.sold_out"
+        data-t-missing="translation missing: en.general.quick_pick.missing"
+        data-t-loading="translation missing: en.general.quick_pick.loading"
+        data-t-error="translation missing: en.general.quick_pick.error"
+        data-t-buy="translation missing: en.general.quick_pick.buy_now"
+        data-t-buying="translation missing: en.general.quick_pick.buying"
+        data-t-choose-phone="translation missing: en.general.quick_pick.choose_phone"
+        data-t-choose-option="translation missing: en.general.quick_pick.choose_option"
+        data-t-phone-label="translation missing: en.general.quick_pick.phone_label"
+        data-t-sold-suffix="translation missing: en.general.quick_pick.sold_out_suffix"
+        data-t-none-suffix="translation missing: en.general.quick_pick.unavailable_suffix"
+        data-t-in-bag="translation missing: en.general.quick_pick.in_bag"
+        data-t-add-failed="translation missing: en.general.quick_pick.add_failed">
+  <div class="cvqp__sheet">
+    <button type="button" class="cvqp__close" data-cvqp-close aria-label="Close">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="cvqp__media">
+      <img data-cvqp-img alt="" width="600" height="600" hidden>
+    </div>
+    <div class="cvqp__body">
+      <h2 class="cvqp__title" id="cvqpTitle-h" data-cvqp-title></h2>
+      <p class="cvqp__price"><span data-cvqp-price></span> <s data-cvqp-was hidden></s></p>
+      <div class="cvqp__options" data-cvqp-options></div>
+      <button type="button" class="cvqp__add" data-cvqp-add disabled>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span data-cvqp-add-label>translation missing: en.general.quick_pick.add</span>
+      </button>
+      <button type="button" class="cvqp__buy btn btn--ghost btn--block" data-cvqp-buy disabled hidden>
+        <span data-cvqp-buy-label>translation missing: en.general.quick_pick.buy_now</span>
+      </button>
+      <p class="cvqp__status" data-cvqp-status role="status" aria-live="polite"></p>
+      <a class="cvqp__more" href="/collections/all" data-cvqp-more>translation missing: en.general.quick_pick.more</a>
+    </div>
+  </div>
+</dialog>
+
+</div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../../assets/theme.js" defer></script>
+<script src="../../../../../assets/cart.js" defer></script>
+<script src="../../../../../assets/cv-quick-pick.js" defer></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

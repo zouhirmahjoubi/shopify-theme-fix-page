@@ -33,5 +33,18 @@
       { "type": "url", "id": "social_pinterest", "label": "Pinterest URL" },
       { "type": "url", "id": "social_facebook",  "label": "Facebook URL" }
     ]
+  },
+  {
+    "name": "Packs and shipping",
+    "settings": [
+      { "type": "header", "content": "Pack discounts" },
+      { "type": "paragraph", "content": "Sections and the cart drawer read these numbers for every pack percentage they print. They do not create a discount." },
+      { "type": "range", "id": "cv_pack_2_pct", "label": "Discount for 2 cases", "min": 0, "max": 90, "step": 1, "unit": "%", "default": 18, "info": "Must equal the automatic discounts in Shopify admin, or page and checkout prices differ. 0 hides the 2 case offer." },
+      { "type": "range", "id": "cv_pack_3_pct", "label": "Discount for 3 cases", "min": 0, "max": 90, "step": 1, "unit": "%", "default": 31, "info": "Must equal the automatic discounts in Shopify admin, or page and checkout prices differ. 0 hides the 3 case offer." },
+      { "type": "header", "content": "Shipping" },
+      { "type": "checkbox", "id": "cv_free_shipping_all", "label": "Free shipping on every order", "default": false, "info": "Turn on only if checkout charges $0 shipping on every order." },
+      { "type": "header", "content": "Cart drawer" },
+      { "type": "checkbox", "id": "cv_open_drawer_on_add", "label": "Open the cart drawer after Add to bag", "default": false, "info": "Off: the case flies to the bag and the shopper stays on the page." }
+    ]
   }
 ]

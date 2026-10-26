@@ -1,8 +1,10 @@
 {%- comment -%}
   Section Rendering API wrapper for snippets/cart-drawer.liquid. It isn't placed
   in any template: assets/cart.js fetches `?sections=cv-cart-drawer` after an add
-  made without a page load (product page, quick pick) so the drawer shows the
-  real cart.
+  made without a page load (product page, quick pick, card forms), and bundles it
+  with /cart/change.js for quantity and remove, so the drawer shows the real cart
+  without a reload. cart.js keeps only the aside's children; anything outside the
+  aside (stylesheet link, scrim) is ignored on refresh.
 {%- endcomment -%}
 {%- render 'cart-drawer' -%}
 

@@ -56,3 +56,17 @@
   On a machine that aborts it, shoot.py exits 1 with only `net::ERR_ABORTED` lines (0 page, console or expect failures).
   Either build the harness with a local poster/clip or default `--allow-net cdn.shopify.com/videos` for media loads.
   Not a task defect.
+
+## From INF-2 verification (regression lens, 2026-10-23)
+
+- schema-validate.py does not read `config/settings_schema.json`, so "schema-validate green for settings_schema.json" cannot be proven
+  with it. Add a theme-settings pass (range step count <= 101, default in range, unique ids, no removed ids vs HEAD).
+- stub-fetch.js serves one static `cv-cart-drawer` snapshot, so qty and remove can never change the returned drawer. It also gives cart keys
+  by index (`<id>:fixture<i>`) and has no `/products/<handle>.js`. A stateful stub with per-state section HTML and stable keys would
+  cover cart and quick pick tests. A working pattern is in the verifier scratch `build.mjs` and `qp.mjs`
+  (C:/Users/LENOVO/AppData/Local/Temp/claude/D--etsy-vinreport/b84b29f8-4341-428e-b13f-6902ba20cbc3/scratchpad/INF-2-verify/).
+
+## From INF-2 verify (experience), 2026-10-23
+- stub-fetch.js: no `/products/<handle>.js` answer (quick pick needs it); `.cart()` returns a clone, so tests cannot mutate the stub cart directly (document it, or add `__stubFetch.mutate(fn)`).
+- render-section.mjs: cart keys are `<id>:fixture<i>` (index based), so a key changes when a line above it is removed; the stub's Section Rendering answer is one static snapshot. Workaround used: `fixture.globals.cart` with stable keys plus a getter on `__STUB_FIXTURE.sections` (harness/inf-2-verify-xp/build.mjs).
+- schema-validate.py does not read config/settings_schema.json.

@@ -3,21 +3,37 @@
 
   One dialog per page, rendered by layout/theme.liquid whenever a card on the
   page has a [data-cvqp-open] button, and filled on demand from
-  /products/<handle>.js. The shopper chooses the colour and the phone model,
-  sees that exact variant's photo, price and stock, and adds that variant.
-  Nothing is added with a guessed model.
+  /products/<handle>.js. The shopper chooses the colour and the phone model
+  (nothing is pre-selected), sees that exact variant's photo, price and stock,
+  and adds that variant. Nothing is added with a guessed model. An opener with
+  data-cvqp-buy-now also shows Buy now, enabled once every option is chosen.
 
   Params: sid (unique id suffix)
   Behaviour + motion: assets/cv-quick-pick.js. Styles: assets/cv-quick-pick.css.
 {%- endcomment -%}
 {{ 'cv-quick-pick.css' | asset_url | stylesheet_tag }}
+{%- comment -%} .btn sets display, so the hidden attribute needs its own rule (move into cv-quick-pick.css, requests/INF-2.md). {%- endcomment -%}
+<style>.cvqp__buy[hidden]{display:none}</style>
 <dialog class="cvqp" id="cvqp-{{ sid }}" aria-labelledby="cvqpTitle-{{ sid }}" data-cvqp
         data-money-format="{{ shop.money_format | escape }}"
-        data-t-add="Add to bag" data-t-adding="Adding…" data-t-added="In your bag"
-        data-t-sold="Sold out" data-t-missing="Not made in this combination"
-        data-t-loading="Opening the case…" data-t-error="That didn’t load. Open the product page instead.">
+        data-t-add="{{ 'general.quick_pick.add' | t | escape }}"
+        data-t-adding="{{ 'general.quick_pick.adding' | t | escape }}"
+        data-t-added="{{ 'general.quick_pick.added' | t | escape }}"
+        data-t-sold="{{ 'general.quick_pick.sold_out' | t | escape }}"
+        data-t-missing="{{ 'general.quick_pick.missing' | t | escape }}"
+        data-t-loading="{{ 'general.quick_pick.loading' | t | escape }}"
+        data-t-error="{{ 'general.quick_pick.error' | t | escape }}"
+        data-t-buy="{{ 'general.quick_pick.buy_now' | t | escape }}"
+        data-t-buying="{{ 'general.quick_pick.buying' | t | escape }}"
+        data-t-choose-phone="{{ 'general.quick_pick.choose_phone' | t | escape }}"
+        data-t-choose-option="{{ 'general.quick_pick.choose_option' | t | escape }}"
+        data-t-phone-label="{{ 'general.quick_pick.phone_label' | t | escape }}"
+        data-t-sold-suffix="{{ 'general.quick_pick.sold_out_suffix' | t | escape }}"
+        data-t-none-suffix="{{ 'general.quick_pick.unavailable_suffix' | t | escape }}"
+        data-t-in-bag="{{ 'general.quick_pick.in_bag' | t | escape }}"
+        data-t-add-failed="{{ 'general.quick_pick.add_failed' | t | escape }}">
   <div class="cvqp__sheet">
-    <button type="button" class="cvqp__close" data-cvqp-close aria-label="Close">
+    <button type="button" class="cvqp__close" data-cvqp-close aria-label="{{ 'general.close' | t | escape }}">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
     <div class="cvqp__media">
@@ -29,10 +45,13 @@
       <div class="cvqp__options" data-cvqp-options></div>
       <button type="button" class="cvqp__add" data-cvqp-add disabled>
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-        <span data-cvqp-add-label>Add to bag</span>
+        <span data-cvqp-add-label>{{ 'general.quick_pick.add' | t }}</span>
+      </button>
+      <button type="button" class="cvqp__buy btn btn--ghost btn--block" data-cvqp-buy disabled hidden>
+        <span data-cvqp-buy-label>{{ 'general.quick_pick.buy_now' | t }}</span>
       </button>
       <p class="cvqp__status" data-cvqp-status role="status" aria-live="polite"></p>
-      <a class="cvqp__more" href="{{ routes.all_products_collection_url }}" data-cvqp-more>Every photo and detail</a>
+      <a class="cvqp__more" href="{{ routes.all_products_collection_url }}" data-cvqp-more>{{ 'general.quick_pick.more' | t }}</a>
     </div>
   </div>
 </dialog>
