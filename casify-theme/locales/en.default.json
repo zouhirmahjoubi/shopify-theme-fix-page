@@ -34,7 +34,15 @@
       "each_abbr": "each",
       "note_placeholder": "Add a note to your order",
       "free_shipping_applied": "Free shipping applied",
-      "empty_cta": "Find a case for your phone"
+      "empty_cta": "Find a case for your phone",
+      "update": "Update bag",
+      "free_shipping_remaining": "You are {{ amount }} away from free shipping.",
+      "taxes_only_note": "Taxes are calculated at checkout.",
+      "heading": "Ready when you are",
+      "empty_body": "Nothing in here yet. Pick your phone model and the right case is one tap away.",
+      "summary_title": "Order summary",
+      "note_label": "Add a note",
+      "secure_checkout": "Secure checkout"
     },
     "quick_pick": {
       "add": "Add to bag",
@@ -68,6 +76,9 @@
       "home_description": "{{ shop }}: phone cases for iPhone and Samsung, chosen for your exact model. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
       "product_description": "{{ title }} from {{ shop }}. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
       "listing_description": "{{ title }} at {{ shop }}, phone cases for iPhone and Samsung. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days."
+    },
+    "breadcrumbs": {
+      "home": "Home"
     }
   },
   "gift_cards": {
@@ -151,7 +162,12 @@
       "editor_hint": "Enter your Google rating in this block to show the badge."
     },
     "sales_note": { "editor_hint": "Sales note: hidden from shoppers until this product's count ({{ key }}) or the block's Number is at least {{ min }}." },
-    "product_summary": { "reviews": "reviews", "save": "Save", "rating_label": "Rated {{ rating }} out of 5 from {{ count }} product reviews" },
+    "product_summary": {
+      "reviews": "reviews",
+      "save": "Save",
+      "rating_label": "Rated {{ rating }} out of 5 from {{ count }} product reviews",
+      "review_one": "review"
+    },
     "awning": { "swipe_hint": "Scroll or swipe sideways to change the awning" },
     "buy": {
       "add_to_bag": "Add to bag",
@@ -169,7 +185,12 @@
       "mixed": "[qty] cases, mixed",
       "choose_model": "Choose your phone model first",
       "model_placeholder": "Choose your phone model",
-      "error": "That didn’t go through. Please try again."
+      "error": "That didn’t go through. Please try again.",
+      "slot_name": "Case [n]",
+      "slot_option_label": "Case [n]: [option]",
+      "slot_sold_out": "Case [n] is sold out in that choice",
+      "slots_legend": "Your [qty] cases",
+      "slot_same": "Same as case 1"
     },
     "rating": {
       "out_of": "{{ rating }} out of 5",
@@ -183,12 +204,73 @@
       "add": "Add to bag",
       "buy_now": "Buy now",
       "made_for_models": "Made for {{ models }}",
-      "in_stock_all": "In stock for every model"
+      "in_stock_all": "In stock for every model",
+      "count": "[i] of [n]",
+      "pack_line": "Pack of [qty] · [total] · [pct]% off",
+      "pack_line_plain": "Pack of [qty] · [total]",
+      "pct_off": "[pct]% off",
+      "not_in_colour_suffix": " (not in this colour)"
     },
     "best": {
       "made_for_phone": "Made for {{ phone }}",
       "show_all_models": "Show all models",
-      "buy_now": "Buy now"
+      "buy_now": "Buy now",
+      "your_phone": "your phone",
+      "show_fewer_models": "Show fewer models",
+      "packs_label": "How many cases",
+      "pack_one": "1 case",
+      "pack_many": "[qty] cases",
+      "fabric_note_html": "Soft<br>Touch<br>Tech Fabric",
+      "best_seller_html": "BEST<br>SELLER",
+      "magnetic_ready": "Magnetic accessory ready",
+      "raised_camera_edge": "Raised camera edge",
+      "woven_texture": "Woven texture",
+      "free_shipping": "Free shipping",
+      "returns": "30-day returns",
+      "ships": "Ships in 1 to 3 business days",
+      "secure_checkout": "Secure checkout",
+      "everyday": "Made for your everyday",
+      "real_details": "Real details, real style",
+      "love_heading": "Why you’ll love it",
+      "fit_copy": "Choose your model above to see the case made for it.",
+      "responsive_buttons": "Responsive buttons",
+      "soft_touch_finish": "Soft-touch finish",
+      "magnetic_heading": "Magnetic power",
+      "magnetic_copy": "Snap on. Stay on. Compatible with magnetic accessories.",
+      "accessory_charger": "MagSafe charger",
+      "accessory_wallet": "Magnetic wallet",
+      "accessory_mount": "Car mount",
+      "accessory_power_bank": "Power bank",
+      "protection_heading": "Drop protection",
+      "protection_copy": "Built to handle everyday bumps.",
+      "material_heading": "Premium material",
+      "material_copy": "High-quality woven fabric with a soft, comfortable grip.",
+      "colors_heading": "All colors",
+      "colors_copy": "Find your perfect style.",
+      "compare_heading": "Casify vs others",
+      "magnetic_design": "Magnetic accessory design",
+      "multiple_styles": "Multiple styles",
+      "listed_by_model": "Listed by phone model",
+      "check_heading": "What to check",
+      "check_1": "Material and feel",
+      "check_2": "Accessory fit",
+      "check_3": "Camera protection",
+      "check_4": "Available styles",
+      "check_5": "Returns policy",
+      "faq_heading": "Frequently asked questions",
+      "endcap_heading_html": "Ready for a new case<br>for your phone?",
+      "choose_yours": "Choose yours",
+      "endcap_assurance": "Free shipping · 30-day returns",
+      "faq_q1": "Is this case compatible with MagSafe?",
+      "faq_a1": "Choose a model and check the product details for magnetic accessory compatibility.",
+      "faq_q2": "Will it protect my phone if I drop it?",
+      "faq_a2": "A case helps with everyday knocks. No case can prevent every type of damage. Check the product details for this case.",
+      "faq_q3": "What is the case made of?",
+      "faq_a3": "Check the product details for the exact materials of your selected style.",
+      "faq_q4": "How long does shipping take?",
+      "faq_a4": "Orders dispatch in 1 to 3 business days. Delivery time depends on your destination.",
+      "faq_q5": "What is your return policy?",
+      "faq_a5": "You can return an eligible order within 30 days. See the store’s return policy for details."
     }
   },
   "collections": {
@@ -212,7 +294,24 @@
       "from": "From",
       "clear_all": "Clear all",
       "clear_all_filters": "Clear all filters",
-      "remove_filter": "Remove filter"
+      "remove_filter": "Remove filter",
+      "to": "To",
+      "close": "Close filters",
+      "in_use": "Filters in use",
+      "remove_named": "Remove {{ label }} filter",
+      "price_range": "{{ min }} to {{ max }}"
+    },
+    "pack_meter": {
+      "heading": "Mix a pack",
+      "line_0": "Mix any 2 cases for [p2]% off, or any 3 for [p3]% off. Colours and phones can all be different.",
+      "line_1": "1 case in your bag. Add 1 more and [p2]% comes off both.",
+      "line_2": "2 cases in your bag: [p2]% off at checkout. Add 1 more for [p3]% off.",
+      "line_3": "[n] cases in your bag: [p3]% off at checkout.",
+      "tag_1": "1 case"
+    },
+    "card": {
+      "choose_phone_short": "Choose phone",
+      "choose_options": "Choose options"
     }
   },
   "sections": {
