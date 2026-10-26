@@ -1,6 +1,10 @@
 {% doc %}
-  Google rating strip shown under the product buttons ("google_rating" block in
+  Rating strip shown under the product buttons ("google_rating" block in
   sections/cv-product-counter.liquid). Renders nothing until a rating is entered.
+  When the section's store rating is set, the strip shows that figure, which is
+  the combined Google and Trustpilot rating (DECISIONS.md 2026-10-26): neutral
+  star mark and both names, never the Google logo alone. Only the block's own
+  Google-only rating keeps the Google mark.
 
   @param {object} block - The google_rating block.
   @param {object} [settings] - The counter section's settings: its store rating values win, so the
@@ -13,8 +17,10 @@
   endcomment
   assign rating_value = rating | replace: ',', '.' | plus: 0
   assign count = block.settings.review_count | strip
+  assign is_store = false
   if settings.external_review_rating != blank
     assign count = settings.external_review_count | strip
+    assign is_store = true
   endif
   if settings != blank and settings.show_store_rating != true
     assign rating_value = 0
@@ -26,7 +32,13 @@
   {%- assign star_fill = rating_value | times: 20 -%}
   {{ 'cv-google-rating.css' | asset_url | stylesheet_tag }}
   {%- capture label -%}
-    {{ 'products.google_rating.aria_label' | t: rating: rating }}{% if count != blank %}, {{ 'products.google_rating.count' | t: count: count }}{% endif %}
+    {%- if is_store and count != blank -%}
+      {{ 'products.review_badges.combined_label' | t: rating: rating, count: count }}
+    {%- elsif is_store -%}
+      {{ 'products.review_badges.combined_label_no_count' | t: rating: rating }}
+    {%- else -%}
+      {{ 'products.google_rating.aria_label' | t: rating: rating }}{% if count != blank %}, {{ 'products.google_rating.count' | t: count: count }}{% endif %}
+    {%- endif -%}
   {%- endcapture -%}
   {%- if url != blank -%}
     <a class="cvgr" href="{{ url | escape }}" target="_blank" rel="noopener noreferrer" aria-label="{{ label | strip | escape }} {{ 'products.google_rating.new_window' | t | escape }}" {{ block.shopify_attributes }}>
@@ -42,6 +54,10 @@
         {{- 'products.google_rating.rated' | t }} <strong>{{ 'products.google_rating.score' | t: rating: rating }}</strong> {{ 'products.google_rating.on' | t -}}
       </span>
       <span class="cvgr__google">
+        {%- if is_store -%}
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" focusable="false"><path d="m12 2.3 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 16.87l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z"/></svg>
+        {{- 'products.review_badges.combined' | t -}}
+        {%- else -%}
         <svg viewBox="0 0 24 24" width="16" height="16" focusable="false">
           <path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/>
           <path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/>
@@ -49,6 +65,7 @@
           <path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/>
         </svg>
         {{- 'products.google_rating.google' | t -}}
+        {%- endif -%}
       </span>
       {%- if count != blank -%}
         <span class="cvgr__count">{{ 'products.google_rating.count' | t: count: count }}</span>

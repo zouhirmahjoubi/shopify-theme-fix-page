@@ -14,6 +14,34 @@
 
 {%- liquid
   assign cvar = product.selected_or_first_available_variant
+  comment
+    A phone model is never chosen for the shopper (DECISIONS.md). Same model option test and
+    pending rule as the buy box (cv-product-counter model_pending): with more than one model and
+    no ?variant=, the summary reads "[product] · Choose your phone" until cv-pdp-story.js updates it.
+  endcomment
+  assign model_oi = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+      assign model_oi = forloop.index0
+      break
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign fv = option.values.first | downcase
+      if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+  assign model_pending = false
+  if model_oi >= 0 and product.selected_variant == blank
+    if product.options_with_values[model_oi].values.size > 1
+      assign model_pending = true
+    endif
+  endif
   assign faq_count = section.blocks | where: 'type', 'faq' | size
   assign promise_count = section.blocks | where: 'type', 'promise' | size
   if faq_count > 0
@@ -68,7 +96,7 @@
       <img class="cvw-close__sweet cvw-close__sweet--lolly" src="{{ 'hero-sweet-lollipop.webp' | asset_url }}" width="313" height="440" alt="" loading="lazy" decoding="async">
       <img class="cvw-close__sweet cvw-close__sweet--wrapped" src="{{ 'hero-sweet-wrapped-red.webp' | asset_url }}" width="440" height="212" alt="" loading="lazy" decoding="async">
       <{{ close_tag }} class="cvw-close__title" id="cvwCloseTitle-{{ section.id }}">{{ section.settings.close_heading | escape }}</{{ close_tag }}>
-      <p class="cvp-closer__summary cvw-close__summary" data-cvp-summary>{{ product.title | escape }} · {{ cvar.title | escape }}</p>
+      <p class="cvp-closer__summary cvw-close__summary" data-cvp-summary>{{ product.title | escape }} · {% if model_pending %}{{ 'general.quick_pick.choose_phone' | t | escape }}{% else %}{{ cvar.title | escape }}{% endif %}</p>
 
       {%- if promise_count > 0 -%}
         <ul class="cvw-close__vows" role="list">

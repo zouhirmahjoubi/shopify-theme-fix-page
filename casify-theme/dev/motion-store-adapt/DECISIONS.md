@@ -40,3 +40,12 @@
 - Also seeded for wave 1: `products.gallery.*` (photos_label, view_3d, view_in_space, zoom, close, previous_photo,
   next_photo), `products.rating.*`, `products.carousel.*`, `products.best.*`, and top-level `collections.*`
   (with `collections.filters.*`). A unit that needs anything else files locale-requests/<unit>.json for LOC-2.
+
+## Owner answers, 2026-10-26 (TPL-1 claims)
+
+- Review count: every invented count ("+1000 Happy Customer", "1,000+", "+1000") becomes 4.9 from 952,
+  labelled as the combined Google and Trustpilot figure; `show_store_rating` turns on.
+- The "Daniel K." video review is a real buyer's clip: keep it as it is.
+- Checkout charges $0 shipping on every order: turn on `cv_free_shipping_all`, so the cart and the
+  "Free shipping" trust line agree.
+- The automatic 2 and 3 case discounts apply to phone cases only: the pack nudge counts cases only.

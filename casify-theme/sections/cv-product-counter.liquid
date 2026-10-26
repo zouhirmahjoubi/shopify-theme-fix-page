@@ -15,8 +15,9 @@
 
   Product ratings come only from Shopify's standard review metafields
   (reviews.rating, reviews.rating_count), which review apps write. Until they
-  exist the row reads "No reviews yet". The separate Trustpilot and Google
-  strip is a merchant-supplied store rating and never feeds product review data.
+  exist the row reads "No reviews yet". The store rating tickets and strip show a
+  merchant-supplied store rating (the combined Google and Trustpilot figure, labelled
+  as such) and never feed product review data.
 
   The offer tag uses the selected variant's compare-at price when one exists.
   Otherwise it may use the merchant-supplied fallback from this section. The
@@ -911,12 +912,12 @@
     { "type": "text", "id": "empty_rating_text", "label": "Customer proof text", "default": "No reviews yet", "info": "Shown before this product has its own reviews, only while the box above is ticked." },
     { "type": "text", "id": "empty_rating_link", "label": "No reviews link", "default": "Write the first review" },
     { "type": "header", "content": "Google and Trustpilot ratings" },
-    { "type": "paragraph", "content": "Shown under the price, one ticket per platform. A ticket shows only when its rating is filled in. Copy the numbers from your Google Business Profile and Trustpilot page, and update them when they change." },
+    { "type": "paragraph", "content": "Shown under the price. The store rating is your Google and Trustpilot reviews combined and is labelled that way on the page. The Trustpilot fields are for a Trustpilot-only score and can stay empty. A ticket shows only when its rating is filled in. Update the numbers when they change." },
     { "type": "checkbox", "id": "show_external_review_badges", "label": "Show Google and Trustpilot ratings", "default": true },
     { "type": "checkbox", "id": "show_store_rating", "label": "These store ratings match the shop's review pages", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only when the numbers below are the real ones (the documented store rating is 4.9 from 952 reviews on Trustpilot and Google). Off hides the tickets, the Google strip and the store rating under the title." },
-    { "type": "text", "id": "external_review_rating", "label": "Google rating", "info": "For example 4.8. Also used for the stars under the title while a product has no reviews of its own." },
-    { "type": "text", "id": "external_review_count", "label": "Google review count", "info": "For example 1,000+." },
-    { "type": "url", "id": "google_reviews_url", "label": "Google reviews link", "info": "Optional. Opens your Google reviews in a new tab." },
+    { "type": "text", "id": "external_review_rating", "label": "Store rating (Google and Trustpilot combined)", "info": "For example 4.9. Shown as \"Google and Trustpilot\". Also used for the stars under the title while a product has no reviews of its own." },
+    { "type": "text", "id": "external_review_count", "label": "Store review count (Google and Trustpilot combined)", "info": "For example 952." },
+    { "type": "url", "id": "google_reviews_url", "label": "Store rating link", "info": "Optional. Opens your reviews page in a new tab." },
     { "type": "text", "id": "trustpilot_rating", "label": "Trustpilot rating", "info": "Your TrustScore, for example 4.5." },
     { "type": "text", "id": "trustpilot_review_count", "label": "Trustpilot review count" },
     { "type": "url", "id": "trustpilot_url", "label": "Trustpilot page link", "info": "Optional. Opens your Trustpilot page in a new tab." },

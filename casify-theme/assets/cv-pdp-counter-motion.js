@@ -686,9 +686,10 @@
   }
 
   /* Make it a pair (sections/cv-pdp-set.liquid): after a one-tap Add, /cart.js says whether the bag
-     now holds 2 or more items, the minimum of the 2 case automatic discount; only then the card's
-     [data-cvp-set-pair] note shows. Removing [hidden] is what cv-commerce-motion.js stamps
-     (data-cvm-stamp); under reduced motion, or without GSAP, it is a plain reveal. One document
+     now holds 2 or more phone cases, the minimum of the 2 case automatic discount (cases only, so a
+     cloth or charm never counts: window.CasifyCart.caseCount in cart.js, read at call time,
+     cart.item_count only if it is missing); only then the card's [data-cvp-set-pair] note shows.
+     Removing [hidden] is what cv-commerce-motion.js stamps (data-cvm-stamp); under reduced motion, or without GSAP, it is a plain reveal. One document
      listener for the page's life, so editor reloads add nothing. */
   function cartRoot() {
     var r = window.Shopify && window.Shopify.routes && window.Shopify.routes.root;
@@ -700,7 +701,12 @@
     if (!note || !note.hidden || typeof window.fetch !== 'function') return;
     window.fetch(cartRoot() + 'cart.js', { headers: { Accept: 'application/json' } })
       .then(function (res) { return res.ok ? res.json() : null; })
-      .then(function (cart) { if (cart && cart.item_count >= 2 && note.isConnected) note.hidden = false; })
+      .then(function (cart) {
+        if (!cart) return;
+        var cc = window.CasifyCart && window.CasifyCart.caseCount;
+        var cases = typeof cc === 'function' ? cc(cart) : (cart.item_count || 0);
+        if (cases >= 2 && note.isConnected) note.hidden = false;
+      })
       .catch(function () {});
   });
 

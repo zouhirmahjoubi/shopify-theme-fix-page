@@ -56,14 +56,23 @@
 
   assign pack2 = settings.cv_pack_2_pct | default: 0
   assign pack3 = settings.cv_pack_3_pct | default: 0
+  comment
+    The automatic pack discounts apply to phone cases only, so the nudge counts case units
+    (snippets/cv-case-count.liquid), not cart.item_count. The lines below find the phone option
+    with the same name and value lists, so a line that shows a Phone row is a line that counts.
+  endcomment
+  capture case_count
+    render 'cv-case-count'
+  endcapture
+  assign case_count = case_count | strip | plus: 0
   assign nudge = ''
-  if cart.item_count == 1
+  if case_count == 1
     if pack2 > 0
       assign nudge = 'general.cart.nudge_two' | t: pct: pack2
     elsif pack3 > 0
       assign nudge = 'general.cart.nudge_three_from_one' | t: pct: pack3
     endif
-  elsif cart.item_count == 2 and pack3 > 0
+  elsif case_count == 2 and pack3 > 0
     assign nudge = 'general.cart.nudge_three' | t: pct: pack3
   endif
 -%}

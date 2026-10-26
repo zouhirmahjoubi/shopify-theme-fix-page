@@ -148,12 +148,19 @@
       if (next) next.setAttribute('data-cvm-bag', '');
     }
 
+    /* Pack discounts apply to phone cases only: the shared test lives in cart.js (loaded on every
+       page, after this file, so it is read at call time). cart.item_count only if it is missing. */
+    function caseCount(cart) {
+      var cc = window.CasifyCart && window.CasifyCart.caseCount;
+      return typeof cc === 'function' ? cc(cart) : (cart.item_count || 0);
+    }
+
     function update(cart) {
       var imgs = [];
       (cart.items || []).forEach(function (item) {
         for (var q = 0; q < item.quantity && imgs.length < 3; q++) imgs.push(item.image || (item.featured_image && item.featured_image.url) || '');
       });
-      var n = cart.item_count || 0;
+      var n = caseCount(cart);
       boxes.forEach(function (box, i) {
         var img = $('[data-cvpm-img]', box);
         var want = imgs[i];

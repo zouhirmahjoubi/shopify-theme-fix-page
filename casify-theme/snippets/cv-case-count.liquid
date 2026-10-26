@@ -1,0 +1,37 @@
+{% doc %}
+  Outputs one number: how many phone-case units are in the cart (the sum of
+  item.quantity over case lines), and nothing else. The automatic 2 and 3 case
+  pack discounts apply to phone cases only, so the pack nudge (cv-cart,
+  cart-drawer) and the pack meter (cv-pack-meter) count with this, never with
+  cart.item_count. A cloth or a charm never counts.
+
+  A line is a case when one of its options has a name containing model, phone,
+  device, compatib or applicable, or a value containing iphone, galaxy, samsung
+  or pixel. The JS twin is window.CasifyCart.caseCount in assets/cart.js; keep
+  the two tests identical.
+
+  @example
+  {%- capture case_count -%}{%- render 'cv-case-count' -%}{%- endcapture -%}
+  {%- assign case_count = case_count | strip | plus: 0 -%}
+{% enddoc %}
+{%- liquid
+  assign case_count = 0
+  for item in cart.items
+    assign is_case = false
+    for o in item.options_with_values
+      assign oname = o.name | downcase
+      assign oval = o.value | downcase
+      if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
+        assign is_case = true
+        break
+      elsif oval contains 'iphone' or oval contains 'galaxy' or oval contains 'samsung' or oval contains 'pixel'
+        assign is_case = true
+        break
+      endif
+    endfor
+    if is_case
+      assign case_count = case_count | plus: item.quantity
+    endif
+  endfor
+  echo case_count
+-%}

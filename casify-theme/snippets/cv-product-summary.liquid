@@ -4,7 +4,7 @@
 
   Every number is live: the rating comes from the product's own review metafields, else
   from this product's approved reviews in the Review widget (sections/review-widget.liquid),
-  else the section's Google rating. With none, "Be the first to review" links to the
+  else the section's store rating (the combined Google and Trustpilot figure). With none, "Be the first to review" links to the
   widget and opens its form. The prices come from the selected variant — cv-product.js
   keeps them in step when the shopper changes variant. The Google and Trustpilot
   tickets (snippets/cv-store-ratings.liquid) sit directly under the price.
@@ -121,14 +121,19 @@
       <span class="cvc-sum__stars" aria-hidden="true">{%- render 'cv-stars', fill: star_fill -%}</span>
       {%- if rating_is_store -%}<span class="cvc-sum__source" aria-hidden="true">{{ 'products.rating.store_rating_label' | t }}</span>{%- endif -%}
       <strong class="cvc-sum__score" aria-hidden="true">{{ rating_shown }}</strong>
-      {%- if rating_count != blank -%}
+      {%- comment -%} The store rating is the combined Google and Trustpilot figure (DECISIONS.md 2026-10-26), and says so. {%- endcomment -%}
+      {%- if rating_is_store and rating_count != blank -%}
+        <span class="cvc-sum__count" aria-hidden="true">({{ 'products.rating.store_reviews_combined' | t: count: rating_count }})</span>
+      {%- elsif rating_is_store -%}
+        <span class="cvc-sum__count" aria-hidden="true">({{ 'products.review_badges.combined' | t }})</span>
+      {%- elsif rating_count != blank -%}
         <span class="cvc-sum__count" aria-hidden="true">({{ rating_count }} {% if rating_count == 1 %}review{% else %}{{ 'products.product_summary.reviews' | t }}{% endif %})</span>
       {%- endif -%}
       <span class="cvc__visually-hidden">
         {%- if rating_is_store and rating_count != blank -%}
-          {{ 'products.review_badges.google_label' | t: rating: rating_shown, count: rating_count }}
+          {{ 'products.review_badges.combined_label' | t: rating: rating_shown, count: rating_count }}
         {%- elsif rating_is_store -%}
-          {{ 'products.review_badges.google_label_no_count' | t: rating: rating_shown }}
+          {{ 'products.review_badges.combined_label_no_count' | t: rating: rating_shown }}
         {%- else -%}
           {{ 'products.product_summary.rating_label' | t: rating: rating_shown, count: rating_count }}
         {%- endif -%}

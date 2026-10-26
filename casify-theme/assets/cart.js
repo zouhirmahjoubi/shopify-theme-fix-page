@@ -7,6 +7,8 @@
  *   window.CasifyCart.refresh()  Promise of {added, removed, changed, cart} (or null); calls made in
  *                                the same tick share one refresh
  *   window.CasifyCart.open(opener), window.CasifyCart.close()
+ *   window.CasifyCart.caseCount(cart)  phone-case units in a /cart.js cart (pack discounts count
+ *                                cases only; same test as snippets/cv-case-count.liquid)
  *   window.Casify.openDrawer(opener), .updateCartCount() (Promise of the cart or null),
  *   .showToast(title, body, tone)  tone 'danger' gives the red alert toast (theme.js)
  * Dispatched on document:
@@ -413,10 +415,28 @@
     }
   }
 
+  /* Phone-case units in a /cart.js cart. The 2 and 3 case pack discounts apply to phone cases
+     only: a line is a case when an option name contains model/phone/device/compatib/applicable
+     or an option value contains iphone/galaxy/samsung/pixel. Same test as
+     snippets/cv-case-count.liquid; keep the two identical. */
+  var CASE_NAME = /model|phone|device|compatib|applicable/;
+  var CASE_VALUE = /iphone|galaxy|samsung|pixel/;
+  function caseCount(cart) {
+    var n = 0;
+    ((cart && cart.items) || []).forEach(function (item) {
+      var isCase = (item.options_with_values || []).some(function (o) {
+        return CASE_NAME.test(String(o.name || '').toLowerCase()) || CASE_VALUE.test(String(o.value || '').toLowerCase());
+      });
+      if (isCase) n += item.quantity || 0;
+    });
+    return n;
+  }
+
   /* The count is already server rendered; boot only syncs it (no bump). */
   getCart().then(function (cart) { paintCount(cart, false); }, function () {});
 
   window.CasifyCart = window.CasifyCart || {};
+  window.CasifyCart.caseCount = caseCount;
   window.CasifyCart.refresh = refreshCart;
   window.CasifyCart.open = openDrawer;
   window.CasifyCart.close = closeDrawer;

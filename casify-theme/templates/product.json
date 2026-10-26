@@ -33,7 +33,7 @@
             "qty": 2,
             "discount_pct": 18,
             "name": "2 cases",
-            "flag_label": "Save 18%",
+            "flag_label": "",
             "accent": "red",
             "default_checked": true
           }
@@ -74,7 +74,7 @@
           "type": "google_rating",
           "settings": {
             "rating": "4.9",
-            "review_count": "+1000",
+            "review_count": "952",
             "headline": "",
             "reviews_url": ""
           }
@@ -115,7 +115,7 @@
             "submit_label": "Filmed yours? Send it in",
             "submit_url": "",
             "model_label": "Your phone",
-            "model_placeholder": "Select your phone model",
+            "model_placeholder": "",
             "pick_model_text": "Pick your phone model first, so the case fits.",
             "cta_label": "Add to bag",
             "cta_pack_label": "Add [qty] cases"
@@ -153,7 +153,7 @@
       "settings": {
         "crumb_label": "Cases",
         "vendor_suffix": "Cases",
-        "zoom_label": "Tap to zoom",
+        "zoom_label": "",
         "compare_price_fallback": "",
         "show_price_saving": false,
         "show_rating": false,
@@ -164,14 +164,15 @@
         "show_price_tag": false,
         "show_photo_price": true,
         "awning_swipe": true,
-        "empty_rating_text": "+1000 Happy Customer",
-        "empty_rating_link": "Write the first",
+        "empty_rating_text": "",
+        "empty_rating_link": "Write the first review",
         "show_external_review_badges": true,
-        "external_review_rating": "4.8",
-        "external_review_count": "1,000+",
+        "show_store_rating": true,
+        "external_review_rating": "4.9",
+        "external_review_count": "952",
         "google_reviews_url": "",
-        "trustpilot_rating": "4.9",
-        "trustpilot_review_count": "952",
+        "trustpilot_rating": "",
+        "trustpilot_review_count": "",
         "trustpilot_url": "",
         "low_stock_threshold": 10,
         "low_stock_text": "Only [qty] left in this style",
@@ -357,7 +358,7 @@
             "media_alt": "",
             "tone": "red",
             "heading": "Protection you forget is there",
-            "text": "<p>Slim in the hand, tough where it counts — cut for your exact phone, not a size that’s “close enough.”</p>",
+            "text": "<p>Slim in the hand, tough where it counts, cut for your exact phone, not a size that’s “close enough.”</p>",
             "link": "shopify://collections/all",
             "link_label": "Shop cases"
           }
@@ -383,7 +384,7 @@
             "media_alt": "",
             "tone": "gold",
             "heading": "Cut for your exact model",
-            "text": "<p>Each case is cut from your phone’s own CAD file — one mould per model, so the fit is exact, not “close enough”.</p>",
+            "text": "<p>Each case is cut from your phone’s own CAD file: one mould per model, so the fit is exact, not “close enough”.</p>",
             "link": "",
             "link_label": ""
           }
@@ -420,7 +421,7 @@
         "pick_label": "Your colour",
         "chips_label": "Colour",
         "model_label": "Your phone",
-        "model_placeholder": "Select your phone model",
+        "model_placeholder": "",
         "pick_model_text": "Pick your phone model first, so the case fits.",
         "cta_label": "Add to bag",
         "cta_pack_label": "Add [qty] cases",
@@ -577,55 +578,55 @@
         "review-1": {
           "type": "review",
           "settings": {
-            "quote": "Great quality, fast shipping and it looks even better in person. Would definitely buy again.",
-            "name": "Sarah M.",
+            "quote": "",
+            "name": "",
             "rating": 5,
-            "verified": true
+            "verified": false
           }
         },
         "review-2": {
           "type": "review",
           "settings": {
-            "quote": "Fits perfectly and feels premium. Already ordered a second one as a gift.",
-            "name": "James K.",
+            "quote": "",
+            "name": "",
             "rating": 5,
-            "verified": true
+            "verified": false
           }
         },
         "review-3": {
           "type": "review",
           "settings": {
-            "quote": "Really nice product. Shipping took a couple of extra days but it was worth the wait.",
-            "name": "Lina R.",
-            "rating": 4,
-            "verified": true
+            "quote": "",
+            "name": "",
+            "rating": 5,
+            "verified": false
           }
         },
         "review-4": {
           "type": "review",
           "settings": {
-            "quote": "The quality blew me away. Customer support was quick and friendly too.",
-            "name": "Omar B.",
+            "quote": "",
+            "name": "",
             "rating": 5,
-            "verified": true
+            "verified": false
           }
         },
         "review-5": {
           "type": "review",
           "settings": {
-            "quote": "Colors are vibrant and the finish is flawless. Highly recommend.",
-            "name": "Emma T.",
+            "quote": "",
+            "name": "",
             "rating": 5,
-            "verified": true
+            "verified": false
           }
         },
         "review-6": {
           "type": "review",
           "settings": {
-            "quote": "Sturdy, looks great, and the packaging was lovely.",
-            "name": "Noah P.",
-            "rating": 4,
-            "verified": true
+            "quote": "",
+            "name": "",
+            "rating": 5,
+            "verified": false
           }
         }
       },
@@ -1014,7 +1015,7 @@
       "settings": {
         "eyebrow": "From the counter",
         "heading": "Two cases? 18% off each. Three? 31% off.",
-        "text": "<p>Pick a pack on any case and the saving comes off automatically at checkout — no code needed.</p>",
+        "text": "<p>Pick a pack on any case and the saving comes off automatically at checkout, no code needed.</p>",
         "code": "",
         "apply_code": false,
         "button_label": "Choose your pack",
@@ -1024,7 +1025,7 @@
         "display": "popup",
         "popup_delay": 5,
         "popup_days": 0,
-        "bubble_before": "Hold on — I’ve got something for you!",
+        "bubble_before": "Hold on, I’ve got something for you!",
         "bubble_after": "Here you go!"
       }
     },
@@ -1034,72 +1035,72 @@
         "review_mD8bGM": {
           "type": "review",
           "settings": {
-            "author": "Sarah M.",
+            "author": "",
             "rating": 5,
-            "title": "Absolutely love it",
-            "text": "Great quality, fast shipping and it looks even better in person. Would definitely buy again.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         },
         "review_QBCdNf": {
           "type": "review",
           "settings": {
-            "author": "James K.",
+            "author": "",
             "rating": 5,
-            "title": "Perfect fit",
-            "text": "Fits perfectly and feels premium. Already ordered a second one as a gift.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         },
         "review_cVVdit": {
           "type": "review",
           "settings": {
-            "author": "Lina R.",
-            "rating": 4,
-            "title": "Very happy",
-            "text": "Really nice product. Shipping took a couple of extra days but it was worth the wait.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "author": "",
+            "rating": 5,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         },
         "review_mCExr3": {
           "type": "review",
           "settings": {
-            "author": "Omar B.",
+            "author": "",
             "rating": 5,
-            "title": "Best purchase this year",
-            "text": "The quality blew me away. Customer support was quick and friendly too.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         },
         "review_cjzTbc": {
           "type": "review",
           "settings": {
-            "author": "Emma T.",
+            "author": "",
             "rating": 5,
-            "title": "Exactly as pictured",
-            "text": "Colors are vibrant and the finish is flawless. Highly recommend.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         },
         "review_idiazm": {
           "type": "review",
           "settings": {
-            "author": "Noah P.",
-            "rating": 4,
-            "title": "Solid and stylish",
-            "text": "Sturdy, looks great, and the packaging was lovely.",
-            "date": "2 weeks ago",
-            "verified": true,
+            "author": "",
+            "rating": 5,
+            "title": "",
+            "text": "",
+            "date": "",
+            "verified": false,
             "product": ""
           }
         }
@@ -1172,10 +1173,10 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "title": "Exceeded my expectations",
-            "text": "The quality is outstanding and it arrived faster than expected. I get compliments every time I use it.",
-            "author": "Sarah M.",
-            "meta": "Verified buyer",
+            "title": "",
+            "text": "",
+            "author": "",
+            "meta": "",
             "product": ""
           }
         },
@@ -1183,10 +1184,10 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "title": "Worth every penny",
-            "text": "Premium feel, perfect fit and great customer service. Already recommended it to friends.",
-            "author": "James K.",
-            "meta": "Verified buyer",
+            "title": "",
+            "text": "",
+            "author": "",
+            "meta": "",
             "product": ""
           }
         },
@@ -1194,21 +1195,21 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "title": "My new favorite",
-            "text": "Looks exactly like the photos. The details are beautiful and it feels built to last.",
-            "author": "Lina R.",
-            "meta": "Verified buyer",
+            "title": "",
+            "text": "",
+            "author": "",
+            "meta": "",
             "product": ""
           }
         },
         "review_iLnnR4": {
           "type": "review",
           "settings": {
-            "rating": 4,
-            "title": "Great purchase",
-            "text": "Really happy with it. Packaging was lovely too, felt like opening a gift.",
-            "author": "Omar B.",
-            "meta": "Verified buyer",
+            "rating": 5,
+            "title": "",
+            "text": "",
+            "author": "",
+            "meta": "",
             "product": ""
           }
         },
@@ -1216,10 +1217,10 @@
           "type": "review",
           "settings": {
             "rating": 5,
-            "title": "Ordering another",
-            "text": "Bought one for me and now I'm getting one for my sister. Highly recommend!",
-            "author": "Emma T.",
-            "meta": "Verified buyer",
+            "title": "",
+            "text": "",
+            "author": "",
+            "meta": "",
             "product": ""
           }
         }
@@ -1233,9 +1234,9 @@
       ],
       "name": "Review carousel",
       "settings": {
-        "heading": "Loved by thousands",
+        "heading": "Loved by our customers",
         "subheading": "Don't just take our word for it.",
-        "badge": "Rated 4.9/5 from 2,000+ reviews",
+        "badge": "Rated 4.9/5 from 952 reviews on Google and Trustpilot combined",
         "product_label": "Bought:",
         "per_view": 3,
         "autoplay": false,

@@ -26,6 +26,17 @@
       endif
     endfor
   endif
+  comment
+    A phone model is never chosen for the shopper (DECISIONS.md): like the buy box
+    (cv-product-counter model_pending), no button is pressed unless ?variant= named one
+    or the product is made for a single model.
+  endcomment
+  assign model_pending = false
+  if model_oi >= 0 and product.selected_variant == blank
+    if product.options_with_values[model_oi].values.size > 1
+      assign model_pending = true
+    endif
+  endif
 -%}
 
 {%- if model_oi >= 0 -%}
@@ -53,7 +64,7 @@
           {%- for value in model_option.values -%}
             <li>
               <button type="button" class="cvp-fit__model" data-cvp-model="{{ value | escape }}"
-                      aria-pressed="{% if cvar.options[model_oi] == value %}true{% else %}false{% endif %}">{{ value | escape }}</button>
+                      aria-pressed="{% if model_pending == false and cvar.options[model_oi] == value %}true{% else %}false{% endif %}">{{ value | escape }}</button>
             </li>
           {%- endfor -%}
         </ul>

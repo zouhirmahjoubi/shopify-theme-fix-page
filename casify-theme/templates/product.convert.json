@@ -5,13 +5,14 @@
       "settings": {
         "crumb_label": "Cases",
         "vendor_suffix": "Cases",
-        "zoom_label": "Tap to zoom",
+        "zoom_label": "",
         "compare_price_fallback": "59.99",
         "show_rating": true,
         "reviews_anchor": "cvc-reviews",
-        "empty_rating_text": "+1000 Happy Customer",
-        "empty_rating_link": "Write the first",
+        "empty_rating_text": "",
+        "empty_rating_link": "Write the first review",
         "show_external_review_badges": true,
+        "show_store_rating": true,
         "external_review_rating": "4.9",
         "external_review_count": "952",
         "option_label": "Style",
@@ -49,7 +50,7 @@
             "qty": 2,
             "discount_pct": 18,
             "name": "2 cases",
-            "flag_label": "Save 18%",
+            "flag_label": "",
             "accent": "red",
             "default_checked": true
           }

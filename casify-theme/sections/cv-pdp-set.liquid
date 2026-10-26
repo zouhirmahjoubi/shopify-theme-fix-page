@@ -13,7 +13,9 @@
   Shopper strings: data-i18n-* on the section root (cv-pdp-story.js reads them
   first, then the older data-*-label attributes).
   Make it a pair: [data-cvp-set-pair] stays hidden until a one-tap Add leaves two
-  or more items in the bag (assets/cv-pdp-counter-motion.js reads /cart.js). The
+  or more phone cases in the bag (assets/cv-pdp-counter-motion.js reads /cart.js
+  and counts with window.CasifyCart.caseCount: the pack discounts cover phone
+  cases only, so a cloth or charm never counts). The
   percentage is Theme settings cv_pack_2_pct, replaced live by the buy box pack
   ([data-cvw-pct="2"], cv-pdp-story.js), never typed; 0 prints no pair note.
   data-cvm-stamp stamps the note in (assets/cv-commerce-motion.js).
@@ -121,7 +123,7 @@
     { "type": "text", "id": "fit_label", "label": "Model note", "default": "For your [model]", "info": "[model] is the phone chosen in the buy box." },
     { "type": "text", "id": "choose_label", "label": "Link when a model must be chosen", "default": "Choose your model" },
     { "type": "text", "id": "from_label", "label": "Price prefix when prices vary", "default": "From" },
-    { "type": "text", "id": "pair_label", "label": "Pair note after a second item is added", "default": "With your case: [pct]% off each at checkout", "info": "[pct] is the 2 case discount from Theme settings. Shown only when the bag holds 2 or more items. A 2 case discount of 0 hides it." }
+    { "type": "text", "id": "pair_label", "label": "Pair note after a second item is added", "default": "With your case: [pct]% off each at checkout", "info": "[pct] is the 2 case discount from Theme settings. Shown only when the bag holds 2 or more phone cases. A 2 case discount of 0 hides it." }
   ],
   "presets": [{ "name": "Product: complete the set" }],
   "enabled_on": { "templates": ["product"] }

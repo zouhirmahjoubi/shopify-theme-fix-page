@@ -353,7 +353,11 @@
         busy = false;
         els.addLabel.textContent = t('added');
         var meter = $('[data-cv-pack-meter]');
-        var line = meter ? fill(meter.getAttribute('data-t' + Math.min(cart.item_count, 3)), { p2: meter.getAttribute('data-p2'), p3: meter.getAttribute('data-p3'), n: cart.item_count }) : '';
+        /* Pack discounts apply to phone cases only: shared test in cart.js (window.CasifyCart.caseCount),
+           read at call time; cart.item_count only if it is missing. */
+        var cc = window.CasifyCart && window.CasifyCart.caseCount;
+        var cases = typeof cc === 'function' ? cc(cart) : (cart.item_count || 0);
+        var line = meter ? fill(meter.getAttribute('data-t' + Math.min(cases, 3)), { p2: meter.getAttribute('data-p2'), p3: meter.getAttribute('data-p3'), n: cases }) : '';
         els.status.textContent = line || fill(t('in-bag'), { n: cart.item_count });
         announceCart(cart);
         document.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { source: 'quick-pick', from: from, img: img, qty: 1 } }));

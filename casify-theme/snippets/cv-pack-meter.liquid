@@ -34,7 +34,14 @@
     endfor
   endfor
   assign img_list = imgs | split: '|'
-  assign n = cart.item_count
+  comment
+    The automatic pack discounts apply to phone cases only, so n counts case units
+    (snippets/cv-case-count.liquid), not cart.item_count. A cloth or charm never counts.
+  endcomment
+  capture case_count
+    render 'cv-case-count'
+  endcapture
+  assign n = case_count | strip | plus: 0
 
   assign t0 = 'Mix any 2 cases for [p2]% off, or any 3 for [p3]% off. Colours and phones can all be different.'
   assign t1 = '1 case in your bag. Add 1 more and [p2]% comes off both.'
