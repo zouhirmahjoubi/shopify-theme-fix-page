@@ -13,9 +13,12 @@
 (function () {
   'use strict';
 
-  var root = document.querySelector('[data-cv-pdp="counter"]');
+  /* Theme editor: a reloaded section is a fresh root, so it is set up again; the old
+     root's listeners go with its element. */
+  function init(root) {
   var wrap = root && root.querySelector('[data-cvc-model]');
-  if (!wrap) return;
+  if (!wrap || root._cvcModel) return;
+  root._cvcModel = true;
   var stage = wrap.closest('.cvc__stage');
   var tpl = wrap.querySelector('template');
   var json = root.querySelector('[data-cvc-model-json]');
@@ -91,4 +94,14 @@
     if (variantId !== null && id !== variantId && !wrap.hidden) show(false);
     variantId = id;
   });
+  }
+
+  function roots(scope) {
+    var list = [];
+    if (scope && scope.matches && scope.matches('[data-cv-pdp="counter"]')) list.push(scope);
+    if (scope && scope.querySelectorAll) list.push.apply(list, scope.querySelectorAll('[data-cv-pdp="counter"]'));
+    return list;
+  }
+  document.addEventListener('shopify:section:load', function (e) { roots(e.target).forEach(init); });
+  roots(document).forEach(init);
 })();

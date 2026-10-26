@@ -7,7 +7,7 @@
   @param {string} type - 'summary', 'google_rating', 'sales_note' or 'spec_meter'
   @param {object} product - The product being shown.
   @param {object} [variant] - The selected variant (summary).
-  @param {object} [settings] - The section's settings (summary).
+  @param {object} [settings] - The section's settings (summary, google_rating).
 {% enddoc %}
 {%- for b in blocks -%}
   {%- if b.type == type -%}
@@ -15,9 +15,32 @@
       {%- when 'summary' -%}
         {%- render 'cv-product-summary', block: b, product: product, variant: variant, settings: settings -%}
       {%- when 'google_rating' -%}
-        {%- render 'cv-google-rating', block: b -%}
+        {%- render 'cv-google-rating', block: b, settings: settings -%}
       {%- when 'sales_note' -%}
-        {%- render 'cv-sales-note', block: b, product: product -%}
+        {%- liquid
+          comment
+            Gate G4 (PLAN.md 4; PRODUCT.md:109): a typed number is not this product's count. The note
+            shows the product's own metafield count; the typed Number applies only to the products
+            listed in "typed_count_products" (empty: nowhere).
+          endcomment
+          assign sn_parts = b.settings.metafield | strip | split: '.'
+          assign sn_own = 0
+          if sn_parts.size == 2
+            assign sn_own = product.metafields[sn_parts[0]][sn_parts[1]].value | plus: 0
+          endif
+          assign sn_show = false
+          if sn_own > 0
+            assign sn_show = true
+          else
+            for p in b.settings.typed_count_products
+              if p.id == product.id
+                assign sn_show = true
+                break
+              endif
+            endfor
+          endif
+        -%}
+        {%- if sn_show -%}{%- render 'cv-sales-note', block: b, product: product -%}{%- endif -%}
       {%- when 'spec_meter' -%}
         {%- render 'cv-spec-meter', block: b, product: product -%}
     {%- endcase -%}

@@ -25,6 +25,10 @@ function cvptWebGL() {
 function cvptMoney(format, cents) {
   const value = Number(cents);
   if (isNaN(value)) return '';
+  /* One money formatter for the page (cv-product.js); this copy is the fallback only. */
+  if (window.CasifyMoney && typeof window.CasifyMoney.format === 'function') {
+    return window.CasifyMoney.format(value, format);
+  }
   function group(num, decimals, thousands, decimal) {
     const parts = (num / 100).toFixed(decimals).split('.');
     parts[0] = parts[0].replace(/(\d)(?=(\d{3})+$)/g, '$1' + thousands);
@@ -413,6 +417,10 @@ function cvptBoot(scope) {
 }
 
 cvptBoot(document);
+/* Follow a live reduced-motion change: re-boot so init re-reads the preference
+ * (reduce keeps the static HTML tag, no-preference brings the 3D card back). */
+const cvptMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (cvptMotionQuery.addEventListener) cvptMotionQuery.addEventListener('change', function () { cvptBoot(document); });
 document.addEventListener('shopify:section:load', function (event) { cvptBoot(event.target); });
 document.addEventListener('shopify:section:unload', function (event) {
   const tags = event.target.querySelectorAll ? event.target.querySelectorAll('[data-cv-ptag]') : [];

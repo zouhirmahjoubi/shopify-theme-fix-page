@@ -13,149 +13,191 @@
  *            native dialog actually closes; with no listener it closes at once
  *
  * Money and the cart live in cv-product.js. No-ops without the counter.
+ *
+ * Theme editor: init(root) / destroy(root) per counter, booted on load and on
+ * shopify:section:load, torn down on shopify:section:unload (house shape:
+ * cv-showcase-motion.js). Every listener goes through listen() so destroy
+ * removes it; an open zoom dialog is closed and html.cvc-zoom-open cleared.
+ * There is no GSAP in this file, so there is no gsap.context to revert.
  */
 (function () {
   'use strict';
 
-  var root = document.querySelector('[data-cv-pdp="counter"]');
-  if (!root) return;
+  var ROOT = '[data-cv-pdp="counter"]';
 
-  function $(sel, ctx) { return (ctx || root).querySelector(sel); }
-  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || root).querySelectorAll(sel)); }
+  function roots(scope) {
+    var out = [];
+    if (!scope) return out;
+    if (scope.matches && scope.matches(ROOT)) out.push(scope);
+    if (scope.querySelectorAll) out = out.concat(Array.prototype.slice.call(scope.querySelectorAll(ROOT)));
+    return out;
+  }
 
-  /* ---------------------------------------------------------------- ship-by */
-  var shipBy = $('[data-cvc-ship-by]');
-  if (shipBy) {
-    var days = parseInt(shipBy.getAttribute('data-max-days'), 10);
-    var out = $('[data-cvc-ship-by-text]', shipBy);
-    var template = shipBy.getAttribute('data-template') || '';
-    if (days > 0 && out && template.indexOf('[date]') > -1) {
-      var date = new Date();
-      var added = 0;
-      while (added < days) {
-        date.setDate(date.getDate() + 1);
-        if (date.getDay() !== 0 && date.getDay() !== 6) added++;
-      }
-      var label;
-      try {
-        label = date.toLocaleDateString(document.documentElement.lang || undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-      } catch (e) {
-        label = date.toDateString().slice(0, 10);
-      }
-      out.textContent = template.replace('[date]', label);
-      shipBy.setAttribute('data-ready', '');
+  function destroy(root) {
+    if (root && typeof root._cvczDestroy === 'function') root._cvczDestroy();
+  }
+
+  function init(root) {
+    if (!root) return;
+    destroy(root);
+
+    var cleanups = [];
+    function listen(target, eventName, handler, options) {
+      target.addEventListener(eventName, handler, options);
+      cleanups.push(function () { target.removeEventListener(eventName, handler, options); });
     }
-  }
+    function $(sel, ctx) { return (ctx || root).querySelector(sel); }
+    function $$(sel, ctx) { return Array.prototype.slice.call((ctx || root).querySelectorAll(sel)); }
 
-  /* ---------------------------------------------------------------- zoom */
-  var dialog = $('[data-cvc-zoom]');
-  var opener = $('[data-cvc-zoom-open]');
-  var stage = $('.cvc__stage');
-  if (!dialog || !opener || typeof dialog.showModal !== 'function') {
-    if (opener) opener.hidden = true;
-    return;
-  }
+    var dialog = $('[data-cvc-zoom]');
+    var img = dialog && $('[data-cvc-zoom-img]', dialog);
 
-  var frame = $('[data-cvc-zoom-frame]', dialog);
-  var img = $('[data-cvc-zoom-img]', dialog);
-  var count = $('[data-cvc-zoom-count]', dialog);
-  var thumbs = $$('[data-cv-thumb]');
-  var index = 0;
-  var zoomClosing = false;
+    root._cvczDestroy = function () {
+      cleanups.forEach(function (remove) { remove(); });
+      cleanups.length = 0;
+      if (img) img.onload = null;
+      if (dialog && dialog.open && typeof dialog.close === 'function') dialog.close();
+      document.documentElement.classList.remove('cvc-zoom-open');
+      delete root._cvczDestroy;
+    };
 
-  /* A listener (the motion file) can animate the close by preventing this
-     event and calling dialog.close() itself when its exit finishes; with no
-     listener (no GSAP, reduced motion) the dialog just closes immediately. */
-  function requestClose() {
-    if (zoomClosing || !dialog.open) return;
-    var evt = new CustomEvent('cvc:zoomclose', { detail: { dialog: dialog }, cancelable: true });
-    if (root.dispatchEvent(evt)) {
-      dialog.close();
-    } else {
-      zoomClosing = true;
+    /* -------------------------------------------------------------- ship-by */
+    var shipBy = $('[data-cvc-ship-by]');
+    if (shipBy) {
+      var days = parseInt(shipBy.getAttribute('data-max-days'), 10);
+      var out = $('[data-cvc-ship-by-text]', shipBy);
+      var template = shipBy.getAttribute('data-template') || '';
+      if (days > 0 && out && template.indexOf('[date]') > -1) {
+        var date = new Date();
+        var added = 0;
+        while (added < days) {
+          date.setDate(date.getDate() + 1);
+          if (date.getDay() !== 0 && date.getDay() !== 6) added++;
+        }
+        var label;
+        try {
+          label = date.toLocaleDateString(document.documentElement.lang || undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+        } catch (e) {
+          label = date.toDateString().slice(0, 10);
+        }
+        out.textContent = template.replace('[date]', label);
+        shipBy.setAttribute('data-ready', '');
+      }
     }
-  }
 
-  function larger(src) {
-    if (!src) return '';
-    return /[?&]width=\d+/.test(src) ? src.replace(/([?&])width=\d+/, '$1width=2400') : src;
-  }
-  function selectedIndex() {
-    for (var i = 0; i < thumbs.length; i++) if (thumbs[i].getAttribute('aria-selected') === 'true') return i;
-    return 0;
-  }
-  function centre() {
-    frame.scrollLeft = (frame.scrollWidth - frame.clientWidth) / 2;
-    frame.scrollTop = (frame.scrollHeight - frame.clientHeight) / 2;
-  }
-  function setCount() {
-    if (count) count.textContent = thumbs.length > 1 ? (index + 1) + ' / ' + thumbs.length : '';
-  }
-  function load(src) {
-    dialog.classList.add('is-loading');
-    img.onload = function () { dialog.classList.remove('is-loading'); centre(); };
-    img.src = src;
-    if (img.complete) { dialog.classList.remove('is-loading'); centre(); }
-  }
+    /* ----------------------------------------------------------------- zoom */
+    var opener = $('[data-cvc-zoom-open]');
+    var stage = $('.cvc__stage');
+    if (!dialog || !opener || typeof dialog.showModal !== 'function') {
+      if (opener) opener.hidden = true;
+      return;
+    }
 
-  function open() {
-    var main = document.getElementById('cvMainImage');
-    index = selectedIndex();
-    dialog.classList.remove('is-fit');
-    img.alt = main && main.alt ? main.alt : '';
-    load(larger(main && (main.currentSrc || main.getAttribute('src'))) || opener.getAttribute('data-cv-zoom'));
-    setCount();
-    dialog.showModal();
-    document.documentElement.classList.add('cvc-zoom-open');
-    root.dispatchEvent(new CustomEvent('cvc:zoom', { detail: { open: true, dialog: dialog } }));
-  }
-  function step(dir) {
-    if (thumbs.length < 2) return;
-    index = (index + dir + thumbs.length) % thumbs.length;
-    load(thumbs[index].getAttribute('data-cv-zoom'));
-    setCount();
-    root.dispatchEvent(new CustomEvent('cvc:zoomstep', { detail: { dir: dir, img: img } }));
-  }
+    var frame = $('[data-cvc-zoom-frame]', dialog);
+    var count = $('[data-cvc-zoom-count]', dialog);
+    var thumbs = $$('[data-cv-thumb]');
+    var index = 0;
+    var zoomClosing = false;
 
-  opener.addEventListener('click', open);
-  if (stage) {
-    stage.addEventListener('click', function (e) {
-      if (e.target.closest('[data-cvc-zoom-open]') || !e.target.closest('#cvMainImage')) return;
-      open();
+    /* A listener (the motion file) can animate the close by preventing this
+       event and calling dialog.close() itself when its exit finishes; with no
+       listener (no GSAP, reduced motion) the dialog just closes immediately. */
+    function requestClose() {
+      if (zoomClosing || !dialog.open) return;
+      var evt = new CustomEvent('cvc:zoomclose', { detail: { dialog: dialog }, cancelable: true });
+      if (root.dispatchEvent(evt)) {
+        dialog.close();
+      } else {
+        zoomClosing = true;
+      }
+    }
+
+    function larger(src) {
+      if (!src) return '';
+      return /[?&]width=\d+/.test(src) ? src.replace(/([?&])width=\d+/, '$1width=2400') : src;
+    }
+    function selectedIndex() {
+      for (var i = 0; i < thumbs.length; i++) if (thumbs[i].getAttribute('aria-selected') === 'true') return i;
+      return 0;
+    }
+    function centre() {
+      frame.scrollLeft = (frame.scrollWidth - frame.clientWidth) / 2;
+      frame.scrollTop = (frame.scrollHeight - frame.clientHeight) / 2;
+    }
+    function setCount() {
+      if (count) count.textContent = thumbs.length > 1 ? (index + 1) + ' / ' + thumbs.length : '';
+    }
+    function load(src) {
+      dialog.classList.add('is-loading');
+      img.onload = function () { dialog.classList.remove('is-loading'); centre(); };
+      img.src = src;
+      if (img.complete) { dialog.classList.remove('is-loading'); centre(); }
+    }
+
+    function open() {
+      var main = document.getElementById('cvMainImage');
+      index = selectedIndex();
+      dialog.classList.remove('is-fit');
+      img.alt = main && main.alt ? main.alt : '';
+      load(larger(main && (main.currentSrc || main.getAttribute('src'))) || opener.getAttribute('data-cv-zoom'));
+      setCount();
+      dialog.showModal();
+      document.documentElement.classList.add('cvc-zoom-open');
+      root.dispatchEvent(new CustomEvent('cvc:zoom', { detail: { open: true, dialog: dialog } }));
+    }
+    function step(dir) {
+      if (thumbs.length < 2) return;
+      index = (index + dir + thumbs.length) % thumbs.length;
+      load(thumbs[index].getAttribute('data-cv-zoom'));
+      setCount();
+      root.dispatchEvent(new CustomEvent('cvc:zoomstep', { detail: { dir: dir, img: img } }));
+    }
+
+    listen(opener, 'click', open);
+    if (stage) {
+      listen(stage, 'click', function (e) {
+        if (e.target.closest('[data-cvc-zoom-open]') || !e.target.closest('#cvMainImage')) return;
+        open();
+      });
+    }
+    $$('[data-cvc-zoom-close]', dialog).forEach(function (b) { listen(b, 'click', requestClose); });
+    $$('[data-cvc-zoom-step]', dialog).forEach(function (b) {
+      listen(b, 'click', function () { step(parseInt(b.getAttribute('data-cvc-zoom-step'), 10) || 1); });
     });
-  }
-  $$('[data-cvc-zoom-close]', dialog).forEach(function (b) { b.addEventListener('click', requestClose); });
-  $$('[data-cvc-zoom-step]', dialog).forEach(function (b) {
-    b.addEventListener('click', function () { step(parseInt(b.getAttribute('data-cvc-zoom-step'), 10) || 1); });
-  });
-  dialog.addEventListener('cancel', function (e) { e.preventDefault(); requestClose(); });
-  dialog.addEventListener('close', function () {
-    zoomClosing = false;
-    document.documentElement.classList.remove('cvc-zoom-open');
-    root.dispatchEvent(new CustomEvent('cvc:zoom', { detail: { open: false, dialog: dialog } }));
-  });
-  dialog.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
-  });
+    listen(dialog, 'cancel', function (e) { e.preventDefault(); requestClose(); });
+    listen(dialog, 'close', function () {
+      zoomClosing = false;
+      document.documentElement.classList.remove('cvc-zoom-open');
+      root.dispatchEvent(new CustomEvent('cvc:zoom', { detail: { open: false, dialog: dialog } }));
+    });
+    listen(dialog, 'keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+    });
 
-  /* A mouse pans by position; touch keeps the frame's native drag-to-scroll. */
-  frame.addEventListener('pointermove', function (e) {
-    if (e.pointerType !== 'mouse' || dialog.classList.contains('is-fit')) return;
-    var r = frame.getBoundingClientRect();
-    frame.scrollLeft = ((e.clientX - r.left) / r.width) * (frame.scrollWidth - frame.clientWidth);
-    frame.scrollTop = ((e.clientY - r.top) / r.height) * (frame.scrollHeight - frame.clientHeight);
-  });
-  var downAt = null;
-  frame.addEventListener('pointerdown', function (e) { downAt = { x: e.clientX, y: e.clientY }; });
-  frame.addEventListener('click', function (e) {
-    if (downAt && Math.abs(e.clientX - downAt.x) + Math.abs(e.clientY - downAt.y) > 8) return; // a drag, not a tap
-    if (e.target !== img) { requestClose(); return; }
-    dialog.classList.toggle('is-fit');
-    if (!dialog.classList.contains('is-fit')) {
+    /* A mouse pans by position; touch keeps the frame's native drag-to-scroll. */
+    listen(frame, 'pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || dialog.classList.contains('is-fit')) return;
       var r = frame.getBoundingClientRect();
       frame.scrollLeft = ((e.clientX - r.left) / r.width) * (frame.scrollWidth - frame.clientWidth);
       frame.scrollTop = ((e.clientY - r.top) / r.height) * (frame.scrollHeight - frame.clientHeight);
-    }
-  });
+    });
+    var downAt = null;
+    listen(frame, 'pointerdown', function (e) { downAt = { x: e.clientX, y: e.clientY }; });
+    listen(frame, 'click', function (e) {
+      if (downAt && Math.abs(e.clientX - downAt.x) + Math.abs(e.clientY - downAt.y) > 8) return; // a drag, not a tap
+      if (e.target !== img) { requestClose(); return; }
+      dialog.classList.toggle('is-fit');
+      if (!dialog.classList.contains('is-fit')) {
+        var r = frame.getBoundingClientRect();
+        frame.scrollLeft = ((e.clientX - r.left) / r.width) * (frame.scrollWidth - frame.clientWidth);
+        frame.scrollTop = ((e.clientY - r.top) / r.height) * (frame.scrollHeight - frame.clientHeight);
+      }
+    });
+  }
+
+  roots(document).forEach(init);
+
+  document.addEventListener('shopify:section:load', function (event) { roots(event.target).forEach(init); });
+  document.addEventListener('shopify:section:unload', function (event) { roots(event.target).forEach(destroy); });
 })();

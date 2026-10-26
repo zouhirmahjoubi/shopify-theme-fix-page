@@ -4,32 +4,55 @@
   first (chosen in the Search & Discovery app), otherwise related ones. The first
   render is empty; assets/cv-pdp-story.js fetches this section from the
   recommendations endpoint and swaps the filled version in. With nothing to
-  suggest the section stays hidden.
+  suggest, or when every suggestion is this product or sold out, the section
+  stays hidden, so no heading sits over an empty row. Without JavaScript the
+  section stays hidden too (progressive enhancement: the buy box above sells).
   One tap adds a product only when the exact variant is known: a product with a
   single variant, or the variant made for the phone model chosen in the buy box.
   Otherwise the card links to the product so the model is picked there.
+  Shopper strings: data-i18n-* on the section root (cv-pdp-story.js reads them
+  first, then the older data-*-label attributes).
+  Make it a pair: [data-cvp-set-pair] stays hidden until a one-tap Add leaves two
+  or more items in the bag (assets/cv-pdp-counter-motion.js reads /cart.js). The
+  percentage is Theme settings cv_pack_2_pct, replaced live by the buy box pack
+  ([data-cvw-pct="2"], cv-pdp-story.js), never typed; 0 prints no pair note.
+  data-cvm-stamp stamps the note in (assets/cv-commerce-motion.js).
+  Model gate: on a phone case card the "Choose your model" link carries
+  data-cvp-set-gate. While the buy box model is not chosen, a tap scrolls to the
+  buy box model picker and nudges it (cv-pdp-counter-motion.js); otherwise, and
+  without that script, it is a plain link to the product.
 {%- endcomment -%}
 {{ 'cv-pdp-story.css' | asset_url | stylesheet_tag }}
 {{ 'cv-pdp-extras.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign rec_url = routes.product_recommendations_url | append: '?section_id=' | append: section.id | append: '&product_id=' | append: product.id | append: '&limit=' | append: section.settings.limit
-  assign filled = false
+  assign shown = 0
   if recommendations.performed? and recommendations.products_count > 0
-    assign filled = true
+    for item in recommendations.products
+      if item.id != product.id and item.available
+        assign shown = shown | plus: 1
+      endif
+    endfor
   endif
+  assign pair_pct = settings.cv_pack_2_pct | default: 0 | round
+  assign pair_pct_html = '<span data-cvw-pct="2">' | append: pair_pct | append: '</span>'
+  assign pair_line = section.settings.pair_label | default: 'With your case: [pct]% off each at checkout' | escape | replace: '[pct]', pair_pct_html
 -%}
 
-<section class="cvp cvp-set{% if filled %} is-filled{% endif %}" data-cvp-set
+<section class="cvp cvp-set{% if shown > 0 %} is-filled{% endif %}" data-cvp-set
          data-url-complementary="{{ rec_url }}&intent=complementary"
          data-url-related="{{ rec_url }}&intent=related"
+         data-i18n-add="{{ section.settings.add_label | escape }}"
+         data-i18n-adding="{{ 'products.buy.adding' | t | escape }}"
+         data-i18n-added="{{ section.settings.added_label | escape }}"
+         data-i18n-retry="{{ 'products.buy.try_again' | t | escape }}"
+         data-i18n-fit="{{ section.settings.fit_label | escape }}"
          data-add-label="{{ section.settings.add_label | escape }}"
-         data-adding-label="Adding…"
          data-added-label="{{ section.settings.added_label | escape }}"
-         data-retry-label="Try again"
          data-fit-label="{{ section.settings.fit_label | escape }}"
          aria-labelledby="cvpSetTitle-{{ section.id }}">
-  {%- if filled -%}
+  {%- if shown > 0 -%}
     {%- liquid
       assign heading = section.settings.heading
       if recommendations.intent == 'related'
@@ -44,6 +67,16 @@
       <ul class="cvp-set__row" role="list">
         {%- for item in recommendations.products -%}
           {%- if item.id != product.id and item.available -%}
+            {%- liquid
+              assign phone_case = false
+              for opt in item.options_with_values
+                assign fv = opt.values.first | downcase
+                if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+                  assign phone_case = true
+                  break
+                endif
+              endfor
+            -%}
             <li class="cvp-set__item" data-cvp-set-item>
               <a class="cvp-set__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
                 {%- if item.featured_image -%}
@@ -52,7 +85,7 @@
               </a>
               <div class="cvp-set__body">
                 <a class="cvp-set__title" href="{{ item.url }}">{{ item.title | escape }}</a>
-                <span class="cvp-set__price">{% if item.price_varies %}From {% endif %}{{ item.price_min | money }}
+                <span class="cvp-set__price">{% if item.price_varies %}{{ section.settings.from_label | default: 'From' | escape }} {% endif %}{{ item.price_min | money }}
                   {%- if item.compare_at_price_min > item.price_min %} <s class="cvp-set__was"><span class="cvp-set__vh">{{ 'products.price_offer.compare_at' | t }}: </span>{{ item.compare_at_price_min | money }}</s>{%- endif -%}
                 </span>
                 <p class="cvp-set__fit" data-cvp-set-fit hidden></p>
@@ -61,7 +94,10 @@
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                   <span data-cvp-set-label>{{ section.settings.add_label | escape }}</span>
                 </button>
-                <a class="cvp-set__choose" href="{{ item.url }}" data-cvp-set-choose>{{ section.settings.choose_label | escape }}</a>
+                <a class="cvp-set__choose" href="{{ item.url }}" data-cvp-set-choose{% if phone_case %} data-cvp-set-gate{% endif %}>{{ section.settings.choose_label | escape }}</a>
+                {%- if pair_pct > 0 -%}
+                  <p class="cvp-set__fit cvp-set__pair" data-cvp-set-pair data-cvm-stamp role="status" hidden>{{ pair_line }}</p>
+                {%- endif -%}
               </div>
             </li>
           {%- endif -%}
@@ -83,7 +119,9 @@
     { "type": "text", "id": "add_label", "label": "Add button", "default": "Add" },
     { "type": "text", "id": "added_label", "label": "Added state", "default": "In your bag" },
     { "type": "text", "id": "fit_label", "label": "Model note", "default": "For your [model]", "info": "[model] is the phone chosen in the buy box." },
-    { "type": "text", "id": "choose_label", "label": "Link when a model must be chosen", "default": "Choose your model" }
+    { "type": "text", "id": "choose_label", "label": "Link when a model must be chosen", "default": "Choose your model" },
+    { "type": "text", "id": "from_label", "label": "Price prefix when prices vary", "default": "From" },
+    { "type": "text", "id": "pair_label", "label": "Pair note after a second item is added", "default": "With your case: [pct]% off each at checkout", "info": "[pct] is the 2 case discount from Theme settings. Shown only when the bag holds 2 or more items. A 2 case discount of 0 hides it." }
   ],
   "presets": [{ "name": "Product: complete the set" }],
   "enabled_on": { "templates": ["product"] }

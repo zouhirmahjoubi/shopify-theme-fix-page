@@ -892,6 +892,15 @@ function cvprBoot(scope) {
 }
 
 cvprBoot(document);
+/* When reduced motion is switched on mid-visit, settle every stamp and drop the 3D scenes
+ * (the destroy path lands the stamps in their finished state). */
+const cvprMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (cvprMotionQuery.addEventListener) {
+  cvprMotionQuery.addEventListener('change', function (event) {
+    if (!event.matches) return;
+    document.querySelectorAll('[data-cvc-promises]').forEach(function (wrap) { if (wrap._cvprDestroy) wrap._cvprDestroy(); });
+  });
+}
 document.addEventListener('shopify:section:load', function (event) { cvprBoot(event.target); });
 document.addEventListener('shopify:section:unload', function (event) {
   const wraps = event.target.querySelectorAll ? event.target.querySelectorAll('[data-cvc-promises]') : [];

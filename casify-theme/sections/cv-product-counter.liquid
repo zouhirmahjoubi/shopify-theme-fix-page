@@ -72,34 +72,86 @@
     endfor
   endif
 
+  comment
+    Model first (STORE-FACTS 4): a phone model is never chosen for the shopper. With more than one
+    model value and no ?variant= in the URL (product.selected_variant), the picker prints a
+    "Choose your phone model" placeholder and no phone; assets/cv-product.js keeps Add to bag and
+    Buy now from posting until one is picked (cvs:needmodel).
+  endcomment
+  assign model_pending = false
+  assign variant_label = cvar.title
+  if model_oi >= 0
+    assign model_values = product.options_with_values[model_oi].values
+    if model_values.size > 1 and product.selected_variant == blank
+      assign model_pending = true
+      assign variant_label = ''
+      for ov in cvar.options
+        if forloop.index0 != model_oi
+          if variant_label != ''
+            assign variant_label = variant_label | append: ' / '
+          endif
+          assign variant_label = variant_label | append: ov
+        endif
+      endfor
+    endif
+  endif
+  assign sold_suffix = 'products.buy.sold_out' | t | downcase | prepend: ' (' | append: ')'
+  assign add_label = section.settings.cta_label
+  if add_label == blank
+    assign add_label = 'products.buy.add_to_bag' | t
+  endif
+  assign buy_label = section.settings.buy_label
+  if buy_label == blank
+    assign buy_label = 'products.buy.buy_now' | t
+  endif
+  assign sticky_label = section.settings.sticky_cta | default: add_label
+
+  comment
+    Each tier's percentage, by block position. Tiers of 2 and 3 cases read the theme settings
+    (Packs and shipping: cv_pack_2_pct, cv_pack_3_pct), the one source of truth that must equal
+    the automatic discounts in Shopify admin, unless the tier turns "use_theme_pct" off.
+  endcomment
+  assign tier_pcts = ''
   assign tier_count = 0
-  assign active_tier = nil
+  assign active_i = -1
+  assign first_i = -1
   assign max_pct = 0
   for b in section.blocks
+    assign t_pct = 0
     if b.type == 'tier'
-      assign tier_count = tier_count | plus: 1
-      if b.settings.discount_pct > max_pct
-        assign max_pct = b.settings.discount_pct
+      assign t_pct = b.settings.discount_pct | default: 0
+      if b.settings.use_theme_pct != false
+        if b.settings.qty == 2 and settings.cv_pack_2_pct != blank
+          assign t_pct = settings.cv_pack_2_pct
+        elsif b.settings.qty == 3 and settings.cv_pack_3_pct != blank
+          assign t_pct = settings.cv_pack_3_pct
+        endif
       endif
-      if active_tier == nil and b.settings.default_checked
-        assign active_tier = b
+      assign tier_count = tier_count | plus: 1
+      if t_pct > max_pct
+        assign max_pct = t_pct
+      endif
+      if first_i == -1
+        assign first_i = forloop.index0
+      endif
+      if active_i == -1 and b.settings.default_checked
+        assign active_i = forloop.index0
       endif
     endif
+    assign tier_pcts = tier_pcts | append: t_pct | append: ','
   endfor
-  if tier_count > 0 and active_tier == nil
-    for b in section.blocks
-      if b.type == 'tier'
-        assign active_tier = b
-        break
-      endif
-    endfor
+  assign pct_arr = tier_pcts | split: ','
+  if active_i == -1
+    assign active_i = first_i
   endif
 
+  assign active_tier = nil
   assign active_qty = 1
   assign active_pct = 0
-  if active_tier != nil
+  if active_i >= 0
+    assign active_tier = section.blocks[active_i]
     assign active_qty = active_tier.settings.qty | at_least: 1
-    assign active_pct = active_tier.settings.discount_pct
+    assign active_pct = pct_arr[active_i] | plus: 0
   endif
 
   comment
@@ -109,7 +161,14 @@
   assign active_off = active_line | times: active_pct | divided_by: 100.0 | round
   assign active_total = active_line | minus: active_off
 
-  assign compare_fallback = section.settings.compare_price_fallback | default: '0' | times: 100 | round
+  comment
+    The fallback compare-at price is typed in the shop currency, so it applies only when the
+    shopper pays in that currency (Shopify Markets would otherwise compare unlike amounts).
+  endcomment
+  assign compare_fallback = 0
+  if section.settings.compare_price_fallback != blank and cart.currency.iso_code == shop.currency
+    assign compare_fallback = section.settings.compare_price_fallback | times: 100 | round
+  endif
   assign compare_price = cvar.compare_at_price | default: 0
   if compare_price <= cvar.price and compare_fallback > cvar.price
     assign compare_price = compare_fallback
@@ -124,12 +183,13 @@
   endif
 
   assign next_tier = nil
+  assign next_pct = 0
   for b in section.blocks
-    if b.type == 'tier' and b.settings.discount_pct > active_pct
-      if next_tier == nil
+    assign b_pct = pct_arr[forloop.index0] | plus: 0
+    if b.type == 'tier' and b_pct > active_pct
+      if next_tier == nil or b_pct < next_pct
         assign next_tier = b
-      elsif b.settings.discount_pct < next_tier.settings.discount_pct
-        assign next_tier = b
+        assign next_pct = b_pct
       endif
     endif
   endfor
@@ -141,7 +201,10 @@
 
   assign rating = product.metafields.reviews.rating.value
   assign rating_count = product.metafields.reviews.rating_count.value | default: 0
-  assign star_pct = 100
+  comment
+    No reviews, no stars: an empty product shows no star fill (PRODUCT.md:102, STORE-FACTS 7, gate G1).
+  endcomment
+  assign star_pct = 0
   assign has_rating = false
   if rating != blank and rating_count > 0
     assign has_rating = true
@@ -212,10 +275,27 @@
          data-model-index="{{ model_oi }}"
          data-max-pct="{{ max_pct }}"
          data-compare-at-fallback="{{ compare_fallback }}"
+         data-cv-model-confirmed="{% if model_pending %}false{% else %}true{% endif %}"
+         data-i18n-adding="{{ 'products.buy.adding' | t | escape }}"
+         data-i18n-added="{{ 'products.buy.added' | t | escape }}"
+         data-i18n-try-again="{{ 'products.buy.try_again' | t | escape }}"
+         data-i18n-to-checkout="{{ 'products.buy.to_checkout' | t | escape }}"
+         data-i18n-checkout-redirect="{{ 'products.buy.checkout_redirect' | t | escape }}"
+         data-i18n-unavailable="{{ 'products.buy.unavailable' | t | escape }}"
+         data-i18n-each="{{ 'products.buy.each' | t | escape }}"
+         data-i18n-sold-out="{{ 'products.buy.sold_out' | t | escape }}"
+         data-i18n-error="{{ 'products.buy.error' | t | escape }}"
+         data-i18n-choose-model="{{ 'products.buy.choose_model' | t | escape }}"
+         data-i18n-model-placeholder="{{ 'products.buy.model_placeholder' | t | escape }}"
+         data-i18n-added-one="{{ 'products.buy.added_one' | t | escape }}"
+         data-i18n-added-many="{{ 'products.buy.added_many' | t | escape }}"
+         data-i18n-mixed="{{ 'products.buy.mixed' | t | escape }}"
+         data-i18n-add-to-bag="{{ add_label | escape }}"
+         data-i18n-buy-now="{{ buy_label | escape }}"
          style="--cvc-box: url('{{ 'pdp-counter-box.webp' | asset_url }}'); --cvc-box-teal: url('{{ 'pdp-counter-box-teal.webp' | asset_url }}');">
   <div class="cvc__inner">
     <nav class="cvc__crumbs" aria-label="Breadcrumb">
-      <a href="{{ routes.root_url }}">Home</a>
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
       <span aria-hidden="true">/</span>
       {%- if crumb_collection != blank -%}
         <a href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a>
@@ -339,14 +419,14 @@
             <button type="button" class="cvc__zoom" data-cvc-zoom-open aria-haspopup="dialog" aria-controls="cvcZoom-{{ section.id }}"
                     data-cv-zoom="{{ stage_image | image_url: width: 2400 }}">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
-              <span>{{ section.settings.zoom_label | default: 'Tap to zoom' | escape }}</span>
+              <span>{%- if section.settings.zoom_label != blank -%}{{ section.settings.zoom_label | escape }}{%- else -%}{{ 'products.gallery.zoom' | t }}{%- endif -%}</span>
             </button>
             {%- if model_media != blank and product.media.size > 1 -%}
               <div class="cvc__model" data-cvc-model{% unless model_main %} hidden{% endunless %}>
                 <template>{{ model_media | model_viewer_tag: image_size: '1400x', reveal: 'auto', camera-orbit: '-25deg 75deg auto', shadow-intensity: '1', alt: model_media.alt }}</template>
                 <button type="button" class="cvc__xr" data-shopify-xr data-shopify-model3d-id="{{ model_media.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg>
-                  <span>View in your space</span>
+                  <span>{{ 'products.gallery.view_in_space' | t }}</span>
                 </button>
                 <script type="application/json" data-cvc-model-json>{{ product.media | where: 'media_type', 'model' | json }}</script>
               </div>
@@ -360,8 +440,17 @@
 
       {%- comment -%} ================= The counter: buy box ================= {%- endcomment -%}
       <form class="cvc__box" id="cvAddForm" method="post" action="{{ routes.cart_add_url }}">
-        <input type="hidden" name="id" id="cvVariantId" value="{{ cvar.id }}">
-        <input type="hidden" name="quantity" id="cvQuantity" value="{{ active_qty }}">
+        {%- comment -%}
+          Without JavaScript the form posts natively: the <noscript> variant list below is the only
+          field named "id", so a shopper picks the real case (model first) and the native post can
+          never add a phone they did not choose. With JavaScript, assets/cv-product.js keeps
+          #cvVariantId in step and posts the chosen cases to /cart/add.js itself.
+          The packs, the savings meter and the per-case rows only work with JavaScript, so they hide
+          under html.no-js (cv-pdp-counter.css) and the native post always adds one case; cv-product.js
+          writes the pack's quantity here when it runs.
+        {%- endcomment -%}
+        <input type="hidden" id="cvVariantId" value="{% unless model_pending %}{{ cvar.id }}{% endunless %}">
+        <input type="hidden" name="quantity" id="cvQuantity" value="1">
 
         {%- if product.vendor != blank -%}
           <p class="cvc__vendor">{{ product.vendor | escape }}{% if section.settings.vendor_suffix != blank %} {{ section.settings.vendor_suffix | escape }}{% endif %}</p>
@@ -434,11 +523,27 @@
 
         {%- if section.settings.show_rating -%}
           <a class="cvc__rating" href="#{{ section.settings.reviews_anchor | default: 'cvc-reviews' | remove: '#' | escape }}" data-cvc-rating>
-            {%- render 'cv-stars', fill: star_pct, class: 'cvc__stars' -%}
+            {%- comment -%}
+              Gate G1 (PLAN.md 4; PRODUCT.md:102-105): no stars without the product's own reviews, and the
+              typed "Customer proof text" shows only when "show_customer_proof" is on. Not in the store's
+              evidence on hand, so it is off by default and the row reads "No reviews yet".
+            {%- endcomment -%}
             {%- if has_rating -%}
-              <span class="cvc__rating-text" data-cvc-rating-text>{{ rating.rating | round: 1 }} <span class="cvc__visually-hidden">out of {{ rating.scale_max | default: 5 }} stars,</span><span class="cvc__rating-separator" aria-hidden="true">·</span><u>{{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}</u></span>
+              {%- render 'cv-stars', fill: star_pct, class: 'cvc__stars' -%}
+              {%- assign rating_shown = rating.rating | round: 1 -%}
+              <span class="cvc__rating-text" data-cvc-rating-text><span aria-hidden="true">{{ rating_shown }}</span> <span class="cvc__visually-hidden">{{ 'products.rating.out_of' | t: rating: rating_shown }}, </span><span class="cvc__rating-separator" aria-hidden="true">·</span><u>{% if rating_count == 1 %}{{ 'products.rating.reviews_one' | t: count: rating_count }}{% else %}{{ 'products.rating.reviews_other' | t: count: rating_count }}{% endif %}</u></span>
             {%- else -%}
-              <span class="cvc__rating-text" data-cvc-rating-text>{{ section.settings.empty_rating_text | default: '+1000 Happy Customer' | escape }}<span class="cvc__rating-separator" aria-hidden="true">·</span><u>{{ section.settings.empty_rating_link | default: 'Write the first' | escape }}</u></span>
+              {%- liquid
+                assign proof_text = 'products.rating.no_reviews_yet' | t
+                if section.settings.show_customer_proof and section.settings.empty_rating_text != blank
+                  assign proof_text = section.settings.empty_rating_text
+                endif
+                assign proof_link = section.settings.empty_rating_link
+                if proof_link == blank
+                  assign proof_link = 'products.rating.write_first_review' | t
+                endif
+              -%}
+              <span class="cvc__rating-text" data-cvc-rating-text>{{ proof_text | escape }}<span class="cvc__rating-separator" aria-hidden="true">·</span><u>{{ proof_link | escape }}</u></span>
             {%- endif -%}
           </a>
         {%- endif -%}
@@ -546,7 +651,10 @@
           <div class="cvc__opt cvc__opt--model">
             <label class="cvc__label" for="cvcModel-{{ section.id }}">{{ section.settings.model_label | default: 'Model' | escape }}</label>
             <span class="cvc__select">
-              <select id="cvcModel-{{ section.id }}" name="options[{{ model_option.name | escape }}]" data-cv-option-index="{{ model_oi }}" data-sold-suffix=" (sold out)">
+              <select id="cvcModel-{{ section.id }}" name="options[{{ model_option.name | escape }}]" data-cv-option-index="{{ model_oi }}" data-sold-suffix="{{ sold_suffix | escape }}">
+                {%- if model_pending -%}
+                  <option value="" disabled selected data-cv-placeholder>{{ 'products.buy.model_placeholder' | t }}</option>
+                {%- endif -%}
                 {%- for value in model_option.values -%}
                   {%- liquid
                     assign vmatch = nil
@@ -562,7 +670,7 @@
                       endif
                     endfor
                   -%}
-                  <option value="{{ value | escape }}"{% if cvar.options[model_oi] == value %} selected{% endif %}>{{ value | escape }}{% unless vmatch.available %} (sold out){% endunless %}</option>
+                  <option value="{{ value | escape }}"{% if model_pending == false and cvar.options[model_oi] == value %} selected{% endif %}>{{ value | escape }}{% unless vmatch.available %}{{ sold_suffix }}{% endunless %}</option>
                 {%- endfor -%}
               </select>
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -570,26 +678,57 @@
           </div>
         {%- endif -%}
 
+        {%- comment -%} ---------- Without JavaScript: one native list of real cases (the custom pickers hide under html.no-js) ---------- {%- endcomment -%}
+        <noscript>
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ cvar.id }}">
+          {%- else -%}
+            <div class="cvc__opt cvc__opt--noscript">
+              <label class="cvc__label" for="cvcVariant-{{ section.id }}">{{ product.options | join: ' / ' | escape }}</label>
+              <span class="cvc__select">
+                <select id="cvcVariant-{{ section.id }}" name="id" required>
+                  {%- if model_oi >= 0 and product.options_with_values[model_oi].values.size > 1 -%}
+                    <option value=""{% if model_pending %} selected{% endif %} disabled>{{ 'products.buy.model_placeholder' | t }}</option>
+                  {%- endif -%}
+                  {%- for v in product.variants -%}
+                    <option value="{{ v.id }}"{% unless v.available %} disabled{% endunless %}{% if model_pending == false and v.id == cvar.id %} selected{% endif %}>{{ v.title | escape }}{% unless v.available %}{{ sold_suffix }}{% endunless %}</option>
+                  {%- endfor -%}
+                </select>
+              </span>
+            </div>
+          {%- endif -%}
+        </noscript>
+
         {%- comment -%} ---------- Candy-box packs + savings meter ---------- {%- endcomment -%}
         {%- if tier_count > 0 -%}
-          <div class="cvc__packs" role="radiogroup" aria-label="{{ section.settings.packs_label | default: 'How many cases' | escape }}">
+          <div class="cvc__packs" role="radiogroup" aria-label="{{ section.settings.packs_label | default: 'How many cases' | escape }}" data-cvm-packs>
+            <span class="cvc__pack-highlight" data-cvm-pack-highlight aria-hidden="true"></span>
             {%- for b in section.blocks -%}
               {%- if b.type == 'tier' -%}
                 {%- liquid
                   assign t_qty = b.settings.qty | at_least: 1
+                  assign t_pct = pct_arr[forloop.index0] | plus: 0
                   assign t_line = cvar.price | times: t_qty
-                  assign t_off = t_line | times: b.settings.discount_pct | divided_by: 100.0 | round
+                  assign t_off = t_line | times: t_pct | divided_by: 100.0 | round
                   assign t_each = t_line | minus: t_off | divided_by: t_qty
+                  comment
+                    Ribbon: the merchant's text ([pct] is filled in), else "Save [pct]%" from the tier's own
+                    percentage, so the ribbon can never disagree with the price.
+                  endcomment
+                  assign t_flag = b.settings.flag_label | replace: '[pct]', t_pct
+                  if t_flag == blank and t_pct > 0
+                    assign t_flag = 'products.product_summary.save' | t | append: ' ' | append: t_pct | append: '%'
+                  endif
                 -%}
                 <button type="button" class="cvc__pack{% if b.settings.accent == 'teal' %} cvc__pack--teal{% endif %}" role="radio" data-cv-pack
                         aria-checked="{% if b.id == active_tier.id %}true{% else %}false{% endif %}"
                         tabindex="{% if b.id == active_tier.id %}0{% else %}-1{% endif %}"
                         data-cv-qty="{{ t_qty }}"
-                        data-cv-discount="{{ b.settings.discount_pct }}"
+                        data-cv-discount="{{ t_pct }}"
                         {{ b.shopify_attributes }}>
-                  {%- if b.settings.flag_label != blank -%}<span class="cvc__flag">{{ b.settings.flag_label | escape }}</span>{%- endif -%}
+                  {%- if t_flag != blank -%}<span class="cvc__flag">{{ t_flag | escape }}</span>{%- endif -%}
                   <span class="cvc__pack-name">{{ b.settings.name | escape }}</span>
-                  <span class="cvc__pack-each" data-cv-tier-each="small">{{ t_each | money }}{% if t_qty > 1 %}<small> each</small>{% endif %}</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">{{ t_each | money }}{% if t_qty > 1 %}<small>{{ 'products.buy.each' | t }}</small>{% endif %}</span>
                   <s class="cvc__pack-was" data-cv-tier-was{% unless show_compare %} hidden{% endunless %}><span class="cvc__visually-hidden">{{ 'products.price_offer.compare_at' | t }}: </span><span data-cv-tier-was-value>{{ compare_price | money }}</span></s>
                 </button>
               {%- endif -%}
@@ -602,7 +741,7 @@
                 assign active_off_money = active_off | money
                 assign savings_line = section.settings.savings_text | default: '[qty] cases saves you [amount] vs buying singly' | replace: '[qty]', active_qty | replace: '[amount]', active_off_money
               elsif next_tier != nil
-                assign savings_line = section.settings.savings_next_text | default: 'Choose [qty] cases to save [pct]% on each' | replace: '[qty]', next_tier.settings.qty | replace: '[pct]', next_tier.settings.discount_pct
+                assign savings_line = section.settings.savings_next_text | default: 'Choose [qty] cases to save [pct]% on each' | replace: '[qty]', next_tier.settings.qty | replace: '[pct]', next_pct
               endif
             -%}
             <div class="cvc__savings">
@@ -624,23 +763,26 @@
 
         {%- comment -%} ---------- Add to bag + Buy now ---------- {%- endcomment -%}
         <div class="cvc__buttons">
-          <button type="submit" class="cvc__add" id="cvAddBtn"{% unless cvar.available %} disabled{% endunless %}>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-            <span id="cvCtaLabel" data-label-default="{{ section.settings.cta_label | default: 'Add to bag' | escape }}">
-              {%- if cvar.available -%}{{ section.settings.cta_label | default: 'Add to bag' | escape }}{%- else -%}Sold out{%- endif -%}
+          {%- comment -%} data-cvm-*: busy, done and error states from assets/cv-commerce-motion.js; cv-product.js owns the classes and the text. {%- endcomment -%}
+          <button type="submit" class="cvc__add" id="cvAddBtn" data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
+            <svg class="cvc__add-bag" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <svg class="cvc__add-check" data-cvm-icon viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg>
+            <span id="cvCtaLabel" data-cvm-label data-label-default="{{ add_label | escape }}">
+              {%- if cvar.available -%}{{ add_label | escape }}{%- else -%}{{ 'products.buy.sold_out' | t }}{%- endif -%}
             </span>
-            <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal">{{ active_total | money }}</span></span>
+            <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</span></span>
+            <noscript><span class="cvc__add-total cvc__add-total--nojs"><span aria-hidden="true">·</span> {{ cvar.price | money }}</span></noscript>
           </button>
           {%- if section.settings.show_buy_now -%}
-            <button type="button" class="cvc__buy" data-cv-buy-now{% unless cvar.available %} disabled{% endunless %}>
-              <span data-cv-buy-label data-label-default="{{ section.settings.buy_label | default: 'Buy now' | escape }}">{{ section.settings.buy_label | default: 'Buy now' | escape }}</span>
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+            <button type="button" class="cvc__buy" data-cv-buy-now data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
+              <span data-cv-buy-label data-cvm-label data-label-default="{{ buy_label | escape }}">{{ buy_label | escape }}</span>
+              <svg class="cvc__buy-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
             </button>
           {%- endif -%}
         </div>
         <p class="cvc__status" id="cvStatus" role="status" aria-live="polite"></p>
 
-        {%- render 'cv-counter-blocks', blocks: section.blocks, type: 'google_rating', product: product -%}
+        {%- render 'cv-counter-blocks', blocks: section.blocks, type: 'google_rating', product: product, settings: section.settings -%}
 
         {%- if section.settings.dispatch_max > 0 -%}
           <p class="cvc__shipby" data-cvc-ship-by data-max-days="{{ section.settings.dispatch_max }}"
@@ -680,13 +822,13 @@
         endfor
         assign vr_uid = section.id | append: '-vr'
       -%}
-      {%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}
+      {%- if vr_block.settings.show_clips -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
     </div>
   </div>
 
   {%- comment -%} Zoom: the real photos, large, panned by pointer or finger. {%- endcomment -%}
   {%- if hero_image != blank -%}
-    <dialog class="cvc-zoom" id="cvcZoom-{{ section.id }}" aria-label="{{ product.title | escape }}: photos" data-cvc-zoom>
+    <dialog class="cvc-zoom" id="cvcZoom-{{ section.id }}" aria-label="{{ product.title | escape }}: {{ 'products.gallery.photos_label' | t | escape }}" data-cvc-zoom>
       <div class="cvc-zoom__frame" data-cvc-zoom-frame>
         <img
           class="cvc-zoom__img"
@@ -698,14 +840,14 @@
           data-cvc-zoom-img
         >
       </div>
-      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="Close">
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="{{ 'products.gallery.close' | t | escape }}">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
       {%- if product.media.size > 1 -%}
-        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="Previous photo">
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="{{ 'products.gallery.previous_photo' | t | escape }}">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
         </button>
-        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="Next photo">
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="{{ 'products.gallery.next_photo' | t | escape }}">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
         </button>
       {%- endif -%}
@@ -720,12 +862,12 @@
     {%- endif -%}
     <div class="cvc-sticky__info">
       <span class="cvc-sticky__name">{{ product.title | escape }}</span>
-      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>{{ cvar.title | escape }}</span> · <b id="cvStickyTotal">{{ active_total | money }}</b></span>
+      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>{{ variant_label | escape }}</span> · <b id="cvStickyTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</b></span>
     </div>
     <div class="cvc-sticky__buttons">
-      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" tabindex="-1">{{ section.settings.sticky_cta | default: 'Add to bag' | escape }}</button>
+      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" data-cvm-btn tabindex="-1">{{ sticky_label | escape }}</button>
       {%- if section.settings.show_buy_now -%}
-        <button type="button" class="cvc-sticky__buy" data-cv-buy-now tabindex="-1">{{ section.settings.buy_label | default: 'Buy now' | escape }}</button>
+        <button type="button" class="cvc-sticky__buy" data-cv-buy-now data-cvm-btn tabindex="-1">{{ buy_label | escape }}</button>
       {%- endif -%}
     </div>
   </div>
@@ -740,10 +882,10 @@
   "settings": [
     { "type": "text", "id": "crumb_label", "label": "Breadcrumb shop label", "default": "Cases", "info": "Used when the product isn't viewed inside a collection." },
     { "type": "text", "id": "vendor_suffix", "label": "Vendor ticket suffix", "default": "Cases", "info": "Shown after the vendor name, for example Casify Cases." },
-    { "type": "text", "id": "zoom_label", "label": "Zoom chip", "default": "Tap to zoom" },
+    { "type": "text", "id": "zoom_label", "label": "Zoom chip", "default": "View larger" },
     { "type": "checkbox", "id": "model_first", "label": "Open on the 3D view", "default": true, "info": "When the product has a 3D model, it is the first photo ticket and the stage opens on it. Off: the 3D ticket comes second and opens when chosen." },
     { "type": "header", "content": "Price offer" },
-    { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "default": "59.99", "info": "Used only when the selected variant has no higher compare-at price." },
+    { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "default": "", "info": "Used only when the selected variant has no higher compare-at price, and only for shoppers paying in the shop currency. Use a price the case really sold at." },
     { "type": "header", "content": "Rating" },
     { "type": "checkbox", "id": "show_price_saving", "label": "Show the \"You save\" line", "default": true, "info": "Under the title, when the variant has a real compare-at price. Turn off if the \"Rating, price & pitch\" block already shows the saving." },
     { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Reads Shopify's review metafields, which review apps such as Judge.me write. Turn off if your app adds its own star block here." },
@@ -765,11 +907,13 @@
     { "type": "checkbox", "id": "show_price_tag", "label": "Hanging price tag by the title", "default": true, "info": "The brass tag with the price and a red \"% off\" burst. Off, the price still shows under the title." },
     { "type": "checkbox", "id": "show_photo_price", "label": "Price tag on the photo", "default": false, "info": "A 3D price tag hangs from the awning and flips when the variant changes. Shows a struck-through price and saving only when the variant has a real compare-at price." },
     { "type": "checkbox", "id": "awning_swipe", "label": "Let shoppers swipe to switch red and teal", "default": true, "info": "A sideways scroll, swipe or drag over the awning slides it to the other colour." },
-    { "type": "text", "id": "empty_rating_text", "label": "Customer proof text", "default": "+1000 Happy Customer", "info": "Shown before this product has its own reviews." },
-    { "type": "text", "id": "empty_rating_link", "label": "No reviews link", "default": "Write the first" },
+    { "type": "checkbox", "id": "show_customer_proof", "label": "Show the customer proof text", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Off: the row reads No reviews yet." },
+    { "type": "text", "id": "empty_rating_text", "label": "Customer proof text", "default": "No reviews yet", "info": "Shown before this product has its own reviews, only while the box above is ticked." },
+    { "type": "text", "id": "empty_rating_link", "label": "No reviews link", "default": "Write the first review" },
     { "type": "header", "content": "Google and Trustpilot ratings" },
     { "type": "paragraph", "content": "Shown under the price, one ticket per platform. A ticket shows only when its rating is filled in. Copy the numbers from your Google Business Profile and Trustpilot page, and update them when they change." },
     { "type": "checkbox", "id": "show_external_review_badges", "label": "Show Google and Trustpilot ratings", "default": true },
+    { "type": "checkbox", "id": "show_store_rating", "label": "These store ratings match the shop's review pages", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only when the numbers below are the real ones (the documented store rating is 4.9 from 952 reviews on Trustpilot and Google). Off hides the tickets, the Google strip and the store rating under the title." },
     { "type": "text", "id": "external_review_rating", "label": "Google rating", "info": "For example 4.8. Also used for the stars under the title while a product has no reviews of its own." },
     { "type": "text", "id": "external_review_count", "label": "Google review count", "info": "For example 1,000+." },
     { "type": "url", "id": "google_reviews_url", "label": "Google reviews link", "info": "Optional. Opens your Google reviews in a new tab." },
@@ -828,8 +972,9 @@
       "settings": [
         { "type": "number", "id": "qty", "label": "Cases", "default": 1 },
         { "type": "range", "id": "discount_pct", "label": "Discount per case", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify admin > Discounts, or checkout will charge a different price than the page shows." },
+        { "type": "checkbox", "id": "use_theme_pct", "label": "Use the pack discount from theme settings", "default": true, "info": "For 2 or 3 cases, the percentage comes from Theme settings > Packs and shipping, so every page shows the same discount. Off: the percentage above is used." },
         { "type": "text", "id": "name", "label": "Label", "default": "1 case" },
-        { "type": "text", "id": "flag_label", "label": "Ribbon", "info": "Optional. Keep it true, for example Save 18% or Best value." },
+        { "type": "text", "id": "flag_label", "label": "Ribbon", "info": "Optional. Leave empty for Save [pct]% from this pack's discount. [pct] is filled in. Keep it true, for example Best value." },
         { "type": "select", "id": "accent", "label": "Box colour", "default": "red", "options": [ { "value": "red", "label": "Red stripes" }, { "value": "teal", "label": "Teal stripes" } ] },
         { "type": "checkbox", "id": "default_checked", "label": "Selected by default", "default": false }
       ]
@@ -864,7 +1009,7 @@
             { "value": "fit", "label": "Printed to fit" }
           ]
         },
-        { "type": "text", "id": "label", "label": "Text", "default": "Shock-absorbing drop protection", "info": "Say only what the matching cases really do." },
+        { "type": "text", "id": "label", "label": "Text", "default": "", "info": "Say only what the matching cases really do. Empty: the tile is hidden." },
         { "type": "text", "id": "keywords", "label": "Show on products matching", "info": "Comma-separated words looked for in the product's title, type, vendor and option values, for example: tough, shockproof. Leave empty to show on every product." },
         { "type": "text", "id": "tag", "label": "Product tag override", "info": "Optional, for example feature-stand. Products with this tag always show the tile; products tagged no-feature-stand never do." }
       ]
@@ -933,7 +1078,8 @@
           ],
           "default": "pill"
         },
-        { "type": "number", "id": "count", "label": "Number", "info": "Shown on every product that has no count of its own. Use a real number, and word the text to match what it counts." },
+        { "type": "number", "id": "count", "label": "Number", "info": "Used only on the products listed below that have no count of their own. Use a real number, and word the text to match what it counts." },
+        { "type": "product_list", "id": "typed_count_products", "label": "Use the typed number only on", "limit": 50, "info": "Shown only when you can back it. Not in the store's evidence on hand. Empty: the note shows only each product's own count field." },
         { "type": "text", "id": "metafield", "label": "Product count field (namespace.key)", "default": "custom.sold_recently", "info": "Each product's own number, set in Shopify admin on the product: custom.sold_recently is \"Sold this week\", custom.total_sold is \"Total sold\". It replaces the number above on that product." },
         { "type": "text", "id": "text", "label": "Text", "default": "[count] sold this week", "info": "[count] is the metafield value. Match the wording to what the number really counts, e.g. \"Hurry up! [count] items have been sold\" for an all-time total." },
         {
@@ -997,14 +1143,14 @@
         { "type": "checkbox", "id": "drop_test", "label": "Drop a 3D phone onto the impact bar", "default": true, "info": "Plays when the meter comes into view, and again on hover or tap. Off for shoppers who prefer reduced motion." },
         { "type": "header", "content": "Impact" },
         { "type": "text", "id": "impact_label", "label": "Label", "default": "Impact Level" },
-        { "type": "text", "id": "impact_value", "label": "Drop height", "default": "8.2ft | 2.5m", "info": "Shown beside the label. Leave empty to hide." },
-        { "type": "range", "id": "impact_level", "label": "Filled bars", "min": 0, "max": 10, "step": 1, "default": 3 },
+        { "type": "text", "id": "impact_value", "label": "Drop height", "default": "", "info": "Shown only when you can back it. Not in the store's evidence on hand. Shown beside the label. Leave empty to hide." },
+        { "type": "range", "id": "impact_level", "label": "Filled bars", "min": 0, "max": 10, "step": 1, "default": 0 },
         { "type": "text", "id": "impact_min", "label": "Low end", "default": "Min." },
         { "type": "text", "id": "impact_max", "label": "High end", "default": "Max." },
         { "type": "header", "content": "Thickness" },
         { "type": "text", "id": "thickness_label", "label": "Label", "default": "Thickness" },
         { "type": "text", "id": "thickness_value", "label": "Measurement", "info": "Optional, shown beside the label, for example 1.6mm." },
-        { "type": "range", "id": "thickness_level", "label": "Filled bars", "min": 0, "max": 10, "step": 1, "default": 2 },
+        { "type": "range", "id": "thickness_level", "label": "Filled bars", "min": 0, "max": 10, "step": 1, "default": 0 },
         { "type": "text", "id": "thickness_min", "label": "Low end", "default": "Slim" },
         { "type": "text", "id": "thickness_max", "label": "High end", "default": "Sturdy" }
       ]
@@ -1015,10 +1161,11 @@
       "limit": 1,
       "settings": [
         { "type": "paragraph", "content": "Customer video reviews show under the product photo. Add a \"Video review\" block for each clip; the row appears once this product has one. This block only changes the words." },
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Filmed by the people who bought it" },
+        { "type": "checkbox", "id": "show_clips", "label": "Show customer clips", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only for real clips from real buyers: names, stars and quotes must be theirs." },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Case clips" },
         { "type": "text", "id": "lede", "label": "Text", "info": "Optional line under the heading." },
         { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a clip for sound and the full review" },
-        { "type": "text", "id": "verified_label", "label": "Verified badge", "default": "Verified buyer" },
+        { "type": "text", "id": "verified_label", "label": "Verified badge", "default": "Verified buyer", "info": "Shows only on clips ticked Verified buyer, after finding their order." },
         { "type": "text", "id": "bought_label", "label": "Phone and colour label", "default": "Filmed on" },
         { "type": "text", "id": "anon_label", "label": "Name when none is given", "default": "Customer" },
         { "type": "text", "id": "submit_label", "label": "Send-a-clip link", "default": "Filmed yours? Send it in" },
@@ -1058,7 +1205,7 @@
       "name": "Product: shop counter",
       "blocks": [
         { "type": "tier", "settings": { "qty": 1, "discount_pct": 0, "name": "1 case" } },
-        { "type": "tier", "settings": { "qty": 2, "discount_pct": 18, "name": "2 cases", "flag_label": "Save 18%", "default_checked": true } },
+        { "type": "tier", "settings": { "qty": 2, "discount_pct": 18, "name": "2 cases", "default_checked": true } },
         { "type": "tier", "settings": { "qty": 3, "discount_pct": 31, "name": "3 cases", "flag_label": "Best value", "accent": "teal" } },
         { "type": "service", "settings": { "icon": "truck", "text": "Free shipping" } },
         { "type": "service", "settings": { "icon": "returns", "text": "30-day returns" } },

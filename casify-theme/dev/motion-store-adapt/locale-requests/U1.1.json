@@ -1,0 +1,9 @@
+{
+  "general.breadcrumbs.home": "Home",
+  "products.buy.slot_name": "Case [n]",
+  "products.buy.slot_option_label": "Case [n]: [option]",
+  "products.buy.slot_sold_out": "Case [n] is sold out in that choice",
+  "products.buy.slots_legend": "Your [qty] cases",
+  "products.buy.slot_same": "Same as case 1",
+  "products.product_summary.review_one": "review"
+}

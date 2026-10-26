@@ -804,6 +804,10 @@ html.cvc-zoom-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .cvc__photo-ticket-card, .cvc__photo-ticket-outline, .cvc__swatch, .cvc__pack, .cvc__meter-fill, .cvc-sticky, .cvc__photo, .cvc__tag-sale, .cvc__price-saving { transition: none; }
 }
+/* cv-pdp-counter-motion.js adds .is-motion while it runs (motion allowed, GSAP loaded): the meter
+   width and the sticky bar slide are tweened there, so CSS does not animate them as well. Without
+   JS or under reduced motion these rules never apply and the CSS states stay as they are. */
+.cvc.is-motion .cvc__meter-fill, .cvc.is-motion .cvc-sticky { transition: none; }
 
 /* ---------- Responsive ---------- */
 /* Wide laptops: the buy box is still narrow here, so the title steps down a size to
@@ -941,4 +945,37 @@ html.cvc-zoom-open { overflow: hidden; }
   .cvc__packs { gap: 6px; }
   .cvc__pack-each { font-size: 14px; }
   .cvc__pack-each small { font-size: .72em; }
+}
+
+/* ---- U1.1: buy box states (sections/cv-product-counter.liquid) ---- */
+/* Without JavaScript the native <noscript> variant list is the picker; the custom pickers, which
+   need cv-product.js to resolve a variant, step aside. */
+.no-js .cvc__opt:not(.cvc__opt--noscript) { display: none; }
+/* Packs, the savings meter, the per-case rows and the sticky bar need cv-product.js too: without it
+   the native post adds one case, so they step aside and the button shows the one-case price. */
+.no-js .cvc__packs, .no-js .cvc__savings, .no-js .cvc .cvpk, .no-js .cvc-sticky,
+.no-js .cvc__add-total:not(.cvc__add-total--nojs) { display: none; }
+/* Buy now is a script button (add, then go to checkout); without JS it would do nothing. */
+.no-js .cvc__buy { display: none; }
+/* Add to bag: the bag icon becomes a check while cv-product.js shows "In your bag" (is-done).
+   A colour and icon state, kept under reduced motion and without the motion module. */
+.cvc__add-check { display: none; }
+.cvc__add.is-done .cvc__add-bag { display: none; }
+.cvc__add.is-done .cvc__add-check { display: block; }
+/* Buy now ticket punch (cv-pdp-counter-motion.js adds the svg only while motion runs). */
+.cvc .cvc__buy { position: relative; }
+.cvc__punch { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.cvc__punch rect { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+/* Pack highlight (cv-commerce-motion.css draws it): match the candy box corners. */
+.cvc__packs [data-cvm-pack-highlight] { border-radius: 14px; }
+/* The outline sits 5px outside the chosen box and under it, so the box's ribbon (.cvc__flag) stays readable. */
+html.cvcm-ready .cvc__packs [data-cvm-pack-highlight] { z-index: 0; box-sizing: content-box; margin: -7px 0 0 -7px; padding: 5px; border-radius: 18px; }
+/* Store rating under the title is labelled as one (gate G2). */
+.cvc-sum__source { font-size: .78em; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--cocoa-500, currentColor); }
+/* Phones: the wrapped sweets on the thumb strip must never read as a product photo. */
+@media (max-width: 599px) {
+  .cvc__photo-reel-sweet { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cvc__punch { display: none; }
 }

@@ -49,8 +49,12 @@ function cvsnWebGL() {
   }
 }
 
-/* Rolls a count from 0 up to the number Liquid rendered ("1480+", "100"). */
+/* Rolls a count from 0 up to the number Liquid rendered ("1480+", "100").
+   Only for a count that is the product's own (its sales metafield), which the snippet marks
+   with data-cvsn-source="product" on the note or the count. The merchant-typed store-wide
+   fallback stays still: motion would amplify a number that is not this product's. */
 function cvsnRoller(el) {
+  if (!el.closest('[data-cvsn-source="product"]')) return null;
   const final = el.textContent;
   const m = /^(\D*)(\d+)(\D*)$/.exec(final.trim());
   if (!m || parseInt(m[2], 10) < 2) return null;

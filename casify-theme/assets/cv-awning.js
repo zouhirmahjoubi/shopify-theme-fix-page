@@ -420,6 +420,10 @@ function cvawBoot(scope) {
 }
 
 cvawBoot(document);
+/* Follow a live reduced-motion change: re-boot so init re-reads the preference
+ * (reduce keeps the static SVG awning, no-preference brings the 3D canopy back). */
+const cvawMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (cvawMotionQuery.addEventListener) cvawMotionQuery.addEventListener('change', function () { cvawBoot(document); });
 document.addEventListener('shopify:section:load', function (event) { cvawBoot(event.target); });
 document.addEventListener('shopify:section:unload', function (event) {
   const holders = event.target.querySelectorAll ? event.target.querySelectorAll('[data-cv-awning]') : [];

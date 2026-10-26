@@ -26,7 +26,10 @@
   assign t_fill = t_value | times: 20
 
   assign show_strip = false
-  if settings.show_external_review_badges
+  comment
+    Gate G2 (PLAN.md 4; PRODUCT.md:102): typed store ratings show only while "show_store_rating" is on.
+  endcomment
+  if settings.show_external_review_badges and settings.show_store_rating
     if g_value > 0 or t_value > 0
       assign show_strip = true
     endif

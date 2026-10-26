@@ -18,7 +18,16 @@
 {% enddoc %}
 {%- liquid
   assign s = block.settings
-  assign show_here = true
+  comment
+    Gate G5 (PLAN.md 4; PRODUCT.md:104): drop heights and protection levels are performance claims.
+    The meter shows only for products with their own metafields (custom.impact_level,
+    custom.thickness_level, custom.drop_height) or listed by the merchant in "Show only on".
+  endcomment
+  assign own_numbers = false
+  if product.metafields.custom.impact_level.value != blank or product.metafields.custom.thickness_level.value != blank or product.metafields.custom.drop_height.value != blank
+    assign own_numbers = true
+  endif
+  assign show_here = own_numbers
   if s.products.size > 0
     assign show_here = false
     for p in s.products

@@ -3,14 +3,22 @@
   sections/cv-product-counter.liquid). Renders nothing until a rating is entered.
 
   @param {object} block - The google_rating block.
+  @param {object} [settings] - The counter section's settings: its store rating values win, so the
+    strip and the tickets can never show two different numbers, and "show_store_rating" gates it (G2).
 {% enddoc %}
 {%- liquid
-  assign rating = block.settings.rating | strip
+  assign rating = settings.external_review_rating | default: block.settings.rating | strip
   comment
     Accept "4,4" as well as "4.4": plus: 0 would read "4,4" as 4.
   endcomment
   assign rating_value = rating | replace: ',', '.' | plus: 0
   assign count = block.settings.review_count | strip
+  if settings.external_review_rating != blank
+    assign count = settings.external_review_count | strip
+  endif
+  if settings != blank and settings.show_store_rating != true
+    assign rating_value = 0
+  endif
   assign url = block.settings.reviews_url
 -%}
 {%- if rating_value > 0 -%}
