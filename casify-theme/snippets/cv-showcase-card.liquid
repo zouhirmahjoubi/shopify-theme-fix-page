@@ -94,6 +94,44 @@
     endif
   endif
 
+  comment
+    cv-card-copy.liquid is typed per handle. A line or pill that names a phone family or MagSafe stays
+    only when the product's own title, tags or variant titles name it too (G13); otherwise the clause
+    is cut from the line and the pill is dropped (with both pills gone, the card reads its pills off
+    the product's title and tags below).
+  endcomment
+  if has_item and copy.size == 6
+    assign facts = item.variants | map: 'title' | join: ' '
+    assign facts = item.tags | join: ' ' | prepend: ' ' | prepend: item.title | append: ' ' | append: facts | downcase | replace: 'samsung', 'samsung galaxy' | replace: 'galaxy', 'galaxy samsung'
+    assign line_l = map_line | downcase
+    assign p1_l = map_p1_text | downcase
+    assign p2_l = map_p2_text | downcase
+    assign claim_words = 'iphone,pixel,galaxy,samsung,magsafe' | split: ','
+    for w in claim_words
+      unless facts contains w
+        if line_l contains w
+          assign map_line = '~'
+        endif
+        if p1_l contains w
+          assign map_p1_text = ''
+        endif
+        if p2_l contains w
+          assign map_p2_text = ''
+        endif
+      endunless
+    endfor
+    if map_line == '~'
+      assign map_line = ''
+      assign cut_marks = ', cut for ~ cut for ~, for iPhone~ for iPhone' | split: '~'
+      for mark in cut_marks
+        assign line_parts = copy[1] | split: mark
+        if map_line == blank and line_parts.size > 1
+          assign map_line = line_parts.first | append: '.'
+        endif
+      endfor
+    endif
+  endif
+
   if has_item
     if title == blank
       assign title = map_title | default: item.title
@@ -162,7 +200,7 @@
     assign p1_icon = s.pill_1_icon
     assign p2_text = s.pill_2_text
     assign p2_icon = s.pill_2_icon
-  elsif map_p1_text != blank
+  elsif map_p1_text != blank or map_p2_text != blank
     assign p1_text = map_p1_text
     assign p1_icon = map_p1_icon
     assign p2_text = map_p2_text
@@ -243,7 +281,7 @@
     {%- endif -%}
     <span class="cvsh-card__ring" aria-hidden="true"></span>
     {%- if card_image != blank -%}
-      <figure class="cvsh-card__media cvsh-card__media--{{ image_fit }}" data-cvsh-media>
+      <figure class="cvsh-card__media cvsh-card__media--{{ image_fit }}" data-cvsh-media data-cvm-fly-img>
         {{ card_image | image_url: width: 960 | image_tag:
           class: 'cvsh-card__image',
           loading: 'lazy',
@@ -291,16 +329,11 @@
           <span>{{ i_rating.rating | round: 1 }} <span class="cvsh-sr">out of {{ i_rating.scale_max }} stars,</span>({{ i_count }})</span>
         </div>
       {%- endif -%}
-    {%- elsif s.rating_count != blank -%}
-      <div class="cvsh-card__rating" data-cvsh-stars>
-        <span class="cvsh-stars">
-          {%- for i in (1..5) -%}
-            <svg class="cvsh-stars__star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.9-4.8 4.7 1.2 6.6L12 17.7l-5.9 3.2 1.2-6.6-4.8-4.7 6.6-.9z"/></svg>
-          {%- endfor -%}
-        </span>
-        <span>({{ s.rating_count | escape }})</span>
-      </div>
     {%- endif -%}
+    {%- comment -%}
+      A hand-typed block review count (s.rating_count) no longer draws five full stars: stars come only
+      from a review app's rating and count on the product (G14). The block setting stays in the schema.
+    {%- endcomment -%}
 
     <h3 class="cvsh-card__title">
       {%- if has_item -%}<a href="{{ url }}">{{ title | escape }}</a>{%- else -%}{{ title | escape }}{%- endif -%}
@@ -334,12 +367,12 @@
     {%- endcapture -%}
     {%- case cta_mode -%}
       {%- when 'pick' -%}
-        <button type="button" {{ cta_attrs }} data-cvqp-open data-handle="{{ item.handle }}" data-url="{{ item.url }}">
+        <a href="{{ item.url }}" {{ cta_attrs }} data-cvqp-open data-cvqp-buy-now data-handle="{{ item.handle }}" data-url="{{ item.url }}">
       {%- when 'add' -%}
         <form method="post" action="{{ routes.cart_add_url }}" data-cart-add-form class="cvsh-card__form">
           <input type="hidden" name="id" value="{{ item.selected_or_first_available_variant.id }}">
           <input type="hidden" name="quantity" value="1">
-          <button type="submit" {{ cta_attrs }}>
+          <button type="submit" {{ cta_attrs }} data-cvm-btn>
       {%- when 'out' -%}
         <button type="button" {{ cta_attrs }} disabled>
       {%- else -%}
@@ -372,7 +405,7 @@
           <circle r="2.5" class="cvsh-sign-cta__mint-center"/>
         </g>
       </svg>
-      <span class="cvsh-sign-cta__label">
+      <span class="cvsh-sign-cta__label"{% if cta_mode == 'add' %} data-cvm-label{% endif %}>
         {%- if label_short != label -%}
           <span class="cvsh-sign-cta__long">{{ label | escape }}</span><span class="cvsh-sign-cta__short" aria-hidden="true">{{ label_short | escape }}</span>
         {%- else -%}
@@ -386,7 +419,7 @@
       {%- when 'add' -%}
           </button>
         </form>
-      {%- when 'pick', 'out' -%}
+      {%- when 'out' -%}
         </button>
       {%- else -%}
         </a>

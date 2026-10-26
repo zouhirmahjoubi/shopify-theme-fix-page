@@ -1,0 +1,24 @@
+{
+  "_note": "U1.5: keys used as plain English in sections/cv-collection.liquid, snippets/cv-pack-meter.liquid, snippets/cv-showcase-card.liquid and snippets/cv-card.liquid until LOC adds them. Card labels Add to bag, Sold out and Choose your phone move to the existing keys products.buy.add_to_bag, products.buy.sold_out and general.quick_pick.choose_phone.",
+  "collections": {
+    "filters": {
+      "to": "To",
+      "close": "Close filters",
+      "in_use": "Filters in use",
+      "remove_named": "Remove {{ label }} filter",
+      "price_range": "{{ min }} to {{ max }}"
+    },
+    "pack_meter": {
+      "heading": "Mix a pack",
+      "line_0": "Mix any 2 cases for [p2]% off, or any 3 for [p3]% off. Colours and phones can all be different.",
+      "line_1": "1 case in your bag. Add 1 more and [p2]% comes off both.",
+      "line_2": "2 cases in your bag: [p2]% off at checkout. Add 1 more for [p3]% off.",
+      "line_3": "[n] cases in your bag: [p3]% off at checkout.",
+      "tag_1": "1 case"
+    },
+    "card": {
+      "choose_phone_short": "Choose phone",
+      "choose_options": "Choose options"
+    }
+  }
+}

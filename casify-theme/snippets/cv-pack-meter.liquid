@@ -9,13 +9,19 @@
 
   Params:
     sid      section id
-    pack2    percentage for 2 cases (must match the store's discount)
-    pack3    percentage for 3 cases (must match the store's discount)
+    pack2    percentage for 2 cases; defaults to Theme settings cv_pack_2_pct
+    pack3    percentage for 3 cases; defaults to Theme settings cv_pack_3_pct
     heading  the meter's heading
+
+  The percentages live in Theme settings (cv_pack_2_pct / cv_pack_3_pct), which must match the
+  automatic discounts in Shopify admin. The meter updates on cv:cart, cart:refresh, cart:added and
+  cart:drawer:refreshed (no polling).
 
   Behaviour and motion: assets/cv-pages.js (packMeter). Styles: assets/cv-pages.css.
 {%- endcomment -%}
 {%- liquid
+  assign pack2 = pack2 | default: settings.cv_pack_2_pct | default: 0
+  assign pack3 = pack3 | default: settings.cv_pack_3_pct | default: 0
   assign imgs = ''
   assign filled = 0
   for item in cart.items
@@ -50,10 +56,11 @@
        data-count="{{ n }}" data-p2="{{ pack2 }}" data-p3="{{ pack3 }}"
        data-t0="{{ t0 | escape }}" data-t1="{{ t1 | escape }}" data-t2="{{ t2 | escape }}" data-t3="{{ t3 | escape }}">
   <h2 class="cvpm__title" id="cvpmTitle-{{ sid }}">{{ heading | default: 'Mix a pack' | escape }}</h2>
-  <ul class="cvpm__boxes" aria-hidden="true">
+  {%- comment -%} data-cvm-bag: where cv-commerce-motion.js lands an added case (next empty box; cv-pages.js moves it). {%- endcomment -%}
+  <ul class="cvpm__boxes" aria-hidden="true"{% if filled >= 3 %} data-cvm-bag{% endif %}>
     {%- for i in (1..3) -%}
       {%- assign src = img_list[forloop.index0] -%}
-      <li class="cvpm__box{% if src != blank %} is-filled{% endif %}" data-cvpm-box>
+      <li class="cvpm__box{% if src != blank %} is-filled{% endif %}" data-cvpm-box{% if forloop.index0 == filled %} data-cvm-bag{% endif %}>
         <span class="cvpm__photo"><img {% if src != blank %}src="{{ src }}" {% endif %}alt="" width="100" height="100" loading="lazy" data-cvpm-img></span>
         <img class="cvpm__front" src="{{ 'pack-box-wall.webp' | asset_url }}" alt="" width="860" height="313" loading="lazy">
         <img class="cvpm__lid" src="{{ 'pack-box-lid.webp' | asset_url }}" alt="" width="520" height="313" loading="lazy" data-cvpm-lid>

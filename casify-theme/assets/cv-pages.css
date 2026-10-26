@@ -12,7 +12,7 @@
    Behaviour and motion: assets/cv-pages.js. This file is the finished state.
    ========================================================================= */
 
-.cvl, .cvcl, .cvct, .cvd {
+.cvl, .cvcl, .cvcls, .cvct, .cvd {
   --pg-ink: var(--cocoa-700);
   --pg-muted: var(--cocoa-600);
   --pg-red: var(--red-500);
@@ -22,7 +22,7 @@
   --pg-card: #fffdf8;
   color: var(--pg-ink);
 }
-.cvl ::selection, .cvcl ::selection, .cvct ::selection, .cvd ::selection { background: rgba(196, 48, 43, .2); color: var(--cocoa-700); }
+.cvl ::selection, .cvcl ::selection, .cvcls ::selection, .cvct ::selection, .cvd ::selection { background: rgba(196, 48, 43, .2); color: var(--cocoa-700); }
 .cvl__vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* shared candy button */
@@ -126,7 +126,7 @@
 }
 .cvl__badge[hidden] { display: none; }
 .cvl__count { margin: 0; font-family: var(--font-label); font-size: 14px; line-height: 1.2; color: var(--cocoa-600); }
-.cvl__count b { font-family: var(--font-display); font-weight: 900; font-size: 20px; color: var(--red-600); font-variant-numeric: tabular-nums; }
+.cvl__count b { display: inline-block; font-family: var(--font-display); font-weight: 900; font-size: 20px; color: var(--red-600); font-variant-numeric: tabular-nums; }
 .cvl__sort { display: inline-flex; align-items: center; gap: 10px; margin-left: auto; font-family: var(--font-label); font-size: 13px; color: var(--cocoa-600); }
 .cvl__select { position: relative; display: block; }
 .cvl__select select {
@@ -151,6 +151,14 @@
 }
 .cvl__drawer[open] { display: flex; }
 .cvl__drawer::backdrop { background: rgba(36, 24, 18, .46); }
+/* No script: the closed dialog becomes a plain panel in the page; its footer button submits the form. */
+.no-js .cvl__filter-btn, .no-js .cvl__close { display: none; }
+.no-js .cvl__drawer {
+  display: flex; position: static; inset: auto;
+  width: auto; height: auto; max-height: none; margin: 14px 0 0;
+  border: 1.5px dashed var(--pg-rule, rgba(74, 51, 36, .3)); border-radius: 18px; box-shadow: none;
+}
+.no-js .cvl__groups { overflow: visible; }
 .cvl__drawer-hd { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 14px 22px; border-bottom: 1.5px dashed var(--pg-rule, rgba(74, 51, 36, .3)); }
 .cvl__drawer-title { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: 26px; line-height: 1; }
 .cvl__close {
@@ -272,6 +280,48 @@
 .cvcl__link:hover .cvcl__pic:nth-child(3) { --r: 14deg; --x: 24px; }
 .cvcl__meta { display: inline-flex; align-items: center; gap: 8px; margin-top: 30px; font-family: var(--font-label); font-size: 14px; }
 .cvcl__link:hover .cvcl__meta { color: var(--red-600); }
+
+/* .cvcls: the same rules under the new prefix. U4.1 renames sections/cv-collections-list.liquid
+   to .cvcls and then deletes the .cvcl rules above. */
+.cvcls__hd { margin: 8px 0 34px; }
+.cvcls__title { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: clamp(34px, 5vw, 56px); line-height: 1; letter-spacing: -.02em; color: var(--text-heading); }
+.cvcls__lede { max-width: 56ch; margin-top: 10px; font-size: 16px; line-height: 1.6; }
+.cvcls__lede p { margin: 0; }
+.cvcls__aisles { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px 32px; margin: 0; padding: 0; list-style: none; }
+.cvcls__aisles .cvcls__sign { max-width: 430px; }
+.cvcls__link { display: grid; justify-items: center; color: var(--cocoa-700); text-decoration: none; }
+.cvcls__link:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 8px; border-radius: 10px; }
+.cvcls__sign { position: relative; width: 88%; container-type: inline-size; transform-origin: 50% 2%; rotate: calc(var(--lean, 0) * 1deg); }
+.cvcls__plate { display: block; width: 100%; height: auto; filter: drop-shadow(0 14px 12px rgba(51, 35, 26, .22)); }
+.cvcls__name {
+  position: absolute; left: 10%; right: 10%; top: 46%; bottom: 11%;
+  display: grid; place-items: center; text-align: center;
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(18px, 12cqi, 46px); line-height: .95; letter-spacing: -.01em;
+  color: var(--red-600); text-wrap: balance;
+}
+.cvcls__shelf { position: relative; display: flex; justify-content: center; align-items: flex-end; width: 100%; height: 150px; margin-top: 16px; }
+.cvcls__shelf::after { /* the wooden shelf the photos stand on */
+  content: ""; position: absolute; left: 3%; right: 3%; bottom: -12px; height: 14px; z-index: 0;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #c29468 0%, #9c6b45 60%, #7d5236 100%);
+  box-shadow: 0 12px 16px -10px rgba(51, 35, 26, .55);
+}
+.cvcls__pic {
+  position: relative; z-index: 1; flex: none; width: 124px; aspect-ratio: 1; margin: 0 -16px;
+  padding: 5px; border-radius: 3px; background: #fffdf8;
+  box-shadow: 0 12px 18px -12px rgba(51, 35, 26, .55), 0 0 0 1px rgba(74, 51, 36, .08);
+  rotate: var(--r, 0deg); translate: var(--x, 0) var(--y, 0);
+  transition: rotate 420ms var(--ease-candy), translate 420ms var(--ease-candy);
+}
+.cvcls__pic:nth-child(1) { --r: -8deg; }
+.cvcls__pic:nth-child(2) { --r: 1deg; --y: -8px; z-index: 2; }
+.cvcls__pic:nth-child(3) { --r: 7deg; }
+.cvcls__pic img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+.cvcls__link:hover .cvcls__pic:nth-child(1) { --r: -15deg; --x: -24px; }
+.cvcls__link:hover .cvcls__pic:nth-child(2) { --y: -20px; }
+.cvcls__link:hover .cvcls__pic:nth-child(3) { --r: 14deg; --x: 24px; }
+.cvcls__meta { display: inline-flex; align-items: center; gap: 8px; margin-top: 30px; font-family: var(--font-label); font-size: 14px; }
+.cvcls__link:hover .cvcls__meta { color: var(--red-600); }
 
 /* =========================================================================
    CONTACT: the letterbox
@@ -431,6 +481,7 @@
    ========================================================================= */
 @media (max-width: 989px) {
   .cvl__hd { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .cvl__sign-wrap { justify-self: stretch; } /* the sign is an inline-size container: as a start-aligned item it shrinks to 0 wide */
   .cvpm { justify-self: stretch; max-width: 560px; }
   .cvd__layout.has-toc { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .cvd__toc { position: static; padding: 14px 16px; border-radius: 12px; border: 1.5px dashed var(--pg-rule); background: var(--pg-paper); }
@@ -459,6 +510,7 @@
   .cvd__help-bell { width: 64px; }
   .cvd__help-cta { grid-column: 1 / -1; justify-content: center; }
   .cvcl__aisles { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .cvcls__aisles { grid-template-columns: minmax(0, 1fr); gap: 44px; }
 }
 @media (max-width: 749px) {
   .cvl .cv-card__pick { padding-inline: 8px; gap: 6px; letter-spacing: .04em; white-space: nowrap; }
@@ -469,13 +521,14 @@
 @media (max-width: 420px) {
   /* theme.css forces every h1/h2 to phone sizes with !important at this width; these pages keep their own scale */
   .cvl .cvl__title { font-size: clamp(30px, 14cqi, 48px) !important; }
-  .cvct .cvct__title, .cvd .cvd__title, .cvcl .cvcl__title { font-size: clamp(34px, 10vw, 42px) !important; }
+  .cvct .cvct__title, .cvd .cvd__title, .cvcl .cvcl__title, .cvcls .cvcls__title { font-size: clamp(34px, 10vw, 42px) !important; }
   .cvct .cvct__h2, .cvpm .cvpm__title, .cvd .cvd__help h2, .cvl .cvl__empty h2 { font-size: 21px !important; }
   .cvd .cvd__body h2 { font-size: 22px !important; }
   .cvl .cvl__drawer-title { font-size: 26px !important; }
   .cvpm__box { height: 96px; }
   .cvcl__pic { width: 108px; }
+  .cvcls__pic { width: 108px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cvcl__pic, .cvct__link > .cv-ico:last-child, .cvl__results, .cvl__group-q svg { transition: none; }
+  .cvcl__pic, .cvcls__pic, .cvct__link > .cv-ico:last-child, .cvl__results, .cvl__group-q svg { transition: none; }
 }

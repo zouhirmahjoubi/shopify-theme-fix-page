@@ -25,8 +25,14 @@
   function clamp(n, lo, hi) { return n < lo ? lo : (n > hi ? hi : n); }
 
   var gsap = window.gsap;
-  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  var motion = !!gsap && !reduce;
+  /* Live: gsap.matchMedia flips it when the visitor changes the reduced motion setting. */
+  var motion = false;
+  if (gsap && gsap.matchMedia) {
+    gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', function () {
+      motion = true;
+      return function () { motion = false; };
+    });
+  }
   var base = window.Shopify && window.Shopify.routes ? window.Shopify.routes.root : '/';
 
   function fill(template, values) {
@@ -41,12 +47,41 @@
   }
 
 
-  /* ------------------------------------------------------------------ signs */
-  (function signs() {
-    var list = $$('[data-cv-sign]');
-    if (!list.length || !motion) return;
+  /* Collection modules (signs, packMeter, aisle) start per root and stop on
+     shopify:section:unload, so the theme editor can re-render the section without a reload.
+     Each init returns its own stop function; listeners on document and window go through
+     listen() so they are removed again. */
+  var running = [];
+  function listen(target, type, fn, opts, offs) {
+    target.addEventListener(type, fn, opts);
+    offs.push(function () { target.removeEventListener(type, fn, opts); });
+  }
+  function stopAll(offs) { while (offs.length) { try { offs.pop()(); } catch (e) {} } }
+  function boot(scope) {
+    [['[data-cv-sign]', initSign], ['[data-cv-pack-meter]', initPackMeter], ['[data-cvl]', initAisle]].forEach(function (m) {
+      var els = $$(m[0], scope);
+      if (scope.nodeType === 1 && scope.matches(m[0])) els.unshift(scope);
+      els.forEach(function (el) {
+        if (el._cvpOn) return;
+        el._cvpOn = true;
+        running.push({ el: el, off: m[1](el) || function () {} });
+      });
+    });
+  }
+  function teardown(scope) {
+    running = running.filter(function (r) {
+      if (scope !== document && !scope.contains(r.el)) return true;
+      try { r.off(); } catch (e) {}
+      r.el._cvpOn = false;
+      return false;
+    });
+  }
 
-    list.forEach(function (sign) {
+  /* ------------------------------------------------------------------ signs */
+  function initSign(sign) {
+    if (!gsap || !gsap.matchMedia) return null;
+    var mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', function () {
       var drop = function () {
         gsap.fromTo(sign, { y: -80, rotation: -13, autoAlpha: 0 },
           { y: 0, rotation: 0, autoAlpha: 1, duration: 1.9, ease: 'elastic.out(1, 0.32)', clearProps: 'transform' });
@@ -57,31 +92,32 @@
         gsap.set(sign, { autoAlpha: 0 });
         window.ScrollTrigger.create({ trigger: sign, start: 'top 92%', once: true, onEnter: drop });
       }
+      /* Lean with the scroll: a quick scroll swings the sign, then it settles. */
+      if (!window.ScrollTrigger) return;
+      var lean = gsap.quickTo(sign, '--lean', { duration: 0.9, ease: 'elastic.out(1, 0.4)' });
+      var rest = gsap.delayedCall(0.14, function () { lean(0); }).pause();
+      window.ScrollTrigger.create({
+        start: 0, end: 'max',
+        onUpdate: function (self) {
+          lean(clamp(self.getVelocity() / -260, -5, 5));
+          rest.restart(true);
+        }
+      });
+      return function () { rest.kill(); };
     });
-
-    /* Lean with the scroll: a quick scroll swings the signs, then they settle. */
-    if (!window.ScrollTrigger) return;
-    var leans = list.map(function (sign) { return gsap.quickTo(sign, '--lean', { duration: 0.9, ease: 'elastic.out(1, 0.4)' }); });
-    var rest = gsap.delayedCall(0.14, function () { leans.forEach(function (q) { q(0); }); }).pause();
-    window.ScrollTrigger.create({
-      start: 0, end: 'max',
-      onUpdate: function (self) {
-        var v = clamp(self.getVelocity() / -260, -5, 5);
-        leans.forEach(function (q) { q(v); });
-        rest.restart(true);
-      }
-    });
-  })();
+    return function () { mm.revert(); };
+  }
 
   /* ------------------------------------------------------------- pack meter */
-  (function packMeter() {
-    var meter = $('[data-cv-pack-meter]');
-    if (!meter) return;
+  function initPackMeter(meter) {
+    var offs = [];
     var boxes = $$('[data-cvpm-box]', meter);
+    var row = $('.cvpm__boxes', meter);
     var text = $('[data-cvpm-text]', meter);
     var p2 = meter.getAttribute('data-p2');
     var p3 = meter.getAttribute('data-p3');
     var count = parseInt(meter.getAttribute('data-count'), 10) || 0;
+    var tweens = [];
 
     function openBox(box, i) {
       var lid = $('[data-cvpm-lid]', box);
@@ -89,7 +125,7 @@
       box.classList.add('is-filled');
       if (!motion) return;
       var dir = i % 2 ? -1 : 1;
-      gsap.timeline()
+      tweens.push(gsap.timeline()
         .fromTo(lid, { autoAlpha: 1, x: 0, y: 0, rotation: 0 }, {
           keyframes: [
             { y: -24, rotation: -6 * dir, duration: 0.2, ease: 'power2.out' },
@@ -98,11 +134,18 @@
           clearProps: 'transform,opacity,visibility'
         })
         .fromTo(photo, { y: -110, rotation: 10 * dir, autoAlpha: 0 },
-          { y: 0, rotation: 0, autoAlpha: 1, duration: 0.85, ease: 'bounce.out', clearProps: 'transform,opacity,visibility' }, 0.24);
+          { y: 0, rotation: 0, autoAlpha: 1, duration: 0.85, ease: 'bounce.out', clearProps: 'transform,opacity,visibility' }, 0.24));
     }
     function closeBox(box) {
       box.classList.remove('is-filled');
-      if (motion) gsap.fromTo($('[data-cvpm-lid]', box), { y: -40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'bounce.out', clearProps: 'all' });
+      if (motion) tweens.push(gsap.fromTo($('[data-cvpm-lid]', box), { y: -40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'bounce.out', clearProps: 'all' }));
+    }
+    /* The commerce fly (cv-commerce-motion.js) aims at [data-cvm-bag]: the next empty box,
+       or the row of boxes once all three are full. */
+    function aim() {
+      var next = boxes.filter(function (b) { return !b.classList.contains('is-filled'); })[0] || row;
+      boxes.concat(row ? [row] : []).forEach(function (b) { if (b !== next) b.removeAttribute('data-cvm-bag'); });
+      if (next) next.setAttribute('data-cvm-bag', '');
     }
 
     function update(cart) {
@@ -123,36 +166,82 @@
           closeBox(box);
         }
       });
+      aim();
       if (text) {
         var t = meter.getAttribute('data-t' + Math.min(n, 3));
         var line = fill(t, { p2: p2, p3: p3, n: n });
         if (text.textContent !== line) text.textContent = line;
       }
-      if (motion && n > count && text) gsap.fromTo(text, { y: 8, autoAlpha: 0.2 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out', clearProps: 'all' });
+      /* Crossing 2 or 3 cases earns a pack price: the line is stamped on. Other rises just nudge it. */
+      if (motion && n > count && text) {
+        var earned = [2, 3].some(function (k) { return count < k && n >= k; });
+        tweens.push(earned
+          ? gsap.fromTo(text, { scale: 1.18, rotation: -6, autoAlpha: 0.4, transformOrigin: '0% 60%' }, { scale: 1, rotation: 0, autoAlpha: 1, duration: 0.5, ease: 'back.out(2)', clearProps: 'all' })
+          : gsap.fromTo(text, { y: 8, autoAlpha: 0.2 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out', clearProps: 'all' }));
+      }
       count = n;
     }
 
-    document.addEventListener('cv:cart', function (e) { if (e.detail && e.detail.cart) update(e.detail.cart); });
-    /* The theme's own add-to-bag forms (single-variant cards) post through cart.js. */
-    document.addEventListener('submit', function (e) {
-      if (e.target && e.target.matches && e.target.matches('form[data-cart-add-form]')) {
-        window.setTimeout(function () { getCart().then(update).catch(function () {}); }, 1200);
-      }
-    });
-    window.addEventListener('pageshow', function (e) { if (e.persisted) getCart().then(update).catch(function () {}); });
-  })();
+    /* Events carry the cart when they can (quick pick cv:cart, cart.js drawer refresh); the others
+       (cart:refresh from product pages, cart:added from card forms) fetch it once. No polling.
+       While an added case flies into the meter (cart:added, meter in view), the box waits for it
+       (hold) and opens as the case lands. */
+    var hold = 0, queued = null, flushT = 0, pending = false;
+    function flush() {
+      var wait = hold - Date.now();
+      if (wait > 0) { flushT = window.setTimeout(flush, wait); return; }
+      flushT = 0;
+      var c = queued;
+      queued = null;
+      if (c) update(c);
+    }
+    function later(cart) {
+      queued = cart;
+      window.clearTimeout(flushT);
+      flushT = window.setTimeout(flush, 0);
+    }
+    function refetch() {
+      if (pending) return;
+      pending = true;
+      getCart().then(function (c) { pending = false; later(c); }).catch(function () { pending = false; });
+    }
+    function inView() {
+      var r = meter.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    }
+    function withCart(e) {
+      if (e.detail && e.detail.cart) later(e.detail.cart); else refetch();
+    }
+    function added(e) {
+      var d = e.detail || {};
+      if (motion && (d.source === 'quick-pick' || d.source === 'card') && inView()) hold = Date.now() + 1000;
+      if (d.source !== 'quick-pick') refetch(); // the quick pick already sent cv:cart with the cart
+    }
+    listen(document, 'cv:cart', withCart, false, offs);
+    listen(document, 'cart:drawer:refreshed', withCart, false, offs);
+    listen(document, 'cart:refresh', refetch, false, offs);
+    listen(document, 'cart:added', added, false, offs);
+    listen(window, 'pageshow', function (e) { if (e.persisted) refetch(); }, false, offs);
+    aim();
+    return function () {
+      stopAll(offs);
+      window.clearTimeout(flushT);
+      tweens.forEach(function (t) { t.progress(1).kill(); });
+      tweens = [];
+    };
+  }
 
   /* ------------------------------------------------------------------ aisle */
-  (function aisle() {
-    var root = $('[data-cvl]');
-    if (!root) return;
+  function initAisle(root) {
+    var offs = [];
     var sectionId = root.getAttribute('data-section-id');
     var form = $('[data-cvl-form]', root);
     var drawer = $('[data-cvl-drawer]', root);
     var opener = $('[data-cvl-open]', root);
-    var Flip = window.Flip;
+    var fx = []; // swap tweens, finished on teardown
     var controller = null;
     var timer = null;
+    var alive = true;
 
     function openDrawer() {
       if (!drawer || drawer.open) return;
@@ -184,9 +273,82 @@
       return root.getAttribute('data-url') + (qs ? '?' + qs : '');
     }
 
+    /* The layout loads Flip on shop pages; check it at use so a missing plugin only skips that motion. */
+    function flipApi() {
+      var F = window.Flip;
+      return motion && F && typeof F.getState === 'function' && typeof F.from === 'function' ? F : null;
+    }
+    function track(t) { if (t) fx.push(t); return t; }
+    function finish() { fx.forEach(function (t) { t.progress(1).kill(); }); fx = []; }
+    function badgeText() {
+      var b = $('[data-cvl-swap="badge"]', root);
+      return b && !b.hidden ? b.textContent.trim() : '';
+    }
+    function countOf(b) {
+      var n = b ? parseInt(b.textContent.replace(/[^\d]/g, ''), 10) : NaN;
+      return isNaN(n) ? null : n;
+    }
+    function chipKeys(scope) {
+      return $$('.cvl__chip', scope).map(function (c) {
+        if (!c.hasAttribute('data-flip-id')) c.setAttribute('data-flip-id', 'chip:' + c.textContent.replace(/\s+/g, ' ').trim());
+        return c.getAttribute('data-flip-id');
+      });
+    }
+
+    /* Filter feedback once the swap lands: the badge pops, the result count rolls from the old
+       number (aria-busy holds the live region so it announces the final count only), chips that
+       stay slide to their new places and new chips pop in. */
+    function feedback(before) {
+      if (!motion) return;
+      var badge = $('[data-cvl-swap="badge"]', root);
+      var nowBadge = badgeText();
+      if (badge && nowBadge && nowBadge !== before.badge) {
+        track(gsap.fromTo(badge, { scale: 0.3 }, { scale: 1, duration: 0.28, ease: 'back.out(2)', clearProps: 'transform' }));
+      }
+
+      var line = $('[data-cvl-swap="count"]', root);
+      var num = line && $('b', line);
+      var to = countOf(num);
+      if (num && to !== null && before.count !== null && to !== before.count) {
+        var from = before.count;
+        var o = { v: from };
+        var settle = function () { num.textContent = String(to); line.removeAttribute('aria-busy'); };
+        line.setAttribute('aria-busy', 'true');
+        num.textContent = String(from);
+        track(gsap.to(o, {
+          v: to, duration: Math.min(0.9, 0.4 + Math.abs(to - from) * 0.015), ease: 'power2.out',
+          onUpdate: function () { num.textContent = String(Math.round(o.v)); },
+          onComplete: settle, onInterrupt: settle
+        }));
+        track(gsap.fromTo(num, { yPercent: to > from ? 35 : -35 }, { yPercent: 0, duration: 0.45, ease: 'back.out(2)', clearProps: 'transform' }));
+      }
+
+      var chips = $$('.cvl__chip', $('[data-cvl-swap="chips"]', root));
+      if (!chips.length) return;
+      chipKeys($('[data-cvl-swap="chips"]', root));
+      var pop = function (els) {
+        return els.length ? gsap.fromTo(els, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2)', stagger: 0.04, clearProps: 'transform,opacity,visibility' }) : null;
+      };
+      var F = flipApi();
+      if (before.chips && F) {
+        track(F.from(before.chips, { targets: chips, duration: 0.4, ease: 'power3.inOut', scale: true, onEnter: pop }));
+      } else {
+        track(pop(chips.filter(function (c) { return before.keys.indexOf(c.getAttribute('data-flip-id')) === -1; })));
+      }
+    }
+
     function swap(doc) {
       var focused = document.activeElement;
       var focusKey = focused && focused.name ? focused.name + '=' + focused.value : null;
+      finish(); // a swap still moving ends first, so the numbers and places read below are final
+      var F = flipApi();
+      var oldChips = $('[data-cvl-swap="chips"]', root);
+      var before = {
+        badge: badgeText(),
+        count: countOf($('[data-cvl-swap="count"] b', root)),
+        keys: oldChips ? chipKeys(oldChips) : [],
+        chips: F && oldChips && $('.cvl__chip', oldChips) ? F.getState($$('.cvl__chip', oldChips)) : null
+      };
 
       $$('[data-cvl-swap]', root).forEach(function (el) {
         var name = el.getAttribute('data-cvl-swap');
@@ -202,7 +364,9 @@
           return;
         }
         if (name === 'results') {
-          var state = motion && Flip ? Flip.getState($$('.cvl__cell', el)) : null;
+          /* server-rendered cells carry no flip id yet: give them the product id so kept cards move */
+          $$('.cvl__cell', el).forEach(function (c) { c.setAttribute('data-flip-id', c.getAttribute('data-cvl-cell')); });
+          var state = F ? F.getState($$('.cvl__cell', el)) : null;
           el.innerHTML = next.innerHTML;
           var cells = $$('.cvl__cell', el);
           cells.forEach(function (c) {
@@ -210,15 +374,16 @@
             $$('[data-cv-reveal]', c).forEach(function (r) { r.classList.add('is-revealed'); });
           });
           if (state) {
-            Flip.from(state, {
+            track(F.from(state, {
               targets: cells, duration: 0.5, ease: 'power3.inOut', absolute: true, scale: false,
               onEnter: function (els) { return gsap.fromTo(els, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out', stagger: 0.04, clearProps: 'transform,opacity,visibility' }); }
-            });
+            }));
           }
           return;
         }
         el.replaceWith(next);
       });
+      feedback(before);
 
       if (focusKey) {
         var again = $$('input, select', root).filter(function (i) { return i.name + '=' + i.value === focusKey; })[0];
@@ -235,12 +400,13 @@
       return fetch(fetchUrl, { signal: controller ? controller.signal : undefined, headers: { Accept: 'text/html' } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
         .then(function (html) {
+          if (!alive) return;
           var doc = new DOMParser().parseFromString(html, 'text/html');
           swap(doc);
           if (push) history.pushState({ cvl: true }, '', url);
         })
         .catch(function (err) {
-          if (err && err.name === 'AbortError') return;
+          if (!alive || (err && err.name === 'AbortError')) return;
           window.location.href = url; // fall back to a normal page load
         })
         .finally(function () {
@@ -270,13 +436,25 @@
         closeDrawer();
         if (toTop) {
           var bar = $('.cvl__bar', root);
-          if (bar) bar.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          if (bar) bar.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'start' });
         }
       });
     });
 
-    window.addEventListener('popstate', function () { render(window.location.href, false); });
-  })();
+    listen(window, 'popstate', function () { render(window.location.href, false); }, false, offs);
+    return function () {
+      alive = false;
+      stopAll(offs);
+      finish();
+      window.clearTimeout(timer);
+      if (controller) controller.abort();
+      if (drawer && drawer.open) drawer.close();
+    };
+  }
+
+  boot(document);
+  document.addEventListener('shopify:section:load', function (e) { boot(e.target); });
+  document.addEventListener('shopify:section:unload', function (e) { teardown(e.target); });
 
   /* --------------------------------------------------------------- rule book */
   (function ruleBook() {
@@ -330,7 +508,7 @@
       var target = document.getElementById(a.getAttribute('href').slice(1));
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'start' });
       history.replaceState(null, '', '#' + target.id);
       if (narrow.matches && box) box.open = false;
     });

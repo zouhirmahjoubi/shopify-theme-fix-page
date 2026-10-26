@@ -76,7 +76,7 @@
 
     {%- if show_add_btn -%}
       {%- if quick -%}
-        <button type="button" class="cv-card__add cv-card__pick" data-cvqp-open data-handle="{{ product.handle }}" data-url="{{ product.url }}"{% unless product.available %} disabled{% endunless %}>
+        <button type="button" class="cv-card__add cv-card__pick" data-cvqp-open data-cvqp-buy-now data-handle="{{ product.handle }}" data-url="{{ product.url }}"{% unless product.available %} disabled{% endunless %}>
           {%- render 'cv-icon', name: 'bag', size: 15 -%}
           <span>{% if product.available %}{% if fit_count > 0 %}Choose your phone{% else %}Choose options{% endif %}{% else %}Sold out{% endif %}</span>
         </button>

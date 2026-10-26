@@ -283,6 +283,8 @@
 button.cvsh-sign-cta {
   margin: 0; border: 0; background: none; font: inherit; -webkit-appearance: none; appearance: none;
 }
+/* theme.css gives every submit button a 3px pill edge (box-shadow); the sign art draws its own edge */
+button.cvsh-sign-cta, button.cvsh-sign-cta:hover { border-radius: 0; box-shadow: none; }
 button.cvsh-sign-cta:disabled { cursor: not-allowed; filter: grayscale(.85); opacity: .55; }
 button.cvsh-sign-cta:disabled .cvsh-sign-cta__base { fill: var(--cvsh-cta-fill); }
 .cvsh-card__form { margin: 4px 0 0; }

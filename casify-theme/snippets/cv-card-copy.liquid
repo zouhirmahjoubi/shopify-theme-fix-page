@@ -9,6 +9,10 @@
   nothing for a product not listed here (its card then reads its copy off
   the product). Icons are names from snippets/cv-icon.liquid.
 
+  Lines and pills here are typed, not read from the product. The card checks any that name a phone
+  family (iPhone, Pixel, Galaxy, Samsung) or MagSafe against the product's own title, tags and variant
+  titles, and drops the clause or pill when the product does not say so (G13).
+
   @param {string} handle - Product handle.
 {% enddoc %}
 {%- case handle -%}
