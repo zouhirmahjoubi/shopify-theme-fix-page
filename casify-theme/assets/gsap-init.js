@@ -35,4 +35,17 @@
   });
 
   window.gsap.registerPlugin.apply(window.gsap, plugins);
+
+  // A live media switch (Reduce Motion turned on or off with the page open) rebuilds
+  // every gsap.matchMedia branch. ScrollTrigger records the scroll before and restores
+  // it after, but any trigger created or killed during the switch wipes that record and
+  // the page lands at the top. Put the shopper back where they were.
+  if (window.ScrollTrigger && window.gsap.addEventListener) {
+    var scrollBefore = null;
+    window.gsap.addEventListener('matchMediaInit', function () { scrollBefore = window.scrollY; });
+    window.gsap.addEventListener('matchMedia', function () {
+      if (scrollBefore !== null && Math.abs(window.scrollY - scrollBefore) > 1) window.scrollTo(0, scrollBefore);
+      scrollBefore = null;
+    });
+  }
 })();
