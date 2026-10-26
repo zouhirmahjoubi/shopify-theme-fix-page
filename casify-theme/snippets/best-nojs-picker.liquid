@@ -1,0 +1,34 @@
+{%- comment -%}
+  No-JS picker for sections/main-best-product.liquid: the only id and quantity fields that post without
+  JavaScript (the JS picker's inputs get their name from assets/best-product.js). Moved out of the section
+  to keep its Liquid complexity under theme check's limit; the output is unchanged.
+
+  Accepts:
+  - product: the product
+  - current_variant: the selected or first available variant
+  - model_oi: index of the phone model option, -1 when none
+  - model_pending: true when no model is chosen yet (never pre-select a phone model)
+  - show_packs, pct2, pct3: pack tiers from cv_pack_2_pct / cv_pack_3_pct
+  - section_id: the section id, for unique element ids
+{%- endcomment -%}
+<noscript>
+  {%- if product.has_only_default_variant -%}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+  {%- else -%}
+    <label class="best-options__select-label" for="best-nojs-{{ section_id }}">{% if model_oi >= 0 %}{{ product.options_with_values[model_oi].name | escape }}{% else %}{{ product.options.first | escape }}{% endif %}</label>
+    <select class="best-nojs-select" id="best-nojs-{{ section_id }}" name="id" required>
+      {%- if model_pending -%}<option value="" disabled selected>{{ 'products.buy.model_placeholder' | t }}</option>{%- endif -%}
+      {%- for variant in product.variants -%}
+        <option value="{{ variant.id }}"{% unless variant.available %} disabled{% endunless %}{% if model_pending == false and variant.id == current_variant.id %} selected{% endif %}>{{ variant.title | escape }}, {{ variant.price | money }}{% unless variant.available %} ({{ 'products.buy.sold_out' | t | downcase }}){% endunless %}</option>
+      {%- endfor -%}
+    </select>
+  {%- endif -%}
+  {%- if show_packs -%}
+    <label class="best-options__select-label" for="best-nojs-qty-{{ section_id }}">{{ 'products.best.packs_label' | t }}</label>
+    <select class="best-nojs-select" id="best-nojs-qty-{{ section_id }}" name="quantity">
+      <option value="1" selected>{{ 'products.best.pack_one' | t }}</option>
+      {%- if pct2 > 0 -%}<option value="2">{{ 'products.best.pack_many' | t | replace: '[qty]', '2' }}, {{ 'products.product_summary.save' | t }} {{ pct2 }}%</option>{%- endif -%}
+      {%- if pct3 > 0 -%}<option value="3">{{ 'products.best.pack_many' | t | replace: '[qty]', '3' }}, {{ 'products.product_summary.save' | t }} {{ pct3 }}%</option>{%- endif -%}
+    </select>
+  {%- endif -%}
+</noscript>

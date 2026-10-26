@@ -1,0 +1,77 @@
+{%- comment -%}
+  Tag-gated claims for sections/main-best-product.liquid (G20, PLAN.md 4): every seal, fact, callout and
+  feature card renders only when the product carries the tag the merchant names in the section settings.
+  The section computes the flags; this snippet only prints. Moved out of the section to keep its Liquid
+  complexity under theme check's limit; the output is unchanged.
+
+  Accepts:
+  - part: 'gallery' | 'love' | 'callouts' | 'magnetic' | 'minis' | 'compare'
+  - product, section: the product and the section (section.id, benefit settings)
+  - seal, magnetic, fabric, fit, protect: tag flags (true only when the product has the merchant's tag)
+  - hero_src, detail_src, magnetic_src: image URLs the section resolved
+  - style_oi: index of the style option, -1 when none (compare list)
+{%- endcomment -%}
+{%- case part -%}
+  {%- when 'gallery' -%}
+    {%- if fabric -%}<div class="best-gallery__note" aria-hidden="true">{{ 'products.best.fabric_note_html' | t }}</div>{%- endif -%}
+    {%- if seal -%}<div class="best-gallery__seal" aria-hidden="true"><span>{{ 'products.best.best_seller_html' | t }}</span></div>{%- endif -%}
+    {%- if magnetic or fit or fabric -%}
+      <div class="best-gallery__facts">
+        {%- if magnetic -%}<span>{% render 'icon', name: 'check', size: 18 %} {{ 'products.best.magnetic_ready' | t }}</span>{%- endif -%}
+        {%- if fit -%}<span>{% render 'icon', name: 'shield', size: 18 %} {{ 'products.best.raised_camera_edge' | t }}</span>{%- endif -%}
+        {%- if fabric -%}<span>{% render 'icon', name: 'heart', size: 18 %} {{ 'products.best.woven_texture' | t }}</span>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+  {%- when 'love' -%}
+    {%- liquid
+      assign love_one = false
+      if magnetic and section.settings.benefit_one != blank
+        assign love_one = true
+      endif
+      assign love_two = false
+      if fabric and section.settings.benefit_two != blank
+        assign love_two = true
+      endif
+      assign love_three = false
+      if protect and section.settings.benefit_three != blank
+        assign love_three = true
+      endif
+    -%}
+    {%- if love_one or love_two or love_three -%}
+      <section class="best-story best-story--love" aria-labelledby="best-love-{{ section.id }}">
+        <h2 id="best-love-{{ section.id }}">{{ 'products.best.love_heading' | t }} <span aria-hidden="true">♥</span></h2>
+        <div class="best-love-grid">
+          {%- if love_one -%}<article class="best-love-card" data-best-card><img src="{{ magnetic_src }}" alt="{{ product.title | escape }}" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_one | escape }}</h3><p>{{ section.settings.benefit_one_copy | escape }}</p></article>{%- endif -%}
+          {%- if love_two -%}<article class="best-love-card" data-best-card><img src="{{ detail_src }}" alt="{{ product.title | escape }}" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_two | escape }}</h3><p>{{ section.settings.benefit_two_copy | escape }}</p></article>{%- endif -%}
+          {%- if love_three -%}<article class="best-love-card" data-best-card><img src="{{ hero_src }}" alt="{{ product.title | escape }}" width="300" height="250" loading="lazy"><h3>{{ section.settings.benefit_three | escape }}</h3><p>{{ section.settings.benefit_three_copy | escape }}</p></article>{%- endif -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+  {%- when 'callouts' -%}
+    {%- if fit -%}<span class="best-callout best-callout--camera">{{ 'products.best.raised_camera_edge' | t }}</span><span class="best-callout best-callout--buttons">{{ 'products.best.responsive_buttons' | t }}</span>{%- endif -%}
+    {%- if fabric -%}<span class="best-callout best-callout--finish">{{ 'products.best.soft_touch_finish' | t }}</span>{%- endif -%}
+
+  {%- when 'magnetic' -%}
+    {%- if magnetic -%}
+      <section class="best-story best-story--magnetic" aria-labelledby="best-magnet-{{ section.id }}" data-best-card>
+        <h2 id="best-magnet-{{ section.id }}">{{ 'products.best.magnetic_heading' | t }}</h2><p>{{ 'products.best.magnetic_copy' | t }}</p>
+        <div class="best-magnet-photo"><img src="{{ magnetic_src }}" alt="{{ product.title | escape }}" width="900" height="650" loading="lazy"><span class="best-magnet-photo__rings" aria-hidden="true"><i></i><i></i><i></i></span><ul><li>{{ 'products.best.accessory_charger' | t }}</li><li>{{ 'products.best.accessory_wallet' | t }}</li><li>{{ 'products.best.accessory_mount' | t }}</li><li>{{ 'products.best.accessory_power_bank' | t }}</li></ul></div>
+      </section>
+    {%- endif -%}
+
+  {%- when 'minis' -%}
+    {%- if protect or fabric -%}
+      <div class="best-detail-grid">
+        {%- if protect -%}<section class="best-mini-card" data-best-card><h2>{{ 'products.best.protection_heading' | t }}</h2><p>{{ 'products.best.protection_copy' | t }}</p><img src="{{ hero_src }}" alt="{{ product.title | escape }}" width="420" height="310" loading="lazy"></section>{%- endif -%}
+        {%- if fabric -%}<section class="best-mini-card" data-best-card><h2>{{ 'products.best.material_heading' | t }}</h2><p>{{ 'products.best.material_copy' | t }}</p><img src="{{ detail_src }}" alt="{{ product.title | escape }}" width="420" height="310" loading="lazy"></section>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+  {%- when 'compare' -%}
+    {%- if fabric -%}<li>{{ 'products.best.woven_texture' | t }}</li>{%- endif -%}
+    {%- if magnetic -%}<li>{{ 'products.best.magnetic_design' | t }}</li>{%- endif -%}
+    {%- if fit -%}<li>{{ 'products.best.raised_camera_edge' | t }}</li>{%- endif -%}
+    {%- if style_oi >= 0 and product.options_with_values[style_oi].values.size > 1 -%}<li>{{ 'products.best.multiple_styles' | t }}</li>{%- endif -%}
+{%- endcase -%}
