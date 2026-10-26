@@ -173,15 +173,12 @@
     {%- render 'cv-fonts' -%}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {%- comment -%}
-      Commerce motion slot (INF-3 creates cv-commerce-motion.css and .js: fly to
-      the bag, button morphs, drawer entrance). The file name is assembled so
-      theme check's MissingAsset does not fail before INF-3 adds the files; INF-3
-      may switch both tags to literal names. Until then the two requests 404 and
-      nothing else changes: the script is deferred, nothing calls it at parse,
-      and every other script listens for its events instead of requiring it.
+      Commerce motion (INF-3): fly to the bag, button morphs, drawer entrance.
+      The script is deferred right after cart.js (end of body); nothing calls it
+      at parse, and every other script listens for its events instead of
+      requiring it.
     {%- endcomment -%}
-    {%- assign commerce_motion = 'cv-commerce-motion' -%}
-    {{ commerce_motion | append: '.css' | asset_url | stylesheet_tag }}
+    {{ 'cv-commerce-motion.css' | asset_url | stylesheet_tag }}
     {%- render 'palette-vars' -%}
     <script>window.themeMoneyFormat = {{ shop.money_format | json }};</script>
     {%- comment -%}
@@ -376,7 +373,7 @@
     {%- endif -%}
     <script src="{{ 'cart.js' | asset_url }}" defer></script>
     {%- comment -%} Commerce motion slot, right after cart.js (see the stylesheet slot in <head>). {%- endcomment -%}
-    <script src="{{ commerce_motion | append: '.js' | asset_url }}" defer></script>
+    <script src="{{ 'cv-commerce-motion.js' | asset_url }}" defer></script>
     {%- if editor or content_for_layout contains 'data-build-box' -%}
       <script src="{{ 'build-box.js' | asset_url }}" defer></script>
     {%- endif -%}

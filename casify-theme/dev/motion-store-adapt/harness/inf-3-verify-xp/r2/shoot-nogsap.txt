@@ -1,0 +1,2 @@
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 14
+shoot: 16 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\harness\inf-3-verify-xp\r2\shots-nogsap; console.json written; PASS

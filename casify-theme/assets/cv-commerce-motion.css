@@ -1,0 +1,38 @@
+/* Casify: commerce motion styles (assets/cv-commerce-motion.js). Loaded on every page.
+ * Nothing here hides content: the token, ghost line and roll copy exist only while the script
+ * runs; html.cvcm-ready = the module booted, html.cvcm-on = motion allowed and GSAP present.
+ * (Not "cvm": that is the Protection meter's root class, assets/cv-spec-meter.css.) */
+
+/* The photo-ticket token (aria-hidden, never clickable). Popover UA styles are reset. */
+.cvm-token{position:fixed;inset:0 auto auto 0;z-index:2147483000;width:56px;height:56px;margin:0;padding:3px;border:0;overflow:visible;border-radius:9px;
+  background:repeating-linear-gradient(135deg,var(--red-500) 0 6px,var(--cream-50) 6px 12px);color:var(--cocoa-700);
+  box-shadow:0 8px 18px rgb(51 35 26 / .28);pointer-events:none;will-change:transform}
+.cvm-token img{display:block;width:100%;height:100%;border-radius:6px;object-fit:cover;background:var(--cream-200)}
+.cvm-token__qty{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 5px;border-radius:999px;
+  background:var(--cocoa-700);color:var(--cream-50);font:700 12px/22px var(--font-body);text-align:center}
+
+/* Pack highlight: a travelling outline over the chosen tier; off without the script. */
+[data-cvm-pack-highlight]{display:none}
+html.cvcm-ready [data-cvm-packs]{position:relative}
+html.cvcm-ready [data-cvm-pack-highlight]{display:block;position:absolute;left:0;top:0;z-index:1;pointer-events:none;
+  border:2px solid var(--red-500);border-radius:10px;box-shadow:0 0 0 3px rgb(196 48 43 / .14)}
+
+/* Buttons that opt in (data-cvm-btn): error colour; GSAP alone animates their transform. */
+html [data-cvm-btn].is-error{background:var(--state-danger);border-color:var(--state-danger);color:var(--cream-50)}
+html.cvcm-on [data-cvm-btn]{transition-property:background-color,border-color,color,box-shadow}
+
+/* Model picker ring after a press with no phone chosen (colour state, kept under reduced motion). */
+.cvm-ring{outline:3px solid var(--red-400);outline-offset:2px}
+
+/* Price roll: the live node keeps its final text (read by screen readers) under an absolute,
+ * out-of-flow copy; the script measures both texts and lays the copy exactly over it. */
+.cvm-rolling{color:transparent !important}
+.cvm-roll{position:absolute;inset:auto;margin:0;white-space:nowrap;pointer-events:none}
+
+/* A removed drawer line collapsing (inert copy). */
+.cvm-ghost{overflow:hidden;pointer-events:none}
+
+@media (prefers-reduced-motion: reduce){
+  .cvm-token,.cvm-ghost,.cvm-roll{display:none}
+  .cvm-rolling{color:inherit !important}
+}

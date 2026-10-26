@@ -1,0 +1,7 @@
+  default  768px  page errors 0  console errors 0  net errors 4  failed expects 0  allowed 0  calls 4
+      ! net: net::ERR_ABORTED https://cdn.shopify.com/videos/c/o/v/27e777f06c9d4793a91c31251d1fe1e6.mp4
+      ! net: net::ERR_ABORTED https://cdn.shopify.com/videos/c/o/v/27e777f06c9d4793a91c31251d1fe1e6.mp4
+      ! net: net::ERR_ABORTED https://cdn.shopify.com/videos/c/o/v/27e777f06c9d4793a91c31251d1fe1e6.mp4
+      ! net: net::ERR_ABORTED https://cdn.shopify.com/videos/c/o/v/27e777f06c9d4793a91c31251d1fe1e6.mp4
+shoot: 1 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\harness\inf-3-verify-regression\r2b\shots-counter; console.json written; FAIL
+exit=1

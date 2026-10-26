@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INF-3 verify</title>
+<link rel="stylesheet" href="../../../../assets/cv-commerce-motion.css">
+<script>
+var q = new URLSearchParams(location.search);
+window.__errs = []; addEventListener('error', function (e) { __errs.push(String(e.message)); });
+window.themeMoneyFormat = '${{amount}}';
+window.__recv = 0; window.CasifyBag = { show: function () {}, receive: function () { __recv++; } };
+function load(s) { document.write('<script src="../../../../assets/' + s + '"><\/script>'); }
+if (!q.has('nogsap')) { load('gsap.min.js'); if (q.get('mp') === '1') load('gsap-MotionPathPlugin.min.js'); load('gsap-Flip.min.js'); }
+if (q.has('spec')) document.write('<link rel="stylesheet" href="../../../../assets/cv-spec-meter.css">');
+</script>
+<style>body{margin:0;font:16px sans-serif} header{position:fixed;top:0;right:0;left:0;height:56px;background:#eee} #bagBtn{position:absolute;right:16px;top:8px;width:40px;height:40px;background:#c33}
+main{padding:80px 16px} .card{width:160px;border:1px solid #ccc;margin:12px 0} .card img{width:160px;height:120px;display:block;background:#ddd}
+.price{display:inline-block;font-size:24px}</style>
+</head><body>
+<header><button id="bagBtn"><span class="cm-icon">B</span></button></header>
+<main>
+<button id="b1" style="margin-left:40px">Add plain</button>
+<div class="card" data-cvm-fly-img><img id="cimg" src="data:image/gif;base64,R0lGODlhAQABAIAAAP8AAP///yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><button id="b2">Add card</button></div>
+<p>Total: <span aria-live="polite"><span class="price" id="pr" data-cvm-price data-cents="1000">$10.00</span></span> after</p>
+<p>Plain: <span class="price" id="pr2">$10.00</span></p>
+<button id="opener">open dialog</button>
+<dialog id="dlg"><p>Pick</p><button id="dlgAdd">Add in dialog</button></dialog>
+<div id="cvm-pdp-slot"></div>
+<aside id="cm-cart-drawer" class="is-open"><div class="cart-drawer__head">Bag</div>
+<div id="cm-cart-drawer-content">
+<div class="cart-drawer-item" data-key="k1" data-qty="1" data-cvm-line><img src="" alt="">Line 1</div>
+<div class="cart-drawer-item" data-key="k2" data-qty="1" data-cvm-line><img src="" alt="">Line 2</div>
+</div><div class="cart-drawer__footer" data-cvm-drawer-foot><span data-cart-total data-cents="2000">$20.00</span></div></aside>
+</main>
+<script>if (q.has('pdp')) document.getElementById('cvm-pdp-slot').setAttribute('data-cv-pdp', q.get('pdp'));</script>
+<script src="../../../../assets/cv-commerce-motion.js"></script>
+</body></html>

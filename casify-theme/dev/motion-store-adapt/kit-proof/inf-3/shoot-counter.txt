@@ -1,0 +1,2 @@
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 3  calls 4
+shoot: 1 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\inf-3\shots-counter; console.json written; PASS

@@ -1,0 +1,56 @@
+tc-compare: theme check on a clean copy of layout, sections, snippets, templates, locales, config, blocks, assets
+  current: 41 errors, 8 warnings, 49 offenses
+  baseline: 0 errors, 8 warnings
+  known (in baseline): 8
+    = sections/amazon-styled-reviews.liquid:471 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:736 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:523 LiquidComplexity (warning)
+    = sections/review-widget.liquid:477 ExcessiveSettingsCount (warning)
+    = snippets/cv-fonts.liquid:9 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:10 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:11 RemoteAsset (warning)
+    = snippets/cv-showcase-card.liquid:337 UnclosedHTMLElement (warning)
+  pending locale keys (requested, expected until LOC runs): 41
+    ~ snippets/cart-drawer.liquid:21 TranslationKeyExists: 'general.cart.nudge_two' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:23 TranslationKeyExists: 'general.cart.nudge_three_from_one' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:26 TranslationKeyExists: 'general.cart.nudge_three' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:41 TranslationKeyExists: 'general.cart.close' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:48 TranslationKeyExists: 'general.cart.empty' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:49 TranslationKeyExists: 'general.cart.empty_link' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:98 TranslationKeyExists: 'general.cart.phone_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:110 TranslationKeyExists: 'general.cart.decrease_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:111 TranslationKeyExists: 'general.cart.quantity_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:112 TranslationKeyExists: 'general.cart.increase_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:114 TranslationKeyExists: 'general.cart.remove' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:114 TranslationKeyExists: 'general.cart.remove_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:127 TranslationKeyExists: 'general.cart.subtotal' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:137 TranslationKeyExists: 'general.cart.total' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:143 TranslationKeyExists: 'general.cart.checkout' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:145 TranslationKeyExists: 'general.cart.view_bag' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:32 TranslationKeyExists: 'general.cart.adding' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:33 TranslationKeyExists: 'general.cart.added' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:34 TranslationKeyExists: 'general.cart.add_error' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:35 TranslationKeyExists: 'general.cart.change_error' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:36 TranslationKeyExists: 'general.cart.bag_label_one' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cart-drawer.liquid:37 TranslationKeyExists: 'general.cart.bag_label_other' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:48 TranslationKeyExists: 'general.quick_pick.add' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:51 TranslationKeyExists: 'general.quick_pick.buy_now' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:54 TranslationKeyExists: 'general.quick_pick.more' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:19 TranslationKeyExists: 'general.quick_pick.add' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:20 TranslationKeyExists: 'general.quick_pick.adding' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:21 TranslationKeyExists: 'general.quick_pick.added' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:22 TranslationKeyExists: 'general.quick_pick.sold_out' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:23 TranslationKeyExists: 'general.quick_pick.missing' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:24 TranslationKeyExists: 'general.quick_pick.loading' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:25 TranslationKeyExists: 'general.quick_pick.error' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:26 TranslationKeyExists: 'general.quick_pick.buy_now' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:27 TranslationKeyExists: 'general.quick_pick.buying' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:28 TranslationKeyExists: 'general.quick_pick.choose_phone' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:29 TranslationKeyExists: 'general.quick_pick.choose_option' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:30 TranslationKeyExists: 'general.quick_pick.phone_label' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:31 TranslationKeyExists: 'general.quick_pick.sold_out_suffix' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:32 TranslationKeyExists: 'general.quick_pick.unavailable_suffix' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:33 TranslationKeyExists: 'general.quick_pick.in_bag' does not have a matching entry in 'locales/en.default.json'
+    ~ snippets/cv-quick-pick.liquid:34 TranslationKeyExists: 'general.quick_pick.add_failed' does not have a matching entry in 'locales/en.default.json'
+  no new offenses
+tc-compare: PASS

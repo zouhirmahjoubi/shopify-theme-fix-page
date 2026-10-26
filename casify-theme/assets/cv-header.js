@@ -203,7 +203,7 @@
       if (motion) {
         var dir = y > lastY ? 1 : (y < lastY ? -1 : 0);
         if (dir && dir !== lastDir) { turnY = lastY; lastDir = dir; }
-        var busy = menuOpen || searchOpen || nav.contains(document.activeElement);
+        var busy = menuOpen || searchOpen || nav.contains(document.activeElement) || Date.now() < holdUntil;
         var wantHide = hidden;
         if (busy || !stuck || y < offset + 240) wantHide = false;
         else if (dir === 1 && y - turnY > 24) wantHide = true;
@@ -242,11 +242,38 @@
         seenCount = count;
         if (badge.hidden) return;
         gsap.fromTo(badge, { scale: 1.8 }, { scale: 1, duration: 0.8, ease: 'elastic.out(1.2, 0.35)', overwrite: 'auto' });
-        if (bagIcon) gsap.fromTo(bagIcon, { rotation: 0 }, { rotation: 16, duration: 0.9, ease: wiggle, overwrite: 'auto' });
+        // During an add the icon belongs to receive() below (one bag moment, MOTION-SYSTEM 7.6).
+        if (bagIcon && Date.now() >= holdUntil) gsap.fromTo(bagIcon, { rotation: 0 }, { rotation: 16, duration: 0.9, ease: wiggle, overwrite: 'auto' });
       });
       badgeObserver.observe(badge, { childList: true, characterData: true, subtree: true });
       cleanups.push(function () { badgeObserver.disconnect(); });
     }
+
+    /* ---------- Bag: in view while something is added, and it "receives" the photo ticket ----------
+       window.CasifyBag.show() brings the tucked nav back and holds it 2.5 s, so a flying ticket
+       (cv-commerce-motion.js) has a bag to land on; it runs on cvs:adding (dispatched on the buy
+       box root without bubbling, so heard in the capture phase), cart:added and cv:cart.
+       receive() squashes the bag icon when the ticket lands; the badge pop stays in the
+       observer above, so there is one badge bump. */
+    var holdUntil = 0;
+    var receivedAt = 0;
+    var bagBtn = nav.querySelector('#bagBtn');
+    function holdNav() {
+      holdUntil = Date.now() + 2500;
+      if (motion) showNav();
+    }
+    function receive() {
+      var ico = bagBtn && bagBtn.querySelector('.cm-icon');
+      if (!ico || !motion || (reduceQuery && reduceQuery.matches) || Date.now() - receivedAt < 500) return;
+      receivedAt = Date.now();
+      gsap.fromTo(ico, { scaleX: 1.2, scaleY: 0.78 }, { scaleX: 1, scaleY: 1, duration: 0.6, ease: 'elastic.out(1, 0.4)', overwrite: 'auto' });
+    }
+    listen(document, 'cvs:adding', holdNav, true);
+    listen(document, 'cart:added', holdNav);
+    listen(document, 'cv:cart', holdNav);
+    var bagApi = { show: holdNav, receive: receive };
+    currentBag = bagApi;
+    cleanups.push(function () { if (currentBag === bagApi) currentBag = null; });
 
     /* ---------- Scroll progress (kept under reduced motion: it only tracks position) ---------- */
     var progressFill = nav.querySelector('.cvh-progress__fill');
@@ -570,6 +597,13 @@
   function boot(scope) {
     $$('[data-section-type="header"]', scope).forEach(function (nav) { init(nav); });
   }
+
+  /* Bag API for commerce motion; it follows the live header across editor reloads. */
+  var currentBag = null;
+  window.CasifyBag = {
+    show: function () { if (currentBag) currentBag.show(); },
+    receive: function () { if (currentBag) currentBag.receive(); }
+  };
 
   boot(document);
   document.addEventListener('shopify:section:load', function (e) { boot(e.target); });

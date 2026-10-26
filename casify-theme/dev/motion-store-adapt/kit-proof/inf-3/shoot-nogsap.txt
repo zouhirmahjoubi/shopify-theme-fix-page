@@ -1,0 +1,4 @@
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 14
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 14
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 14
+shoot: 48 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\kit-proof\inf-3\shots-nogsap; console.json written; PASS
