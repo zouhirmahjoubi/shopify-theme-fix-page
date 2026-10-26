@@ -1,12 +1,23 @@
 {%- comment -%}
-  Casify — cart page in the Chrismass design system.
+  Casify: the bag page.
 
-  Line items as cards rather than table rows, a free-shipping meter that fills
-  on reveal, an order note, and a summary rail that sticks beside the list on
-  desktop. Quantity steppers and remove buttons use the hooks cart.js already
-  owns (`.qty` wrapper, data-cart-line-qty, data-cart-remove), so all of it is
-  AJAX with no new cart code.
+  Line items as cards, an optional free-shipping meter, an order note and a
+  summary rail that sticks beside the list on desktop. Everything is visible
+  from the first paint; no reveal attribute hides any of it.
+
+  Lines belong to assets/cv-cart-page.js: the list is marked data-cart-self so
+  cart.js leaves its steppers and remove links alone. The page script posts
+  /cart/change.js with this section bundled, swaps the lines and summary in
+  place and dispatches cart:refresh for the header badge and the drawer.
+  Without JavaScript the quantity inputs post as updates[] (noscript Update
+  button) and Remove is a real link to item.url_to_remove.
+
+  Theme settings: cv_pack_2_pct / cv_pack_3_pct (pack nudge), cv_free_shipping_all
+  (shipping row says Free). Motion hooks (assets/cv-commerce-motion.js):
+  data-cvm-price + data-cents on the totals, data-cvm-stamp on the pack line.
 {%- endcomment -%}
+{{ 'cv-cart-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'cv-cart-page.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign threshold = section.settings.free_ship_threshold | times: 100
@@ -18,60 +29,118 @@
       assign ship_pct = 100
     endif
   endif
+
+  comment
+    The shipping row says Free only when the merchant confirms checkout charges $0 on every
+    order (theme setting cv_free_shipping_all). A met threshold alone never claims it.
+  endcomment
+  assign ship_free = false
+  if settings.cv_free_shipping_all
+    assign ship_free = true
+  endif
+  assign show_meter = false
+  if threshold > 0
+    unless settings.cv_free_shipping_all
+      assign show_meter = true
+    endunless
+  endif
+
+  assign t_eyebrow = 'general.cart.title' | t
+  assign t_heading = 'general.cart.heading' | t
+  assign t_empty_heading = 'general.cart.empty' | t
+  assign t_empty_body = 'general.cart.empty_body' | t
+  assign t_empty_cta = 'general.cart.empty_cta' | t
+  assign t_summary = 'general.cart.summary_title' | t
+  assign t_note = 'general.cart.note_label' | t
+  assign t_checkout = 'general.cart.secure_checkout' | t
+
+  assign pack2 = settings.cv_pack_2_pct | default: 0
+  assign pack3 = settings.cv_pack_3_pct | default: 0
+  assign nudge = ''
+  if cart.item_count == 1
+    if pack2 > 0
+      assign nudge = 'general.cart.nudge_two' | t: pct: pack2
+    elsif pack3 > 0
+      assign nudge = 'general.cart.nudge_three_from_one' | t: pct: pack3
+    endif
+  elsif cart.item_count == 2 and pack3 > 0
+    assign nudge = 'general.cart.nudge_three' | t: pct: pack3
+  endif
 -%}
 
-<div class="cv-page-root cv-cart">
-  <header class="cv-cart__hd" data-cv-reveal>
-    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: 'Your bag' | escape }}</span>
+<div class="cv-page-root cv-cart" data-cv-cart-page data-section-id="{{ section.id }}" data-count="{{ cart.item_count }}"
+  data-i18n-change-error="{{ 'general.cart.change_error' | t | escape }}">
+  <header class="cv-cart__hd">
+    <span class="cv-eyebrow">{{ section.settings.eyebrow | default: t_eyebrow | escape }}</span>
     <h1 data-cv-split>
       {%- if cart.item_count > 0 -%}
-        {{ section.settings.heading | default: 'Ready when you are' | escape }}
+        {{ section.settings.heading | default: t_heading | escape }}
       {%- else -%}
-        {{ section.settings.empty_heading | default: 'Your bag is empty' | escape }}
+        {{ section.settings.empty_heading | default: t_empty_heading | escape }}
       {%- endif -%}
     </h1>
   </header>
 
   {%- if cart.item_count == 0 -%}
-    <div class="cv-empty" data-cv-reveal>
-      <span class="cv-empty__ico">{%- render 'cv-icon', name: 'bag', size: 40, animate: true -%}</span>
-      <p>{{ section.settings.empty_body | default: 'Nothing in here yet. Pick your phone model and the right case is one tap away.' | escape }}</p>
+    <div class="cv-empty" data-cvcp-empty>
+      <span class="cv-empty__ico" data-cvcp-swing>{%- render 'cv-icon', name: 'bag', size: 40 -%}</span>
+      <p>{{ section.settings.empty_body | default: t_empty_body | escape }}</p>
       <a class="cv-cta cv-cta--closer" href="{{ routes.all_products_collection_url }}">
         <span class="cv-cta__shine" aria-hidden="true"></span>
         {%- render 'cv-icon', name: 'bag', size: 18 -%}
-        <span>{{ section.settings.empty_cta | default: 'Start shopping' | escape }}</span>
+        <span>{{ section.settings.empty_cta | default: t_empty_cta | escape }}</span>
       </a>
     </div>
   {%- else -%}
 
-    {%- comment -%} ---------- Free shipping meter ---------- {%- endcomment -%}
-    {%- if section.settings.free_ship_threshold > 0 -%}
-      <div class="cv-ship" data-cv-reveal>
+    {%- comment -%} Free shipping meter (only when the merchant sets a threshold and shipping is not free on every order) {%- endcomment -%}
+    {%- if show_meter -%}
+      <div class="cv-ship" data-cvcp-ship>
         <p class="cv-ship__msg">
           {%- if remaining > 0 -%}
+            {%- assign remaining_money = remaining | money -%}
             {%- render 'cv-icon', name: 'truck-fast', size: 16 -%}
-            <span>You're <b>{{ remaining | money }}</b> from free shipping</span>
+            <span>{{ 'general.cart.free_shipping_remaining' | t: amount: remaining_money }}</span>
           {%- else -%}
             {%- render 'cv-icon', name: 'check', size: 16 -%}
-            <span><b>Free shipping unlocked.</b> Nice.</span>
+            <span><b>{{ 'general.cart.free_shipping_applied' | t }}</b></span>
           {%- endif -%}
         </p>
         <span class="cv-ship__track">
-          <span class="cv-ship__fill{% if remaining <= 0 %} is-full{% endif %}" data-cv-pct="{{ ship_pct | round }}"></span>
+          <span class="cv-ship__fill{% if remaining <= 0 %} is-full{% endif %}" style="width: {{ ship_pct | round }}%"></span>
         </span>
       </div>
     {%- endif -%}
 
     <form action="{{ routes.cart_url }}" method="post" novalidate class="cv-cart__grid">
 
-      {%- comment -%} ---------- Lines ---------- {%- endcomment -%}
-      <div class="cv-lines" data-cv-stagger>
+      {%- comment -%} Lines: owned by cv-cart-page.js (data-cart-self keeps cart.js out) {%- endcomment -%}
+      <div class="cv-lines" data-cart-self data-cvcp-lines>
         {%- for item in cart.items -%}
-          <div class="cv-line" data-cv-reveal style="--cv-i:{{ forloop.index0 }}">
-            <a class="cv-line__media" href="{{ item.url }}">
+          {%- liquid
+            assign phone_index = -1
+            for o in item.options_with_values
+              assign oname = o.name | downcase
+              if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
+                assign phone_index = forloop.index0
+                break
+              endif
+            endfor
+            if phone_index == -1
+              for o in item.options_with_values
+                assign oval = o.value | downcase
+                if oval contains 'iphone' or oval contains 'galaxy' or oval contains 'samsung' or oval contains 'pixel'
+                  assign phone_index = forloop.index0
+                  break
+                endif
+              endfor
+            endif
+          -%}
+          <div class="cv-line" data-cvcp-line data-key="{{ item.key | escape }}" data-qty="{{ item.quantity }}">
+            <a class="cv-line__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
               {%- if item.image -%}
                 <img src="{{ item | image_url: width: 220 }}"
-                     alt="{{ item.title | escape }}"
+                     alt=""
                      width="110" height="110" loading="lazy" decoding="async">
               {%- else -%}
                 <span class="cv-line__ph">{%- render 'cv-icon', name: 'precision-fit', size: 24 -%}</span>
@@ -80,8 +149,15 @@
 
             <div class="cv-line__body">
               <a class="cv-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
-              {%- unless item.variant.title contains 'Default' -%}
-                <p class="cv-line__variant">{{ item.variant.title | escape }}</p>
+              {%- unless item.product.has_only_default_variant -%}
+                {%- if phone_index != -1 -%}
+                  <p class="cv-line__variant cv-line__variant--phone"><span class="cv-line__opt">{{ 'general.cart.phone_label' | t }}:</span> {{ item.options_with_values[phone_index].value | escape }}</p>
+                {%- endif -%}
+                {%- for o in item.options_with_values -%}
+                  {%- if forloop.index0 != phone_index -%}
+                    <p class="cv-line__variant"><span class="cv-line__opt">{{ o.name | escape }}:</span> {{ o.value | escape }}</p>
+                  {%- endif -%}
+                {%- endfor -%}
               {%- endunless -%}
               {%- if item.selling_plan_allocation -%}
                 <p class="cv-line__variant">{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>
@@ -92,17 +168,19 @@
 
               <div class="cv-line__ctl">
                 <div class="qty cv-qty">
-                  <button type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                  <button type="button" data-qty-decrease aria-label="{{ 'general.cart.decrease_label' | t: title: item.product.title | escape }}">&minus;</button>
                   <input type="number"
-                         data-cart-line-qty="{{ item.key }}"
+                         name="updates[]"
+                         data-cart-line-qty="{{ item.key | escape }}"
                          value="{{ item.quantity }}"
                          min="0"
-                         aria-label="Quantity for {{ item.product.title | escape }}">
-                  <button type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                         inputmode="numeric"
+                         aria-label="{{ 'general.cart.quantity_label' | t: title: item.product.title | escape }}">
+                  <button type="button" data-qty-increase aria-label="{{ 'general.cart.increase_label' | t: title: item.product.title | escape }}">+</button>
                 </div>
-                <button type="button" class="cv-line__rm" data-cart-remove="{{ item.key }}">
-                  {%- render 'cv-icon', name: 'cross', size: 12 -%}<span>Remove</span>
-                </button>
+                <a class="cv-line__rm" href="{{ item.url_to_remove }}" data-cart-remove="{{ item.key | escape }}" aria-label="{{ 'general.cart.remove_label' | t: title: item.product.title | escape }}">
+                  {%- render 'cv-icon', name: 'cross', size: 12 -%}<span>{{ 'general.cart.remove' | t }}</span>
+                </a>
               </div>
             </div>
 
@@ -112,60 +190,66 @@
                 <s class="cv-line__was">{{ item.original_line_price | money }}</s>
               {%- endif -%}
               {%- if item.quantity > 1 -%}
-                <span class="cv-line__each">{{ item.final_price | money }} ea</span>
+                <span class="cv-line__each">{{ item.final_price | money }} {{ 'general.cart.each_abbr' | t }}</span>
               {%- endif -%}
             </div>
           </div>
         {%- endfor -%}
+        <noscript>
+          <button type="submit" name="update" class="cv-cart__update">{{ 'general.cart.update' | t }}</button>
+        </noscript>
       </div>
 
-      {%- comment -%} ---------- Summary ---------- {%- endcomment -%}
-      <aside class="cv-sum" data-cv-reveal>
-        <h2 class="cv-sum__hd">{{ section.settings.summary_title | default: 'Order summary' | escape }}</h2>
+      {%- comment -%} Summary {%- endcomment -%}
+      <aside class="cv-sum" data-cvcp-sum>
+        <h2 class="cv-sum__hd">{{ section.settings.summary_title | default: t_summary | escape }}</h2>
 
-        <div class="cv-sum__row">
-          <span>Subtotal</span>
-          <b>{{ cart.items_subtotal_price | money }}</b>
-        </div>
-        {%- if cart.cart_level_discount_applications.size > 0 -%}
+        <div class="cv-sum__rows" data-cvcp-rows>
+          <div class="cv-sum__row">
+            <span>{{ 'general.cart.subtotal' | t }}</span>
+            <b>{{ cart.items_subtotal_price | money }}</b>
+          </div>
           {%- for d in cart.cart_level_discount_applications -%}
-            <div class="cv-sum__row is-save">
+            <div class="cv-sum__row is-save" data-cvcp-discount="{{ d.title | handleize }}">
               <span>{{ d.title | escape }}</span>
-              <b>−{{ d.total_allocated_amount | money }}</b>
+              <b>&minus;{{ d.total_allocated_amount | money }}</b>
             </div>
           {%- endfor -%}
-        {%- endif -%}
-        <div class="cv-sum__row is-muted">
-          <span>Shipping</span>
-          <b>{% if remaining <= 0 and section.settings.free_ship_threshold > 0 %}Free{% else %}Calculated at checkout{% endif %}</b>
+          <div class="cv-sum__row is-muted">
+            <span>{{ 'general.cart.shipping' | t }}</span>
+            <b>{% if ship_free %}{{ 'general.cart.shipping_free' | t }}{% else %}{{ 'general.cart.shipping_at_checkout' | t }}{% endif %}</b>
+          </div>
+          {%- if nudge != '' -%}
+            <p class="cv-cart__nudge" data-cvm-stamp data-cvcp-nudge>{%- render 'cv-icon', name: 'bag', size: 14 -%}<span>{{ nudge }}</span></p>
+          {%- endif -%}
         </div>
 
         <div class="cv-sum__total">
-          <span>Total</span>
-          <b>{{ cart.total_price | money }}</b>
+          <span>{{ 'general.cart.total' | t }}</span>
+          <b data-cvcp-total data-cvm-price data-cents="{{ cart.total_price }}" aria-live="polite">{{ cart.total_price | money }}</b>
         </div>
-        <p class="cv-sum__tax">Taxes and any duties are calculated at checkout.</p>
+        <p class="cv-sum__tax" data-cvcp-tax>{% if ship_free %}{{ 'general.cart.taxes_only_note' | t }}{% else %}{{ 'general.cart.taxes_note' | t }}{% endif %}</p>
 
         {%- if section.settings.show_note -%}
           <details class="cv-acc cv-sum__note">
             <summary class="cv-acc__sum">
-              {{ section.settings.note_label | default: 'Add a note' | escape }}
+              {{ section.settings.note_label | default: t_note | escape }}
               {%- render 'cv-icon', name: 'chevron-down', size: 16, class: 'cv-acc__chev' -%}
             </summary>
             <div class="cv-acc__panel">
-              <textarea name="note" rows="3" placeholder="Gift message, delivery instructions…">{{ cart.note }}</textarea>
+              <textarea name="note" rows="3" placeholder="{{ 'general.cart.note_placeholder' | t | escape }}">{{ cart.note }}</textarea>
             </div>
           </details>
         {%- endif -%}
 
-        <button type="submit" name="checkout" class="cv-cta">
+        <button type="submit" name="checkout" class="cv-cta" data-cvcp-checkout>
           <span class="cv-cta__shine" aria-hidden="true"></span>
           {%- render 'cv-icon', name: 'lock-secure', size: 18 -%}
-          <span class="cv-cta__label">{{ section.settings.checkout_label | default: 'Secure checkout' | escape }}</span>
-          <span class="cv-cta__total">{{ cart.total_price | money }}</span>
+          <span class="cv-cta__label">{{ section.settings.checkout_label | default: t_checkout | escape }}</span>
+          <span class="cv-cta__total" data-cvcp-cta-total data-cvm-price data-cents="{{ cart.total_price }}">{{ cart.total_price | money }}</span>
         </button>
 
-        <a class="cv-sum__back" href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+        <a class="cv-sum__back" href="{{ routes.all_products_collection_url }}">{{ 'general.cart.continue_shopping' | t }}</a>
 
         {%- assign trust_count = 0 -%}
         {%- for b in section.blocks -%}{%- if b.type == 'trust' -%}{%- assign trust_count = trust_count | plus: 1 -%}{%- endif -%}{%- endfor -%}

@@ -1,0 +1,10 @@
+{
+  "general.cart.update": "Update bag",
+  "general.cart.free_shipping_remaining": "You are {{ amount }} away from free shipping.",
+  "general.cart.taxes_only_note": "Taxes are calculated at checkout.",
+  "general.cart.heading": "Ready when you are",
+  "general.cart.empty_body": "Nothing in here yet. Pick your phone model and the right case is one tap away.",
+  "general.cart.summary_title": "Order summary",
+  "general.cart.note_label": "Add a note",
+  "general.cart.secure_checkout": "Secure checkout"
+}
