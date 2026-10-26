@@ -1,0 +1,7 @@
+{
+  "products.carousel.count": "[i] of [n]",
+  "products.carousel.pack_line": "Pack of [qty] · [total] · [pct]% off",
+  "products.carousel.pack_line_plain": "Pack of [qty] · [total]",
+  "products.carousel.pct_off": "[pct]% off",
+  "products.carousel.not_in_colour_suffix": " (not in this colour)"
+}

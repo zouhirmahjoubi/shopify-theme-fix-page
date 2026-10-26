@@ -9,7 +9,14 @@
  *     repaints from it, so price, pack and total always match the checkout
  *   - the phone list starts unchosen until the shopper picks a phone anywhere
  *     on the page; "Add to bag" asks for it first
- *   - "Add to bag" submits the buy box's own form (pack, mixed cases and all)
+ *   - "Add to bag" and "Buy now" call window.CasifyPDP.add / buyNow with this
+ *     panel's button as "from" (pack, mixed cases and all); the commerce motion
+ *     module flies the bag token from that button and runs its data-cvm-btn
+ *     busy / done / error states. Buy now shows only when the buy box has one.
+ *   - the pack pills copy the buy box tiers (name and discount) at init and
+ *     choose through "cvs:pack"; data-cvm-packs moves the highlight
+ *   - the stock line says "In stock" only for tracked, stop-at-zero variants
+ *     ("k" in the data); otherwise "Made for [n] phone models"
  *
  * Motion:
  *   GSAP      heading words rise from a mask, the ticket stamps in, chips pop
@@ -862,6 +869,10 @@ async function cvcrRide(root, options) {
       .fromTo(rot, { phi: endPhi - TAU * 0.8 }, { phi: endPhi, duration: 2.2, ease: 'power3.out' }, 0.4)
       .to(seats, { pop: 1, duration: 0.6, ease: 'back.out(2)', stagger: 0.05 }, 0.7)
       .to(lights, { keyframes: { v: [0, 1, 0.15, 1, 0.45, 1] }, duration: 0.75, ease: 'none' }, 1.15);
+    // Slow frames (software WebGL, a busy phone) let GSAP's lag smoothing stretch the 2.6 s intro
+    // to many seconds with the colour cards still at scale 0. Finish it on the wall clock.
+    const guard = setTimeout(() => { if (!destroyed && !introDone) tl.progress(1); }, 4000);
+    cleanups.push(() => clearTimeout(guard));
   }
 
   measure();
@@ -928,8 +939,9 @@ function cvcrInit(root) {
   if (styles.length < 2) return;
 
   const gsap = window.gsap;
-  const reduced = reduceQuery.matches;
-  const motion = Boolean(gsap) && !reduced;
+  // Motion runs only inside gsap.matchMedia's (prefers-reduced-motion: no-preference) branch
+  // below, so it switches on and off live when the shopper changes the setting.
+  let motion = false;
   const t = data.t || {};
   const si = data.styleIndex;
   const mi = data.modelIndex;
@@ -963,6 +975,8 @@ function cvcrInit(root) {
     packText: $('[data-cvcr-pack-text]'),
     packChange: $('[data-cvcr-pack-change]'),
     add: $('[data-cvcr-add]'),
+    buyNow: $('[data-cvcr-buy-now]'),
+    packs: $('[data-cvcr-packs]'),
     addLabel: $('[data-cvcr-add-label]'),
     addTotal: $('[data-cvcr-add-total]'),
     tick: $('[data-cvcr-tick]'),
@@ -1028,6 +1042,53 @@ function cvcrInit(root) {
   let silent = false;
   let lastIndex = styleIndex();
 
+  /* ---- Pack pills: a copy of the buy box tiers (name and discount, never typed here) ---- */
+  const packPills = [];
+  const bbPacks = bb ? Array.from(bb.querySelectorAll('[data-cv-pack]')) : [];
+  if (els.packs && bbPacks.length > 1) {
+    bbPacks.forEach((src) => {
+      const qty = Math.max(1, parseInt(src.getAttribute('data-cv-qty'), 10) || 1);
+      const pct = clamp(parseFloat(src.getAttribute('data-cv-discount')) || 0, 0, 90);
+      const nameEl = src.querySelector('.cvc__pack-name');
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'cvcr__pack-pill';
+      pill.setAttribute('role', 'radio');
+      pill.setAttribute('aria-checked', 'false');
+      pill.setAttribute('data-qty', String(qty));
+      const name = document.createElement('span');
+      name.className = 'cvcr__pack-pill-name';
+      name.textContent = (nameEl && nameEl.textContent.trim()) || String(qty);
+      pill.appendChild(name);
+      if (pct > 0) {
+        const off = document.createElement('span');
+        off.className = 'cvcr__pack-pill-off';
+        off.textContent = fill(t.off, { pct: pct });
+        pill.appendChild(off);
+      }
+      els.packs.appendChild(pill);
+      packPills.push(pill);
+    });
+    els.packs.hidden = false;
+    if (els.packChange) els.packChange.hidden = true;
+  }
+  const choosePack = (qty) => {
+    if (bb && qty !== state.qty) bb.dispatchEvent(new CustomEvent('cvs:pack', { detail: { qty: qty } }));
+  };
+  packPills.forEach((pill, i) => {
+    on(pill, 'click', () => choosePack(Number(pill.getAttribute('data-qty'))));
+    on(pill, 'keydown', (e) => {
+      const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+      if (!(e.key in keys)) return;
+      e.preventDefault();
+      const next = packPills[(i + keys[e.key] + packPills.length) % packPills.length];
+      next.focus();
+      choosePack(Number(next.getAttribute('data-qty')));
+    });
+  });
+  const cleanupPills = () => { packPills.forEach((pill) => pill.remove()); if (els.packs) els.packs.hidden = true; if (els.packChange) els.packChange.hidden = false; };
+  cleanups.push(cleanupPills);
+
   function choose(index, value) {
     if (bb) bb.dispatchEvent(new CustomEvent('cvs:choose', { detail: { index: index, value: value } }));
   }
@@ -1083,19 +1144,24 @@ function cvcrInit(root) {
     els.stills.forEach((fig, i) => { fig.hidden = i !== idx; });
 
     // The stock line: this colour across every phone, or for the shopper's own phone.
+    // "In stock" only for tracked, stop-at-zero variants (k); else "Made for ...".
     let fitState = 'ok';
     let fitText = '';
     if (mi >= 0 && state.confirmed) {
       if (!v) { fitState = 'none'; fitText = fill(t.fitYoursNone, { model: model }); }
       else if (!v.a) { fitState = 'out'; fitText = fill(t.fitYoursOut, { model: model }); }
-      else fitText = fill(t.fitYours, { model: model });
+      else if (v.k) fitText = fill(t.fitYours, { model: model });
+      else fitText = fill(t.madeFor, { models: model });
     } else if (style) {
       if (style.ok === 0) { fitState = 'out'; fitText = t.fitNone; }
-      else if (mi < 0) fitText = t.fitStock;
-      else if (style.ok === style.total) fitText = fill(t.fitAll, { n: style.total });
-      else fitText = fill(t.fitSome, { ok: style.ok, n: style.total });
+      else if (mi < 0) fitText = style.k ? t.stock : '';
+      else if (style.k && style.ok === style.total) fitText = t.stockAll;
+      else if (style.k) fitText = fill(t.stockSome, { ok: style.ok, n: style.total });
+      else if (style.ok === style.total) fitText = fill(t.madeFor, { models: fill(t.modelsAll, { n: style.total }) });
+      else fitText = fill(t.madeFor, { models: fill(t.modelsSome, { ok: style.ok, n: style.total }) });
     }
     els.fit.setAttribute('data-state', fitState);
+    els.fit.hidden = !fitText;
     els.fitText.textContent = fitText;
 
     // Price: the case the buy box holds, else the first of this colour to show what it costs.
@@ -1131,8 +1197,16 @@ function cvcrInit(root) {
         els.addLabel.textContent = label;
         if (disabled) els.addTotal.textContent = '';
         else setMoney(els.addTotal, total, animate);
+        if (els.buyNow && !els.buyNow.classList.contains('is-busy')) els.buyNow.disabled = disabled;
       }
     }
+
+    // The pack pills follow the buy box's pack.
+    packPills.forEach((pill) => {
+      const current = Number(pill.getAttribute('data-qty')) === state.qty;
+      pill.setAttribute('aria-checked', current ? 'true' : 'false');
+      pill.tabIndex = current ? 0 : -1;
+    });
 
     // The phone list: mark what this colour isn't made in or has sold out of.
     if (els.model) {
@@ -1239,6 +1313,18 @@ function cvcrInit(root) {
       }
       render(true);
     });
+    // A failed add or Buy now: say why here too; the pressed button carries is-error from the buy box.
+    on(bb, 'cvs:error', (e) => {
+      const d = e.detail || {};
+      if (d.button !== els.add && d.button !== els.buyNow) return;
+      if (d.button === els.buyNow) setBuyBusy(false);
+      if (state.busy) { state.busy = false; els.add.classList.remove('is-busy'); }
+      setStatus(d.message || t.failed, 'warn');
+      render(false);
+    });
+    on(bb, 'cvs:buying', (e) => {
+      if (e.detail && e.detail.from === els.buyNow) setBuyBusy(true);
+    });
     // A phone chosen in the buy box or the fit list counts as the shopper's phone.
     const markChosen = () => {
       if (silent) return;
@@ -1266,7 +1352,8 @@ function cvcrInit(root) {
       els.addLabel.textContent = t.added;
       const said = document.getElementById('cvStatus');
       setStatus(said ? said.textContent : '');
-      if (motion && els.tick && window.DrawSVGPlugin) gsap.fromTo(els.tick, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.45, ease: 'power2.out' });
+      // The commerce motion module draws the tick (data-cvm-icon); draw it here only without it.
+      if (!window.CasifyMotion && motion && els.tick && window.DrawSVGPlugin) gsap.fromTo(els.tick, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.45, ease: 'power2.out' });
       if (ride) ride.flash();
       window.setTimeout(() => {
         state.added = false;
@@ -1296,7 +1383,7 @@ function cvcrInit(root) {
         els.add.classList.add('is-done');
         els.addLabel.textContent = t.added;
         document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-        document.dispatchEvent(new CustomEvent('cart:added', { bubbles: true }));
+        document.dispatchEvent(new CustomEvent('cart:added', { bubbles: true, detail: { source: 'carousel', from: els.add, img: stillSrc(), qty: 1, items: [{ id: v.id, quantity: 1 }] } }));
         if (window.CasifyCart && typeof window.CasifyCart.refresh === 'function') window.CasifyCart.refresh();
         window.setTimeout(() => { state.added = false; els.add.classList.remove('is-done'); render(false); }, 2200);
       })
@@ -1308,39 +1395,90 @@ function cvcrInit(root) {
       });
   }
 
+  /* The current colour's photo, for the bag token. */
+  function stillSrc() {
+    const img = root.querySelector('[data-cvcr-still]:not([hidden]) img');
+    return img ? (img.currentSrc || img.src || '') : '';
+  }
+
+  /* No phone chosen here yet: ask for it on this panel's own picker. */
+  function needModel(button) {
+    if (mi < 0 || state.confirmed) return false;
+    setStatus(t.pickModel, 'warn');
+    if (els.selectWrap) els.selectWrap.classList.add('is-wanted');
+    if (els.model) els.model.focus();
+    // cv-commerce-motion.js rings and shakes the picker on cvs:needmodel; shake here only without it.
+    root.dispatchEvent(new CustomEvent('cvs:needmodel', { bubbles: true, detail: { button: button, kind: button === els.buyNow ? 'buy' : 'add' } }));
+    if (!window.CasifyMotion && motion && els.selectWrap) gsap.fromTo(els.selectWrap, { x: 0 }, { keyframes: { x: [0, -8, 7, -5, 3, 0] }, duration: 0.45, ease: 'power1.out', clearProps: 'transform' });
+    return true;
+  }
+
+  /* Make sure the buy box holds this case and knows the phone before it posts. */
+  function syncBuyBox(v) {
+    if (!bbVariantInput || Number(bbVariantInput.value) !== v.id) {
+      choose(si, v.o[si]);
+      if (mi >= 0) choose(mi, v.o[mi]);
+    }
+    const api = window.CasifyPDP;
+    const bbState = api && typeof api.state === 'function' ? api.state(bb) : null;
+    if (mi >= 0 && bbState && !bbState.modelConfirmed) choose(mi, v.o[mi]);
+  }
+
+  function setBuyBusy(busy) {
+    if (!els.buyNow) return;
+    els.buyNow.classList.toggle('is-busy', busy);
+    els.buyNow.disabled = busy;
+    if (!busy) {
+      const label = els.buyNow.querySelector('[data-cv-buy-label]');
+      if (label) label.textContent = label.getAttribute('data-label-default') || t.buy;
+    }
+  }
+
   on(els.add, 'click', () => {
     if (els.add.disabled || state.busy) return;
-    if (mi >= 0 && !state.confirmed) {
-      setStatus(t.pickModel, 'warn');
-      if (els.selectWrap) {
-        els.selectWrap.classList.add('is-wanted');
-        if (motion) gsap.fromTo(els.selectWrap, { x: 0 }, { keyframes: { x: [0, -8, 7, -5, 3, 0] }, duration: 0.45, ease: 'power1.out', clearProps: 'transform' });
-      }
-      if (els.model) els.model.focus();
-      return;
-    }
+    if (needModel(els.add)) return;
     const v = variantFor(state.opts);
     if (!v || !v.a) return;
-    const form = bb ? document.getElementById('cvAddForm') : null;
-    if (form) {
-      // The buy box should already hold this case; make sure before submitting its form.
-      if (!bbVariantInput || Number(bbVariantInput.value) !== v.id) {
-        choose(si, v.o[si]);
-        if (mi >= 0) choose(mi, v.o[mi]);
+    if (bb) {
+      syncBuyBox(v);
+      if (window.CasifyPDP && typeof window.CasifyPDP.add === 'function') {
+        window.CasifyPDP.add(bb, { from: els.add });
+        return;
       }
-      if (form.requestSubmit) form.requestSubmit();
-      else form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-      return;
+      const form = document.getElementById('cvAddForm');
+      if (form) {
+        if (form.requestSubmit) form.requestSubmit();
+        else form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        return;
+      }
     }
     addDirect(v);
   });
 
+  /* Buy now: only when the buy box has one; the buy box adds the pack and goes to checkout. */
+  const bbBuy = bb ? bb.querySelector('[data-cv-buy-now]') : null;
+  if (els.buyNow && bbBuy) {
+    els.buyNow.hidden = false;
+    on(els.buyNow, 'click', () => {
+      if (els.buyNow.disabled || state.busy) return;
+      if (needModel(els.buyNow)) return;
+      const v = variantFor(state.opts);
+      if (!v || !v.a) return;
+      syncBuyBox(v);
+      if (window.CasifyPDP && typeof window.CasifyPDP.buyNow === 'function') window.CasifyPDP.buyNow(bb, { from: els.buyNow });
+      else bbBuy.click();
+    });
+    // Back from checkout with the browser's back button: the page is restored as it was left.
+    on(window, 'pageshow', (e) => { if (e.persisted) { setBuyBusy(false); render(false); } });
+  }
+
   on(els.packChange, 'click', () => {
     if (!bb) return;
     const packs = bb.querySelector('.cvc__packs') || document.getElementById('cvAddForm') || bb;
-    packs.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    const still = reduceQuery.matches;
+    packs.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
     const checked = bb.querySelector('[data-cv-pack][aria-checked="true"]');
-    if (checked) window.setTimeout(() => checked.focus({ preventScroll: true }), reduced ? 0 : 650);
+    if (checked) window.setTimeout(() => checked.focus({ preventScroll: true }), still ? 0 : 650);
   });
 
   /* ---- Hint and pause (3D only) ---- */
@@ -1364,50 +1502,55 @@ function cvcrInit(root) {
   root.classList.add('is-ready');
   render(false);
 
-  /* ---- Scroll choreography for the panel ---- */
-  let ctx = null;
-  if (motion && window.ScrollTrigger) {
-    ctx = gsap.context(() => {
-      const head = root.querySelector('[data-cvcr-head]');
-      const title = root.querySelector('[data-cvcr-split]');
-      const lede = head && head.querySelector('.cvcr__lede');
-      const once = (el, start) => ({ trigger: el, start: start || 'top 86%', once: true });
-      if (title && window.SplitText) {
-        const split = window.SplitText.create(title, { type: 'words', mask: 'words' });
-        gsap.from(split.words, { yPercent: 110, duration: 0.8, ease: 'power4.out', stagger: 0.06, scrollTrigger: once(title) });
-      } else if (title) {
-        gsap.from(title, { autoAlpha: 0, y: 24, duration: 0.7, ease: 'power3.out', scrollTrigger: once(title) });
-      }
-      if (lede) gsap.from(lede, { autoAlpha: 0, y: 18, duration: 0.7, delay: 0.18, ease: 'power3.out', scrollTrigger: once(lede) });
-      gsap.from(els.stage, { autoAlpha: 0, y: 36, scale: 0.97, duration: 0.9, ease: 'power3.out', scrollTrigger: once(els.stage, 'top 90%') });
-      cvcrTween(els.ticket, { autoAlpha: 0, y: 26, rotation: -2.5, scale: 1.04 }, {
-        autoAlpha: 1, y: 0, rotation: 0, scale: 1, duration: 0.75, ease: 'back.out(1.6)',
-        clearProps: 'transform,transition,opacity,visibility', scrollTrigger: once(els.ticket, 'top 90%')
-      });
-      els.chips.forEach((chip) => { chip.style.transition = 'none'; });
-      gsap.fromTo(els.chips, { autoAlpha: 0, y: 14, scale: 0.9 }, {
-        autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.8)', stagger: 0.05,
-        clearProps: 'transform,transition,opacity,visibility', scrollTrigger: once(els.chipsWrap, 'top 94%')
-      });
-      const rows = Array.from(els.buy.children).filter((el) => !el.hidden && el !== els.status);
-      rows.forEach((row) => { row.style.transition = 'none'; });
-      gsap.fromTo(rows, { autoAlpha: 0, y: 16 }, {
-        autoAlpha: 1, y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.08,
-        clearProps: 'transform,transition,opacity,visibility', scrollTrigger: once(els.buy, 'top 96%')
-      });
-    }, root);
+  /* ---- Motion: entrance tweens and the ride, only while motion is welcome ----
+   * Everything that moves lives in one gsap.matchMedia branch. Turning on Reduce
+   * Motion with the page open runs the cleanup: the ride is destroyed, the pause
+   * control and hint go away, the tweens revert and the static still shows. */
+  let destroyed = false;
+  let rideGen = 0;
+
+  function entrance() {
+    if (!window.ScrollTrigger) return;
+    const head = root.querySelector('[data-cvcr-head]');
+    const title = root.querySelector('[data-cvcr-split]');
+    const lede = head && head.querySelector('.cvcr__lede');
+    const once = (el, start) => ({ trigger: el, start: start || 'top 86%', once: true });
+    if (title && window.SplitText) {
+      const split = window.SplitText.create(title, { type: 'words', mask: 'words' });
+      gsap.from(split.words, { yPercent: 110, duration: 0.8, ease: 'power4.out', stagger: 0.06, scrollTrigger: once(title) });
+    } else if (title) {
+      gsap.from(title, { autoAlpha: 0, y: 24, duration: 0.7, ease: 'power3.out', scrollTrigger: once(title) });
+    }
+    if (lede) gsap.from(lede, { autoAlpha: 0, y: 18, duration: 0.7, delay: 0.18, ease: 'power3.out', scrollTrigger: once(lede) });
+    gsap.from(els.stage, { autoAlpha: 0, y: 36, scale: 0.97, duration: 0.9, ease: 'power3.out', scrollTrigger: once(els.stage, 'top 90%') });
+    // The ticket holds the price, the chips and buy rows are pickers and buttons:
+    // they settle into place but never fade, so they read and work at every frame.
+    cvcrTween(els.ticket, { y: 26, rotation: -2.5, scale: 1.04 }, {
+      y: 0, rotation: 0, scale: 1, duration: 0.75, ease: 'back.out(1.6)',
+      clearProps: 'transform,transition', scrollTrigger: once(els.ticket, 'top 90%')
+    });
+    els.chips.forEach((chip) => { chip.style.transition = 'none'; });
+    gsap.fromTo(els.chips, { y: 14, scale: 0.9 }, {
+      y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.8)', stagger: 0.05,
+      clearProps: 'transform,transition', scrollTrigger: once(els.chipsWrap, 'top 94%')
+    });
+    const rows = Array.from(els.buy.children).filter((el) => !el.hidden && el !== els.status);
+    rows.forEach((row) => { row.style.transition = 'none'; });
+    gsap.fromTo(rows, { y: 16 }, {
+      y: 0, duration: 0.55, ease: 'power3.out', stagger: 0.08,
+      clearProps: 'transform,transition', scrollTrigger: once(els.buy, 'top 96%')
+    });
   }
 
-  /* ---- The ride ---- */
-  let destroyed = false;
-  if (!reduced) {
+  function startRide() {
+    const gen = ++rideGen;
     cvcrRide(root, {
       styles: styles,
       start: Math.max(0, styleIndex()),
       onPick: (i) => pickStyle(i, 'ride'),
       onInteract: hideHint,
       onReady: () => {
-        if (destroyed) return;
+        if (destroyed || gen !== rideGen) return;
         if (els.pause) els.pause.hidden = false;
         if (els.hint && !hintShown) {
           hintShown = true;
@@ -1417,17 +1560,48 @@ function cvcrInit(root) {
       }
     }).then((instance) => {
       if (!instance) return;
-      if (destroyed) instance.destroy();
-      else ride = instance;
+      if (destroyed || gen !== rideGen) { instance.destroy(); return; }
+      ride = instance;
+      if (els.pause && els.pause.getAttribute('aria-pressed') === 'true') ride.setPaused(true);
     });
+  }
+
+  function stopRide() {
+    rideGen += 1;
+    if (ride) ride.destroy();
+    ride = null;
+    if (els.pause) els.pause.hidden = true;
+    if (els.hint) {
+      if (gsap) gsap.killTweensOf(els.hint);
+      if (gsap) gsap.set(els.hint, { clearProps: 'all' });
+      els.hint.hidden = true;
+    }
+    hintShown = false;
+  }
+
+  let mm = null;
+  if (gsap && gsap.matchMedia) {
+    mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      motion = true;
+      entrance();
+      startRide();
+      return () => {
+        motion = false;
+        stopRide();
+        // Entrance tweens that never fired leave their inline "transition: none" behind.
+        els.chips.concat(Array.from(els.buy.children)).forEach((el) => { el.style.transition = ''; });
+      };
+    }, root);
   }
 
   root._cvcrDestroy = function () {
     destroyed = true;
-    if (ride) ride.destroy();
-    ride = null;
-    if (ctx) ctx.revert();
+    if (mm) mm.revert();
+    mm = null;
+    stopRide();
     cleanups.forEach((fn) => fn());
+    if (els.buyNow) { els.buyNow.hidden = true; els.buyNow.classList.remove('is-busy'); }
     root.classList.remove('is-ready');
     delete root._cvcrDestroy;
   };

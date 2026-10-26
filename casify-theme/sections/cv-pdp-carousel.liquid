@@ -15,12 +15,27 @@
   from the top of the page.
 
   Honest data only: the photos are each colour's own variant photo, the stock
-  line counts this product's real variants, and prices come from the variants
-  (and the buy box's compare-at rule). No free-text claim fields.
+  line counts this product's real variants, and prices come from the variants.
+  The stock line says "In stock" only when Shopify tracks the inventory and
+  stops selling at zero (the buy box's low-stock rule); otherwise it says
+  "Made for [n] phone models", because an untracked or oversold variant is
+  always "available". The first-paint was-price is the variant's own
+  compare-at price, the buy box's first rule; the buy box's merchant fallback
+  lives in that section's settings, which Liquid here cannot read, so the
+  script applies it (data-compare-at-fallback) the moment it runs.
 
-  Hidden on products with a single colour. Without JavaScript, WebGL or with
-  reduced motion, the stage is the selected colour's photo in a shop window
-  and the chips, phone list and button work the same way.
+  Buttons: "Add to bag" and "Buy now" call window.CasifyPDP.add / buyNow with
+  this panel's button as "from", so the buy box posts the chosen pack and the
+  bag token flies from here (cv-commerce-motion.js, data-cvm-btn states).
+  Buy now shows only when the buy box has one (its show_buy_now setting).
+  The pack pills mirror the buy box tiers and choose through "cvs:pack".
+
+  Hidden on products with a single colour. Without JavaScript the stage is
+  the selected colour's photo in a shop window with its name, stock line and
+  price; the colour chips do nothing, the buy row stays hidden, and a link
+  goes to the buy box ("Choose your phone model"). With reduced motion or no
+  WebGL the script still runs the chips, phone list and buttons, without the
+  three.js ride or transforms.
 {%- endcomment -%}
 {{ 'cv-pdp-carousel.css' | asset_url | stylesheet_tag }}
 
@@ -72,12 +87,23 @@
     selects one, a plain product URL does not.
   endcomment
   assign confirmed = false
-  if product.selected_variant != blank or model_oi == -1
+  if product.selected_variant != blank or model_oi == -1 or model_count < 2
     assign confirmed = true
   endif
 
-  assign cta = section.settings.cta_label | default: 'Add to bag'
+  assign t_add = 'products.carousel.add' | t
+  assign t_buy = 'products.carousel.buy_now' | t
+  assign t_placeholder = 'products.buy.model_placeholder' | t
+  assign t_pick_model = 'products.buy.choose_model' | t
+  assign cta = section.settings.cta_label | default: t_add
   assign cta_pack = section.settings.cta_pack_label | default: 'Add [qty] cases'
+  assign buy_label = section.settings.buy_label | default: t_buy
+  assign model_placeholder = section.settings.model_placeholder | default: t_placeholder
+  assign txt_models_all = section.settings.models_all_text | default: '[n] phone models'
+  assign txt_models_some = section.settings.models_some_text | default: '[ok] of [n] phone models'
+  assign txt_stock_some = section.settings.stock_some_text | default: 'In stock for [ok] of [n] phone models'
+  assign txt_stock = section.settings.stock_text | default: 'In stock'
+  assign txt_sold_out = section.settings.sold_out_text | default: 'Sold out in this colour'
   assign show_was = false
   if cvar.compare_at_price > cvar.price
     assign show_was = true
@@ -110,12 +136,16 @@
             assign spic = nil
             assign s_ok = 0
             assign s_total = 0
+            assign s_tracked = true
             for v in product.variants
               if v.options[style_oi] == value
                 assign s_total = s_total | plus: 1
                 if v.available
                   assign s_ok = s_ok | plus: 1
                 endif
+                unless v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+                  assign s_tracked = false
+                endunless
                 if spic == nil and v.featured_image
                   assign spic = v.featured_image
                 endif
@@ -143,7 +173,7 @@
             if forloop.first == false
               assign styles_json = styles_json | append: ','
             endif
-            assign styles_json = styles_json | append: '{"value":' | append: value_json | append: ',"img":' | append: img_json | append: ',"ok":' | append: s_ok | append: ',"total":' | append: s_total | append: '}'
+            assign styles_json = styles_json | append: '{"value":' | append: value_json | append: ',"img":' | append: img_json | append: ',"ok":' | append: s_ok | append: ',"total":' | append: s_total | append: ',"k":' | append: s_tracked | append: '}'
           -%}
           {%- capture fig -%}
             <figure class="cvcr__still" data-cvcr-still="{{ forloop.index0 }}"{% unless is_current %} hidden{% endunless %}>
@@ -183,17 +213,17 @@
         <button type="button" class="cvcr__pause" data-cvcr-pause aria-pressed="false" hidden>
           <span data-cvcr-pause-icon="pause">{%- render 'cv-icon', name: 'pause', size: 16 -%}</span>
           <span data-cvcr-pause-icon="play" hidden>{%- render 'cv-icon', name: 'play', size: 16 -%}</span>
-          <span class="cvcr__pause-label" data-cvcr-pause-label>Pause the ride</span>
+          <span class="cvcr__pause-label" data-cvcr-pause-label>{{ section.settings.pause_label | default: 'Pause the ride' | escape }}</span>
         </button>
 
         <div class="cvcr__nav">
           <button type="button" class="cvcr__arrow cvcr__arrow--prev" data-cvcr-step="-1" aria-controls="cvcrChips-{{ section.id }}">
-            <span class="cvcr__sr">Previous colour</span>
+            <span class="cvcr__sr">{{ section.settings.previous_label | default: 'Previous colour' | escape }}</span>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <p class="cvcr__count" aria-hidden="true"><b data-cvcr-count-now>{{ current_index | plus: 1 | prepend: '0' | slice: -2, 2 }}</b><span>/</span>{{ style_count | prepend: '0' | slice: -2, 2 }}</p>
           <button type="button" class="cvcr__arrow cvcr__arrow--next" data-cvcr-step="1" aria-controls="cvcrChips-{{ section.id }}">
-            <span class="cvcr__sr">Next colour</span>
+            <span class="cvcr__sr">{{ section.settings.next_label | default: 'Next colour' | escape }}</span>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
@@ -203,35 +233,51 @@
         <div class="cvcr__ticket" data-cvcr-ticket>
           <p class="cvcr__ticket-label">{{ section.settings.pick_label | escape }} <span data-cvcr-count>{{ current_index | plus: 1 }} of {{ style_count }}</span></p>
           <p class="cvcr__name" aria-live="polite"><span data-cvcr-name>{{ cvar.options[style_oi] | escape }}</span></p>
-          <p class="cvcr__fit" data-cvcr-fit>
-            <span class="cvcr__fit-dot" aria-hidden="true"></span>
-            <span data-cvcr-fit-text>
-              {%- liquid
-                assign cur_ok = 0
-                assign cur_total = 0
-                for v in product.variants
-                  if v.options[style_oi] == cvar.options[style_oi]
-                    assign cur_total = cur_total | plus: 1
-                    if v.available
-                      assign cur_ok = cur_ok | plus: 1
-                    endif
-                  endif
-                endfor
-                if model_oi < 0
-                  if cur_ok > 0
-                    echo 'In stock'
-                  else
-                    echo 'Sold out in this colour'
-                  endif
-                elsif cur_ok == 0
-                  echo 'Sold out in this colour'
-                elsif cur_ok == cur_total
-                  echo 'In stock for all ' | append: cur_total | append: ' phone models'
-                else
-                  echo 'In stock for ' | append: cur_ok | append: ' of ' | append: cur_total | append: ' phone models'
+          {%- liquid
+            comment
+              The stock line. "In stock" needs tracked inventory that stops at zero; an untracked
+              or oversold variant is always available, so that colour is "Made for [n] phone models".
+            endcomment
+            assign cur_ok = 0
+            assign cur_total = 0
+            assign cur_tracked = true
+            for v in product.variants
+              if v.options[style_oi] == cvar.options[style_oi]
+                assign cur_total = cur_total | plus: 1
+                if v.available
+                  assign cur_ok = cur_ok | plus: 1
                 endif
-              -%}
-            </span>
+                unless v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+                  assign cur_tracked = false
+                endunless
+              endif
+            endfor
+            assign n_str = cur_total | append: ''
+            assign ok_str = cur_ok | append: ''
+            assign fit_text = ''
+            assign fit_state = 'ok'
+            if cur_ok == 0
+              assign fit_text = txt_sold_out
+              assign fit_state = 'out'
+            elsif model_oi < 0
+              if cur_tracked
+                assign fit_text = txt_stock
+              endif
+            elsif cur_tracked and cur_ok == cur_total
+              assign fit_text = 'products.carousel.in_stock_all' | t
+            elsif cur_tracked
+              assign fit_text = txt_stock_some | replace: '[ok]', ok_str | replace: '[n]', n_str
+            elsif cur_ok == cur_total
+              assign fit_models = txt_models_all | replace: '[n]', n_str
+              assign fit_text = 'products.carousel.made_for_models' | t: models: fit_models
+            else
+              assign fit_models = txt_models_some | replace: '[ok]', ok_str | replace: '[n]', n_str
+              assign fit_text = 'products.carousel.made_for_models' | t: models: fit_models
+            endif
+          -%}
+          <p class="cvcr__fit" data-cvcr-fit data-state="{{ fit_state }}"{% if fit_text == blank %} hidden{% endif %}>
+            <span class="cvcr__fit-dot" aria-hidden="true"></span>
+            <span data-cvcr-fit-text>{{ fit_text | escape }}</span>
           </p>
           <p class="cvcr__price">
             <span class="cvcr__now" data-cvcr-now>{{ cvar.price | money }}</span>
@@ -249,7 +295,7 @@
             <label class="cvcr__label" for="cvcrModel-{{ section.id }}">{{ section.settings.model_label | escape }}</label>
             <span class="cvcr__select">
               <select id="cvcrModel-{{ section.id }}" data-cvcr-model aria-describedby="cvcrStatus-{{ section.id }}">
-                <option value=""{% unless confirmed %} selected{% endunless %}>{{ section.settings.model_placeholder | escape }}</option>
+                <option value=""{% unless confirmed %} selected{% endunless %}>{{ model_placeholder | escape }}</option>
                 {%- for value in model_option.values -%}
                   <option value="{{ value | escape }}"{% if confirmed and cvar.options[model_oi] == value %} selected{% endif %}>{{ value | escape }}</option>
                 {%- endfor -%}
@@ -257,14 +303,23 @@
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
             </span>
           {%- endif -%}
+          {%- if section.settings.show_packs -%}
+            <div class="cvcr__packs" role="radiogroup" aria-label="{{ section.settings.packs_label | default: 'Pack' | escape }}" data-cvcr-packs data-cvm-packs hidden>
+              <span class="cvcr__packs-hl" data-cvm-pack-highlight aria-hidden="true"></span>
+            </div>
+          {%- endif -%}
           <p class="cvcr__pack" data-cvcr-pack hidden>
             <span data-cvcr-pack-text></span>
             <button type="button" class="cvcr__link" data-cvcr-pack-change>{{ section.settings.pack_change_label | escape }}</button>
           </p>
-          <button type="button" class="cvcr__add" data-cvcr-add>
-            <span class="cvcr__add-label" data-cvcr-add-label>{{ cta | escape }}</span>
+          <button type="button" class="cvcr__add" data-cvcr-add data-cvm-btn>
+            <span class="cvcr__add-label" data-cvcr-add-label data-cvm-label>{{ cta | escape }}</span>
             <span class="cvcr__add-total" data-cvcr-add-total></span>
-            <svg class="cvcr__add-tick" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" data-cvcr-tick/></svg>
+            <svg class="cvcr__add-tick" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" data-cvm-icon><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" data-cvcr-tick/></svg>
+          </button>
+          <button type="button" class="cvcr__buy-now" data-cvcr-buy-now data-cvm-btn hidden>
+            <span class="cvcr__buy-now-label" data-cv-buy-label data-cvm-label data-label-default="{{ buy_label | escape }}">{{ buy_label | escape }}</span>
+            <svg class="cvcr__buy-now-arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <p class="cvcr__status" id="cvcrStatus-{{ section.id }}" role="status" aria-live="polite" data-cvcr-status></p>
         </div>
@@ -283,33 +338,43 @@
         "styles": [{{ styles_json }}],
         "variants": [
           {%- for v in product.variants -%}
-            {"id":{{ v.id }},"o":{{ v.options | json }},"a":{{ v.available | json }},"p":{{ v.price }},"c":{{ v.compare_at_price | default: 0 }}}{% unless forloop.last %},{% endunless %}
+            {%- liquid
+              assign v_tracked = false
+              if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+                assign v_tracked = true
+              endif
+            -%}
+            {"id":{{ v.id }},"o":{{ v.options | json }},"a":{{ v.available | json }},"k":{{ v_tracked }},"p":{{ v.price }},"c":{{ v.compare_at_price | default: 0 }}}{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         ],
         "t": {
           "add": {{ cta | json }},
           "addPack": {{ cta_pack | json }},
-          "adding": "Adding…",
-          "added": "In your bag",
-          "soldOut": "Sold out",
-          "unavailable": "Choose another phone",
-          "pickModel": {{ section.settings.pick_model_text | default: 'Pick your phone model first, so the case fits.' | json }},
-          "failed": "That didn’t go through. Please try again.",
+          "buy": {{ buy_label | json }},
+          "adding": {{ 'products.buy.adding' | t | json }},
+          "added": {{ 'products.buy.added' | t | json }},
+          "soldOut": {{ 'products.buy.sold_out' | t | json }},
+          "unavailable": {{ 'products.buy.unavailable' | t | json }},
+          "pickModel": {{ section.settings.pick_model_text | default: t_pick_model | json }},
+          "failed": {{ 'products.buy.error' | t | json }},
           "count": "[i] of [n]",
-          "fitAll": "In stock for all [n] phone models",
-          "fitSome": "In stock for [ok] of [n] phone models",
-          "fitNone": "Sold out in this colour",
-          "fitStock": "In stock",
-          "fitYours": "Made for your [model] · in stock",
-          "fitYoursOut": "Sold out for your [model] in this colour",
-          "fitYoursNone": "Not made for your [model] in this colour",
-          "soldSuffix": " (sold out)",
+          "madeFor": {{ 'products.carousel.made_for_models' | t: models: '[models]' | json }},
+          "stockAll": {{ 'products.carousel.in_stock_all' | t | json }},
+          "modelsAll": {{ txt_models_all | json }},
+          "modelsSome": {{ txt_models_some | json }},
+          "stockSome": {{ txt_stock_some | json }},
+          "stock": {{ txt_stock | json }},
+          "fitNone": {{ txt_sold_out | json }},
+          "fitYours": {{ section.settings.yours_stock_text | default: 'In stock for your [model]' | json }},
+          "fitYoursOut": {{ section.settings.yours_out_text | default: 'Sold out for your [model] in this colour' | json }},
+          "fitYoursNone": {{ section.settings.yours_none_text | default: 'Not made for your [model] in this colour' | json }},
+          "soldSuffix": {{ 'general.quick_pick.sold_out_suffix' | t | json }},
           "noneSuffix": " (not in this colour)",
           "pack": "Pack of [qty] · [total] · [pct]% off",
           "packPlain": "Pack of [qty] · [total]",
           "off": "[pct]% off",
-          "pause": "Pause the ride",
-          "play": "Start the ride"
+          "pause": {{ section.settings.pause_label | default: 'Pause the ride' | json }},
+          "play": {{ section.settings.play_label | default: 'Start the ride' | json }}
         }
       }
     </script>
@@ -335,13 +400,31 @@
     { "type": "text", "id": "pick_label", "label": "Colour ticket label", "default": "Your colour" },
     { "type": "text", "id": "chips_label", "label": "Colour list name (screen readers)", "default": "Colour" },
     { "type": "text", "id": "model_label", "label": "Phone label", "default": "Your phone" },
-    { "type": "text", "id": "model_placeholder", "label": "Phone placeholder", "default": "Select your phone model" },
+    { "type": "text", "id": "model_placeholder", "label": "Phone placeholder", "default": "Choose your phone model", "info": "Leave blank for the store default. A phone model is never chosen for the shopper." },
     { "type": "text", "id": "pick_model_text", "label": "Reminder when no phone is chosen", "default": "Pick your phone model first, so the case fits." },
+    { "type": "header", "content": "Stock line" },
+    { "type": "paragraph", "content": "In stock shows only for variants whose inventory Shopify tracks and that stop selling at zero. Other variants say Made for the number of phone models. [n] is the number of phone models, [ok] the ones still available, [model] the shopper's phone." },
+    { "type": "text", "id": "models_all_text", "label": "Phone models, all available", "default": "[n] phone models", "info": "Shown after Made for." },
+    { "type": "text", "id": "models_some_text", "label": "Phone models, some available", "default": "[ok] of [n] phone models", "info": "Shown after Made for." },
+    { "type": "text", "id": "stock_some_text", "label": "Tracked stock, some phone models", "default": "In stock for [ok] of [n] phone models" },
+    { "type": "text", "id": "stock_text", "label": "Tracked stock, no phone models", "default": "In stock" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold out in this colour", "default": "Sold out in this colour" },
+    { "type": "text", "id": "yours_stock_text", "label": "Tracked stock, shopper's phone", "default": "In stock for your [model]" },
+    { "type": "text", "id": "yours_out_text", "label": "Sold out for the shopper's phone", "default": "Sold out for your [model] in this colour" },
+    { "type": "text", "id": "yours_none_text", "label": "Not made for the shopper's phone", "default": "Not made for your [model] in this colour" },
     { "type": "header", "content": "Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Add to bag" },
     { "type": "text", "id": "cta_pack_label", "label": "Button label for a pack", "default": "Add [qty] cases", "info": "[qty] is the number of cases in the pack chosen in the buy box." },
+    { "type": "text", "id": "buy_label", "label": "Buy now label", "default": "Buy now", "info": "Shows only when the buy box shows Buy now." },
+    { "type": "checkbox", "id": "show_packs", "label": "Show pack choices", "default": true, "info": "The buy box's own packs and discounts, never typed here." },
+    { "type": "text", "id": "packs_label", "label": "Pack list name (screen readers)", "default": "Pack" },
     { "type": "text", "id": "pack_change_label", "label": "Change pack link", "default": "Change" },
-    { "type": "text", "id": "nojs_label", "label": "Link shown without JavaScript", "default": "Choose your phone model" }
+    { "type": "text", "id": "nojs_label", "label": "Link shown without JavaScript", "default": "Choose your phone model" },
+    { "type": "header", "content": "Ride controls" },
+    { "type": "text", "id": "pause_label", "label": "Pause button", "default": "Pause the ride" },
+    { "type": "text", "id": "play_label", "label": "Play button", "default": "Start the ride" },
+    { "type": "text", "id": "previous_label", "label": "Previous colour (screen readers)", "default": "Previous colour" },
+    { "type": "text", "id": "next_label", "label": "Next colour (screen readers)", "default": "Next colour" }
   ],
   "presets": [{ "name": "Product: colour carousel" }]
 }

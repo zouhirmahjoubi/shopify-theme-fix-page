@@ -1,6 +1,8 @@
-/* Product: colour carousel — sections/cv-pdp-carousel.liquid.
+/* Product: colour carousel, sections/cv-pdp-carousel.liquid.
  * This file is the finished, static state: the selected colour's photo in an
- * arched shop window, the ticket, chips, phone list and button.
+ * arched shop window, the ticket, chips, phone list and buttons. The pack
+ * pills and Buy now are built or shown by the script (the buy row is hidden
+ * without JavaScript); data-cvm-* states come from cv-commerce-motion.css.
  * assets/cv-pdp-carousel.js animates into it and swaps the photo for the
  * three.js carousel (.is-3d) when WebGL is available and motion is allowed. */
 
@@ -313,6 +315,30 @@
 .cvcr__select svg { position: absolute; right: 14px; top: 50%; color: var(--cocoa-500); transform: translateY(-50%); pointer-events: none; }
 
 .cvcr__pack { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 12px 0 0; color: var(--cocoa-600); font: .9rem/1.45 var(--font-body); }
+
+/* Pack pills: a copy of the buy box tiers. The chosen one is filled; with the commerce
+ * motion module a travelling outline (data-cvm-pack-highlight) moves between them. */
+.cvcr__packs { position: relative; display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+/* The travelling outline rides over the active pill and never takes a slot in the row (it pushed
+ * the pills 90px right when it sat in the flex flow). Shown only when the motion module is ready. */
+.cvcr__packs[data-cvm-packs] > .cvcr__packs-hl { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; }
+.cvcr__pack-pill {
+  position: relative; z-index: 2;
+  display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  min-height: 48px; padding: 6px 14px;
+  border: 1.5px solid var(--cocoa-300);
+  border-radius: 10px;
+  background: var(--cream-50);
+  color: var(--cvcr-ink);
+  font: 700 .9rem/1.15 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-standard), border-color 160ms var(--ease-standard);
+}
+.cvcr__pack-pill:hover { border-color: var(--cvcr-ink); }
+.cvcr__pack-pill[aria-checked="true"] { border-color: var(--red-500); background: var(--gold-100, var(--cream-200)); }
+.cvcr__pack-pill:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.cvcr__pack-pill-off { color: var(--red-600); font: 700 .7rem/1.2 var(--font-label); letter-spacing: .06em; text-transform: uppercase; }
 .cvcr__link {
   margin: 0; padding: 2px 0;
   border: 0; background: none;
@@ -360,6 +386,25 @@
 .cvcr__add.is-done .cvcr__add-tick { display: block; }
 .cvcr__add.is-done .cvcr__add-total { display: none; }
 
+/* Buy now: the secondary button, outlined, under Add to bag. */
+.cvcr__buy-now {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; min-height: 52px;
+  margin: 10px 0 0; padding: 0 22px;
+  border: 2px solid var(--cvcr-ink);
+  border-radius: 999px;
+  background: var(--cream-50);
+  color: var(--cvcr-ink);
+  font: 700 1.1rem/1 var(--font-display);
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-standard), color 160ms var(--ease-standard), border-color 160ms var(--ease-standard);
+}
+.cvcr__buy-now:hover:not(:disabled) { background: var(--cvcr-ink); color: var(--cream-50); }
+.cvcr__buy-now:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+.cvcr__buy-now:disabled { border-color: var(--cocoa-300); color: var(--cocoa-400, var(--cocoa-500)); cursor: not-allowed; }
+.cvcr__buy-now.is-busy { cursor: progress; }
+.cvcr__buy-now-arrow { flex: none; }
+
 .cvcr__status { margin: 10px 0 0; color: var(--teal-700); font: .85rem/1.4 var(--font-body); }
 .cvcr__status:empty { display: none; }
 .cvcr__status[data-tone="warn"] { color: var(--red-600); }
@@ -385,7 +430,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cvcr__chip, .cvcr__arrow, .cvcr__pause, .cvcr__add, .cvcr__arrow svg { transition-property: background-color, border-color, box-shadow; }
+  .cvcr__chip, .cvcr__arrow, .cvcr__pause, .cvcr__add, .cvcr__buy-now, .cvcr__pack-pill, .cvcr__arrow svg { transition-property: background-color, border-color, box-shadow; }
   .cvcr__chip:hover, .cvcr__arrow:hover, .cvcr__pause:hover, .cvcr__add:hover:not(:disabled) { transform: none; }
 }
 
