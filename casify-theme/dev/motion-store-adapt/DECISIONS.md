@@ -28,3 +28,15 @@
 - Still open (owner-gated in TPL tasks, not blocking infrastructure or wave 1): which product leads the
   home hero; whether checkout really charges $0 shipping on every order; whether automatic pack
   discounts are still 18% for 2 and 31% for 3 (defaults follow PRODUCT.md until confirmed).
+
+## Locale key names after LOC-1 (2026-10-26)
+
+- Cart strings live under `general.cart.*` (INF-2's namespace), not the `cart.*` PLAN.md names. The cart page (U1.4)
+  reuses them; LOC-1 added discounts, shipping, shipping_free, shipping_at_checkout, taxes_note, continue_shopping,
+  each_abbr, note_placeholder, free_shipping_applied and empty_cta there.
+- Quick pick strings: `general.quick_pick.*`.
+- Buy box strings: `products.buy.*`. Each key is the cv-product.js `data-i18n-*` attribute name with hyphens turned
+  into underscores (data-i18n-try-again -> products.buy.try_again). Values equal the JS fallbacks.
+- Also seeded for wave 1: `products.gallery.*` (photos_label, view_3d, view_in_space, zoom, close, previous_photo,
+  next_photo), `products.rating.*`, `products.carousel.*`, `products.best.*`, and top-level `collections.*`
+  (with `collections.filters.*`). A unit that needs anything else files locale-requests/<unit>.json for LOC-2.

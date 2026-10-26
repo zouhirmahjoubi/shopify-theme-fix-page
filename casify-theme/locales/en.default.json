@@ -1,8 +1,61 @@
 {
   "general": {
     "search": { "search": "Search", "placeholder": "Search cases or phone models", "submit": "Search" },
-    "cart":   { "title": "Your bag" },
-    "newsletter": { "label": "Email address", "placeholder": "you@sweetmail.com", "submit": "Sign up", "confirmation": "You're in. See you soon." },
+    "cart": {
+      "title": "Your bag",
+      "close": "Close your bag",
+      "empty": "Your bag is empty.",
+      "empty_link": "Find a case for your phone",
+      "phone_label": "Phone",
+      "remove": "Remove",
+      "remove_label": "Remove {{ title }}",
+      "decrease_label": "Decrease quantity of {{ title }}",
+      "increase_label": "Increase quantity of {{ title }}",
+      "quantity_label": "Quantity of {{ title }}",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "checkout": "Checkout",
+      "view_bag": "View bag",
+      "nudge_two": "Add 1 more case: {{ pct }}% off both.",
+      "nudge_three": "Add 1 more case: {{ pct }}% off all three.",
+      "nudge_three_from_one": "Add 2 more cases: {{ pct }}% off all three.",
+      "adding": "Adding…",
+      "added": "Added to bag",
+      "add_error": "Could not add to bag",
+      "change_error": "Could not update your bag",
+      "bag_label_one": "Cart, 1 item",
+      "bag_label_other": "Cart, [count] items",
+      "discounts": "Discounts",
+      "shipping": "Shipping",
+      "shipping_free": "Free",
+      "shipping_at_checkout": "Calculated at checkout",
+      "taxes_note": "Taxes and shipping are calculated at checkout.",
+      "continue_shopping": "Continue shopping",
+      "each_abbr": "each",
+      "note_placeholder": "Add a note to your order",
+      "free_shipping_applied": "Free shipping applied",
+      "empty_cta": "Find a case for your phone"
+    },
+    "quick_pick": {
+      "add": "Add to bag",
+      "adding": "Adding…",
+      "added": "In your bag",
+      "sold_out": "Sold out",
+      "missing": "Not made in this combination",
+      "loading": "Opening the case…",
+      "error": "That didn't load. Open the product page instead.",
+      "buy_now": "Buy now",
+      "buying": "Going to checkout…",
+      "choose_phone": "Choose your phone",
+      "choose_option": "Choose [option]",
+      "phone_label": "Your phone",
+      "sold_out_suffix": " (sold out)",
+      "unavailable_suffix": " (unavailable)",
+      "in_bag": "[n] in your bag.",
+      "add_failed": "That didn't go through. Please try again.",
+      "more": "Every photo and detail"
+    },
+    "newsletter": { "label": "Email address", "placeholder": "you@example.com", "submit": "Sign up", "confirmation": "You're in. See you soon." },
     "account_fallback": "Account",
     "currency": { "dropdown_label": "Currency" },
     "close": "Close",
@@ -12,9 +65,9 @@
       "tagged": "tagged \"{{ tags }}\"",
       "page": "Page {{ page }}",
       "home_title": "{{ shop }} | Phone cases for iPhone and Samsung",
-      "home_description": "{{ shop }}: phone cases for iPhone and Samsung, chosen for your exact model. Free shipping on every order, 30-day returns and dispatch in 1–3 business days.",
-      "product_description": "{{ title }} from {{ shop }}. Free shipping on every order, 30-day returns and dispatch in 1–3 business days.",
-      "listing_description": "{{ title }} at {{ shop }}, phone cases for iPhone and Samsung. Free shipping on every order, 30-day returns and dispatch in 1–3 business days."
+      "home_description": "{{ shop }}: phone cases for iPhone and Samsung, chosen for your exact model. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
+      "product_description": "{{ title }} from {{ shop }}. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
+      "listing_description": "{{ title }} at {{ shop }}, phone cases for iPhone and Samsung. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days."
     }
   },
   "gift_cards": {
@@ -76,7 +129,17 @@
       "trustpilot_label_no_count": "Rated {{ rating }} out of 5 on Trustpilot"
     },
     "price_offer": { "now": "Now", "compare_at": "Compare at", "off": "off", "you_save": "You save" },
-    "gallery": { "photos": "Product photos", "photo_count": "Photo {{ index }} of {{ count }}" },
+    "gallery": {
+      "photos": "Product photos",
+      "photo_count": "Photo {{ index }} of {{ count }}",
+      "photos_label": "Product photos",
+      "view_3d": "View in 3D",
+      "view_in_space": "View in your space",
+      "zoom": "Zoom",
+      "close": "Close",
+      "previous_photo": "Previous photo",
+      "next_photo": "Next photo"
+    },
     "google_rating": {
       "rated": "Rated",
       "on": "on",
@@ -89,7 +152,68 @@
     },
     "sales_note": { "editor_hint": "Sales note: hidden from shoppers until this product's count ({{ key }}) or the block's Number is at least {{ min }}." },
     "product_summary": { "reviews": "reviews", "save": "Save", "rating_label": "Rated {{ rating }} out of 5 from {{ count }} product reviews" },
-    "awning": { "swipe_hint": "Scroll or swipe sideways to change the awning" }
+    "awning": { "swipe_hint": "Scroll or swipe sideways to change the awning" },
+    "buy": {
+      "add_to_bag": "Add to bag",
+      "buy_now": "Buy now",
+      "adding": "Adding…",
+      "added": "In your bag",
+      "added_one": "[qty] case added to your bag.",
+      "added_many": "[qty] cases added to your bag.",
+      "try_again": "Try again",
+      "to_checkout": "To checkout…",
+      "checkout_redirect": "Taking you to checkout.",
+      "unavailable": "Unavailable",
+      "sold_out": "Sold out",
+      "each": " each",
+      "mixed": "[qty] cases, mixed",
+      "choose_model": "Choose your phone model first",
+      "model_placeholder": "Choose your phone model",
+      "error": "That didn’t go through. Please try again."
+    },
+    "rating": {
+      "out_of": "{{ rating }} out of 5",
+      "reviews_one": "{{ count }} review",
+      "reviews_other": "{{ count }} reviews",
+      "no_reviews_yet": "No reviews yet",
+      "write_first_review": "Write the first review",
+      "store_rating_label": "Store rating"
+    },
+    "carousel": {
+      "add": "Add to bag",
+      "buy_now": "Buy now",
+      "made_for_models": "Made for {{ models }}",
+      "in_stock_all": "In stock for every model"
+    },
+    "best": {
+      "made_for_phone": "Made for {{ phone }}",
+      "show_all_models": "Show all models",
+      "buy_now": "Buy now"
+    }
+  },
+  "collections": {
+    "breadcrumb_home": "Home",
+    "breadcrumb_collections": "Collections",
+    "count_one": "{{ count }} case",
+    "count_other": "{{ count }} cases",
+    "shop_now": "Shop now",
+    "sale_badge": "Save [percent]%",
+    "new_badge": "New",
+    "no_match_title": "Nothing matches those filters",
+    "no_match_body": "Take one off and more cases come back.",
+    "empty_title": "Nothing on this shelf yet",
+    "empty_body": "Every case in the shop is one tap away.",
+    "empty_cta": "See every case",
+    "filters": {
+      "filter": "Filter",
+      "sort": "Sort",
+      "apply": "Apply",
+      "show_count": "Show {{ count }} {{ noun }}",
+      "from": "From",
+      "clear_all": "Clear all",
+      "clear_all_filters": "Clear all filters",
+      "remove_filter": "Remove filter"
+    }
   },
   "sections": {
     "header": { "menu": "Menu" },
@@ -175,6 +299,7 @@
     },
     "feature_tabs": { "play": "Play video", "pause": "Pause video", "editor_hint": "Add a tab with a label to show this section." },
     "vs": { "vs": "VS", "editor_row": "Fill in both sides of this row to show it on the storefront." },
+    "pdp_ribbon": { "pause": "Pause the moving ribbon" },
     "reel_showcase": {
       "carousel_label": "Explore Casify case designs",
       "copy": "A little personality. Everywhere you go.",
@@ -206,7 +331,7 @@
       "intro": "Check the fit, see the details, then choose one case or build a pack. Here is what to know before you decide.",
       "choose_model": "Choose my model",
       "read_guide": "What to look for",
-      "assurance": "Free shipping · 30-day returns · Dispatch in 1–3 business days",
+      "assurance": "Free shipping · 30-day returns · Dispatch in 1 to 3 business days",
       "rating": "{{ rating }} / {{ maximum }} from {{ count }} reviews",
       "from": "From",
       "pick_product": "Choose a featured product in this section's settings to show its photos, price and shopping link.",
