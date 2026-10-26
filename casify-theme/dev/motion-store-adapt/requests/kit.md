@@ -97,3 +97,25 @@ runs overlap; it also stalls alone. The 375 pass runs with Playwright tracing on
 hang sits at the start of the 768 actions (first timeScale(0.3) fly frame loop) and is worth reproducing there.
 The module itself is fine without MotionPath: a direct Playwright probe outside shoot.py at 768 and 1440 shows one
 token flying from the card to #bagBtn, fading out on arrival and being removed, with no page errors.
+- (U1.4 verify-experience) tools/shoot.py writes PNGs and console.json flat into --out, so shooting several pages into
+  one --out overwrites the previous page. Suggest a per-page subfolder (out/<page-stem>/).
+- (U1.4 verify-experience) Fixture cart line items have `image: null` and the mock `image_url` returns the product url,
+  so cart thumbnails are broken images and every shoot reports 404s (same as requests/U1.4.md R4).
+- (U1.5 verify-regression) The harness editor check `stuck()` (window.__harness.editorResult.stuck) counts every
+  element with opacity 0. It also counts scroll-triggered entrances that are still waiting below the fold, so
+  any ScrollTrigger.batch card drop reports FAIL. Seen on harness/u1.5/collection-verify.html?editor=4: 3
+  below-fold cards were "stuck", and 0 were hidden once the page was scrolled. Suggest that stuck() skip elements
+  whose rect top is at or below window.innerHeight, or scroll to the end and wait before it counts.
+- (U1.5 verify-experience round 2) tools/harness-template.html / render-section.mjs load only theme.css plus the
+  section's own CSS, but layout/theme.liquid:181 loads assets/cv-commerce-motion.css on every page. A harness page
+  that adds cv-commerce-motion.js (for example harness/u1.5/collection-add.html) therefore has no `.cvm-token`
+  rules: the token is a manual popover, so the UA popover style (position fixed, inset 0, margin auto) centres it
+  and every fly frame is offset by half the viewport (seen at 375: token 181 px right of the button centre). With
+  the CSS injected the token lands on the [data-cvm-bag] centre. Suggest the template always link
+  cv-commerce-motion.css (it is global in the layout), or render-section add it whenever cv-commerce-motion.js is
+  in --js. Also worth adding theme.js's toast (window.CASIFY_FNS.toastQuick) so cart.js's add-error toast can be
+  asserted on unit harness pages.
+
+## From U1.1 verify-experience (20:37)
+- shoot.py full-page shots draw a fixed bar that is translated off-screen (the counter's `.cvc-sticky`, `translate(-50%, calc(100% + 30px))`) into the middle of the page, just below the first viewport, in default, rm and nojs. It reads as an overlap that is not there. Suggest hiding `position: fixed` elements whose box is outside the viewport before the full-page capture, or a `--viewport-only` shot next to the full page.
+- Harness pages end at the section, so a ScrollTrigger start like "top 92%" on the last element never fires (U1.1 last accordion). A footer-height spacer in harness-template.html would match the live layout.
