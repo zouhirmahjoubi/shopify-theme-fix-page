@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "case_rail": {
+      "type": "cv-case-rail",
+      "settings": {}
+    },
     "trust_bar": {
       "type": "cv-trust-bar",
       "blocks": {
@@ -1723,6 +1727,7 @@
     "shop",
     "showcase",
     "feature_tabs",
+    "case_rail",
     "collage",
     "value",
     "us_vs_them",
