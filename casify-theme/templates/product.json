@@ -1,5 +1,11 @@
 {
   "sections": {
+    "case_rail": {
+      "type": "cv-case-rail",
+      "settings": {
+        "eyebrow": "More cases"
+      }
+    },
     "main": {
       "type": "cv-product-counter",
       "blocks": {
@@ -1263,6 +1269,7 @@
     "us_vs_them",
     "before_after",
     "journey",
+    "case_rail",
     "scrolling_reviews",
     "ratings_reviews",
     "trustpilot_reviews",

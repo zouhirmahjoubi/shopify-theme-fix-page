@@ -1,7 +1,8 @@
 {%- comment -%}
   Casify: "The case rail".
 
-  Real products from one collection hang from a brass rail, each on its own
+  Real products from one collection hang from a brass rail (on a product page,
+  every product but the one being viewed), each on its own
   backing card with a numbered price tag. The case in front faces the shopper;
   the rest turn edge-on along the rail like a shop rack, so swiping or dragging
   flips through them. The rail swings when it moves and the tags swing more.
@@ -75,6 +76,7 @@
 {%- capture slots -%}
   {%- for p in coll.products limit: limit -%}
     {%- if p.featured_image == blank -%}{%- continue -%}{%- endif -%}
+    {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
     {%- liquid
       assign count = count | plus: 1
       assign no = count | prepend: '0' | slice: -2, 2
