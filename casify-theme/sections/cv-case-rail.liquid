@@ -74,7 +74,12 @@
 -%}
 
 {%- capture slots -%}
-  {%- for p in coll.products limit: limit -%}
+  {%- comment -%}
+    Reads up to 50 products and stops at the limit, so products that have no
+    photo yet (a catalogue still syncing) do not leave the rail short.
+  {%- endcomment -%}
+  {%- for p in coll.products limit: 50 -%}
+    {%- if count >= limit -%}{%- break -%}{%- endif -%}
     {%- if p.featured_image == blank -%}{%- continue -%}{%- endif -%}
     {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
     {%- liquid
@@ -86,6 +91,10 @@
       endcapture
       assign is_case = is_case | strip
 
+      comment
+        The phone model option: by name first; else, as in cv-is-case, the option
+        whose first value names a phone (Printify calls it "Size").
+      endcomment
       assign fit = 0
       for option in p.options_with_values
         assign oname = option.name | downcase
@@ -94,6 +103,15 @@
           break
         endif
       endfor
+      if fit == 0
+        for option in p.options_with_values
+          assign fv = option.values.first | downcase
+          if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+            assign fit = option.values.size
+            break
+          endif
+        endfor
+      endif
 
       assign price = p.price | money
       assign from = ''
