@@ -129,7 +129,8 @@
               assign kicker = s.kicker
             when 'collection'
               assign c = s.collection
-              assign c_img = c.featured_image | default: c.products.first.featured_image
+              assign c_pictured = c.products | where: 'featured_image'
+              assign c_img = c.featured_image | default: c_pictured.first.featured_image
               if c != blank
                 assign img_alt = c_img.alt | default: c.title
                 assign href = c.url

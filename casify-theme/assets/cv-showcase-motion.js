@@ -77,7 +77,7 @@
         var first = Math.min(total, Math.round(left / stepWidth()) + 1);
         var last = Math.min(total, first + shown - 1);
         if (atEnd) { last = total; first = Math.max(1, total - shown + 1); }
-        count.textContent = (first === last ? first : first + '\u2013' + last) + ' of ' + total;
+        count.textContent = (first === last ? first : first + ' to ' + last) + ' of ' + total;
       }
 
       if (thumb && thumb.parentNode && row.scrollWidth > 0) {

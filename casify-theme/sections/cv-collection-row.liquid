@@ -11,13 +11,16 @@
 
   With no collection, or an empty one, the row shows a "pick a collection"
   hint in the theme editor only; shoppers never see the editor instruction.
+  Products without a photo yet (a catalogue still syncing) are left out, so
+  the row never shows a blank card; with none left it stays hidden.
 {%- endcomment -%}
 
 {%- liquid
   assign coll = section.settings.collection
   assign limit = section.settings.limit
+  assign pictured = coll.products | where: 'featured_image'
   assign has_products = false
-  if coll != blank and coll.products.size > 0
+  if coll != blank and pictured.size > 0
     assign has_products = true
   endif
 -%}
@@ -53,7 +56,7 @@
       {%- endcomment -%}
       {%- assign shown = 0 -%}
       {%- assign seen = '|' -%}
-      {%- for product in coll.products -%}
+      {%- for product in pictured -%}
         {%- if section.settings.one_per_design -%}
           {%- assign design = product.title | split: ' Phone Case' | first | split: ' Christmas' | first | strip | downcase -%}
           {%- assign design_key = '|' | append: design | append: '|' -%}

@@ -29,6 +29,8 @@
 {%- liquid
   assign coll = section.settings.collection | default: collections.all
   assign limit = section.settings.limit | default: 50
+  # Products without a photo yet (a catalogue still syncing) are left out of the counter.
+  assign pictured = coll.products | where: 'featured_image'
   assign shown = ','
   assign total = 0
 -%}
@@ -56,7 +58,7 @@
     {%- endif -%}
   {%- endfor -%}
   {%- if section.settings.source == 'products' -%}
-    {%- for item in coll.products -%}
+    {%- for item in pictured -%}
       {%- if total >= limit -%}{%- break -%}{%- endif -%}
       {%- assign key = item.id | prepend: ',' | append: ',' -%}
       {%- unless shown contains key -%}
@@ -98,7 +100,7 @@
       <ul class="cvsh__row" role="list" data-cvsh-row>{{ cards }}</ul>
       <div class="cvsh__bar" data-cvsh-bar>
         <div class="cvsh__track" aria-hidden="true"><span class="cvsh__thumb" data-cvsh-thumb></span></div>
-        <p class="cvsh__count" data-cvsh-count data-total="{{ total }}">1&ndash;3 of {{ total }}</p>
+        <p class="cvsh__count" data-cvsh-count data-total="{{ total }}">1 to 3 of {{ total }}</p>
         <div class="cvsh__nav">
           <button type="button" class="cvsh__btn" data-cvsh-prev aria-label="Previous cases" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
