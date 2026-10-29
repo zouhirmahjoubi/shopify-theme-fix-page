@@ -1,3 +1,20 @@
+{%- liquid
+  comment
+    Case-only: on the product page of something that isn't a phone case (a candle, a cloth,
+    a charm), this section shows nothing, since it talks about phones, fit or case packs
+    (snippets/cv-is-case.liquid). Elsewhere it always shows.
+  endcomment
+  assign cv_case_page = true
+  if template.name == 'product'
+    capture cv_is_case
+      render 'cv-is-case', product: product
+    endcapture
+    unless cv_is_case contains 'true'
+      assign cv_case_page = false
+    endunless
+  endif
+-%}
+{%- if cv_case_page -%}
 {%- comment -%}
   Casify product page: questions and the close (the home "zero risk" section,
   rebuilt, merged with the product page's promise tickets, FAQ and closing card).
@@ -115,6 +132,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

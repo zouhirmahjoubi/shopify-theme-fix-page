@@ -54,11 +54,14 @@
 
   comment
     The phone-model option: named like one, or else the first option whose values name phones.
+    Same test as snippets/cv-is-case.liquid. A product without one isn't a case (a candle, a
+    cloth, a charm): it gets no packs, savings meter, protection meter or case features, since
+    the pack discounts apply to cases only and the rest describes a case.
   endcomment
   assign model_oi = -1
   for option in product.options_with_values
     assign oname = option.name | downcase
-    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib'
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
       assign model_oi = forloop.index0
       break
     endif
@@ -71,6 +74,10 @@
         break
       endif
     endfor
+  endif
+  assign is_case = false
+  if model_oi >= 0
+    assign is_case = true
   endif
 
   comment
@@ -119,7 +126,7 @@
   assign max_pct = 0
   for b in section.blocks
     assign t_pct = 0
-    if b.type == 'tier'
+    if b.type == 'tier' and is_case
       assign t_pct = b.settings.discount_pct | default: 0
       if b.settings.use_theme_pct != false
         if b.settings.qty == 2 and settings.cv_pack_2_pct != blank
@@ -454,7 +461,7 @@
         <input type="hidden" name="quantity" id="cvQuantity" value="1">
 
         {%- if product.vendor != blank -%}
-          <p class="cvc__vendor">{{ product.vendor | escape }}{% if section.settings.vendor_suffix != blank %} {{ section.settings.vendor_suffix | escape }}{% endif %}</p>
+          <p class="cvc__vendor">{{ product.vendor | escape }}{% if section.settings.vendor_suffix != blank and is_case %} {{ section.settings.vendor_suffix | escape }}{% endif %}</p>
         {%- endif -%}
 
         {%- comment -%}
@@ -644,7 +651,7 @@
         {%- endfor -%}
 
         {%- comment -%} ---------- Protection meter: impact and thickness bars (snippets/cv-spec-meter.liquid) ---------- {%- endcomment -%}
-        {%- render 'cv-counter-blocks', blocks: section.blocks, type: 'spec_meter', product: product -%}
+        {%- if is_case -%}{%- render 'cv-counter-blocks', blocks: section.blocks, type: 'spec_meter', product: product -%}{%- endif -%}
 
         {%- comment -%} ---------- The phone model: a native dropdown, every value this case is made for ---------- {%- endcomment -%}
         {%- if model_oi >= 0 -%}
@@ -794,7 +801,7 @@
         {%- endif -%}
 
         {%- comment -%} "Case feature" blocks this product backs up, as a tile card. Motion: assets/cv-case-features.js. {%- endcomment -%}
-        {%- render 'cv-case-features', blocks: section.blocks, product: product, title: section.settings.features_title -%}
+        {%- if is_case -%}{%- render 'cv-case-features', blocks: section.blocks, product: product, title: section.settings.features_title -%}{%- endif -%}
 
         {%- render 'cv-product-accordions',
           product: product,
@@ -886,7 +893,7 @@
     { "type": "text", "id": "zoom_label", "label": "Zoom chip", "default": "View larger" },
     { "type": "checkbox", "id": "model_first", "label": "Open on the 3D view", "default": true, "info": "When the product has a 3D model, it is the first photo ticket and the stage opens on it. Off: the 3D ticket comes second and opens when chosen." },
     { "type": "header", "content": "Price offer" },
-    { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "default": "", "info": "Used only when the selected variant has no higher compare-at price, and only for shoppers paying in the shop currency. Use a price the case really sold at." },
+    { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "info": "Used only when the selected variant has no higher compare-at price, and only for shoppers paying in the shop currency. Use a price the case really sold at." },
     { "type": "header", "content": "Rating" },
     { "type": "checkbox", "id": "show_price_saving", "label": "Show the \"You save\" line", "default": true, "info": "Under the title, when the variant has a real compare-at price. Turn off if the \"Rating, price & pitch\" block already shows the saving." },
     { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Reads Shopify's review metafields, which review apps such as Judge.me write. Turn off if your app adds its own star block here." },
@@ -1010,7 +1017,7 @@
             { "value": "fit", "label": "Printed to fit" }
           ]
         },
-        { "type": "text", "id": "label", "label": "Text", "default": "", "info": "Say only what the matching cases really do. Empty: the tile is hidden." },
+        { "type": "text", "id": "label", "label": "Text", "info": "Say only what the matching cases really do. Empty: the tile is hidden." },
         { "type": "text", "id": "keywords", "label": "Show on products matching", "info": "Comma-separated words looked for in the product's title, type, vendor and option values, for example: tough, shockproof. Leave empty to show on every product." },
         { "type": "text", "id": "tag", "label": "Product tag override", "info": "Optional, for example feature-stand. Products with this tag always show the tile; products tagged no-feature-stand never do." }
       ]
@@ -1144,7 +1151,7 @@
         { "type": "checkbox", "id": "drop_test", "label": "Drop a 3D phone onto the impact bar", "default": true, "info": "Plays when the meter comes into view, and again on hover or tap. Off for shoppers who prefer reduced motion." },
         { "type": "header", "content": "Impact" },
         { "type": "text", "id": "impact_label", "label": "Label", "default": "Impact Level" },
-        { "type": "text", "id": "impact_value", "label": "Drop height", "default": "", "info": "Shown only when you can back it. Not in the store's evidence on hand. Shown beside the label. Leave empty to hide." },
+        { "type": "text", "id": "impact_value", "label": "Drop height", "info": "Shown only when you can back it. Not in the store's evidence on hand. Shown beside the label. Leave empty to hide." },
         { "type": "range", "id": "impact_level", "label": "Filled bars", "min": 0, "max": 10, "step": 1, "default": 0 },
         { "type": "text", "id": "impact_min", "label": "Low end", "default": "Min." },
         { "type": "text", "id": "impact_max", "label": "High end", "default": "Max." },

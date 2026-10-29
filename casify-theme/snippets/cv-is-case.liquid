@@ -1,0 +1,34 @@
+{% doc %}
+  Outputs true when the product is a phone case, false when it isn't, and nothing else.
+  The case-only parts of a product page check this, so a candle, a cloth or a charm gets
+  a plain product page: the packs, protection meter and case features in
+  sections/cv-product-counter.liquid, the generic case tagline (cv-product-summary), and
+  the sections that talk about phones and pack savings (each hides itself on a product
+  page when this is false).
+
+  A product is a case when one of its options has a name containing model, phone, device,
+  compatib or applicable, or a first value containing iphone, galaxy, samsung or pixel.
+  The same test finds the phone-model option in cv-product-counter, and cv-case-count uses
+  it per cart line; keep the three in step.
+
+  @param {product} product - The product to test.
+
+  @example
+  {%- capture is_case -%}{%- render 'cv-is-case', product: product -%}{%- endcapture -%}
+  {%- if is_case contains 'true' -%}...{%- endif -%}
+{% enddoc %}
+{%- liquid
+  assign is_case = false
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    assign fv = option.values.first | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
+      assign is_case = true
+      break
+    elsif fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+      assign is_case = true
+      break
+    endif
+  endfor
+  echo is_case
+-%}

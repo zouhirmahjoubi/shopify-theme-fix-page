@@ -90,6 +90,10 @@
     assign saving_pct = saving | times: 100.0 | divided_by: was_price | round
   endif
 
+  comment
+    With no products picked, the pitch is the template-wide case line, so it shows on cases only
+    (snippets/cv-is-case.liquid). A product picked by name always gets it.
+  endcomment
   assign pitch = ''
   assign pitch_here = true
   if block.settings.pitch_products.size > 0
@@ -100,6 +104,13 @@
         break
       endif
     endfor
+  else
+    capture pitch_case
+      render 'cv-is-case', product: product
+    endcapture
+    unless pitch_case contains 'true'
+      assign pitch_here = false
+    endunless
   endif
   if pitch_here
     assign pitch = block.settings.tagline
