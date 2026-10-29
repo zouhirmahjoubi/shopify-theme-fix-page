@@ -1,0 +1,320 @@
+{%- comment -%}
+  Casify: "Swap hero" (adapted from the Frostpaw hover-swap hero).
+
+  One case in two prints. The front print shows; hovering the case (or
+  dragging a finger across it) paints the other print on with a soft brush
+  that ebbs away again, and "keep it" sends the other print across the case
+  in a wave: the headline word, the tint, the product card, the callouts and
+  Add to bag all switch to that case. Three more cases sit beside it as links.
+
+  Two looks, A and B. Each is a real product: its photo, short name (the title
+  before " Phone Case"), opening description sentence, price, edge (the title
+  after "|"), finish (the Surface or Finish option) and phone model count
+  (the option whose values name phones, as in cv-is-case). Pick two cases
+  photographed the same way (two Tough cases, say) so the swap lines up.
+
+  Script: assets/cv-swap-hero.js, a module printed below. three.js (imported
+  on demand, pinned like cv-case-wheel) draws the case and the brush; GSAP
+  runs the headline, the wave and the scroll parallax; Motion (window.Motion,
+  loaded by the layout through data-motion-dev) springs the callouts and
+  buttons. No WebGL: a CSS mask brush on the stacked photos. Reduced motion:
+  nothing paints or moves; the "keep it" pill swaps the look at once. No JS:
+  look A, its card and links.
+
+  Decoration: assets/cv-swap-ornament-1..3.svg (the KIE illustrations, traced
+  to SVG), shown only when the "Ornaments" setting is on.
+{%- endcomment -%}
+{{ 'cv-swap-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign coll = st.collection | default: collections.all
+  assign pictured = coll.products | where: 'featured_image'
+  assign pa = st.product_a | default: pictured[0]
+  assign pb = st.product_b
+  if pb == blank
+    for p in pictured
+      if p.id != pa.id
+        assign pb = p
+        break
+      endif
+    endfor
+  endif
+  if pa != blank and pb != blank and pb.id == pa.id
+    assign pb = blank
+  endif
+-%}
+
+{%- if pa != blank and pa.featured_image != blank -%}
+{%- liquid
+  assign sep = ''
+  assign word_a = st.word_a | default: 'frosty'
+  assign word_b = st.word_b | default: 'cozy'
+-%}
+{%- capture look_json -%}
+  {%- for slot in (1..2) -%}
+    {%- liquid
+      if slot == 1
+        assign p = pa
+        assign word = word_a
+        assign key = 'a'
+      else
+        assign p = pb
+        assign word = word_b
+        assign key = 'b'
+      endif
+      if p == blank
+        continue
+      endif
+
+      assign short = p.title | split: ' Phone Case' | first | strip
+      assign tail = short | slice: -10, 10
+      if tail == ' Christmas'
+        assign cut = short.size | minus: 10
+        assign short = short | slice: 0, cut
+      endif
+      assign edge = ''
+      if p.title contains '|'
+        assign edge = p.title | split: '|' | last | strip
+      endif
+
+      comment
+        Phone models: the option named like a phone model, or (as in cv-is-case) the one
+        whose first value names a phone; Printify calls it "Size".
+      endcomment
+      assign models = 0
+      assign finish = ''
+      for option in p.options_with_values
+        assign oname = option.name | downcase
+        assign fv = option.values.first | downcase
+        if models == 0
+          if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+            assign models = option.values.size
+            continue
+          endif
+        endif
+        if oname contains 'surface' or oname contains 'finish'
+          assign finish = option.values | join: ' or '
+        endif
+      endfor
+
+      comment
+        The description's first paragraph, without the short bold title Printify
+        descriptions open with (<strong>Penguin on Ice Skates</strong><br>...).
+      endcomment
+      assign desc = p.description | replace: '<br/>', '<br>' | replace: '<br />', '<br>'
+      if desc contains '</h'
+        assign desc = desc | split: '</h' | last | split: '>' | slice: 1, 999 | join: '>'
+      elsif desc contains '</strong>'
+        assign lead = desc | split: '</strong>' | first
+        assign lead_text = lead | strip_html | strip
+        if lead_text.size < 70
+          assign desc = desc | remove_first: lead | remove_first: '</strong>'
+        endif
+      endif
+      assign blurb = desc | split: '<br><br>' | first | split: '</p>' | first | strip_html | strip
+      assign blurb = blurb | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&nbsp;', ' ' | truncatewords: 18, '...'
+
+      assign was = ''
+      if p.compare_at_price > p.price
+        assign was = p.compare_at_price | money
+      endif
+      assign fit_text = ''
+      if models > 1
+        assign fit_text = st.fit_text | replace: '[count]', models
+      endif
+      assign img = p.featured_image | image_url: width: 1400
+
+      if key == 'a'
+        assign short_a = short
+        assign edge_a = edge
+        assign finish_a = finish
+        assign blurb_a = blurb
+        assign fit_a = fit_text
+      endif
+    -%}
+    {{- sep -}}"{{ key }}": {
+      "word": {{ word | json }},
+      "short": {{ short | json }},
+      "edge": {{ edge | json }},
+      "finish": {{ finish | json }},
+      "fit": {{ fit_text | json }},
+      "blurb": {{ blurb | json }},
+      "price": {{ p.price | money | strip_html | json }},
+      "was": {{ was | strip_html | json }},
+      "from": {{ p.price_varies | json }},
+      "url": {{ p.url | json }},
+      "handle": {{ p.handle | json }},
+      "available": {{ p.available | json }},
+      "image": {{ img | json }},
+      "alt": {{ p.featured_image.alt | default: p.title | json }}
+    }
+    {%- assign sep = ',' -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign hint = st.hint | replace: '[word]', word_b -%}
+<section
+  class="cvsw cvsw--a"
+  id="cvsw-{{ section.id }}"
+  data-cvsw
+  data-motion-dev="swap-hero"
+  data-hint="{{ st.hint | escape }}"
+  data-touch-hint="{{ st.touch_hint | escape }}"
+  data-keep="{{ st.keep_label | escape }}"
+  data-eyebrow="{{ st.eyebrow | escape }}"
+  data-crop="0.185,0.06,0.83,0.93"
+  style="--cvsw-pad-top: {{ st.pad_top }}px; --cvsw-pad-bottom: {{ st.pad_bottom }}px;"
+  aria-labelledby="cvsw-title-{{ section.id }}"
+>
+  <span class="cvsw__tint" data-cvsw-tint aria-hidden="true"></span>
+  {%- if st.ornaments -%}
+    <div class="cvsw__ornaments" data-cvsw-ornaments aria-hidden="true">
+      {%- for n in (1..6) -%}
+        {%- assign ornament = n | modulo: 3 | plus: 1 | prepend: 'cv-swap-ornament-' | append: '.svg' -%}
+        <img class="cvsw__ornament cvsw__ornament--{{ n }}" src="{{ ornament | asset_url }}" alt="" width="120" height="120" loading="lazy" data-cvsw-ornament>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <h2 class="cvsw__title" id="cvsw-title-{{ section.id }}">
+    {%- if st.title_before != blank -%}<span class="cvsw__title-pre">{{ st.title_before | escape }}</span> {% endif -%}
+    <span class="cvsw__word" data-cvsw-word>{{ word_a | escape }}</span>
+    {%- if st.title_after != blank %} <span class="cvsw__title-post">{{ st.title_after | escape }}</span>{%- endif -%}
+  </h2>
+
+  <div class="cvsw__stage">
+    <div class="cvsw__hold">
+    <div class="cvsw__case" data-cvsw-case>
+      <div class="cvsw__photos" data-cvsw-photos>
+        <img class="cvsw__photo cvsw__photo--top" src="{{ pa.featured_image | image_url: width: 1400 }}" width="{{ pa.featured_image.width }}" height="{{ pa.featured_image.height }}" alt="{{ pa.featured_image.alt | default: pa.title | escape }}" fetchpriority="high" draggable="false" data-cvsw-top>
+        {%- if pb != blank -%}
+          <img class="cvsw__photo cvsw__photo--under" src="{{ pb.featured_image | image_url: width: 1400 }}" width="{{ pb.featured_image.width }}" height="{{ pb.featured_image.height }}" alt="" loading="lazy" draggable="false" data-cvsw-under aria-hidden="true">
+        {%- endif -%}
+      </div>
+      <div class="cvsw__gl" data-cvsw-gl aria-hidden="true"></div>
+    </div>
+
+      {%- if pb != blank -%}
+        <button type="button" class="cvsw__hint" data-cvsw-keep aria-pressed="false" hidden>
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/></svg>
+          <span data-cvsw-hint>{{ hint | escape }}</span>
+        </button>
+      {%- endif -%}
+
+      <ul class="cvsw__callouts" role="list" data-cvsw-callouts>
+        {%- if edge_a != blank -%}
+          <li class="cvsw__callout cvsw__callout--edge" data-cvsw-callout="edge"><span>{{ st.label_edge | escape }}</span><b data-cvsw-val="edge">{{ edge_a | escape }}</b></li>
+        {%- endif -%}
+        {%- if finish_a != blank -%}
+          <li class="cvsw__callout cvsw__callout--finish" data-cvsw-callout="finish"><span>{{ st.label_finish | escape }}</span><b data-cvsw-val="finish">{{ finish_a | escape }}</b></li>
+        {%- endif -%}
+        {%- if fit_a != blank -%}
+          <li class="cvsw__callout cvsw__callout--fit" data-cvsw-callout="fit"><span>{{ st.label_fit | escape }}</span><b data-cvsw-val="fit">{{ fit_a | escape }}</b></li>
+        {%- endif -%}
+        {%- if st.print_text != blank -%}
+          <li class="cvsw__callout cvsw__callout--print" data-cvsw-callout="print"><span>{{ st.label_print | escape }}</span><b>{{ st.print_text | escape }}</b></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div class="cvsw__panel">
+      <div class="cvsw__card" data-cvsw-card>
+        <p class="cvsw__eyebrow"><span data-cvsw-eyebrow>{{ st.eyebrow | escape }}{% if edge_a != blank %} · {{ edge_a | escape }}{% endif %}</span></p>
+        <h3 class="cvsw__name"><a href="{{ pa.url }}" data-cvsw-name>{{ short_a | escape }}</a></h3>
+        {%- if blurb_a != blank -%}<p class="cvsw__blurb" data-cvsw-blurb>{{ blurb_a | escape }}</p>{%- endif -%}
+        <div class="cvsw__buy">
+          <p class="cvsw__price">
+            <span data-cvsw-price>{% if pa.price_varies %}{{ st.from_label | escape }} {% endif %}{{ pa.price | money }}</span>
+            <s data-cvsw-was{% unless pa.compare_at_price > pa.price %} hidden{% endunless %}>{% if pa.compare_at_price > pa.price %}{{ pa.compare_at_price | money }}{% endif %}</s>
+          </p>
+          <a class="cvsw__shop" href="{{ pa.url }}" data-cvsw-shop>
+            <span>{{ st.shop_label | escape }}</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <p class="cvsw__facts">
+          <span data-cvsw-fit{% if fit_a == blank %} hidden{% endif %}>{{ fit_a | escape }}</span>
+          {%- if settings.cv_free_shipping_all and st.shipping_text != blank -%}<span>{{ st.shipping_text | escape }}</span>{%- endif -%}
+        </p>
+      </div>
+
+      <a class="cvsw__bag" href="{{ pa.url }}" data-cvsw-bag{% if pa.available %} data-cvqp-open{% endif %} data-handle="{{ pa.handle }}" data-url="{{ pa.url }}">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span data-cvsw-bag-label data-add="{{ st.bag_label | escape }}" data-sold="{{ st.sold_label | escape }}">{% if pa.available %}{{ st.bag_label | escape }}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
+      </a>
+
+      {%- if st.show_more -%}
+        {%- capture more_items -%}
+          {%- assign more = 0 -%}
+          {%- for p in pictured -%}
+            {%- if p.id == pa.id or p.id == pb.id -%}{%- continue -%}{%- endif -%}
+            {%- if more >= 3 -%}{%- break -%}{%- endif -%}
+            {%- assign more = more | plus: 1 -%}
+            <li class="cvsw__more-item">
+              <a class="cvsw__more-link" href="{{ p.url }}" aria-label="{{ p.title | escape }}, {{ p.price | money | strip_html | escape }}">
+                {{ p.featured_image | image_url: width: 260 | image_tag: loading: 'lazy', alt: '', class: 'cvsw__more-img', sizes: '96px', widths: '160, 260' }}
+                <span class="cvsw__more-price">{{ p.price | money }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if more > 0 -%}
+          <ul class="cvsw__more" role="list" aria-label="{{ st.more_label | escape }}" data-cvsw-more>{{ more_items }}</ul>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <p class="cvsw__sr" data-cvsw-status aria-live="polite"></p>
+  <script type="application/json" data-cvsw-looks>{ {{ look_json }} }</script>
+</section>
+<script type="module" src="{{ 'cv-swap-hero.js' | asset_url }}"></script>
+{%- elsif request.design_mode -%}
+  <p class="cvsw-empty">Swap hero: pick a collection or two cases with photos.</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Swap hero",
+  "tag": "div",
+  "class": "section-cv-swap-hero",
+  "settings": [
+    { "type": "paragraph", "content": "One case in two prints. Shoppers hover (or drag a finger across) the case to paint on the other print, and keep it with one tap: the headline, card and Add to bag switch with it." },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Used for the two looks when no case is picked below, and for the three cases beside the card. Products without a photo are skipped." },
+    { "type": "product", "id": "product_a", "label": "Look A (shown first)" },
+    { "type": "product", "id": "product_b", "label": "Look B (painted on)", "info": "Pick two cases photographed the same way, for example two Tough cases, so the swap lines up." },
+    { "type": "header", "content": "Headline" },
+    { "type": "text", "id": "title_before", "label": "Before the word", "default": "A" },
+    { "type": "text", "id": "word_a", "label": "Word for look A", "default": "frosty" },
+    { "type": "text", "id": "word_b", "label": "Word for look B", "default": "cozy" },
+    { "type": "text", "id": "title_after", "label": "After the word", "default": "Christmas" },
+    { "type": "header", "content": "Swap" },
+    { "type": "text", "id": "hint", "label": "Hint (mouse)", "default": "Hover the case for [word]", "info": "[word] becomes the other look's word." },
+    { "type": "text", "id": "touch_hint", "label": "Hint (touch)", "default": "Drag across the case for [word]" },
+    { "type": "text", "id": "keep_label", "label": "Keep button", "default": "Keep the [word] look" },
+    { "type": "header", "content": "Callouts" },
+    { "type": "text", "id": "label_edge", "label": "Edge label", "default": "Edge" },
+    { "type": "text", "id": "label_finish", "label": "Finish label", "default": "Finish" },
+    { "type": "text", "id": "label_fit", "label": "Fit label", "default": "Fits" },
+    { "type": "text", "id": "fit_text", "label": "Fit text", "default": "[count] phone models", "info": "[count] is the number of phone models the case is made for. Hidden when there is one or none." },
+    { "type": "text", "id": "label_print", "label": "Print label", "default": "Printed" },
+    { "type": "text", "id": "print_text", "label": "Print text", "default": "To order, in the USA", "info": "Leave empty to hide it." },
+    { "type": "header", "content": "Card" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Christmas edit", "info": "The case's edge (the part of its title after |) is added after it." },
+    { "type": "text", "id": "shop_label", "label": "Shop link", "default": "Shop now" },
+    { "type": "text", "id": "bag_label", "label": "Add to bag button", "default": "Add to bag" },
+    { "type": "text", "id": "sold_label", "label": "Sold out label", "default": "Sold out" },
+    { "type": "text", "id": "from_label", "label": "Label before a price that varies", "default": "From" },
+    { "type": "text", "id": "shipping_text", "label": "Shipping line", "default": "Free shipping", "info": "Shown only when Theme settings > Packs and shipping > Free shipping on every order is on." },
+    { "type": "checkbox", "id": "show_more", "label": "Show three more cases", "default": true },
+    { "type": "text", "id": "more_label", "label": "Name of the three cases (screen readers)", "default": "More cases" },
+    { "type": "checkbox", "id": "ornaments", "label": "Ornaments", "default": true, "info": "Floating ornaments (assets/cv-swap-ornament-1 to 3.svg). They follow the scroll and the pointer, never loop on their own." },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 56 }
+  ],
+  "presets": [
+    { "name": "Swap hero" }
+  ]
+}
+{% endschema %}

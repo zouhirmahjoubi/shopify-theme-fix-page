@@ -1,0 +1,1 @@
+{ "name": "casify-swap-hero-ornaments", "private": true, "description": "Dev only: traces the KIE ornament sheet to SVG (never uploaded).", "dependencies": { "imagetracerjs": "1.2.6", "pngjs": "7.0.0" } }
