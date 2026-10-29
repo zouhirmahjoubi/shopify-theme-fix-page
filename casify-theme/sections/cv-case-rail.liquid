@@ -1,0 +1,394 @@
+{%- comment -%}
+  Casify: "The case rail".
+
+  Real products from one collection hang from a brass rail, each on its own
+  backing card with a numbered price tag. The case in front faces the shopper;
+  the rest turn edge-on along the rail like a shop rack, so swiping or dragging
+  flips through them. The rail swings when it moves and the tags swing more.
+  Tap a side case to bring it to the front, tap the front case to take it off
+  the rail: a sheet opens with its photos, price and the phone picker.
+
+  The price under the rail sits on a gold foil sticker. Peel it (drag or tap)
+  and the pack price printed underneath shows: this case's price when the bag
+  holds the pack size the merchant picks, from the store's automatic pack
+  discount in Theme settings (cv_pack_2_pct / cv_pack_3_pct). Every tag on the
+  rail rolls to its pack price at the same time. Products that are not phone
+  cases (snippets/cv-is-case.liquid) keep their one price: the pack discount
+  does not apply to them.
+
+  Motion (GSAP, ScrollTrigger): the rod draws in, the cases drop onto their
+  hooks and the ticket prints in as the section arrives. With "Scroll flips the
+  rail" on, and when the rail and ticket fit the screen, the section pins and
+  the page scroll flips through the cases one at a time, snapping on each; the
+  arrows, keys and taps move the page to the matching case. Otherwise the rail
+  gives a short peek glide the first time it is seen. The rack sways as the
+  page scrolls past it.
+
+  All of it is GSAP: quickSetters turn the cases, a spring on gsap.ticker
+  swings them, Draggable + InertiaPlugin throw the rail with a mouse
+  (data-cv-gsap-drag makes the layout ship both plugins), tweens roll the tag
+  prices and peel the sticker.
+
+  Script: assets/cv-case-rail.js, printed below (deferred, runs after the GSAP
+  bundle). No JS: a flat, swipeable row of cases that link to their pages, and
+  the first case's ticket. Reduced motion: the rail stays flat, nothing swings
+  or pins, the sticker swaps without the peel. Only the rod and the
+  handwritten note wait for the entrance (cvrl-pending, 1.4 s safety).
+
+  Choose your phone opens the quick pick (data-cvqp-open, contract of
+  snippets/cv-card.liquid); it never picks a model for the shopper. Without JS
+  it is a plain link to the case's page.
+{%- endcomment -%}
+<script>
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvrl-pending');
+    setTimeout(function () { root.classList.remove('cvrl-pending'); }, 1400);
+  })(document.documentElement);
+</script>
+{{ 'cv-case-rail.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign coll = st.collection | default: collections.all
+  assign limit = st.limit | default: 12
+
+  assign pack_count = st.pack_size | default: '3'
+  if pack_count == '2'
+    assign pack_pct = settings.cv_pack_2_pct | default: 0
+  else
+    assign pack_count = '3'
+    assign pack_pct = settings.cv_pack_3_pct | default: 0
+  endif
+  assign pack_pct = pack_pct | plus: 0
+  assign keep = 100 | minus: pack_pct
+
+  assign pack_label = st.pack_label | replace: '[count]', pack_count
+  assign save_label = st.save_label | replace: '[pct]', pack_pct
+  assign mix_label = st.mix_label | replace: '[count]', pack_count
+
+  assign count = 0
+  assign items = ''
+  assign sep = ''
+-%}
+
+{%- capture slots -%}
+  {%- for p in coll.products limit: limit -%}
+    {%- if p.featured_image == blank -%}{%- continue -%}{%- endif -%}
+    {%- liquid
+      assign count = count | plus: 1
+      assign no = count | prepend: '0' | slice: -2, 2
+
+      capture is_case
+        render 'cv-is-case', product: p
+      endcapture
+      assign is_case = is_case | strip
+
+      assign fit = 0
+      for option in p.options_with_values
+        assign oname = option.name | downcase
+        if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
+          assign fit = option.values.size
+          break
+        endif
+      endfor
+
+      assign price = p.price | money
+      assign from = ''
+      if p.price_varies
+        assign from = st.from_label
+      endif
+      assign was = ''
+      if st.show_compare and p.compare_at_price > p.price
+        assign was = p.compare_at_price | money
+      endif
+      assign pack = ''
+      if is_case == 'true' and pack_pct > 0
+        assign pack = p.price | times: keep | divided_by: 100.0 | round | money
+      endif
+
+      assign photos = ''
+      assign photo_sep = ''
+      for image in p.images limit: 4
+        assign photo = image | image_url: width: 1000
+        assign photos = photos | append: photo_sep | append: photo
+        assign photo_sep = '|'
+      endfor
+
+      if count == 1
+        assign f_title = p.title
+        assign f_url = p.url
+        assign f_handle = p.handle
+        assign f_price = price
+        assign f_from = from
+        assign f_was = was
+        assign f_pack = pack
+        assign f_fit = fit
+        assign f_available = p.available
+        assign f_image = p.featured_image
+      endif
+
+      capture item
+        echo sep
+        echo '{"no":'
+        echo no | json
+        echo ',"title":'
+        echo p.title | json
+        echo ',"url":'
+        echo p.url | json
+        echo ',"handle":'
+        echo p.handle | json
+        echo ',"from":'
+        echo from | json
+        echo ',"price":'
+        echo price | strip_html | json
+        echo ',"was":'
+        echo was | strip_html | json
+        echo ',"pack":'
+        echo pack | strip_html | json
+        echo ',"fit":'
+        echo fit
+        echo ',"available":'
+        echo p.available
+        echo ',"photos":'
+        echo photos | split: '|' | json
+        echo '}'
+      endcapture
+      assign items = items | append: item
+      assign sep = ','
+    -%}
+    <li class="cvrl__slot{% if count == 1 %} is-front{% endif %}" data-cvrl-slot style="--o: {{ count | minus: 1 }};">
+      <a class="cvrl__case" href="{{ p.url }}" draggable="false" data-cvrl-case aria-label="{{ st.number_prefix | escape }} {{ no }}: {{ p.title | escape }}, {% if from != blank %}{{ from | escape }} {% endif %}{{ price | strip_html | escape }}">
+        <span class="cvrl__hanger" data-cvrl-hanger>
+          <svg class="cvrl__hook" viewBox="0 0 32 46" aria-hidden="true" focusable="false"><path d="M16 45V30M16 30c0-8 9-8 9-16 0-6.5-4.5-11-9.5-11S7 6.5 7 11"/></svg>
+          <span class="cvrl__card">
+            <span class="cvrl__punch" aria-hidden="true"></span>
+            <span class="cvrl__photo">
+              {{ p.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', widths: '240, 360, 520', sizes: '(min-width: 990px) 230px, 52vw', alt: '', draggable: 'false' }}
+            </span>
+            <span class="cvrl__foot" aria-hidden="true">
+              <span class="cvrl__no">{{ st.number_prefix | escape }} {{ no }}</span>
+              <span class="cvrl__bars"></span>
+            </span>
+          </span>
+          <span class="cvrl__tag" data-cvrl-tag aria-hidden="true">
+            <span class="cvrl__tag-body">
+              {%- if from != blank -%}<span class="cvrl__tag-from">{{ from | escape }}</span>{%- endif -%}
+              <span class="cvrl__tag-roll">
+                <span class="cvrl__tag-one">{{ price }}</span>
+                {%- if pack != blank -%}<span class="cvrl__tag-pack">{{ pack }}</span>{%- endif -%}
+              </span>
+            </span>
+          </span>
+        </span>
+      </a>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign fit_line = ''
+  if f_fit > 1
+    assign fit_line = st.fit_label | replace: '[count]', f_fit
+  endif
+-%}
+
+{%- if count > 0 -%}
+{%- capture pricing -%}
+  <div class="cvrl-price{% if f_pack == blank %} is-single{% endif %}" data-cvrl-pricing>
+    <div class="cvrl-price__under" aria-hidden="true">
+      <span class="cvrl-price__amount" data-cvrl-pack>{{ f_pack }}</span>
+      <span class="cvrl-price__label">{{ pack_label | escape }}</span>
+      <span class="cvrl-price__save">{{ save_label | escape }}</span>
+    </div>
+    <button type="button" class="cvrl-price__sticker" data-cvrl-sticker aria-pressed="false" aria-label="{{ st.peel_label | escape }}" disabled>
+      <span class="cvrl-price__foil" data-cvrl-foil aria-hidden="true">
+        <span class="cvrl-price__from" data-cvrl-from{% if f_from == blank %} hidden{% endif %}>{{ f_from | escape }}</span>
+        <span class="cvrl-price__amount" data-cvrl-price>{{ f_price }}</span>
+        <span class="cvrl-price__label">{{ st.one_label | escape }}</span>
+      </span>
+      <span class="cvrl-price__flap" data-cvrl-flap aria-hidden="true"><span></span></span>
+    </button>
+    <p class="cvrl-price__note" data-cvrl-note hidden>
+      <span>{{ st.peel_note | escape }}</span>
+      <svg viewBox="0 0 64 40" aria-hidden="true" focusable="false"><path d="M60 4C46 6 30 12 18 26M18 26l1-11M18 26l11-1"/></svg>
+    </p>
+    <p class="cvrl__sr" data-cvrl-price-sr>{{ st.one_label | escape }} {{ f_price | strip_html }}{% if f_pack != blank %}, {{ f_pack | strip_html }} {{ pack_label | escape }}{% endif %}</p>
+    <p class="cvrl__sr" data-cvrl-price-status aria-live="polite"></p>
+  </div>
+{%- endcapture -%}
+
+<section
+  class="cvrl{% if st.surface == 'white' %} cvrl--white{% endif %}"
+  data-cvrl
+  data-cv-gsap-drag
+  data-pin="{{ st.scroll_pin }}"
+  data-status-label="{{ st.status_label | escape }}"
+  data-photo-label="{{ st.photo_label | escape }}"
+  data-peel-label="{{ st.peel_label | escape }}"
+  data-stick-label="{{ st.stick_label | escape }}"
+  data-one-label="{{ st.one_label | escape }}"
+  data-pack-label="{{ pack_label | escape }}"
+  style="--cvrl-pad-top: {{ st.pad_top }}px; --cvrl-pad-bottom: {{ st.pad_bottom }}px; --cvrl-n: {{ count }};"
+  {% if st.heading != blank %}aria-labelledby="cvrl-title-{{ section.id }}"{% else %}aria-label="{{ st.rail_label | escape }}"{% endif %}
+>
+  {%- if st.eyebrow != blank or st.heading != blank or st.text != blank -%}
+    <header class="cvrl__head">
+      {%- if st.eyebrow != blank -%}<p class="cvrl__eyebrow">{{ st.eyebrow | escape }}</p>{%- endif -%}
+      {%- if st.heading != blank -%}<h2 class="cvrl__title" id="cvrl-title-{{ section.id }}">{{ st.heading | escape }}</h2>{%- endif -%}
+      {%- if st.text != blank -%}<div class="cvrl__text">{{ st.text }}</div>{%- endif -%}
+    </header>
+  {%- endif -%}
+
+  <div class="cvrl__body" data-cvrl-body>
+  <div class="cvrl__stage">
+    <div class="cvrl__rod" aria-hidden="true"><span class="cvrl__bracket"></span><span class="cvrl__bracket"></span></div>
+    <ol class="cvrl__track" role="list" aria-label="{{ st.rail_label | escape }}" data-cvrl-track>
+      {{- slots -}}
+    </ol>
+  </div>
+
+  <div class="cvrl__nav" data-cvrl-nav hidden>
+    <button type="button" class="cvrl__step" data-cvrl-step="-1" aria-label="{{ st.prev_label | escape }}">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <p class="cvrl__count" aria-hidden="true"><span data-cvrl-index>01</span> / {% if count < 10 %}0{% endif %}{{ count }}</p>
+    <span class="cvrl__progress" aria-hidden="true"><span data-cvrl-bar></span></span>
+    <button type="button" class="cvrl__step" data-cvrl-step="1" aria-label="{{ st.next_label | escape }}">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <p class="cvrl__sr" data-cvrl-status aria-live="polite"></p>
+  </div>
+
+  <div class="cvrl__ticket" data-cvrl-ticket>
+    <p class="cvrl__ticket-no"><span data-cvrl-no>{{ st.number_prefix | escape }} 01</span></p>
+    <h3 class="cvrl__name"><a href="{{ f_url }}" data-cvrl-name>{{ f_title | escape }}</a></h3>
+    <p class="cvrl__fit" data-cvrl-fit{% if fit_line == blank %} hidden{% endif %}>{{ fit_line | escape }}</p>
+    {{ pricing }}
+    <div class="cvrl__small">
+      <p class="cvrl__was" data-cvrl-was-line{% if f_was == blank %} hidden{% endif %}>{{ st.was_label | escape }} <s data-cvrl-was>{{ f_was }}</s></p>
+      <p class="cvrl__mix" data-cvrl-mix{% if f_pack == blank %} hidden{% endif %}>{{ mix_label | escape }}</p>
+    </div>
+    <div class="cvrl__actions">
+      <a class="cvrl-btn" href="{{ f_url }}" data-cvrl-choose data-cvqp-open data-handle="{{ f_handle }}" data-url="{{ f_url }}" data-choose-label="{{ st.choose_label | escape }}" data-options-label="{{ st.options_label | escape }}" data-sold-label="{{ st.sold_label | escape }}">
+        <span data-cvrl-choose-label>{% if f_available %}{% if f_fit > 0 %}{{ st.choose_label | escape }}{% else %}{{ st.options_label | escape }}{% endif %}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
+      </a>
+      <button type="button" class="cvrl-btn cvrl-btn--ghost" data-cvrl-open hidden>{{ st.look_label | escape }}</button>
+    </div>
+  </div>
+  </div>
+
+  <dialog class="cvrl-sheet" data-cvrl-sheet aria-labelledby="cvrl-sheet-title-{{ section.id }}">
+    <div class="cvrl-sheet__box" data-cvrl-box>
+      <button type="button" class="cvrl-sheet__close" data-cvrl-close aria-label="{{ st.close_label | escape }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="cvrl-sheet__media">
+        <div class="cvrl-sheet__frame" data-cvrl-frame>
+          <img src="{{ f_image | image_url: width: 1000 }}" width="{{ f_image.width }}" height="{{ f_image.height }}" alt="" loading="lazy" draggable="false" data-cvrl-img>
+
+        </div>
+        <button type="button" class="cvrl-sheet__step cvrl-sheet__step--prev" data-cvrl-step="-1" aria-label="{{ st.prev_label | escape }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="cvrl-sheet__step cvrl-sheet__step--next" data-cvrl-step="1" aria-label="{{ st.next_label | escape }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="cvrl-sheet__photos" data-cvrl-photos></div>
+      </div>
+      <div class="cvrl-sheet__info">
+        <p class="cvrl__ticket-no"><span data-cvrl-no>{{ st.number_prefix | escape }} 01</span></p>
+        <h3 class="cvrl-sheet__name" id="cvrl-sheet-title-{{ section.id }}" data-cvrl-sheet-name>{{ f_title | escape }}</h3>
+        <p class="cvrl__fit" data-cvrl-fit{% if fit_line == blank %} hidden{% endif %}>{{ fit_line | escape }}</p>
+        {{ pricing }}
+        <div class="cvrl__small">
+          <p class="cvrl__was" data-cvrl-was-line{% if f_was == blank %} hidden{% endif %}>{{ st.was_label | escape }} <s data-cvrl-was>{{ f_was }}</s></p>
+          <p class="cvrl__mix" data-cvrl-mix{% if f_pack == blank %} hidden{% endif %}>{{ mix_label | escape }}</p>
+        </div>
+        <div class="cvrl__actions">
+          <a class="cvrl-btn" href="{{ f_url }}" data-cvrl-choose data-cvqp-open data-handle="{{ f_handle }}" data-url="{{ f_url }}" data-choose-label="{{ st.choose_label | escape }}" data-options-label="{{ st.options_label | escape }}" data-sold-label="{{ st.sold_label | escape }}">
+            <span data-cvrl-choose-label>{% if f_available %}{% if f_fit > 0 %}{{ st.choose_label | escape }}{% else %}{{ st.options_label | escape }}{% endif %}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
+          </a>
+          <a class="cvrl-btn cvrl-btn--ghost" href="{{ f_url }}" data-cvrl-link>{{ st.shop_label | escape }}</a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="application/json" data-cvrl-items>[{{ items }}]</script>
+  <script type="application/json" data-cvrl-labels>{"fit": {{ st.fit_label | json }}, "number": {{ st.number_prefix | json }}}</script>
+</section>
+<script src="{{ 'cv-case-rail.js' | asset_url }}" defer></script>
+{%- elsif request.design_mode -%}
+  <p class="cvrl-empty">Case rail: pick a collection with product photos.</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Case rail",
+  "tag": "div",
+  "class": "section-cv-case-rail",
+  "settings": [
+    { "type": "paragraph", "content": "Cases from one collection hanging on a shop rail. Shoppers drag or swipe to flip through them, tap the case in front to take it down, and peel the price sticker to see the pack price." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The case rail" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Flip through the rail." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Drag the rail to look along it. Tap the case in front to take it down.</p>" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty for every product. Products without a photo are skipped." },
+    { "type": "range", "id": "limit", "label": "Cases on the rail", "min": 4, "max": 24, "step": 1, "default": 12 },
+    { "type": "checkbox", "id": "scroll_pin", "label": "Scroll flips the rail", "default": true, "info": "The section holds still while the page scroll flips through up to 9 cases, one at a time. Only when the rail and its ticket fit the screen; otherwise the rail scrolls by swipe and drag as usual. Off for shoppers who ask their device for reduced motion." },
+    { "type": "header", "content": "Price sticker" },
+    {
+      "type": "select",
+      "id": "pack_size",
+      "label": "Pack price under the sticker",
+      "default": "3",
+      "options": [
+        { "value": "3", "label": "Pack of 3 cases" },
+        { "value": "2", "label": "Pack of 2 cases" }
+      ],
+      "info": "Uses the pack discount in Theme settings > Packs and shipping, which must equal the automatic discount in Shopify admin. At 0% the sticker stays down. Products that are not phone cases never show a pack price."
+    },
+    { "type": "text", "id": "one_label", "label": "Label on the sticker", "default": "One case" },
+    { "type": "text", "id": "pack_label", "label": "Label under the sticker", "default": "each in a pack of [count]", "info": "[count] becomes the pack size." },
+    { "type": "text", "id": "save_label", "label": "Saving badge", "default": "Save [pct]%", "info": "[pct] becomes the pack discount." },
+    { "type": "text", "id": "mix_label", "label": "Pack line", "default": "Mix any [count] cases.", "info": "[count] becomes the pack size. Shown only when a pack price shows." },
+    { "type": "text", "id": "peel_note", "label": "Handwritten note", "default": "peel for the pack price" },
+    { "type": "text", "id": "peel_label", "label": "Sticker name, before peeling (screen readers)", "default": "Peel the sticker to see the pack price" },
+    { "type": "text", "id": "stick_label", "label": "Sticker name, after peeling (screen readers)", "default": "Stick it back to see the one case price" },
+    { "type": "checkbox", "id": "show_compare", "label": "Show compare-at price", "default": true, "info": "Only when the product's compare-at price is higher than its price." },
+    { "type": "text", "id": "was_label", "label": "Compare-at label", "default": "Was" },
+    { "type": "text", "id": "from_label", "label": "Label before a price that varies", "default": "From" },
+    { "type": "header", "content": "Ticket and sheet" },
+    { "type": "text", "id": "number_prefix", "label": "Number prefix", "default": "No." },
+    { "type": "text", "id": "fit_label", "label": "Phone models line", "default": "Made for [count] phone models", "info": "[count] is the number of values in the product's phone model option. Hidden when there is one or none." },
+    { "type": "text", "id": "choose_label", "label": "Choose button", "default": "Choose your phone" },
+    { "type": "text", "id": "options_label", "label": "Choose button, product without a phone model", "default": "Choose options" },
+    { "type": "text", "id": "sold_label", "label": "Choose button, sold out", "default": "Sold out" },
+    { "type": "text", "id": "look_label", "label": "Take down button", "default": "Take it off the rail" },
+    { "type": "text", "id": "shop_label", "label": "Product page link in the sheet", "default": "See the case" },
+    { "type": "header", "content": "Screen readers" },
+    { "type": "text", "id": "rail_label", "label": "Name of the rail", "default": "Cases on the rail" },
+    { "type": "text", "id": "status_label", "label": "Case in front", "default": "Case [n] of [total]: [title]" },
+    { "type": "text", "id": "photo_label", "label": "Photo button", "default": "Photo [n]" },
+    { "type": "text", "id": "prev_label", "label": "Previous button", "default": "Previous case" },
+    { "type": "text", "id": "next_label", "label": "Next button", "default": "Next case" },
+    { "type": "text", "id": "close_label", "label": "Close the sheet", "default": "Back to the rail" },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "surface",
+      "label": "Background",
+      "default": "cream",
+      "options": [
+        { "value": "cream", "label": "Cream" },
+        { "value": "white", "label": "Paper white" }
+      ]
+    },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "presets": [
+    { "name": "Case rail" }
+  ]
+}
+{% endschema %}
