@@ -220,7 +220,8 @@ function init(root) {
       .fromTo(card, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'transform,opacity' }, 0.36)
       .add(() => {
         gsap.set(tint, { clearProps: 'opacity' });
-        spring(all('[data-cvsw-callout]:not([hidden])', root), { opacity: [0, 1], transform: ['translateY(8px) scale(0.94)', 'none'] });
+        /* Spelled-out end transform: Motion turns a 'none' keyframe into scale(0). */
+        spring(all('[data-cvsw-callout]:not([hidden])', root), { opacity: [0, 1], transform: ['translateY(8px) scale(0.94)', 'translateY(0px) scale(1)'] });
       }, 0.38));
   }
 
@@ -232,6 +233,8 @@ function init(root) {
     swapping = true;
     const done = () => {
       front = next;
+      /* Also covers a swap made before three.js was ready. */
+      if (gl) gl.show(front);
       ready = false;
       ink = 0;
       swapping = false;
@@ -359,7 +362,7 @@ function init(root) {
     const mat = new THREE.ShaderMaterial({
       vertexShader: VERT, fragmentShader: CASE_FRAG, transparent: true,
       uniforms: {
-        uTop: { value: textures.a }, uUnder: { value: textures.b }, uMask: { value: maskB.texture },
+        uTop: { value: textures[front] }, uUnder: { value: textures[other()] }, uMask: { value: maskB.texture },
         uCrop: { value: new THREE.Vector4(crop[0], crop[1], crop[2], crop[3]) },
         uTide: { value: 0 }, uScrollTide: { value: 0 }, uTime: { value: 0 },
         uPointer: { value: new THREE.Vector2(0, 0) }, uRim: { value: new THREE.Color(0xF0E2C2) }, uFade: { value: 0 }
@@ -482,13 +485,15 @@ function init(root) {
           .to(mat.uniforms.uTide, { value: 1.05, duration: 0.95, ease: 'power2.inOut' })
           .add(midway, 0.3)
           .add(() => {
-            mat.uniforms.uTop.value = textures[next];
-            mat.uniforms.uUnder.value = textures[next === 'a' ? 'b' : 'a'];
             mat.uniforms.uTide.value = 0;
             clearMask();
             done();
-            wake(400);
           }));
+      },
+      show(key) {
+        mat.uniforms.uTop.value = textures[key];
+        mat.uniforms.uUnder.value = textures[key === 'a' ? 'b' : 'a'];
+        wake(400);
       },
       destroy() {
         sleep();

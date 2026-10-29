@@ -9,6 +9,14 @@
  */
 {
   "sections": {
+    "swap_hero": {
+      "type": "cv-swap-hero",
+      "settings": {
+        "collection": "tough-cases",
+        "product_a": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+        "product_b": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+      }
+    },
     "case_rail": {
       "type": "cv-case-rail",
       "settings": {}
@@ -1720,6 +1728,7 @@
   },
   "order": [
     "trust_bar",
+    "swap_hero",
     "phone_scan",
     "casify_hero_U3GTzw",
     "spotlight",
