@@ -63,7 +63,7 @@
       {%- assign key = item.id | prepend: ',' | append: ',' -%}
       {%- unless shown contains key -%}
         {%- assign shown = shown | append: item.id | append: ',' -%}
-        {%- render 'cv-showcase-card', item: item, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
+        {%- render 'cv-showcase-card', item: item, short_title: true, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
         {%- assign total = total | plus: 1 -%}
       {%- endunless -%}
     {%- endfor -%}

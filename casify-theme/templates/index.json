@@ -12,6 +12,7 @@
     "swap_hero": {
       "type": "cv-swap-hero",
       "settings": {
+        "pad_top": 16,
         "collection": "tough-cases",
         "product_a": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
         "product_b": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
@@ -73,7 +74,7 @@
       "settings": {
         "heading_1": "Made to",
         "heading_2": "measure",
-        "kicker": "Cases for iPhone 18 & iPhone 18 Pro Max",
+        "kicker": "Cases for iPhone 18 Pro & iPhone 18 Pro Max",
         "lede": "Scroll on and we'll size them up at the counter.",
         "hero_cta": "Find my case",
         "tag_1": "Free shipping",
@@ -98,8 +99,8 @@
         "show_store_rating": true,
         "store_rating": "4.9",
         "store_rating_count": "952",
-        "phone_1_label": "iPhone 18",
-        "phone_1_body": "iphone-18",
+        "phone_1_label": "iPhone 18 Pro",
+        "phone_1_body": "iphone-18-pro",
         "phone_1_color": "#9fb8b1",
         "phone_1_url": "shopify://collections/iphone",
         "phone_2_label": "iPhone 18 Pro Max",
@@ -110,6 +111,7 @@
     },
     "casify_hero_U3GTzw": {
       "type": "casify-hero",
+      "disabled": true,
       "name": "Casify storyboard hero",
       "settings": {
         "featured_product": "",
@@ -174,6 +176,7 @@
     },
     "shop": {
       "type": "cv-collection-row",
+      "disabled": true,
       "settings": {
         "collection": "frontpage",
         "eyebrow": "Best sellers",
@@ -1730,14 +1733,14 @@
     }
   },
   "order": [
-    "trust_bar",
     "swap_hero",
+    "trust_bar",
+    "showcase",
     "phone_scan",
     "casify_hero_U3GTzw",
     "spotlight",
     "orbit",
     "shop",
-    "showcase",
     "feature_tabs",
     "case_rail",
     "collage",

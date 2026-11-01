@@ -253,6 +253,8 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%} The page's H1 says what the shop sells; the big headline below is the look's word. {%- endcomment -%}
+  {%- if st.kicker != blank -%}<h1 class="cvsw__kicker">{{ st.kicker | escape }}</h1>{%- endif -%}
   <h2 class="cvsw__title" id="cvsw-title-{{ section.id }}">
     {%- if st.title_before != blank -%}<span class="cvsw__title-pre">{{ st.title_before | escape }}</span> {% endif -%}
     <span class="cvsw__word" data-cvsw-word>{{ word_a | escape }}</span>
@@ -338,7 +340,7 @@
           {%- endfor -%}
         {%- endcapture -%}
         {%- if more > 0 -%}
-          <ul class="cvsw__more" role="list" aria-label="{{ st.more_label | escape }}" data-cvsw-more>{{ more_items }}</ul>
+          <ul class="cvsw__more" role="list" aria-label="More cases" data-cvsw-more>{{ more_items }}</ul>
         {%- endif -%}
       {%- endif -%}
     </div>
@@ -369,6 +371,7 @@
     { "type": "product", "id": "product_d", "label": "Look D (optional)" },
     { "type": "text", "id": "name_d", "label": "Short name for look D" },
     { "type": "header", "content": "Headline" },
+    { "type": "text", "id": "kicker", "label": "Small line above the headline", "default": "Christmas phone cases", "info": "This is the page's main heading (H1) for search engines. Leave empty if another section on the page has the H1." },
     { "type": "text", "id": "title_before", "label": "Before the word", "default": "A" },
     { "type": "text", "id": "word_a", "label": "Word for look A", "default": "frosty" },
     { "type": "text", "id": "word_b", "label": "Word for look B", "default": "cozy" },
@@ -399,7 +402,6 @@
     { "type": "text", "id": "from_label", "label": "Label before a price that varies", "default": "From" },
     { "type": "text", "id": "shipping_text", "label": "Shipping line", "default": "Free shipping", "info": "Shown only when Theme settings > Packs and shipping > Free shipping on every order is on." },
     { "type": "checkbox", "id": "show_more", "label": "Show three more cases", "default": true },
-    { "type": "text", "id": "more_label", "label": "Name of the three cases (screen readers)", "default": "More cases" },
     { "type": "checkbox", "id": "ornaments", "label": "Ornaments", "default": true, "info": "Floating ornaments (assets/cv-swap-ornament-1 to 3.svg). They follow the scroll and the pointer, never loop on their own." },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 32 },

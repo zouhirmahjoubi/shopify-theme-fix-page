@@ -47,6 +47,13 @@
 .cvsw__sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* ---------- Headline ---------- */
+.cvsw .cvsw__kicker {
+  position: relative; z-index: 1;
+  margin: 0 auto 6px; width: min(1240px, 100% - 32px);
+  font-family: var(--font-label); font-weight: 400;
+  font-size: 13px !important; line-height: 1.25; letter-spacing: .14em; text-align: center; text-transform: uppercase;
+  color: var(--cvsw-accent);
+}
 .cvsw .cvsw__title {
   position: relative; z-index: 1;
   margin: 0 auto; width: min(1240px, 100% - 32px);

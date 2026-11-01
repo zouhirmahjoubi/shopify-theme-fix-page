@@ -14,6 +14,7 @@
   the quick pick or adds the only variant, like the old product card did).
 
   @param {object} [item] - Product the card shows.
+  @param {boolean} [short_title] - Show the product title only up to "Phone Case" (home row of one edge).
   @param {object} [block] - The section block holding the card's typed copy.
   @param {number} index - Position in the row (0-based), for tones and stagger.
   @param {string} sid - Section id, for unique SVG ids.
@@ -135,6 +136,14 @@
   if has_item
     if title == blank
       assign title = map_title | default: item.title
+      if short_title
+        assign title = title | split: ' Phone Case' | first | strip
+        assign title_tail = title | slice: -10, 10
+        if title_tail == ' Christmas'
+          assign title_cut = title.size | minus: 10
+          assign title = title | slice: 0, title_cut
+        endif
+      endif
     endif
     if line == blank
       assign line = map_line
@@ -143,7 +152,20 @@
       assign line = item.metafields.global.description_tag.value
     endif
     if line == blank
-      assign line = item.description | strip_html | strip | remove_first: 'Overview' | strip | truncatewords: 16, '…'
+      comment
+        Drop the short bold title descriptions open with, and keep words apart: stripping
+        <br> and </p> alone would run "Pantry Label" and "A cream..." together.
+      endcomment
+      assign line_src = item.description | replace: '<br/>', '<br>' | replace: '<br />', '<br>'
+      if line_src contains '</strong>'
+        assign line_lead = line_src | split: '</strong>' | first
+        assign line_lead_text = line_lead | strip_html | strip
+        if line_lead_text.size < 70
+          assign line_src = line_src | remove_first: line_lead | remove_first: '</strong>'
+        endif
+      endif
+      assign line = line_src | split: '<br><br>' | first | replace: '<br>', ' ' | replace: '</p>', ' ' | strip_html | strip | remove_first: 'Overview' | strip
+      assign line = line | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&nbsp;', ' ' | truncatewords: 16, '…'
     endif
     if card_image == blank
       assign card_image = item.featured_media.preview_image | default: item.featured_image
