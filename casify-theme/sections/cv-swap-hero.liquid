@@ -1,24 +1,29 @@
 {%- comment -%}
   Casify: "Swap hero" (adapted from the Frostpaw hover-swap hero).
 
-  One case in two prints. The front print shows; hovering the case (or
-  dragging a finger across it) paints the other print on with a soft brush
-  that ebbs away again, and "keep it" sends the other print across the case
-  in a wave: the headline word, the tint, the product card, the callouts and
-  Add to bag all switch to that case. Three more cases sit beside it as links.
+  One case in up to four prints. The front print shows; hovering the case (or
+  dragging a finger across it) paints the next print on with a soft brush that
+  ebbs away again, and "keep it" or a colour swatch sends a print across the
+  case in a wave: the headline word, the tint, the product card, the callouts
+  and Add to bag all switch to that case. Three more cases sit beside it as links.
 
-  Two looks, A and B. Each is a real product: its photo, short name (the title
+  Looks A to D. Each is a real product: its photo, short name (the title
   before " Phone Case"), opening description sentence, price, edge (the title
   after "|"), finish (the Surface or Finish option) and phone model count
-  (the option whose values name phones, as in cv-is-case). Pick two cases
-  photographed the same way (two Tough cases, say) so the swap lines up.
+  (the option whose values name phones, as in cv-is-case). Pick cases
+  photographed the same way (Tough cases, say) so the swap lines up. A and B
+  fill themselves from the collection; C and D show only when picked.
+
+  The white studio background never shows: the shader keys it out, and the
+  photos under it and the three more cases blend into the page (multiply), so
+  it also holds before three.js loads, without WebGL and without JS.
 
   Script: assets/cv-swap-hero.js, a module printed below. three.js (imported
   on demand, pinned like cv-case-wheel) draws the case and the brush; GSAP
   runs the headline, the wave and the scroll parallax; Motion (window.Motion,
   loaded by the layout through data-motion-dev) springs the callouts and
   buttons. No WebGL: a CSS mask brush on the stacked photos. Reduced motion:
-  nothing paints or moves; the "keep it" pill swaps the look at once. No JS:
+  nothing paints or moves; the pill and swatches swap the look at once. No JS:
   look A, its card and links.
 
   Decoration: assets/cv-swap-ornament-1..3.svg (the KIE illustrations, traced
@@ -30,9 +35,13 @@
   assign st = section.settings
   assign coll = st.collection | default: collections.all
   assign pictured = coll.products | where: 'featured_image'
-  assign pa = st.product_a | default: pictured[0]
+  assign pa = st.product_a
+  if pa == blank or pa.featured_image == blank
+    assign pa = pictured[0]
+  endif
   assign pb = st.product_b
-  if pb == blank
+  if pb == blank or pb.featured_image == blank or pb.id == pa.id
+    assign pb = nil
     for p in pictured
       if p.id != pa.id
         assign pb = p
@@ -40,9 +49,15 @@
       endif
     endfor
   endif
-  if pa != blank and pb != blank and pb.id == pa.id
-    assign pb = blank
+  assign pc = st.product_c
+  if pc == blank or pc.featured_image == blank or pc.id == pa.id or pc.id == pb.id
+    assign pc = nil
   endif
+  assign pd = st.product_d
+  if pd == blank or pd.featured_image == blank or pd.id == pa.id or pd.id == pb.id or pd.id == pc.id
+    assign pd = nil
+  endif
+  assign pnext = pb | default: pc | default: pd
 -%}
 
 {%- if pa != blank and pa.featured_image != blank -%}
@@ -50,18 +65,38 @@
   assign sep = ''
   assign word_a = st.word_a | default: 'frosty'
   assign word_b = st.word_b | default: 'cozy'
+  assign word_c = st.word_c | default: 'jolly'
+  assign word_d = st.word_d | default: 'merry'
+  assign swatches = ''
+  assign tints = ''
 -%}
 {%- capture look_json -%}
-  {%- for slot in (1..2) -%}
+  {%- for slot in (1..4) -%}
     {%- liquid
       if slot == 1
         assign p = pa
         assign word = word_a
         assign key = 'a'
-      else
+        assign swatch_colour = st.colour_a
+        assign custom_name = st.name_a
+      elsif slot == 2
         assign p = pb
         assign word = word_b
         assign key = 'b'
+        assign swatch_colour = st.colour_b
+        assign custom_name = st.name_b
+      elsif slot == 3
+        assign p = pc
+        assign word = word_c
+        assign key = 'c'
+        assign swatch_colour = st.colour_c
+        assign custom_name = st.name_c
+      else
+        assign p = pd
+        assign word = word_d
+        assign key = 'd'
+        assign swatch_colour = st.colour_d
+        assign custom_name = st.name_d
       endif
       if p == blank
         continue
@@ -72,6 +107,9 @@
       if tail == ' Christmas'
         assign cut = short.size | minus: 10
         assign short = short | slice: 0, cut
+      endif
+      if custom_name != blank
+        assign short = custom_name
       endif
       assign edge = ''
       if p.title contains '|'
@@ -113,7 +151,37 @@
         endif
       endif
       assign blurb = desc | split: '<br><br>' | first | split: '</p>' | first | strip_html | strip
-      assign blurb = blurb | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&nbsp;', ' ' | truncatewords: 18, '...'
+      assign blurb = blurb | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&nbsp;', ' '
+
+      comment
+        Whole clauses of the first sentence, up to 18 words, so the card ends on a full stop
+        instead of mid-phrase. A first clause over 24 words is cut with dots.
+      endcomment
+      assign sentence = blurb | split: '. ' | first
+      assign kept = ''
+      assign kept_words = 0
+      assign clauses = sentence | split: ', '
+      for clause in clauses
+        assign clause_words = clause | split: ' ' | size
+        assign total_words = kept_words | plus: clause_words
+        if total_words > 18 and kept != blank
+          break
+        endif
+        if kept != blank
+          assign kept = kept | append: ', '
+        endif
+        assign kept = kept | append: clause
+        assign kept_words = total_words
+      endfor
+      if kept_words > 24
+        assign blurb = kept | truncatewords: 18, '...'
+      elsif kept != blank
+        assign blurb = kept
+        assign end_char = kept | slice: -1, 1
+        unless end_char == '.' or end_char == '!' or end_char == '?'
+          assign blurb = kept | append: '.'
+        endunless
+      endif
 
       assign was = ''
       if p.compare_at_price > p.price
@@ -124,6 +192,10 @@
         assign fit_text = st.fit_text | replace: '[count]', models
       endif
       assign img = p.featured_image | image_url: width: 1400
+      assign price_text = p.price | money | strip_html
+      if p.price_varies
+        assign price_text = st.from_label | append: ' ' | append: price_text
+      endif
 
       if key == 'a'
         assign short_a = short
@@ -140,9 +212,8 @@
       "finish": {{ finish | json }},
       "fit": {{ fit_text | json }},
       "blurb": {{ blurb | json }},
-      "price": {{ p.price | money | strip_html | json }},
+      "price": {{ price_text | json }},
       "was": {{ was | strip_html | json }},
-      "from": {{ p.price_varies | json }},
       "url": {{ p.url | json }},
       "handle": {{ p.handle | json }},
       "available": {{ p.available | json }},
@@ -150,6 +221,12 @@
       "alt": {{ p.featured_image.alt | default: p.title | json }}
     }
     {%- assign sep = ',' -%}
+    {%- capture one_swatch -%}
+      <button type="button" class="cvsw__swatch" data-cvsw-swatch="{{ key }}" aria-pressed="{% if key == 'a' %}true{% else %}false{% endif %}" style="--cvsw-swatch: {{ swatch_colour }};"><span class="cvsw__sr">{{ short | escape }}</span></button>
+    {%- endcapture -%}
+    {%- capture one_tint -%}<span class="cvsw__tint cvsw__tint--{{ key }}" data-cvsw-tint="{{ key }}" aria-hidden="true"></span>{%- endcapture -%}
+    {%- assign swatches = swatches | append: one_swatch -%}
+    {%- assign tints = tints | append: one_tint -%}
   {%- endfor -%}
 {%- endcapture -%}
 {%- assign hint = st.hint | replace: '[word]', word_b -%}
@@ -166,10 +243,10 @@
   style="--cvsw-pad-top: {{ st.pad_top }}px; --cvsw-pad-bottom: {{ st.pad_bottom }}px;"
   aria-labelledby="cvsw-title-{{ section.id }}"
 >
-  <span class="cvsw__tint" data-cvsw-tint aria-hidden="true"></span>
+  {{ tints }}
   {%- if st.ornaments -%}
     <div class="cvsw__ornaments" data-cvsw-ornaments aria-hidden="true">
-      {%- for n in (1..6) -%}
+      {%- for n in (1..4) -%}
         {%- assign ornament = n | modulo: 3 | plus: 1 | prepend: 'cv-swap-ornament-' | append: '.svg' -%}
         <img class="cvsw__ornament cvsw__ornament--{{ n }}" src="{{ ornament | asset_url }}" alt="" width="120" height="120" loading="lazy" data-cvsw-ornament>
       {%- endfor -%}
@@ -187,18 +264,21 @@
     <div class="cvsw__case" data-cvsw-case>
       <div class="cvsw__photos" data-cvsw-photos>
         <img class="cvsw__photo cvsw__photo--top" src="{{ pa.featured_image | image_url: width: 1400 }}" width="{{ pa.featured_image.width }}" height="{{ pa.featured_image.height }}" alt="{{ pa.featured_image.alt | default: pa.title | escape }}" fetchpriority="high" draggable="false" data-cvsw-top>
-        {%- if pb != blank -%}
-          <img class="cvsw__photo cvsw__photo--under" src="{{ pb.featured_image | image_url: width: 1400 }}" width="{{ pb.featured_image.width }}" height="{{ pb.featured_image.height }}" alt="" loading="lazy" draggable="false" data-cvsw-under aria-hidden="true">
+        {%- if pnext != blank -%}
+          <img class="cvsw__photo cvsw__photo--under" src="{{ pnext.featured_image | image_url: width: 1400 }}" width="{{ pnext.featured_image.width }}" height="{{ pnext.featured_image.height }}" alt="" loading="lazy" draggable="false" data-cvsw-under aria-hidden="true">
         {%- endif -%}
       </div>
       <div class="cvsw__gl" data-cvsw-gl aria-hidden="true"></div>
     </div>
 
-      {%- if pb != blank -%}
-        <button type="button" class="cvsw__hint" data-cvsw-keep aria-pressed="false" hidden>
-          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/></svg>
-          <span data-cvsw-hint>{{ hint | escape }}</span>
-        </button>
+      {%- if pnext != blank -%}
+        <div class="cvsw__controls">
+          <button type="button" class="cvsw__hint" data-cvsw-keep hidden>
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/></svg>
+            <span data-cvsw-hint>{{ hint | escape }}</span>
+          </button>
+          <div class="cvsw__swatches" role="group" aria-label="{{ st.swatches_label | escape }}" data-cvsw-swatches hidden>{{ swatches }}</div>
+        </div>
       {%- endif -%}
 
       <ul class="cvsw__callouts" role="list" data-cvsw-callouts>
@@ -232,10 +312,9 @@
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
-        <p class="cvsw__facts">
-          <span data-cvsw-fit{% if fit_a == blank %} hidden{% endif %}>{{ fit_a | escape }}</span>
-          {%- if settings.cv_free_shipping_all and st.shipping_text != blank -%}<span>{{ st.shipping_text | escape }}</span>{%- endif -%}
-        </p>
+        {%- if settings.cv_free_shipping_all and st.shipping_text != blank -%}
+          <p class="cvsw__facts">{{ st.shipping_text | escape }}</p>
+        {%- endif -%}
       </div>
 
       <a class="cvsw__bag" href="{{ pa.url }}" data-cvsw-bag{% if pa.available %} data-cvqp-open{% endif %} data-handle="{{ pa.handle }}" data-url="{{ pa.url }}">
@@ -247,12 +326,12 @@
         {%- capture more_items -%}
           {%- assign more = 0 -%}
           {%- for p in pictured -%}
-            {%- if p.id == pa.id or p.id == pb.id -%}{%- continue -%}{%- endif -%}
+            {%- if p.id == pa.id or p.id == pb.id or p.id == pc.id or p.id == pd.id -%}{%- continue -%}{%- endif -%}
             {%- if more >= 3 -%}{%- break -%}{%- endif -%}
             {%- assign more = more | plus: 1 -%}
             <li class="cvsw__more-item">
               <a class="cvsw__more-link" href="{{ p.url }}" aria-label="{{ p.title | escape }}, {{ p.price | money | strip_html | escape }}">
-                {{ p.featured_image | image_url: width: 260 | image_tag: loading: 'lazy', alt: '', class: 'cvsw__more-img', sizes: '96px', widths: '160, 260' }}
+                {{ p.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: '', class: 'cvsw__more-img', sizes: '200px', widths: '300, 500' }}
                 <span class="cvsw__more-price">{{ p.price | money }}</span>
               </a>
             </li>
@@ -279,26 +358,39 @@
   "tag": "div",
   "class": "section-cv-swap-hero",
   "settings": [
-    { "type": "paragraph", "content": "One case in two prints. Shoppers hover (or drag a finger across) the case to paint on the other print, and keep it with one tap: the headline, card and Add to bag switch with it." },
+    { "type": "paragraph", "content": "One case in up to four prints. Shoppers hover (or drag a finger across) the case to paint on the next print, and keep it with one tap or pick a colour: the headline, card and Add to bag switch with it." },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "Used for the two looks when no case is picked below, and for the three cases beside the card. Products without a photo are skipped." },
     { "type": "product", "id": "product_a", "label": "Look A (shown first)" },
-    { "type": "product", "id": "product_b", "label": "Look B (painted on)", "info": "Pick two cases photographed the same way, for example two Tough cases, so the swap lines up." },
+    { "type": "text", "id": "name_a", "label": "Short name for look A", "info": "Optional. Keep it to one line on a phone; empty uses the product title before \"Phone Case\"." },
+    { "type": "product", "id": "product_b", "label": "Look B", "info": "Pick cases photographed the same way, for example all Tough cases, so the swap lines up." },
+    { "type": "text", "id": "name_b", "label": "Short name for look B" },
+    { "type": "product", "id": "product_c", "label": "Look C (optional)" },
+    { "type": "text", "id": "name_c", "label": "Short name for look C" },
+    { "type": "product", "id": "product_d", "label": "Look D (optional)" },
+    { "type": "text", "id": "name_d", "label": "Short name for look D" },
     { "type": "header", "content": "Headline" },
     { "type": "text", "id": "title_before", "label": "Before the word", "default": "A" },
     { "type": "text", "id": "word_a", "label": "Word for look A", "default": "frosty" },
     { "type": "text", "id": "word_b", "label": "Word for look B", "default": "cozy" },
+    { "type": "text", "id": "word_c", "label": "Word for look C", "default": "jolly" },
+    { "type": "text", "id": "word_d", "label": "Word for look D", "default": "merry" },
     { "type": "text", "id": "title_after", "label": "After the word", "default": "Christmas" },
     { "type": "header", "content": "Swap" },
     { "type": "text", "id": "hint", "label": "Hint (mouse)", "default": "Hover the case for [word]", "info": "[word] becomes the other look's word." },
     { "type": "text", "id": "touch_hint", "label": "Hint (touch)", "default": "Drag across the case for [word]" },
     { "type": "text", "id": "keep_label", "label": "Keep button", "default": "Keep the [word] look" },
+    { "type": "color", "id": "colour_a", "label": "Swatch for look A", "default": "#CEDBE6", "info": "The main colour of that case's print." },
+    { "type": "color", "id": "colour_b", "label": "Swatch for look B", "default": "#50322E" },
+    { "type": "color", "id": "colour_c", "label": "Swatch for look C", "default": "#C4232A" },
+    { "type": "color", "id": "colour_d", "label": "Swatch for look D", "default": "#354F52" },
+    { "type": "text", "id": "swatches_label", "label": "Name of the swatches (screen readers)", "default": "Choose a colour" },
     { "type": "header", "content": "Callouts" },
     { "type": "text", "id": "label_edge", "label": "Edge label", "default": "Edge" },
     { "type": "text", "id": "label_finish", "label": "Finish label", "default": "Finish" },
     { "type": "text", "id": "label_fit", "label": "Fit label", "default": "Fits" },
     { "type": "text", "id": "fit_text", "label": "Fit text", "default": "[count] phone models", "info": "[count] is the number of phone models the case is made for. Hidden when there is one or none." },
     { "type": "text", "id": "label_print", "label": "Print label", "default": "Printed" },
-    { "type": "text", "id": "print_text", "label": "Print text", "default": "To order, in the USA", "info": "Leave empty to hide it." },
+    { "type": "text", "id": "print_text", "label": "Print text", "default": "In the USA", "info": "Leave empty to hide it." },
     { "type": "header", "content": "Card" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Christmas edit", "info": "The case's edge (the part of its title after |) is added after it." },
     { "type": "text", "id": "shop_label", "label": "Shop link", "default": "Shop now" },

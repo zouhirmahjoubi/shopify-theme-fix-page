@@ -1,9 +1,13 @@
 /* =========================================================================
    Swap hero (sections/cv-swap-hero.liquid)
-   One case in two prints. Resting states only: GSAP, three.js and Motion
-   (assets/cv-swap-hero.js) do every move. Look A is cool (teal), look B warm
-   (candy red); .cvsw--b is the settled B state. Without JS: look A, its card
-   and links; the under photo stays hidden.
+   One case in up to four prints. Resting states only: GSAP, three.js and Motion
+   (assets/cv-swap-hero.js) do every move. Each look has its colour (.cvsw--a to
+   .cvsw--d). Without JS: look A, its card and links; the under photo stays hidden.
+
+   The white studio background never shows. The photos and the three more cases
+   multiply into the page, which needs them in .cvsw's own stacking context: the
+   hold and the panel stay out of the z-index game, their parts carry it instead.
+   Same look at every width: pinned callouts, round bag, glass band under the case.
    ========================================================================= */
 
 /* ds-allow-hardcode:start  theme.css defines colour, shadow and motion tokens only (no spacing,
@@ -15,9 +19,8 @@
   --cvsw-body: var(--cocoa-600, #4A3324);
   --cvsw-muted: var(--cocoa-500, #6B4229);
   --cvsw-paper: var(--cream-50, #FDF9F1);
-  --cvsw-cool: var(--teal-600, #4E7C7B);
-  --cvsw-warm: var(--red-600, #A8231F);
-  --cvsw-accent: var(--cvsw-cool);
+  --cvsw-word: var(--teal-600, #4E7C7B);
+  --cvsw-accent: var(--teal-700, #33605F); /* small text: teal-600 misses AA on cream */
   --cvsw-focus: var(--focus-ring, #4E7C7B);
   --cvsw-case-w: clamp(250px, 29vw, 420px);
 
@@ -28,18 +31,22 @@
   color: var(--cvsw-ink);
   overflow: clip;
 }
-.cvsw::before, .cvsw__tint {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+.cvsw__tint {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
+  background: radial-gradient(110% 80% at 50% 30%, var(--cvsw-tint) 0%, var(--cream-100, #FBF3E4) 70%);
 }
-.cvsw::before { background: radial-gradient(110% 80% at 50% 30%, var(--teal-100, #E4F0EE) 0%, var(--cream-100, #FBF3E4) 70%); }
-.cvsw__tint { background: radial-gradient(110% 80% at 50% 30%, var(--gold-200, #F0E2C2) 0%, var(--cream-100, #FBF3E4) 70%); }
-.cvsw--a .cvsw__tint { opacity: 0; }
-.cvsw--b { --cvsw-accent: var(--cvsw-warm); }
-.cvsw--b .cvsw__tint { opacity: 1; }
+.cvsw__tint--a { --cvsw-tint: var(--teal-100, #E4F0EE); }
+.cvsw__tint--b { --cvsw-tint: var(--gold-200, #F0E2C2); }
+.cvsw__tint--c { --cvsw-tint: color-mix(in srgb, var(--red-300, #E58C82) 30%, var(--cream-100, #FBF3E4)); }
+.cvsw__tint--d { --cvsw-tint: var(--teal-200, #CDE3E0); }
+.cvsw--a .cvsw__tint--a, .cvsw--b .cvsw__tint--b, .cvsw--c .cvsw__tint--c, .cvsw--d .cvsw__tint--d { opacity: 1; }
+.cvsw--b { --cvsw-accent: var(--cocoa-500, #6B4229); --cvsw-word: var(--cocoa-500, #6B4229); }
+.cvsw--c { --cvsw-accent: var(--red-600, #A8231F); --cvsw-word: var(--red-600, #A8231F); }
+.cvsw--d { --cvsw-accent: var(--teal-700, #33605F); --cvsw-word: var(--teal-700, #33605F); }
 .cvsw [hidden] { display: none !important; }
 .cvsw__sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* ---------- Headline (behind the case) ---------- */
+/* ---------- Headline ---------- */
 .cvsw .cvsw__title {
   position: relative; z-index: 1;
   margin: 0 auto; width: min(1240px, 100% - 32px);
@@ -48,24 +55,21 @@
   line-height: .9; letter-spacing: -.035em; text-align: center; text-wrap: balance;
   color: var(--cvsw-ink);
 }
-.cvsw__word { display: inline-block; font-style: italic; color: var(--cvsw-accent); padding-inline: .04em; }
+.cvsw__word { display: inline-block; box-sizing: border-box; font-style: italic; color: var(--cvsw-word); padding-inline: .04em; white-space: nowrap; }
 
 /* ---------- Stage ---------- */
 .cvsw__stage { position: relative; width: min(1240px, 100% - 32px); margin: 0 auto; }
-/* The hold is the case's box: on wide screens the hint and callouts are pinned around it,
-   on narrow ones they flow below it. */
+/* The hold is the case's box; the controls and callouts are pinned around it. */
 .cvsw__hold {
-  position: relative; z-index: 3;
+  position: relative;
   width: var(--cvsw-case-w);
-  margin: clamp(-64px, -3.2vw, -20px) auto 0;
+  margin: clamp(10px, 2.4vw, 34px) auto 0; /* clears the descender of the word above */
 }
 .cvsw__case { position: relative; width: 100%; aspect-ratio: .741; touch-action: pan-y; }
-.cvsw__photos { position: absolute; inset: 0; overflow: hidden; }
-/* Without WebGL the studio photo shows as it is: a clean photo tile. */
-.cvsw:not(.is-gl) .cvsw__photos { border-radius: 22px; background: var(--white, #FFFDF8); box-shadow: 0 26px 44px -30px rgba(51, 35, 26, .5); }
+.cvsw__photos { position: absolute; inset: 0; z-index: 3; overflow: hidden; mix-blend-mode: multiply; }
 .cvsw__photo {
   position: absolute; left: 50%; top: 50%;
-  width: 155%; max-width: none; height: auto;
+  width: 148.1%; max-width: none; height: auto; /* the size the canvas draws the case at */
   transform: translate(-50.75%, -49.5%);
   pointer-events: none; -webkit-user-drag: none; user-select: none;
 }
@@ -75,15 +79,19 @@
   -webkit-mask-image: radial-gradient(circle var(--cvsw-r, 0px) at var(--cvsw-mx, 50%) var(--cvsw-my, 50%), #000 55%, transparent 100%);
   mask-image: radial-gradient(circle var(--cvsw-r, 0px) at var(--cvsw-mx, 50%) var(--cvsw-my, 50%), #000 55%, transparent 100%);
 }
-.cvsw__gl { position: absolute; inset: -6%; pointer-events: none; }
+.cvsw__gl { position: absolute; inset: -6%; z-index: 3; pointer-events: none; }
 .cvsw__gl canvas { display: block; width: 100% !important; height: 100% !important; }
 .cvsw.is-gl .cvsw__photos { opacity: 0; }
 
-/* The keep pill sits on the case's shoulder. */
+/* The keep pill and the colour swatches sit on the case's shoulder. */
+.cvsw__controls {
+  position: absolute; z-index: 4; left: calc(100% + 14px); top: 4%;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  width: max-content;
+}
 .cvsw__hint {
-  position: absolute; z-index: 4; top: 9%; right: -34%;
   display: inline-flex; align-items: center; gap: 8px;
-  min-height: 40px; padding: 8px 14px;
+  min-height: 44px; padding: 8px 14px;
   border: 1px solid rgba(255, 253, 248, .8); border-radius: 999px;
   background: rgb(var(--glass-tint, 253 249 241) / .78);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
@@ -93,8 +101,17 @@
   cursor: pointer; white-space: nowrap;
 }
 .cvsw__hint svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-.cvsw__hint:focus-visible { outline: 3px solid var(--cvsw-focus); outline-offset: 3px; }
+.cvsw__hint:focus-visible, .cvsw__swatch:focus-visible { outline: 3px solid var(--cvsw-focus); outline-offset: 2px; }
 .cvsw__hint.is-ready { background: var(--cvsw-accent); color: var(--cvsw-paper); border-color: transparent; }
+
+.cvsw__swatches { display: flex; gap: 2px; }
+.cvsw__swatch { position: relative; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.cvsw__swatch::before {
+  content: ""; position: absolute; inset: 9px; border-radius: 50%;
+  background: var(--cvsw-swatch);
+  box-shadow: 0 0 0 1px rgba(51, 35, 26, .22), 0 4px 8px -4px rgba(51, 35, 26, .45);
+}
+.cvsw__swatch[aria-pressed="true"]::before { box-shadow: 0 0 0 2px var(--cvsw-paper), 0 0 0 4px var(--cvsw-accent); }
 
 /* ---------- Callouts pinned around the case ---------- */
 .cvsw__callouts { position: absolute; inset: 0; z-index: 4; margin: 0; padding: 0; list-style: none; pointer-events: none; }
@@ -108,25 +125,30 @@
   white-space: nowrap;
 }
 .cvsw__callout::before { content: ""; position: absolute; left: 11px; top: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--cvsw-accent); box-shadow: 0 0 0 3px rgb(var(--glass-tint, 253 249 241) / .9); }
-.cvsw__callout span { font-family: var(--font-label); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--cvsw-accent); }
+.cvsw__callout span { font-family: var(--font-label); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--cvsw-accent); }
 .cvsw__callout b { font-family: var(--font-body); font-size: 13.5px; font-weight: 700; color: var(--cvsw-ink); }
 .cvsw__callout--edge { top: 30%; right: 86%; }
 .cvsw__callout--fit { top: 52%; left: 84%; }
-.cvsw__callout--finish { top: 76%; right: 90%; }
+.cvsw__callout--finish { top: 88%; right: 78%; } /* below the art most prints carry */
 .cvsw__callout--print { top: 84%; left: 78%; }
 
 /* ---------- Glass band: card, bag, more ---------- */
 .cvsw__panel {
-  position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
-  height: 62%; min-height: 300px;
+  position: absolute; left: 0; right: 0; bottom: 0;
+  min-height: max(62%, 300px); /* grows upward when a look has more to say */
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding: 28px 28px 28px 36px;
+}
+/* The glass is its own layer, so the panel makes no stacking context and the three more cases
+   can multiply into it. */
+.cvsw__panel::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   border: 1px solid rgba(255, 253, 248, .75); border-radius: 30px;
   background: linear-gradient(120deg, rgb(var(--glass-tint, 253 249 241) / .72), rgb(var(--glass-tint, 253 249 241) / .42));
   -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%);
   box-shadow: 0 30px 60px -36px rgba(51, 35, 26, .45);
 }
-.cvsw__card { display: grid; gap: 10px; width: min(360px, 30%); }
+.cvsw__card { position: relative; display: grid; gap: 10px; width: min(320px, 26%); }
 .cvsw__eyebrow { margin: 0; }
 .cvsw__eyebrow span {
   display: inline-flex; align-items: center; min-height: 28px; padding: 4px 12px;
@@ -137,7 +159,7 @@
 .cvsw__name a { color: var(--cvsw-ink); text-decoration: none; }
 .cvsw__name a:hover { color: var(--cvsw-accent); }
 .cvsw__name a:focus-visible, .cvsw__shop:focus-visible, .cvsw__bag:focus-visible, .cvsw__more-link:focus-visible { outline: 3px solid var(--cvsw-focus); outline-offset: 3px; }
-.cvsw__blurb { margin: 0; font-family: var(--font-body); font-size: 14.5px; line-height: 1.6; color: var(--cvsw-body); }
+.cvsw__blurb { margin: 0; font-family: var(--font-body); font-size: 14.5px; line-height: 1.6; color: var(--cvsw-body); text-wrap: pretty; }
 .cvsw__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 4px; }
 .cvsw__price { display: flex; align-items: baseline; gap: 8px; margin: 0; font-variant-numeric: tabular-nums; }
 .cvsw__price span { font-family: var(--font-display); font-size: 30px; font-weight: 900; line-height: 1; color: var(--cvsw-ink); }
@@ -150,7 +172,7 @@
 }
 .cvsw__shop svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .cvsw__shop:hover { background: var(--cvsw-ink); color: var(--cvsw-paper); }
-.cvsw__facts { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 2px 0 0; font-family: var(--font-body); font-size: 13.5px; color: var(--cvsw-body); }
+.cvsw__facts { margin: 2px 0 0; font-family: var(--font-body); font-size: 13.5px; color: var(--cvsw-body); }
 
 .cvsw__bag {
   position: absolute; z-index: 5; right: 148px; top: -58px;
@@ -165,12 +187,13 @@
 .cvsw__bag:not([data-cvqp-open]) { background: var(--cocoa-500, #6B4229); }
 
 .cvsw__more { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.cvsw__more-link {
-  position: relative; display: block; width: 92px; aspect-ratio: 1;
-  overflow: hidden; border-radius: 16px; background: var(--white, #FFFDF8);
-  box-shadow: 0 10px 20px -14px rgba(51, 35, 26, .5);
+.cvsw__more-link { position: relative; display: block; width: 92px; aspect-ratio: 1; overflow: hidden; }
+/* Sized so the whole case fits the square; the crop works for the usual front-and-side mockup. */
+.cvsw__more-img {
+  position: absolute; left: 50%; top: 50%; width: 115%; max-width: none; height: auto;
+  transform: translate(-50.75%, -49.5%);
+  mix-blend-mode: multiply;
 }
-.cvsw__more-img { width: 100%; height: 100%; object-fit: cover; }
 .cvsw__more-price {
   position: absolute; left: 6px; bottom: 6px; padding: 2px 7px; border-radius: 999px;
   background: var(--cvsw-ink); color: var(--cvsw-paper);
@@ -181,37 +204,49 @@
 .cvsw__ornaments { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .cvsw__ornament { position: absolute; width: clamp(44px, 5vw, 76px); height: auto; opacity: .9; }
 .cvsw__ornament--1 { left: 5%; top: 34%; }
-.cvsw__ornament--2 { right: 8%; top: 14%; width: clamp(36px, 4vw, 58px); }
-.cvsw__ornament--3 { left: 22%; top: 46%; width: clamp(30px, 3vw, 46px); }
-.cvsw__ornament--4 { right: 22%; top: 40%; }
-.cvsw__ornament--5 { left: 4%; bottom: 8%; width: clamp(34px, 3.4vw, 52px); }
-.cvsw__ornament--6 { right: 3%; bottom: 14%; width: clamp(30px, 3vw, 44px); }
+.cvsw__ornament--2 { right: 2.5%; top: 6%; width: clamp(36px, 4vw, 58px); }
+.cvsw__ornament--3 { left: 20%; top: 30%; width: clamp(30px, 3vw, 46px); }
+.cvsw__ornament--4 { right: 4%; top: 30%; }
 
 .cvsw-empty { padding: 40px 20px; text-align: center; font-family: var(--font-label); color: var(--cocoa-500, #6B4229); }
 
-/* ---------- Tablet and phone: one column ---------- */
-@media (max-width: 989px) {
-  .cvsw { --cvsw-case-w: min(64vw, 340px); }
-  .cvsw__hold { width: min(100%, 420px); }
-  .cvsw__case { width: var(--cvsw-case-w); margin-inline: auto; }
-  .cvsw__hint { position: relative; inset: auto; display: flex; width: max-content; max-width: 100%; margin: 12px auto 0; }
-  .cvsw__callouts { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0 0; pointer-events: auto; }
-  .cvsw__callout { position: static; white-space: normal; }
+/* ---------- Under 1200px: the same parts, with the glass band below the case instead of beside it.
+   The case dips into the band; the controls sit on the band's top, the card under them. ---------- */
+@media (max-width: 1199px) {
+  .cvsw { --cvsw-case-w: clamp(220px, 62vw, 340px); }
+  .cvsw__controls { left: 50%; top: calc(100% + 10px); transform: translateX(-50%); align-items: center; max-width: calc(100vw - 32px); }
+  .cvsw__callout--edge { top: 30%; right: 80%; }
+  .cvsw__callout--finish { top: 86%; right: 80%; }
+  .cvsw__callout--fit { top: 26%; left: 80%; }
+  .cvsw__callout--print { top: 48%; left: 80%; }
   .cvsw__panel {
-    position: relative; height: auto; min-height: 0; margin-top: 18px;
-    flex-direction: column; align-items: stretch; gap: 18px; padding: 22px 18px;
+    position: relative; left: auto; right: auto; bottom: auto;
+    width: min(100%, 640px); height: auto; min-height: 0;
+    margin: -40px auto 0; padding: 158px 20px 22px;
+    flex-direction: column; align-items: stretch; gap: 18px;
   }
+  .cvsw:not(:has(.cvsw__swatches:not([hidden]))) .cvsw__panel { padding-top: 64px; } /* no controls to clear */
   .cvsw__card { width: auto; }
-  .cvsw__bag { position: static; width: auto; height: 52px; border-radius: 999px; grid-auto-flow: column; gap: 10px; box-shadow: 0 14px 26px -16px rgba(126, 26, 23, .7); }
-  .cvsw__more { grid-auto-flow: column; justify-content: start; }
-  .cvsw__more-link { width: 84px; }
+  .cvsw__bag {
+    right: 12px; top: -46px; width: 92px; height: 92px; gap: 2px; font-size: 10.5px; letter-spacing: .06em;
+    box-shadow: 0 0 0 6px rgb(var(--glass-tint, 253 249 241) / .55), 0 16px 28px -16px rgba(126, 26, 23, .7);
+  }
+  .cvsw__more { grid-template-columns: repeat(3, minmax(0, 148px)); justify-content: center; }
+  .cvsw__more-link { width: 100%; }
+  .cvsw__ornament--1 { left: 3%; top: 5%; }
   .cvsw__ornament--3, .cvsw__ornament--4 { display: none; }
 }
 @media (max-width: 749px) {
   .cvsw .cvsw__title { font-size: clamp(42px, 13vw, 72px) !important; }
-  .cvsw { --cvsw-case-w: min(70vw, 300px); }
   .cvsw__hold { margin-top: 10px; }
-  .cvsw__callout b { font-size: 13px; }
+  /* Phone: the callouts hold to the screen's edges, each a little over the case. */
+  .cvsw__callout { padding: 6px 10px 6px 20px; }
+  .cvsw__callout::before { left: 8px; top: 11px; }
+  .cvsw__callout b { font-size: 12px; }
+  .cvsw__callout span { font-size: 10px; }
+  .cvsw__callout--edge, .cvsw__callout--finish { right: auto; left: calc((var(--cvsw-case-w) - 100vw) / 2 + 8px); }
+  .cvsw__callout--fit, .cvsw__callout--print { left: auto; right: calc((var(--cvsw-case-w) - 100vw) / 2 + 8px); }
+  .cvsw__ornament--1 { width: 36px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

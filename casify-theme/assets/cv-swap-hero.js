@@ -1,11 +1,11 @@
 /* Casify: Swap hero (sections/cv-swap-hero.liquid, styles in cv-swap-hero.css).
  *
- * One case in two prints, A and B. three.js draws the case from the two
- * product photos (Printify shoots every print the same way, so they line up)
+ * One case in up to four prints, A to D. three.js draws the case from the
+ * product photos (Printify shoots these prints the same way, so they line up)
  * in a shader: the white studio background is keyed out, a brush mask that
- * follows the pointer paints the other print on and ebbs away, a rising tide
- * sweeps it across the whole case when the shopper keeps it, and a gold rim
- * glints where the two prints meet. GSAP runs the swap (headline word, tint,
+ * follows the pointer paints the next print on and ebbs away, a rising tide
+ * sweeps a print across the whole case when the shopper keeps it or picks its
+ * swatch, and a gold rim glints where two prints meet. GSAP runs the swap (headline word, tint,
  * card), the scroll parallax and the pointer drift of the ornaments; Motion
  * springs the callouts and the keep pill.
  *
@@ -87,7 +87,7 @@ uniform vec3 uRim;
 uniform float uFade;
 varying vec2 vUv;
 float keyAlpha(vec3 c) {
-  return 1.0 - smoothstep(0.915, 0.985, min(c.r, min(c.g, c.b)));
+  return 1.0 - smoothstep(0.962, 0.993, min(c.r, min(c.g, c.b)));
 }
 void main() {
   vec2 st = vec2(mix(uCrop.x, uCrop.z, vUv.x), 1.0 - mix(uCrop.y, uCrop.w, 1.0 - vUv.y));
@@ -113,7 +113,9 @@ function init(root) {
   let looks;
   try { looks = JSON.parse(one('[data-cvsw-looks]', root).textContent); } catch (e) { return; }
   if (!looks || !looks.a) return;
-  const hasSwap = !!looks.b;
+  const keys = ['a', 'b', 'c', 'd'].filter((k) => looks[k]);
+  const hasSwap = keys.length > 1;
+  const nextOf = (key) => keys[(keys.indexOf(key) + 1) % keys.length];
 
   const gsap = window.gsap;
   const ST = window.ScrollTrigger;
@@ -132,7 +134,8 @@ function init(root) {
   const keepBtn = one('[data-cvsw-keep]', root);
   const hintText = one('[data-cvsw-hint]', root);
   const word = one('[data-cvsw-word]', root);
-  const tint = one('[data-cvsw-tint]', root);
+  const tints = all('[data-cvsw-tint]', root);
+  const swatches = all('[data-cvsw-swatch]', root);
   const status = one('[data-cvsw-status]', root);
 
   let front = 'a';
@@ -140,15 +143,16 @@ function init(root) {
   let ready = false;
   let gl = null;
   let alive = true;
+  let focused = false;
   const motion = () => !reduceQuery.matches && !!gsap;
-  const other = () => (front === 'a' ? 'b' : 'a');
+  const other = () => nextOf(front);
 
   /* ---------- the card, callouts and buttons follow the front look ---------- */
   function setText(el, text) { if (el) el.textContent = text; }
   function fillCard(key) {
     const l = looks[key];
-    root.classList.toggle('cvsw--a', key === 'a');
-    root.classList.toggle('cvsw--b', key === 'b');
+    keys.forEach((k) => root.classList.toggle('cvsw--' + k, k === key));
+    swatches.forEach((b) => b.setAttribute('aria-pressed', b.getAttribute('data-cvsw-swatch') === key ? 'true' : 'false'));
     const eyebrow = root.getAttribute('data-eyebrow') || '';
     setText(one('[data-cvsw-eyebrow]', root), eyebrow + (l.edge ? ' · ' + l.edge : ''));
     const name = one('[data-cvsw-name]', root);
@@ -160,8 +164,6 @@ function init(root) {
     if (was) { was.textContent = l.was; was.hidden = !l.was; }
     const shop = one('[data-cvsw-shop]', root);
     if (shop) shop.href = l.url;
-    const fit = one('[data-cvsw-fit]', root);
-    if (fit) { fit.textContent = l.fit; fit.hidden = !l.fit; }
     ['edge', 'finish', 'fit'].forEach((k) => {
       const val = one('[data-cvsw-val="' + k + '"]', root);
       if (!val) return;
@@ -184,12 +186,14 @@ function init(root) {
   function hint() {
     if (!keepBtn || !hasSwap) return;
     const w = looks[other()].word;
-    const text = ready
+    /* The pill says what it does once there is nothing to paint first: reduced motion, or
+       reached by keyboard. Its visible text is its name. */
+    const keep = ready || focused || !motion();
+    const text = keep
       ? fill(root.getAttribute('data-keep'), { word: w })
       : fill(root.getAttribute(fineQuery.matches ? 'data-hint' : 'data-touch-hint'), { word: w });
     setText(hintText, text);
-    keepBtn.classList.toggle('is-ready', ready);
-    keepBtn.setAttribute('aria-label', fill(root.getAttribute('data-keep'), { word: w }));
+    keepBtn.classList.toggle('is-ready', keep);
   }
 
   function spring(targets, from) {
@@ -206,70 +210,82 @@ function init(root) {
     if (!animate || !motion()) {
       fillCard(key);
       setText(word, l.word);
-      if (tint && gsap) gsap.set(tint, { clearProps: 'opacity' });
+      if (gsap) gsap.set(tints, { clearProps: 'opacity' });
       hint();
       return;
     }
     const card = one('[data-cvsw-card]', root);
-    hold(gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .to(word, { yPercent: -35, opacity: 0, filter: 'blur(8px)', duration: 0.28, ease: 'power2.in' }, 0)
+    const tl = hold(gsap.timeline({ defaults: { ease: 'power3.out' } }));
+    tints.forEach((t) => tl.to(t, { opacity: t.getAttribute('data-cvsw-tint') === key ? 1 : 0, duration: 0.8, ease: 'power2.inOut', clearProps: 'opacity' }, 0));
+    tl.to(word, { yPercent: -35, opacity: 0, filter: 'blur(8px)', duration: 0.28, ease: 'power2.in' }, 0)
       .to(card, { opacity: 0, y: -8, duration: 0.24, ease: 'power2.in' }, 0)
-      .to(tint, { opacity: key === 'b' ? 1 : 0, duration: 0.8, ease: 'power2.inOut' }, 0)
-      .add(() => { fillCard(key); setText(word, l.word); hint(); }, 0.3)
+      .add(() => {
+        /* The new word takes its width over time, so the words beside it glide instead of jumping. */
+        const was = word.offsetWidth;
+        fillCard(key);
+        setText(word, l.word);
+        hold(gsap.fromTo(word, { width: was }, { width: word.offsetWidth, duration: 0.5, ease: 'power3.inOut', clearProps: 'width' }));
+        hint();
+      }, 0.3)
       .fromTo(word, { yPercent: 40, opacity: 0, filter: 'blur(8px)' }, { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: 0.6, clearProps: 'transform,opacity,filter' }, 0.32)
       .fromTo(card, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'transform,opacity' }, 0.36)
       .add(() => {
-        gsap.set(tint, { clearProps: 'opacity' });
         /* Spelled-out end transform: Motion turns a 'none' keyframe into scale(0). */
         spring(all('[data-cvsw-callout]:not([hidden])', root), { opacity: [0, 1], transform: ['translateY(8px) scale(0.94)', 'translateY(0px) scale(1)'] });
-      }, 0.38));
+      }, 0.38);
   }
 
-  /* ---------- swap: the other print becomes the front ---------- */
+  /* ---------- swap: another print becomes the front (the next one, or a swatch's) ---------- */
   let swapping = false;
-  function swap() {
-    if (!hasSwap || swapping) return;
-    const next = other();
+  function swap(target) {
+    const next = target || other();
+    if (!hasSwap || swapping || next === front) return;
     swapping = true;
     const done = () => {
       front = next;
-      /* Also covers a swap made before three.js was ready. */
+      /* The photos follow too: they are what shows if WebGL is lost later. Also covers a swap
+         made before three.js was ready. */
+      setPhotos(front);
       if (gl) gl.show(front);
       ready = false;
       ink = 0;
       swapping = false;
       hint();
       if (status) status.textContent = looks[front].short;
-      if (keepBtn) keepBtn.setAttribute('aria-pressed', front === 'b' ? 'true' : 'false');
     };
     if (gl) {
       gl.swapTo(next, () => show(next, true), done);
     } else if (motion()) {
+      putPhoto(underImg, looks[next]);
       show(next, true);
       hold(gsap.to(brush, { v: caseBox.offsetHeight * 1.6, duration: 0.8, ease: 'power2.inOut', overwrite: true, onUpdate: setBrush, onComplete: () => {
-        swapPhotos();
         brush.v = 0;
         setBrush();
         done();
       } }));
     } else {
       show(next, false);
-      swapPhotos();
       done();
     }
   }
-  function swapPhotos() {
-    if (!topImg || !underImg) return;
-    const s = topImg.getAttribute('src');
-    topImg.setAttribute('src', underImg.getAttribute('src'));
-    underImg.setAttribute('src', s);
+  function putPhoto(img, look) {
+    if (img && look && img.getAttribute('src') !== look.image) img.setAttribute('src', look.image);
+  }
+  function setPhotos(key) {
+    putPhoto(topImg, looks[key]);
+    putPhoto(underImg, looks[nextOf(key)]);
   }
 
   if (keepBtn && hasSwap) {
     keepBtn.hidden = false;
     hint();
-    on(keepBtn, 'click', swap);
+    on(keepBtn, 'click', () => swap());
+    const swatchRow = one('[data-cvsw-swatches]', root);
+    if (swatchRow) swatchRow.hidden = false;
+    swatches.forEach((b) => on(b, 'click', () => swap(b.getAttribute('data-cvsw-swatch'))));
     on(fineQuery, 'change', hint);
+    on(keepBtn, 'focus', () => { focused = keepBtn.matches(':focus-visible'); hint(); });
+    on(keepBtn, 'blur', () => { focused = false; hint(); });
     if (M && M.animate && motion()) {
       on(keepBtn, 'pointerenter', () => spring([keepBtn], { transform: ['scale(1)', 'scale(1.05)'] }));
       on(keepBtn, 'pointerleave', () => spring([keepBtn], { transform: ['scale(1.05)', 'scale(1)'] }));
@@ -316,7 +332,8 @@ function init(root) {
     const crop = (root.getAttribute('data-crop') || '0,0,1,1').split(',').map(Number);
     const aspect = (crop[2] - crop[0]) / (crop[3] - crop[1]);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true }); } catch (e) { cssBrush(); return; }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, 0);
     const canvas = renderer.domElement;
@@ -324,11 +341,21 @@ function init(root) {
 
     const loader = new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
-    const load = (url) => loader.loadAsync(url).then((t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; });
+    /* No colour space on the textures: the shader writes the photo's own values straight to the
+       canvas, so the print shows the colours it has in the photo.
+       The front and next prints load first; the others when the browser is idle or when asked for. */
+    const textures = {};
+    const loading = {};
+    const loadTex = (key) => loading[key] || (loading[key] = loader.loadAsync(looks[key].image).then((t) => {
+      if (!alive) { t.dispose(); return t; }
+      t.anisotropy = 4;
+      textures[key] = t;
+      return t;
+    }));
     let texTop;
     let texUnder;
     try {
-      [texTop, texUnder] = await Promise.all([load(looks.a.image), load((looks.b || looks.a).image)]);
+      [texTop, texUnder] = await Promise.all([loadTex(front), loadTex(other())]);
     } catch (e) {
       renderer.dispose();
       canvas.remove();
@@ -336,7 +363,8 @@ function init(root) {
       return;
     }
     if (!alive) { renderer.dispose(); return; }
-    const textures = { a: texTop, b: texUnder };
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1500));
+    idle(() => { if (alive) keys.forEach((k) => loadTex(k).catch(() => {})); });
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 20);
@@ -362,10 +390,10 @@ function init(root) {
     const mat = new THREE.ShaderMaterial({
       vertexShader: VERT, fragmentShader: CASE_FRAG, transparent: true,
       uniforms: {
-        uTop: { value: textures[front] }, uUnder: { value: textures[other()] }, uMask: { value: maskB.texture },
+        uTop: { value: texTop }, uUnder: { value: texUnder }, uMask: { value: maskB.texture },
         uCrop: { value: new THREE.Vector4(crop[0], crop[1], crop[2], crop[3]) },
         uTide: { value: 0 }, uScrollTide: { value: 0 }, uTime: { value: 0 },
-        uPointer: { value: new THREE.Vector2(0, 0) }, uRim: { value: new THREE.Color(0xF0E2C2) }, uFade: { value: 0 }
+        uPointer: { value: new THREE.Vector2(0, 0) }, uRim: { value: new THREE.Vector3(240 / 255, 226 / 255, 194 / 255) }, uFade: { value: 0 }
       }
     });
     const mesh = new THREE.Mesh(geo, mat);
@@ -380,7 +408,8 @@ function init(root) {
       camera.updateProjectionMatrix();
     }
     size();
-    const resizer = new ResizeObserver(size);
+    /* Resizing empties the canvas, so it is drawn again at once (a turned phone, say). */
+    const resizer = new ResizeObserver(() => { size(); renderer.render(scene, camera); wake(400); });
     resizer.observe(glBox);
 
     /* The pointer: a ray onto the case gives the brush its spot on the print. */
@@ -457,10 +486,17 @@ function init(root) {
     });
     io.observe(caseBox);
 
-    /* The canvas takes over from the photos once its first frame is drawn. */
+    /* WebGL can be taken away (a phone reclaiming memory): the photos come back until it returns. */
+    on(canvas, 'webglcontextlost', (e) => { e.preventDefault(); sleep(); root.classList.remove('is-gl'); });
+    on(canvas, 'webglcontextrestored', () => { clearMask(); root.classList.add('is-gl'); wake(600); });
+
+    /* The canvas takes over from the photos once its first frame is drawn: a crossfade. */
     renderer.render(scene, camera);
-    root.classList.add('is-gl');
     hold(gsap.fromTo(mat.uniforms.uFade, { value: 0 }, { value: 1, duration: 0.6, ease: 'power2.out', onUpdate: () => wake(400) }));
+    hold(gsap.to(photos, { opacity: 0, duration: 0.6, ease: 'power2.out', onComplete: () => {
+      root.classList.add('is-gl');
+      gsap.set(photos, { clearProps: 'opacity' });
+    } }));
 
     /* A first wave hints that the case changes: the other print laps at the
        bottom edge and runs back. */
@@ -480,26 +516,33 @@ function init(root) {
 
     gl = {
       swapTo(next, midway, done) {
-        swapping = true;
-        hold(gsap.timeline({ onUpdate: () => wake(400) })
-          .to(mat.uniforms.uTide, { value: 1.05, duration: 0.95, ease: 'power2.inOut' })
-          .add(midway, 0.3)
-          .add(() => {
-            mat.uniforms.uTide.value = 0;
-            clearMask();
-            done();
-          }));
+        loadTex(next).then((t) => {
+          if (!alive) return;
+          mat.uniforms.uUnder.value = t;
+          hold(gsap.timeline({ onUpdate: () => wake(400) })
+            .to(mat.uniforms.uTide, { value: 1.05, duration: 0.95, ease: 'power2.inOut' })
+            .add(midway, 0.3)
+            .add(() => {
+              mat.uniforms.uTide.value = 0;
+              clearMask();
+              done();
+            }));
+        }).catch(() => { midway(); done(); });
       },
       show(key) {
+        /* A print that would not load: the photos, already on it, take over. */
+        if (!textures[key]) { root.classList.remove('is-gl'); return; }
         mat.uniforms.uTop.value = textures[key];
-        mat.uniforms.uUnder.value = textures[key === 'a' ? 'b' : 'a'];
+        loadTex(nextOf(key)).then((t) => {
+          if (alive && front === key) { mat.uniforms.uUnder.value = t; wake(400); }
+        }).catch(() => {});
         wake(400);
       },
       destroy() {
         sleep();
         resizer.disconnect();
         io.disconnect();
-        [texTop, texUnder].forEach((t) => t.dispose());
+        Object.keys(textures).forEach((k) => textures[k].dispose());
         maskA.dispose(); maskB.dispose();
         geo.dispose(); mat.dispose(); paintMat.dispose();
         renderer.dispose();
@@ -537,6 +580,7 @@ function init(root) {
   }
 
   fillCard('a');
+  setPhotos('a');
   hint();
   if (motion()) {
     ornaments();
@@ -555,7 +599,8 @@ function init(root) {
   }
   on(reduceQuery, 'change', () => { init(root); });
 
-  root._cvswFinish = () => { tweens.forEach((t) => t && t.progress && t.progress(1)); };
+  /* Scrubbed tweens stay with the scroll position. */
+  root._cvswFinish = () => { tweens.forEach((t) => { if (t && t.progress && !t.scrollTrigger) t.progress(1); }); };
   root._cvswDestroy = () => {
     alive = false;
     abort.abort();
@@ -565,7 +610,11 @@ function init(root) {
     if (gl) gl.destroy();
     gl = null;
     root.classList.remove('is-maskable');
-    if (gsap) gsap.set(all('[data-cvsw-ornament], .cvsw__title, [data-cvsw-word], [data-cvsw-card], [data-cvsw-tint]', root), { clearProps: 'all' });
+    if (underImg) underImg.style.removeProperty('--cvsw-r');
+    if (gsap) {
+      gsap.killTweensOf(brush);
+      gsap.set(all('[data-cvsw-ornament], .cvsw__title, [data-cvsw-word], [data-cvsw-card], [data-cvsw-tint], [data-cvsw-photos]', root), { clearProps: 'all' });
+    }
     delete root._cvswDestroy;
     delete root._cvswFinish;
   };
