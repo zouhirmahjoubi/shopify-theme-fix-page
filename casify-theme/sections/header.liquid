@@ -1,5 +1,5 @@
 {%- comment -%}
-  Casify — header: striped awning with a running ticker, cocoa topbar, and the
+  Casify: header: striped awning with a running ticker, cocoa topbar, and the
   sticky nav carrying the hanging shop sign (snippets/casify-logo.liquid).
 
   Behaviour + GSAP motion: assets/cv-header.js (loaded from layout/theme.liquid,
@@ -116,37 +116,69 @@
 </div>
 
 <div id="cm-mobile-nav-scrim" class="cm-mobile-nav__scrim" data-mobile-menu-close aria-hidden="true"></div>
-<nav id="cm-mobile-nav" class="cm-mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile" aria-hidden="true">
+<nav id="cm-mobile-nav" class="cm-mobile-nav" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <span class="cvm-awning" aria-hidden="true"><span class="cvh-awning__scallops" data-cvm-scallops></span></span>
   <div class="cm-mobile-nav__head">
     <div class="cm-mobile-nav__head-inner">
-      <h3>Menu</h3>
+      {% render 'casify-logo', variant: 'light', class: 'cvm-sign', size: 25 %}
       <button type="button" class="cm-mobile-nav__close" data-mobile-menu-close aria-label="Close menu">
-        {% render 'icon', name: 'close', size: 18 %}
+        {% render 'icon', name: 'close', size: 20 %}
       </button>
     </div>
   </div>
   <div class="cm-mobile-nav__body">
     {%- if section.settings.menu -%}
       {%- for link in header_menu_links -%}
-        {%- liquid
-          assign nav_icon = ''
-          case link.title
-            when 'Contact'
-              assign nav_icon = 'mail'
-            when 'iPhone'
-              assign nav_icon = 'device'
-            when 'Samsung'
-              assign nav_icon = 'device-notch'
-            when 'Collections'
-              assign nav_icon = 'grid'
-          endcase
-        -%}
-        <a href="{{ link.url }}" class="cm-mobile-nav__link">
-          {%- if nav_icon != '' -%}{%- render 'cv-icon', name: nav_icon, size: 18, animate: true -%}{%- endif -%}
+        {%- assign mint_file = 'header-peppermint-red.png' -%}
+        {%- assign mint_turn = forloop.index | modulo: 2 -%}
+        {%- if mint_turn == 0 -%}{%- assign mint_file = 'header-peppermint-teal.png' -%}{%- endif -%}
+        <a href="{{ link.url }}" class="cm-mobile-nav__link"{% if link.active %} aria-current="page"{% endif %}>
+          <img class="cvm-mint" src="{{ mint_file | asset_url }}" alt="" width="22" height="22" loading="lazy" draggable="false">
           <span>{{ link.title | escape }}</span>
         </a>
       {%- endfor -%}
     {%- endif -%}
+  </div>
+
+  {%- comment -%} The shop counter: decoration only. Sweets drop onto it, the shopkeeper (same figure as cv-offer-courier) pops up and waves; tap to wave again. {%- endcomment -%}
+  <div class="cvm-counter" data-cvm-counter aria-hidden="true">
+    <div class="cvm-keeper-clip">
+      <svg class="cvm-keeper" data-cvm-keeper viewBox="0 0 140 232" focusable="false">
+        <defs>
+          <pattern id="cvm-stripe" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(90)">
+            <rect width="10" height="10" fill="var(--cream-50)"/>
+            <rect width="5" height="10" fill="var(--red-500)"/>
+          </pattern>
+        </defs>
+        <rect x="37" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+        <rect x="44" y="80" width="52" height="150" rx="17" fill="var(--teal-600)"/>
+        <path d="M52 100h36v48a8 8 0 0 1-8 8H60a8 8 0 0 1-8-8z" fill="url(#cvm-stripe)" stroke="var(--red-700)" stroke-width="1.2"/>
+        <path d="M55 100 60 82M85 100 80 82" stroke="var(--red-600)" stroke-width="3" stroke-linecap="round"/>
+        <g data-cvm-arm>
+          <rect x="90" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+          <circle cx="96.5" cy="140" r="7.5" fill="var(--cvoc-skin)"/>
+        </g>
+        <g data-cvm-head>
+          <rect x="64" y="70" width="12" height="12" rx="4" fill="var(--cvoc-skin)"/>
+          <circle cx="70" cy="50" r="27" fill="var(--cvoc-skin)"/>
+          <circle cx="60" cy="52" r="3" fill="var(--cocoa-700)"/>
+          <circle cx="80" cy="52" r="3" fill="var(--cocoa-700)"/>
+          <circle cx="53" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+          <circle cx="87" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+          <path d="M61 63q9 8 18 0" fill="none" stroke="var(--cocoa-700)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M40 36 50 9h40l10 27z" fill="var(--red-500)" stroke="var(--red-700)" stroke-width="1.4" stroke-linejoin="round"/>
+          <rect x="43" y="26" width="54" height="6" fill="var(--cream-50)"/>
+          <circle cx="70" cy="18" r="4" fill="var(--gold-400)"/>
+        </g>
+      </svg>
+    </div>
+    {%- if section.settings.menu_greeting != blank -%}
+      <span class="cvm-bubble" data-cvm-bubble>{{ section.settings.menu_greeting | escape }}</span>
+    {%- endif -%}
+    <span class="cvm-floor" data-cvm-floor></span>
+    <img class="cvm-sweet cvm-sweet--1" data-cvm-sweet src="{{ 'hero-sweet-wrapped-red.webp' | asset_url }}" alt="" width="46" height="46" loading="lazy" draggable="false">
+    <img class="cvm-sweet cvm-sweet--2" data-cvm-sweet src="{{ 'hero-sweet-lollipop.webp' | asset_url }}" alt="" width="46" height="46" loading="lazy" draggable="false">
+    <img class="cvm-sweet cvm-sweet--3" data-cvm-sweet src="{{ 'hero-sweet-wrapped-teal.webp' | asset_url }}" alt="" width="46" height="46" loading="lazy" draggable="false">
   </div>
 </nav>
 
@@ -183,13 +215,11 @@
   .cm-predictive-results__link small{font-weight:400;color:var(--cocoa-400);text-transform:none;letter-spacing:0}
   .cm-predictive-results__viewall{align-self:flex-start;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--red-600);text-decoration:underline;text-underline-offset:3px}
   .cm-predictive-results__empty{font:14px var(--font-body);color:var(--cocoa-500);margin:0}
-  .cm-mobile-nav{display:none;position:fixed;inset:0 0 0 auto;width:min(340px,88vw);height:100%;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(100%);transition:transform var(--duration-base) var(--ease-out-soft)}
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }
-  .cm-mobile-nav.is-open{display:block;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}
-  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-hairline);background-image:repeating-linear-gradient(90deg,var(--red-500) 0 18px,var(--cream-50) 18px 36px)}
-  .cm-mobile-nav__head-inner{background:var(--surface-card);padding:6px 12px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}
-  .cm-mobile-nav__head-inner h3{margin:0;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600)}
-  .cm-mobile-nav__close{background:none;border:0;color:var(--cocoa-600);cursor:pointer;padding:4px;display:grid;place-items:center}
+  .cm-mobile-nav{display:none;position:fixed;inset:0 auto 0 0;width:min(340px,88vw);height:100%;background:var(--cream-50);z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(-100%);transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-mobile-nav.is-open{display:flex;flex-direction:column;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}
+  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:20px 12px 8px 20px}
+  .cm-mobile-nav__head-inner{display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}
+  .cm-mobile-nav__close{width:44px;height:44px;background:var(--cream-100);border:1px solid var(--border-hairline);border-radius:50%;color:var(--cocoa-700);cursor:pointer;padding:0;display:grid;place-items:center}
   .cm-mobile-nav__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
   .cm-mobile-nav__scrim.is-open{opacity:1;pointer-events:auto}
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav__scrim{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)} }
@@ -205,9 +235,10 @@
     { "type": "text", "id": "ticker_text", "label": "Awning ticker text", "default": "Est. 1920 · Free shipping · 30-day returns", "info": "Scrolls along the striped awning. Speeds up briefly as shoppers scroll." },
     { "type": "checkbox", "id": "topbar_enable", "label": "Show topbar", "default": true },
     { "type": "text", "id": "topbar_left", "label": "Topbar left text", "default": "Ships in 1-3 business days" },
-    { "type": "text", "id": "topbar_pill", "label": "Topbar centre pill (optional)", "default": "★ EST. 1920 · Still on awning duty" },
+    { "type": "text", "id": "topbar_pill", "label": "Topbar centre pill (optional)", "default": "EST. 1920 · Still on awning duty" },
     { "type": "text", "id": "topbar_right", "label": "Topbar right text", "default": "30-day returns" },
     { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
+    { "type": "text", "id": "menu_greeting", "label": "Shopkeeper's greeting in the phone menu", "default": "Hi! Pick a case", "info": "Keep it short, it sits in a speech bubble. Leave empty to hide the bubble." },
     {
       "type": "select", "id": "nav_style", "label": "Menu hover animation", "default": "spotlight",
       "options": [

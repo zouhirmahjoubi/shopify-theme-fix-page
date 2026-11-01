@@ -1,8 +1,8 @@
-/* Casify — header behaviour and motion (sections/header.liquid).
+/* Casify: header behaviour and motion (sections/header.liquid).
  *
  * Loaded after the GSAP bundle (layout/theme.liquid). The parts that make the
- * header work — mobile menu, search panel, predictive search, focus handling,
- * the sticky offset — run with or without GSAP. Motion layers on top only when
+ * header work: mobile menu, search panel, predictive search, focus handling,
+ * the sticky offset: run with or without GSAP. Motion layers on top only when
  * GSAP loaded and the visitor hasn't asked for reduced motion.
  *
  *   load    valance drops, ticker starts, topbar and nav settle, the sign swings
@@ -52,31 +52,102 @@
     var scrim = root.querySelector('#cm-mobile-nav-scrim');
     var menuOpen = false;
     var releaseMenuFocus = null;
+    var menuTl = null;
+    var waveTl = null;
+    var menuLinks = drawer ? $$('.cm-mobile-nav__link', drawer) : [];
+
+    /* The shopkeeper raises a hand, waves and tips the head. */
+    function menuWave() {
+      var arm = drawer.querySelector('[data-cvm-arm]');
+      var head = drawer.querySelector('[data-cvm-head]');
+      var bubble = drawer.querySelector('[data-cvm-bubble]');
+      if (!arm || !head) return null;
+      if (waveTl) waveTl.kill();
+      gsap.set(arm, { svgOrigin: '96.5 90' });
+      gsap.set(head, { svgOrigin: '70 76' });
+      waveTl = gsap.timeline()
+        .to(arm, { rotation: -150, duration: 0.32, ease: 'back.out(1.8)' }, 0)
+        .to(head, { rotation: 6, duration: 0.3, ease: 'power2.out' }, 0.05)
+        .to(arm, { rotation: -118, duration: 0.16, ease: 'sine.inOut', repeat: 4, yoyo: true }, 0.32)
+        .to(head, { rotation: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' }, 0.95)
+        .to(arm, { rotation: 0, duration: 0.45, ease: 'back.inOut(1.4)' }, 1.05);
+      if (bubble) waveTl.fromTo(bubble, { scale: 0, rotation: 8 }, { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(2.6)' }, 0.1);
+      return waveTl;
+    }
+
+    /* The menu plays in like a shop opening: the drawer slides, the awning drops, the sign
+       swings on its strings, peppermints roll in with the links, sweets land on the counter
+       and the shopkeeper pops up to wave. Finite, and only ever on opening. */
+    function playMenu() {
+      if (menuTl) menuTl.kill();
+      var tl = gsap.timeline();
+      var part = function (q) { return drawer.querySelector(q); };
+      var scallops = part('[data-cvm-scallops]');
+      var sign = part('.cvm-sign');
+      var signMints = $$('.casify-sign__mint img', drawer);
+      var closeBtn = part('.cm-mobile-nav__close');
+      var mints = $$('.cvm-mint', drawer);
+      var floor = part('[data-cvm-floor]');
+      var sweets = $$('[data-cvm-sweet]', drawer);
+      var keeper = part('[data-cvm-keeper]');
+      var bubble = part('[data-cvm-bubble]');
+
+      tl.fromTo(drawer, { xPercent: -100 }, { xPercent: 0, duration: 0.55, ease: 'expo.out', overwrite: true }, 0);
+      if (scallops) tl.fromTo(scallops, { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: 'back.out(3)' }, 0.16);
+      if (sign) tl.fromTo(sign, { rotation: -13 }, { rotation: 0, duration: 1.7, ease: 'elastic.out(1, 0.28)' }, 0.14);
+      if (signMints.length) tl.fromTo(signMints, { rotation: -360 }, { rotation: 0, duration: 1.1, ease: 'power3.out' }, 0.14);
+      if (closeBtn) tl.fromTo(closeBtn, { scale: 0, rotation: -180 }, { scale: 1, rotation: 0, duration: 0.55, ease: 'back.out(2)' }, 0.24);
+      // opacity, not autoAlpha: visibility:hidden would make the links unfocusable mid-cascade
+      if (menuLinks.length) tl.fromTo(menuLinks, { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.55, ease: 'back.out(1.6)', stagger: 0.06, overwrite: 'auto' }, 0.16);
+      if (mints.length) tl.fromTo(mints, { rotation: -320, scale: 0.3 }, { rotation: 0, scale: 1, duration: 0.7, ease: 'back.out(1.5)', stagger: 0.06, overwrite: 'auto' }, 0.16);
+      if (floor) tl.fromTo(floor, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power3.out' }, 0.32);
+      if (sweets.length) tl.fromTo(sweets, { y: -190, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: 'bounce.out', stagger: 0.1 }, 0.5);
+      if (bubble) tl.set(bubble, { scale: 0 }, 0);
+      if (keeper) {
+        tl.fromTo(keeper, { y: 120 }, { y: 0, duration: 0.6, ease: 'back.out(1.7)' }, 0.62);
+        tl.add(function () { menuWave(); }, 1.1);
+      }
+      menuTl = tl;
+    }
+
+    if (motion && drawer) {
+      /* Tap: the link's peppermint spins and the word gives a little nudge. */
+      menuLinks.forEach(function (a) {
+        var mint = a.querySelector('.cvm-mint');
+        listen(a, 'pointerdown', function () {
+          if (mint) gsap.fromTo(mint, { rotation: 0, scale: 1 }, { rotation: 360, scale: 1, duration: 0.6, ease: 'back.out(1.4)', overwrite: 'auto' });
+          gsap.fromTo(a, { x: 0 }, { x: 7, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1, overwrite: 'auto' });
+        });
+      });
+      var counter = drawer.querySelector('[data-cvm-counter]');
+      if (counter) listen(counter, 'click', function () { menuWave(); });
+      cleanups.push(function () { if (menuTl) menuTl.kill(); if (waveTl) waveTl.kill(); });
+    }
 
     function setMobileMenu(open) {
       if (!drawer || open === menuOpen) return;
       menuOpen = open;
       drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
       if (scrim) scrim.classList.toggle('is-open', open);
-      document.body.classList.toggle('cm-scroll-lock', open);
+      /* On the root, as the cart drawer does: on body it would neither stop the page
+         scrolling (html's overflow-x:clip keeps body's overflow from reaching the
+         viewport) nor leave the sticky header pinned. */
+      document.documentElement.classList.toggle('cm-scroll-lock', open);
       if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
 
       if (open) {
         drawer.classList.add('is-open');
-        if (motion) {
-          gsap.fromTo(drawer, { xPercent: 100 }, { xPercent: 0, duration: 0.6, ease: 'expo.out', overwrite: true });
-          // opacity, not autoAlpha: visibility:hidden would make the links unfocusable mid-cascade
-          gsap.fromTo($$('.cm-mobile-nav__link', drawer), { opacity: 0, x: 28 },
-            { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out', stagger: 0.05, delay: 0.12, overwrite: true });
-        }
+        if (motion) playMenu();
         if (window.CasifyA11y) releaseMenuFocus = window.CasifyA11y.trapFocus(drawer, burger);
         return;
       }
 
       if (releaseMenuFocus) { releaseMenuFocus(); releaseMenuFocus = null; }
       if (!motion) { drawer.classList.remove('is-open'); return; }
+      if (menuTl) menuTl.kill();
+      if (waveTl) waveTl.kill();
       gsap.to(drawer, {
-        xPercent: 100, duration: 0.35, ease: 'power2.in', overwrite: true,
+        xPercent: -100, duration: 0.35, ease: 'power2.in', overwrite: true,
         onComplete: function () {
           if (menuOpen) return;
           drawer.classList.remove('is-open');
@@ -343,7 +414,7 @@
         });
       }
 
-      /* Entry — the sign is the one theatrical moment; everything else settles quietly. */
+      /* Entry: the sign is the one theatrical moment; everything else settles quietly. */
       var tl = gsap.timeline({ defaults: { duration: 0.6, ease: 'power3.out' } });
       if (valance) tl.fromTo(valance, { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: 'elastic.out(1, 0.35)' }, 0);
       if (ticker) tl.fromTo(ticker, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0.1);
@@ -402,7 +473,7 @@
     nav._cvhDestroy = function () {
       cleanups.forEach(function (fn) { fn(); });
       if (ctx) ctx.revert();
-      if (menuOpen) document.body.classList.remove('cm-scroll-lock');
+      if (menuOpen) document.documentElement.classList.remove('cm-scroll-lock');
       nav.dataset.cvhReady = '';
     };
   }

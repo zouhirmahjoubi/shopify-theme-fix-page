@@ -1,0 +1,29 @@
+{
+  "section": {
+    "id": "header",
+    "settings": {
+      "ticker_text": "Free shipping on every order · Printed to order in the USA",
+      "topbar_enable": true,
+      "topbar_left": "Printed to order in the USA",
+      "topbar_pill": "",
+      "topbar_right": "Free replacement if damaged",
+      "menu": "main-menu",
+      "nav_style": "spotlight"
+    }
+  },
+  "globals": {
+    "linklists": {
+      "main-menu": {
+        "links": [
+          { "title": "All cases", "url": "/collections/all", "active": false },
+          { "title": "Tough", "url": "/collections/tough-cases", "active": true },
+          { "title": "Magnetic", "url": "/collections/magnetic", "active": false },
+          { "title": "Clear", "url": "/collections/clear-cases", "active": false },
+          { "title": "Christmas", "url": "/collections/christmas", "active": false },
+          { "title": "Contact", "url": "/pages/contact", "active": false }
+        ]
+      }
+    }
+  },
+  "harness": { "js": ["cv-header.js"] }
+}

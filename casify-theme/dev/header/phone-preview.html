@@ -1,0 +1,404 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Header (phone fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"header":"<div id=\"shopify-section-header\" class=\"shopify-section cvh-root\"><link rel=\"stylesheet\" href=\"../../assets/cv-header.css\" media=\"all\">\n<script>\n  /* Hide the pieces that animate in until cv-header.js has set their start\n     state, so they don't flash in place first. Never under reduced motion, and\n     never for long: if GSAP is slow or blocked the header simply shows. */\n  (function (root) {\n    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;\n    root.classList.add('cvh-pending');\n    setTimeout(function () { root.classList.remove('cvh-pending'); }, 1200);\n  })(document.documentElement);\n<\/script><div class=\"awning cvh-awning\" aria-hidden=\"true\">\n  <span class=\"cvh-awning__shade\"><\/span>\n  <span class=\"cvh-ticker\" data-cvh-enter>\n    <span class=\"cvh-ticker__track\"><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><span>Free shipping on every order · Printed to order in the USA ·<\/span><\/span>\n  <\/span>\n  <span class=\"cvh-awning__valance\" data-cvh-enter><span class=\"cvh-awning__scallops\"><\/span><\/span>\n<\/div><div class=\"topbar\">\n  <div class=\"topbar__inner\">\n    <span data-cvh-enter>Printed to order in the USA<\/span><span data-cvh-enter>Free replacement if damaged<\/span>\n  <\/div>\n<\/div><header class=\"nav\" data-section-id=\"header\" data-section-type=\"header\" data-nav-fx=\"spotlight\">\n  <div class=\"nav__inner\">\n    <button type=\"button\" class=\"iconbtn\" data-mobile-menu-toggle aria-label=\"Menu\" aria-controls=\"cm-mobile-nav\" aria-expanded=\"false\" data-cvh-enter>\n      <span class=\"cm-icon cm-icon--mono \" style=\"width:22px;height:22px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><line x1=\"4\" y1=\"7\" x2=\"20\" y2=\"7\"/><line x1=\"4\" y1=\"12\" x2=\"20\" y2=\"12\"/><line x1=\"4\" y1=\"17\" x2=\"20\" y2=\"17\"/><\/svg><\/span>\n\n    <\/button>\n\n    <a href=\"/\" class=\"casify-logo casify-logo--light brand\" aria-label=\"Casify home\"><span class=\"casify-sign\" style=\"--sign-h:26px;--mint:16px\">\n      <span class=\"casify-sign__mint casify-sign__mint--red\" data-cvh-enter>\n        <img src=\"../../assets/header-peppermint-red.png\" width=\"16\" height=\"16\" alt=\"\" loading=\"eager\">\n      <\/span>\n      <img class=\"casify-sign__plaque\" src=\"../../assets/header-sign-plaque.png\" width=\"73.41176470588235\" height=\"26\" alt=\"\" loading=\"eager\" fetchpriority=\"high\" data-cvh-enter>\n      <span class=\"casify-sign__mint casify-sign__mint--teal\" data-cvh-enter>\n        <img src=\"../../assets/header-peppermint-teal.png\" width=\"16\" height=\"16\" alt=\"\" loading=\"eager\">\n      <\/span>\n    <\/span><\/a>\n<nav class=\"nav__links\" aria-label=\"Primary\"><a href=\"/collections/all\" class=\"cm-underline nav__link\" data-cvh-enter><span>All cases<\/span>\n        <\/a><a href=\"/collections/tough-cases\" aria-current=\"page\" class=\"cm-underline nav__link\" data-cvh-enter><span>Tough<\/span>\n        <\/a><a href=\"/collections/magnetic\" class=\"cm-underline nav__link\" data-cvh-enter><span>Magnetic<\/span>\n        <\/a><a href=\"/collections/clear-cases\" class=\"cm-underline nav__link\" data-cvh-enter><span>Clear<\/span>\n        <\/a><a href=\"/collections/christmas\" class=\"cm-underline nav__link\" data-cvh-enter><span>Christmas<\/span>\n        <\/a><a href=\"/pages/contact\" class=\"cm-underline nav__link\" data-cvh-enter><span class=\"cv-ico  cv-ico--anim\" style=\"width:15px;height:15px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <rect x=\"2.6\" y=\"5\" width=\"18.8\" height=\"14\" rx=\"2.2\"/>\n        <path class=\"cv-ico__draw\" d=\"M3.2 6.2l8.8 6.6 8.8-6.6\"/>\n      <\/svg><\/span><span>Contact<\/span>\n        <\/a><\/nav><div class=\"nav__spacer\"><\/div>\n\n    <div class=\"nav__icons\">\n      <button type=\"button\" class=\"iconbtn\" data-search-toggle aria-label=\"Search\" aria-controls=\"cm-search-panel\" aria-expanded=\"false\" data-cvh-enter><span class=\"cm-icon cm-icon--mono \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-4.3-4.3\"/><\/svg><\/span>\n<\/button>\n      <a href=\"/cart\" class=\"iconbtn\" id=\"bagBtn\" data-cart-drawer-open aria-label=\"Cart, 0 items\" data-cvh-enter>\n        <span class=\"cm-icon cm-icon--mono \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6a3 3 0 0 1 6 0v2\"/><\/svg><\/span>\n\n        <span class=\"badge\" id=\"bagBadge\" data-cart-count hidden>0<\/span>\n      <\/a>\n    <\/div>\n  <\/div><span class=\"cvh-fx\" aria-hidden=\"true\">\n      <svg class=\"cvh-fx__defs\" width=\"0\" height=\"0\" focusable=\"false\"><filter id=\"cvh-goo\" x=\"-10%\" y=\"-60%\" width=\"120%\" height=\"220%\" color-interpolation-filters=\"sRGB\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"5\" result=\"blur\"/><feColorMatrix in=\"blur\" values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7\" result=\"goo\"/><feComposite in=\"SourceGraphic\" in2=\"goo\" operator=\"atop\"/><\/filter><\/svg>\n      <span class=\"cvh-fx__spot\"><span class=\"cvh-fx__beam\"><\/span><span class=\"cvh-fx__lamp\"><\/span><\/span>\n      <span class=\"cvh-fx__bubble\"><span class=\"cvh-fx__bubble-ico\"><\/span><\/span>\n      <span class=\"cvh-fx__goo\"><span class=\"cvh-fx__goo-pill\"><\/span><span class=\"cvh-fx__goo-drop\"><\/span><\/span>\n      <span class=\"cvh-fx__dot\"><\/span>\n    <\/span><span class=\"cvh-progress\" aria-hidden=\"true\"><span class=\"cvh-progress__fill\"><\/span><\/span>\n<\/header>\n\n<div id=\"cm-search-panel\" class=\"cm-search-panel\" aria-hidden=\"true\">\n  <form action=\"/search\" method=\"get\" role=\"search\" class=\"cm-container\" style=\"padding:16px 24px;display:flex;gap:10px\" data-predictive-search-form data-predictive-url=\"/search/suggest\">\n    <span class=\"cm-input-shell\" style=\"flex:1;position:relative\">\n      <span class=\"cm-icon cm-icon--mono \" style=\"width:16px;height:16px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-4.3-4.3\"/><\/svg><\/span>\n\n      <input class=\"cm-input\" type=\"search\" name=\"q\" value=\"\" placeholder=\"Search cases or phone models&hellip;\" aria-label=\"Search\" autocomplete=\"off\" data-predictive-search-input role=\"combobox\" aria-expanded=\"false\" aria-controls=\"cm-predictive-search-results\" aria-autocomplete=\"list\">\n    <\/span>\n    <input type=\"hidden\" name=\"type\" value=\"product\">\n    <button type=\"submit\" class=\"btn btn--ghost cm-press\">Search<\/button>\n  <\/form>\n  <div id=\"cm-predictive-search-results\" class=\"cm-predictive-results\" data-predictive-search-results hidden aria-live=\"polite\"><\/div>\n<\/div>\n\n<div id=\"cm-mobile-nav-scrim\" class=\"cm-mobile-nav__scrim\" data-mobile-menu-close aria-hidden=\"true\"><\/div>\n<nav id=\"cm-mobile-nav\" class=\"cm-mobile-nav\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Menu\" aria-hidden=\"true\">\n  <span class=\"cvm-awning\" aria-hidden=\"true\"><span class=\"cvh-awning__scallops\" data-cvm-scallops><\/span><\/span>\n  <div class=\"cm-mobile-nav__head\">\n    <div class=\"cm-mobile-nav__head-inner\">\n      <a href=\"/\" class=\"casify-logo casify-logo--light cvm-sign\" aria-label=\"Casify home\"><span class=\"casify-sign\" style=\"--sign-h:40px;--mint:25px\">\n      <span class=\"casify-sign__mint casify-sign__mint--red\">\n        <img src=\"../../assets/header-peppermint-red.png\" width=\"25\" height=\"25\" alt=\"\" loading=\"eager\">\n      <\/span>\n      <img class=\"casify-sign__plaque\" src=\"../../assets/header-sign-plaque.png\" width=\"112.94117647058823\" height=\"40\" alt=\"\" loading=\"eager\" fetchpriority=\"high\">\n      <span class=\"casify-sign__mint casify-sign__mint--teal\">\n        <img src=\"../../assets/header-peppermint-teal.png\" width=\"25\" height=\"25\" alt=\"\" loading=\"eager\">\n      <\/span>\n    <\/span><\/a>\n\n      <button type=\"button\" class=\"cm-mobile-nav__close\" data-mobile-menu-close aria-label=\"Close menu\">\n        <span class=\"cm-icon cm-icon--mono \" style=\"width:20px;height:20px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"/><\/svg><\/span>\n\n      <\/button>\n    <\/div>\n  <\/div>\n  <div class=\"cm-mobile-nav__body\"><a href=\"/collections/all\" class=\"cm-mobile-nav__link\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-red.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>All cases<\/span>\n        <\/a><a href=\"/collections/tough-cases\" class=\"cm-mobile-nav__link\" aria-current=\"page\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-teal.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>Tough<\/span>\n        <\/a><a href=\"/collections/magnetic\" class=\"cm-mobile-nav__link\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-red.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>Magnetic<\/span>\n        <\/a><a href=\"/collections/clear-cases\" class=\"cm-mobile-nav__link\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-teal.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>Clear<\/span>\n        <\/a><a href=\"/collections/christmas\" class=\"cm-mobile-nav__link\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-red.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>Christmas<\/span>\n        <\/a><a href=\"/pages/contact\" class=\"cm-mobile-nav__link\">\n          <img class=\"cvm-mint\" src=\"../../assets/header-peppermint-teal.png\" alt=\"\" width=\"22\" height=\"22\" loading=\"lazy\" draggable=\"false\">\n          <span>Contact<\/span>\n        <\/a><\/div><div class=\"cvm-counter\" data-cvm-counter aria-hidden=\"true\">\n    <div class=\"cvm-keeper-clip\">\n      <svg class=\"cvm-keeper\" data-cvm-keeper viewBox=\"0 0 140 232\" focusable=\"false\">\n        <defs>\n          <pattern id=\"cvm-stripe\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(90)\">\n            <rect width=\"10\" height=\"10\" fill=\"var(--cream-50)\"/>\n            <rect width=\"5\" height=\"10\" fill=\"var(--red-500)\"/>\n          <\/pattern>\n        <\/defs>\n        <rect x=\"37\" y=\"86\" width=\"13\" height=\"52\" rx=\"6.5\" fill=\"var(--teal-500)\"/>\n        <rect x=\"44\" y=\"80\" width=\"52\" height=\"150\" rx=\"17\" fill=\"var(--teal-600)\"/>\n        <path d=\"M52 100h36v48a8 8 0 0 1-8 8H60a8 8 0 0 1-8-8z\" fill=\"url(#cvm-stripe)\" stroke=\"var(--red-700)\" stroke-width=\"1.2\"/>\n        <path d=\"M55 100 60 82M85 100 80 82\" stroke=\"var(--red-600)\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n        <g data-cvm-arm>\n          <rect x=\"90\" y=\"86\" width=\"13\" height=\"52\" rx=\"6.5\" fill=\"var(--teal-500)\"/>\n          <circle cx=\"96.5\" cy=\"140\" r=\"7.5\" fill=\"var(--cvoc-skin)\"/>\n        <\/g>\n        <g data-cvm-head>\n          <rect x=\"64\" y=\"70\" width=\"12\" height=\"12\" rx=\"4\" fill=\"var(--cvoc-skin)\"/>\n          <circle cx=\"70\" cy=\"50\" r=\"27\" fill=\"var(--cvoc-skin)\"/>\n          <circle cx=\"60\" cy=\"52\" r=\"3\" fill=\"var(--cocoa-700)\"/>\n          <circle cx=\"80\" cy=\"52\" r=\"3\" fill=\"var(--cocoa-700)\"/>\n          <circle cx=\"53\" cy=\"61\" r=\"4.5\" fill=\"var(--red-300)\" opacity=\".55\"/>\n          <circle cx=\"87\" cy=\"61\" r=\"4.5\" fill=\"var(--red-300)\" opacity=\".55\"/>\n          <path d=\"M61 63q9 8 18 0\" fill=\"none\" stroke=\"var(--cocoa-700)\" stroke-width=\"2.4\" stroke-linecap=\"round\"/>\n          <path d=\"M40 36 50 9h40l10 27z\" fill=\"var(--red-500)\" stroke=\"var(--red-700)\" stroke-width=\"1.4\" stroke-linejoin=\"round\"/>\n          <rect x=\"43\" y=\"26\" width=\"54\" height=\"6\" fill=\"var(--cream-50)\"/>\n          <circle cx=\"70\" cy=\"18\" r=\"4\" fill=\"var(--gold-400)\"/>\n        <\/g>\n      <\/svg>\n    <\/div><span class=\"cvm-bubble\" data-cvm-bubble>Hi! Pick a case<\/span><span class=\"cvm-floor\" data-cvm-floor><\/span>\n    <img class=\"cvm-sweet cvm-sweet--1\" data-cvm-sweet src=\"../../assets/hero-sweet-wrapped-red.webp\" alt=\"\" width=\"46\" height=\"46\" loading=\"lazy\" draggable=\"false\">\n    <img class=\"cvm-sweet cvm-sweet--2\" data-cvm-sweet src=\"../../assets/hero-sweet-lollipop.webp\" alt=\"\" width=\"46\" height=\"46\" loading=\"lazy\" draggable=\"false\">\n    <img class=\"cvm-sweet cvm-sweet--3\" data-cvm-sweet src=\"../../assets/hero-sweet-wrapped-teal.webp\" alt=\"\" width=\"46\" height=\"46\" loading=\"lazy\" draggable=\"false\">\n  <\/div>\n<\/nav>\n\n<style>\n  .cm-skip-link{position:absolute;left:-9999px;top:0;padding:10px 16px;background:var(--cocoa-600);color:#fff;z-index:1000}\n  .cm-skip-link:focus{left:8px;top:8px}\n  .cm-underline{position:relative;padding-bottom:2px}\n  .cm-underline::after{content:\"\";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--red-500);transform:scaleX(0);transform-origin:0 50%;transition:transform var(--duration-base) var(--ease-out-soft)}\n  .cm-underline:hover::after,.cm-underline[aria-current=page]::after{transform:scaleX(1)}\n  .nav__link{display:inline-flex;align-items:center;gap:6px}\n  .nav__link .cv-ico{color:var(--red-500)}\n  .cm-search-panel{display:none;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));border-bottom:1px solid var(--border-hairline)}\n  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-search-panel{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }\n  .cm-search-panel.is-open{display:block}\n  .cm-input-shell{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border-hairline);border-radius:5px;padding:9px 12px;box-shadow:inset 0 1px 2px rgba(74,51,36,.10)}\n  .cm-input{border:none;outline:none;background:transparent;width:100%;font:14px var(--font-body);color:var(--cocoa-600)}\n  .cm-predictive-results{max-width:var(--max);margin:0 auto;padding:0 24px 20px;display:flex;flex-direction:column;gap:14px}\n  .cm-predictive-results[hidden]{display:none}\n  .cm-predictive-results__queries{display:flex;flex-wrap:wrap;gap:8px}\n  .cm-predictive-results__query{font:600 12px var(--font-body);color:var(--cocoa-600);background:var(--cream-50);border:1px solid var(--border-hairline);border-radius:999px;padding:6px 12px;text-decoration:none}\n  .cm-predictive-results__query:hover{border-color:var(--red-500);color:var(--red-600)}\n  .cm-predictive-results__query strong{color:var(--red-600)}\n  .cm-predictive-results__group{display:flex;flex-direction:column;gap:2px}\n  .cm-predictive-results__group--links{flex-direction:row;flex-wrap:wrap;gap:8px 18px}\n  .cm-predictive-results__item{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;padding:8px;border-radius:8px;text-decoration:none;transition:background var(--duration-fast) var(--ease-standard)}\n  .cm-predictive-results__item:hover{background:var(--cream-50)}\n  .cm-predictive-results__thumb{width:48px;height:48px;border-radius:6px;overflow:hidden;background:var(--cream-200);display:block}\n  .cm-predictive-results__thumb img{width:100%;height:100%;object-fit:cover;display:block}\n  .cm-predictive-results__text{display:flex;flex-direction:column;gap:2px;min-width:0}\n  .cm-predictive-results__text strong{font:600 14px var(--font-body);color:var(--cocoa-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n  .cm-predictive-results__price{font:700 13px var(--font-display);color:var(--red-600)}\n  .cm-predictive-results__link{font:600 12px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600);text-decoration:none;display:inline-flex;align-items:center;gap:6px}\n  .cm-predictive-results__link:hover{color:var(--red-600)}\n  .cm-predictive-results__link small{font-weight:400;color:var(--cocoa-400);text-transform:none;letter-spacing:0}\n  .cm-predictive-results__viewall{align-self:flex-start;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--red-600);text-decoration:underline;text-underline-offset:3px}\n  .cm-predictive-results__empty{font:14px var(--font-body);color:var(--cocoa-500);margin:0}\n  .cm-mobile-nav{display:none;position:fixed;inset:0 auto 0 0;width:min(340px,88vw);height:100%;background:var(--cream-50);z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(-100%);transition:transform var(--duration-base) var(--ease-out-soft)}\n  .cm-mobile-nav.is-open{display:flex;flex-direction:column;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}\n  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:20px 12px 8px 20px}\n  .cm-mobile-nav__head-inner{display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}\n  .cm-mobile-nav__close{width:44px;height:44px;background:var(--cream-100);border:1px solid var(--border-hairline);border-radius:50%;color:var(--cocoa-700);cursor:pointer;padding:0;display:grid;place-items:center}\n  .cm-mobile-nav__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}\n  .cm-mobile-nav__scrim.is-open{opacity:1;pointer-events:auto}\n  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav__scrim{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)} }.cm-scroll-lock{overflow:hidden}\n<\/style>\n\n\n<\/div>"}};</script>
+<script src="../motion-store-adapt/tools/stub-fetch.js"></script>
+<script src="../../assets/gsap.min.js" defer></script>
+<script src="../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-header" class="shopify-section cvh-root"><link rel="stylesheet" href="../../assets/cv-header.css" media="all">
+<script>
+  /* Hide the pieces that animate in until cv-header.js has set their start
+     state, so they don't flash in place first. Never under reduced motion, and
+     never for long: if GSAP is slow or blocked the header simply shows. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvh-pending');
+    setTimeout(function () { root.classList.remove('cvh-pending'); }, 1200);
+  })(document.documentElement);
+</script><div class="awning cvh-awning" aria-hidden="true">
+  <span class="cvh-awning__shade"></span>
+  <span class="cvh-ticker" data-cvh-enter>
+    <span class="cvh-ticker__track"><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span><span>Free shipping on every order · Printed to order in the USA ·</span></span>
+  </span>
+  <span class="cvh-awning__valance" data-cvh-enter><span class="cvh-awning__scallops"></span></span>
+</div><div class="topbar">
+  <div class="topbar__inner">
+    <span data-cvh-enter>Printed to order in the USA</span><span data-cvh-enter>Free replacement if damaged</span>
+  </div>
+</div><header class="nav" data-section-id="header" data-section-type="header" data-nav-fx="spotlight">
+  <div class="nav__inner">
+    <button type="button" class="iconbtn" data-mobile-menu-toggle aria-label="Menu" aria-controls="cm-mobile-nav" aria-expanded="false" data-cvh-enter>
+      <span class="cm-icon cm-icon--mono " style="width:22px;height:22px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></span>
+
+    </button>
+
+    <a href="/" class="casify-logo casify-logo--light brand" aria-label="Casify home"><span class="casify-sign" style="--sign-h:26px;--mint:16px">
+      <span class="casify-sign__mint casify-sign__mint--red" data-cvh-enter>
+        <img src="../../assets/header-peppermint-red.png" width="16" height="16" alt="" loading="eager">
+      </span>
+      <img class="casify-sign__plaque" src="../../assets/header-sign-plaque.png" width="73.41176470588235" height="26" alt="" loading="eager" fetchpriority="high" data-cvh-enter>
+      <span class="casify-sign__mint casify-sign__mint--teal" data-cvh-enter>
+        <img src="../../assets/header-peppermint-teal.png" width="16" height="16" alt="" loading="eager">
+      </span>
+    </span></a>
+<nav class="nav__links" aria-label="Primary"><a href="/collections/all" class="cm-underline nav__link" data-cvh-enter><span>All cases</span>
+        </a><a href="/collections/tough-cases" aria-current="page" class="cm-underline nav__link" data-cvh-enter><span>Tough</span>
+        </a><a href="/collections/magnetic" class="cm-underline nav__link" data-cvh-enter><span>Magnetic</span>
+        </a><a href="/collections/clear-cases" class="cm-underline nav__link" data-cvh-enter><span>Clear</span>
+        </a><a href="/collections/christmas" class="cm-underline nav__link" data-cvh-enter><span>Christmas</span>
+        </a><a href="/pages/contact" class="cm-underline nav__link" data-cvh-enter><span class="cv-ico  cv-ico--anim" style="width:15px;height:15px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2.6" y="5" width="18.8" height="14" rx="2.2"/>
+        <path class="cv-ico__draw" d="M3.2 6.2l8.8 6.6 8.8-6.6"/>
+      </svg></span><span>Contact</span>
+        </a></nav><div class="nav__spacer"></div>
+
+    <div class="nav__icons">
+      <button type="button" class="iconbtn" data-search-toggle aria-label="Search" aria-controls="cm-search-panel" aria-expanded="false" data-cvh-enter><span class="cm-icon cm-icon--mono " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+</button>
+      <a href="/cart" class="iconbtn" id="bagBtn" data-cart-drawer-open aria-label="Cart, 0 items" data-cvh-enter>
+        <span class="cm-icon cm-icon--mono " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+
+        <span class="badge" id="bagBadge" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </div><span class="cvh-fx" aria-hidden="true">
+      <svg class="cvh-fx__defs" width="0" height="0" focusable="false"><filter id="cvh-goo" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/><feColorMatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/><feComposite in="SourceGraphic" in2="goo" operator="atop"/></filter></svg>
+      <span class="cvh-fx__spot"><span class="cvh-fx__beam"></span><span class="cvh-fx__lamp"></span></span>
+      <span class="cvh-fx__bubble"><span class="cvh-fx__bubble-ico"></span></span>
+      <span class="cvh-fx__goo"><span class="cvh-fx__goo-pill"></span><span class="cvh-fx__goo-drop"></span></span>
+      <span class="cvh-fx__dot"></span>
+    </span><span class="cvh-progress" aria-hidden="true"><span class="cvh-progress__fill"></span></span>
+</header>
+
+<div id="cm-search-panel" class="cm-search-panel" aria-hidden="true">
+  <form action="/search" method="get" role="search" class="cm-container" style="padding:16px 24px;display:flex;gap:10px" data-predictive-search-form data-predictive-url="/search/suggest">
+    <span class="cm-input-shell" style="flex:1;position:relative">
+      <span class="cm-icon cm-icon--mono " style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+
+      <input class="cm-input" type="search" name="q" value="" placeholder="Search cases or phone models&hellip;" aria-label="Search" autocomplete="off" data-predictive-search-input role="combobox" aria-expanded="false" aria-controls="cm-predictive-search-results" aria-autocomplete="list">
+    </span>
+    <input type="hidden" name="type" value="product">
+    <button type="submit" class="btn btn--ghost cm-press">Search</button>
+  </form>
+  <div id="cm-predictive-search-results" class="cm-predictive-results" data-predictive-search-results hidden aria-live="polite"></div>
+</div>
+
+<div id="cm-mobile-nav-scrim" class="cm-mobile-nav__scrim" data-mobile-menu-close aria-hidden="true"></div>
+<nav id="cm-mobile-nav" class="cm-mobile-nav" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <span class="cvm-awning" aria-hidden="true"><span class="cvh-awning__scallops" data-cvm-scallops></span></span>
+  <div class="cm-mobile-nav__head">
+    <div class="cm-mobile-nav__head-inner">
+      <a href="/" class="casify-logo casify-logo--light cvm-sign" aria-label="Casify home"><span class="casify-sign" style="--sign-h:40px;--mint:25px">
+      <span class="casify-sign__mint casify-sign__mint--red">
+        <img src="../../assets/header-peppermint-red.png" width="25" height="25" alt="" loading="eager">
+      </span>
+      <img class="casify-sign__plaque" src="../../assets/header-sign-plaque.png" width="112.94117647058823" height="40" alt="" loading="eager" fetchpriority="high">
+      <span class="casify-sign__mint casify-sign__mint--teal">
+        <img src="../../assets/header-peppermint-teal.png" width="25" height="25" alt="" loading="eager">
+      </span>
+    </span></a>
+
+      <button type="button" class="cm-mobile-nav__close" data-mobile-menu-close aria-label="Close menu">
+        <span class="cm-icon cm-icon--mono " style="width:20px;height:20px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+
+      </button>
+    </div>
+  </div>
+  <div class="cm-mobile-nav__body"><a href="/collections/all" class="cm-mobile-nav__link">
+          <img class="cvm-mint" src="../../assets/header-peppermint-red.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>All cases</span>
+        </a><a href="/collections/tough-cases" class="cm-mobile-nav__link" aria-current="page">
+          <img class="cvm-mint" src="../../assets/header-peppermint-teal.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>Tough</span>
+        </a><a href="/collections/magnetic" class="cm-mobile-nav__link">
+          <img class="cvm-mint" src="../../assets/header-peppermint-red.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>Magnetic</span>
+        </a><a href="/collections/clear-cases" class="cm-mobile-nav__link">
+          <img class="cvm-mint" src="../../assets/header-peppermint-teal.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>Clear</span>
+        </a><a href="/collections/christmas" class="cm-mobile-nav__link">
+          <img class="cvm-mint" src="../../assets/header-peppermint-red.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>Christmas</span>
+        </a><a href="/pages/contact" class="cm-mobile-nav__link">
+          <img class="cvm-mint" src="../../assets/header-peppermint-teal.png" alt="" width="22" height="22" loading="lazy" draggable="false">
+          <span>Contact</span>
+        </a></div><div class="cvm-counter" data-cvm-counter aria-hidden="true">
+    <div class="cvm-keeper-clip">
+      <svg class="cvm-keeper" data-cvm-keeper viewBox="0 0 140 232" focusable="false">
+        <defs>
+          <pattern id="cvm-stripe" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(90)">
+            <rect width="10" height="10" fill="var(--cream-50)"/>
+            <rect width="5" height="10" fill="var(--red-500)"/>
+          </pattern>
+        </defs>
+        <rect x="37" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+        <rect x="44" y="80" width="52" height="150" rx="17" fill="var(--teal-600)"/>
+        <path d="M52 100h36v48a8 8 0 0 1-8 8H60a8 8 0 0 1-8-8z" fill="url(#cvm-stripe)" stroke="var(--red-700)" stroke-width="1.2"/>
+        <path d="M55 100 60 82M85 100 80 82" stroke="var(--red-600)" stroke-width="3" stroke-linecap="round"/>
+        <g data-cvm-arm>
+          <rect x="90" y="86" width="13" height="52" rx="6.5" fill="var(--teal-500)"/>
+          <circle cx="96.5" cy="140" r="7.5" fill="var(--cvoc-skin)"/>
+        </g>
+        <g data-cvm-head>
+          <rect x="64" y="70" width="12" height="12" rx="4" fill="var(--cvoc-skin)"/>
+          <circle cx="70" cy="50" r="27" fill="var(--cvoc-skin)"/>
+          <circle cx="60" cy="52" r="3" fill="var(--cocoa-700)"/>
+          <circle cx="80" cy="52" r="3" fill="var(--cocoa-700)"/>
+          <circle cx="53" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+          <circle cx="87" cy="61" r="4.5" fill="var(--red-300)" opacity=".55"/>
+          <path d="M61 63q9 8 18 0" fill="none" stroke="var(--cocoa-700)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M40 36 50 9h40l10 27z" fill="var(--red-500)" stroke="var(--red-700)" stroke-width="1.4" stroke-linejoin="round"/>
+          <rect x="43" y="26" width="54" height="6" fill="var(--cream-50)"/>
+          <circle cx="70" cy="18" r="4" fill="var(--gold-400)"/>
+        </g>
+      </svg>
+    </div><span class="cvm-bubble" data-cvm-bubble>Hi! Pick a case</span><span class="cvm-floor" data-cvm-floor></span>
+    <img class="cvm-sweet cvm-sweet--1" data-cvm-sweet src="../../assets/hero-sweet-wrapped-red.webp" alt="" width="46" height="46" loading="lazy" draggable="false">
+    <img class="cvm-sweet cvm-sweet--2" data-cvm-sweet src="../../assets/hero-sweet-lollipop.webp" alt="" width="46" height="46" loading="lazy" draggable="false">
+    <img class="cvm-sweet cvm-sweet--3" data-cvm-sweet src="../../assets/hero-sweet-wrapped-teal.webp" alt="" width="46" height="46" loading="lazy" draggable="false">
+  </div>
+</nav>
+
+<style>
+  .cm-skip-link{position:absolute;left:-9999px;top:0;padding:10px 16px;background:var(--cocoa-600);color:#fff;z-index:1000}
+  .cm-skip-link:focus{left:8px;top:8px}
+  .cm-underline{position:relative;padding-bottom:2px}
+  .cm-underline::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--red-500);transform:scaleX(0);transform-origin:0 50%;transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-underline:hover::after,.cm-underline[aria-current=page]::after{transform:scaleX(1)}
+  .nav__link{display:inline-flex;align-items:center;gap:6px}
+  .nav__link .cv-ico{color:var(--red-500)}
+  .cm-search-panel{display:none;background:var(--glass-sheen),rgb(var(--glass-tint) / var(--glass-opacity-strong));border-bottom:1px solid var(--border-hairline)}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-search-panel{-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation));backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation))} }
+  .cm-search-panel.is-open{display:block}
+  .cm-input-shell{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border-hairline);border-radius:5px;padding:9px 12px;box-shadow:inset 0 1px 2px rgba(74,51,36,.10)}
+  .cm-input{border:none;outline:none;background:transparent;width:100%;font:14px var(--font-body);color:var(--cocoa-600)}
+  .cm-predictive-results{max-width:var(--max);margin:0 auto;padding:0 24px 20px;display:flex;flex-direction:column;gap:14px}
+  .cm-predictive-results[hidden]{display:none}
+  .cm-predictive-results__queries{display:flex;flex-wrap:wrap;gap:8px}
+  .cm-predictive-results__query{font:600 12px var(--font-body);color:var(--cocoa-600);background:var(--cream-50);border:1px solid var(--border-hairline);border-radius:999px;padding:6px 12px;text-decoration:none}
+  .cm-predictive-results__query:hover{border-color:var(--red-500);color:var(--red-600)}
+  .cm-predictive-results__query strong{color:var(--red-600)}
+  .cm-predictive-results__group{display:flex;flex-direction:column;gap:2px}
+  .cm-predictive-results__group--links{flex-direction:row;flex-wrap:wrap;gap:8px 18px}
+  .cm-predictive-results__item{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;padding:8px;border-radius:8px;text-decoration:none;transition:background var(--duration-fast) var(--ease-standard)}
+  .cm-predictive-results__item:hover{background:var(--cream-50)}
+  .cm-predictive-results__thumb{width:48px;height:48px;border-radius:6px;overflow:hidden;background:var(--cream-200);display:block}
+  .cm-predictive-results__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .cm-predictive-results__text{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .cm-predictive-results__text strong{font:600 14px var(--font-body);color:var(--cocoa-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cm-predictive-results__price{font:700 13px var(--font-display);color:var(--red-600)}
+  .cm-predictive-results__link{font:600 12px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--cocoa-600);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .cm-predictive-results__link:hover{color:var(--red-600)}
+  .cm-predictive-results__link small{font-weight:400;color:var(--cocoa-400);text-transform:none;letter-spacing:0}
+  .cm-predictive-results__viewall{align-self:flex-start;font:700 11px var(--font-label);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--red-600);text-decoration:underline;text-underline-offset:3px}
+  .cm-predictive-results__empty{font:14px var(--font-body);color:var(--cocoa-500);margin:0}
+  .cm-mobile-nav{display:none;position:fixed;inset:0 auto 0 0;width:min(340px,88vw);height:100%;background:var(--cream-50);z-index:95;overflow-y:auto;box-shadow:var(--shadow-lifted);transform:translateX(-100%);transition:transform var(--duration-base) var(--ease-out-soft)}
+  .cm-mobile-nav.is-open{display:flex;flex-direction:column;transform:translateX(0);animation:cm-fade-in var(--duration-base) var(--ease-standard) both}
+  .cm-mobile-nav__head{display:flex;align-items:center;justify-content:space-between;padding:20px 12px 8px 20px}
+  .cm-mobile-nav__head-inner{display:flex;align-items:center;justify-content:space-between;flex:1;gap:10px}
+  .cm-mobile-nav__close{width:44px;height:44px;background:var(--cream-100);border:1px solid var(--border-hairline);border-radius:50%;color:var(--cocoa-700);cursor:pointer;padding:0;display:grid;place-items:center}
+  .cm-mobile-nav__scrim{position:fixed;inset:0;background:var(--surface-overlay);z-index:94;opacity:0;pointer-events:none;transition:opacity var(--duration-base) var(--ease-standard)}
+  .cm-mobile-nav__scrim.is-open{opacity:1;pointer-events:auto}
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .cm-mobile-nav__scrim{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)} }.cm-scroll-lock{overflow:hidden}
+</style>
+
+
+</div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../assets/cv-header.js" defer></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+<div style="height:3200px;background:linear-gradient(#E4F0EE,#F0E2C2)"></div>
+</body>
+</html>

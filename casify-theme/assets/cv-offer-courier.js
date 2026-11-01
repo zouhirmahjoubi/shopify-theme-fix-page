@@ -258,7 +258,7 @@
   /* ---------------------------------------------------------------- popup */
   var STORE = 'cvoc-pop:';
 
-  // days > 0: closed within that many days (localStorage); 0: never suppressed — shows on every page load.
+  // days > 0: closed within that many days (localStorage); 0: never suppressed, shows on every page load.
   function dismissed(key, days) {
     try {
       if (days > 0) {
@@ -295,13 +295,22 @@
     var editor = dialog.hasAttribute('data-editor');
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var timer = 0;
+    var waited = false;
 
     function open() {
       clearTimeout(timer);
       if (dialog.open) return;
-      // Never on top of another dialog (photo zoom, quick pick): try again shortly.
-      if (document.querySelector('dialog[open]')) {
+      // Never on top of another dialog (photo zoom, quick pick) or the phone menu and
+      // cart drawer, which lock the page while open: try again shortly.
+      if (document.querySelector('dialog[open]') || document.documentElement.classList.contains('cm-scroll-lock')) {
+        waited = true;
         timer = setTimeout(open, 4000);
+        return;
+      }
+      // Whatever it waited for has just closed: a moment's peace before it appears.
+      if (waited && !editor) {
+        waited = false;
+        timer = setTimeout(open, 3000);
         return;
       }
       dialog.showModal();
