@@ -320,7 +320,7 @@
       </div>
 
       <a class="cvsw__bag" href="{{ pa.url }}" data-cvsw-bag{% if pa.available %} data-cvqp-open{% endif %} data-handle="{{ pa.handle }}" data-url="{{ pa.url }}">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        {%- render 'cv-eyes', count: 2 -%}
         <span data-cvsw-bag-label data-add="{{ st.bag_label | escape }}" data-sold="{{ st.sold_label | escape }}">{% if pa.available %}{{ st.bag_label | escape }}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
       </a>
 

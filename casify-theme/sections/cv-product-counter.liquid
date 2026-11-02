@@ -772,19 +772,19 @@
         {%- comment -%} ---------- Add to bag + Buy now ---------- {%- endcomment -%}
         <div class="cvc__buttons">
           {%- comment -%} data-cvm-*: busy, done and error states from assets/cv-commerce-motion.js; cv-product.js owns the classes and the text. {%- endcomment -%}
-          <button type="submit" class="cvc__add" id="cvAddBtn" data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
-            <svg class="cvc__add-bag" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <button type="submit" class="cvc__add cv-eyes-host" id="cvAddBtn" data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
             <svg class="cvc__add-check" data-cvm-icon viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg>
             <span id="cvCtaLabel" data-cvm-label data-label-default="{{ add_label | escape }}">
               {%- if cvar.available -%}{{ add_label | escape }}{%- else -%}{{ 'products.buy.sold_out' | t }}{%- endif -%}
             </span>
             <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</span></span>
             <noscript><span class="cvc__add-total cvc__add-total--nojs"><span aria-hidden="true">·</span> {{ cvar.price | money }}</span></noscript>
+            {%- render 'cv-eyes' -%}
           </button>
           {%- if section.settings.show_buy_now -%}
-            <button type="button" class="cvc__buy" data-cv-buy-now data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
+            <button type="button" class="cvc__buy cv-eyes-host cv-eyes-host--2" data-cv-buy-now data-cvm-btn{% unless cvar.available %} disabled{% endunless %}>
               <span data-cv-buy-label data-cvm-label data-label-default="{{ buy_label | escape }}">{{ buy_label | escape }}</span>
-              <svg class="cvc__buy-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+              {%- render 'cv-eyes', count: 2 -%}
             </button>
           {%- endif -%}
         </div>
@@ -870,12 +870,12 @@
     {%- endif -%}
     <div class="cvc-sticky__info">
       <span class="cvc-sticky__name">{{ product.title | escape }}</span>
-      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>{{ variant_label | escape }}</span> · <b id="cvStickyTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</b></span>
+      <span class="cvc-sticky__meta"><span class="cvc-sticky__variant"><span data-cv-opt-out-sticky>{{ variant_label | escape }}</span> · </span><b id="cvStickyTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</b></span>
     </div>
     <div class="cvc-sticky__buttons">
-      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" data-cvm-btn tabindex="-1">{{ sticky_label | escape }}</button>
+      <button type="button" class="cvc-sticky__add cv-eyes-host" id="cvStickyBtn" data-cvm-btn tabindex="-1">{{ sticky_label | escape }}{%- render 'cv-eyes' -%}</button>
       {%- if section.settings.show_buy_now -%}
-        <button type="button" class="cvc-sticky__buy" data-cv-buy-now data-cvm-btn tabindex="-1">{{ buy_label | escape }}</button>
+        <button type="button" class="cvc-sticky__buy cv-eyes-host cv-eyes-host--2" data-cv-buy-now data-cvm-btn tabindex="-1">{{ buy_label | escape }}{%- render 'cv-eyes', count: 2 -%}</button>
       {%- endif -%}
     </div>
   </div>

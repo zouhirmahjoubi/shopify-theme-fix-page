@@ -211,6 +211,12 @@
         assign gsap_text = true
       endif
     -%}
+    {%- comment -%} Googly eyes on Add to bag and Buy now: the product page's buttons and the quick pick's. {%- endcomment -%}
+    {%- assign buy_eyes = false -%}
+    {%- if editor or template.name == 'product' or content_for_layout contains 'data-cvqp-open' -%}
+      {%- assign buy_eyes = true -%}
+      {{ 'cv-eyes.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {%- comment -%} GSAP + plugins in <head>, deferred: registered before any theme script runs, including scripts printed by sections. {%- endcomment -%}
     {%- render 'gsap', drag: gsap_drag, flip: gsap_flip, path: gsap_path, text: gsap_text -%}
     {%- comment -%} Anime.js (snippets/animejs.liquid): only on pages whose markup opts in with a data-anime attribute. {%- endcomment -%}
@@ -326,6 +332,9 @@
     {%- endif -%}
     {%- if editor or content_for_layout contains 'data-cvqp-open' -%}
       <script src="{{ 'cv-quick-pick.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if buy_eyes -%}
+      <script src="{{ 'cv-eyes.js' | asset_url }}" defer></script>
     {%- endif -%}
     {%- if editor or content_for_layout contains 'data-cvvr' -%}
       {%- comment -%} "Product: video reviews" (sections/cv-pdp-video-reviews.liquid): ahead of cv-product.js so it hears the buy box's first "cvs:change". {%- endcomment -%}

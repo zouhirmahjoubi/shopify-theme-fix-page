@@ -47,8 +47,8 @@
 .cvqp__select select:focus-visible { outline: 2px solid var(--red-500); outline-offset: 2px; }
 .cvqp__select svg { position: absolute; right: 14px; top: 50%; translate: 0 -50%; pointer-events: none; }
 
-/* the shop's candy button */
-.cvqp__add {
+/* the shop's candy buttons */
+.cvqp__add, .cvqp__buy {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   width: 100%; min-height: 54px; margin: 4px 0 0; padding: 0 24px;
   border: 0; border-radius: 999px; cursor: pointer;
@@ -58,10 +58,16 @@
   box-shadow: 0 4px 0 var(--red-700), 0 12px 22px -10px rgba(126, 26, 23, .55);
   transition: transform 150ms var(--ease-standard), box-shadow 150ms var(--ease-standard), opacity 150ms var(--ease-standard);
 }
+.cvqp__buy {
+  background: linear-gradient(180deg, #4a3222 0%, #36241a 55%, #2a1b12 100%);
+  box-shadow: 0 4px 0 #1b110b, 0 12px 22px -10px rgba(27, 17, 11, .55);
+}
 .cvqp__add:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 var(--red-700), 0 16px 26px -10px rgba(126, 26, 23, .55); }
 .cvqp__add:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--red-700), 0 6px 12px -6px rgba(126, 26, 23, .5); }
-.cvqp__add:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
-.cvqp__add:disabled { opacity: .55; cursor: not-allowed; }
+.cvqp__buy:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 #1b110b, 0 16px 26px -10px rgba(27, 17, 11, .55); }
+.cvqp__buy:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #1b110b, 0 6px 12px -6px rgba(27, 17, 11, .5); }
+.cvqp__add:focus-visible, .cvqp__buy:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 3px; }
+.cvqp__add:disabled, .cvqp__buy:disabled { opacity: .55; cursor: not-allowed; }
 
 .cvqp__status { min-height: 1.4em; margin: -4px 0 0; font-size: 14px; line-height: 1.4; color: var(--cocoa-700); }
 .cvqp__more { align-self: flex-start; font-family: var(--font-label); font-size: 14px; color: var(--cocoa-700); text-decoration: underline dashed; text-underline-offset: 4px; }
@@ -79,5 +85,5 @@
   .cvqp .cvqp__title { font-size: 23px !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cvqp__add { transition: none; }
+  .cvqp__add, .cvqp__buy { transition: none; }
 }

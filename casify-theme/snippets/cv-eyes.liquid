@@ -1,0 +1,11 @@
+{%- comment -%}
+  Casify: googly eyes for a pill button. Render it last inside the button and give the button
+  the class cv-eyes-host (plus cv-eyes-host--2 for two eyes), which saves room for them.
+
+  Params: count (1 or 2, default 1)
+  Decorative, so hidden from screen readers. Behaviour: assets/cv-eyes.js. Styles: assets/cv-eyes.css.
+{%- endcomment -%}
+<span class="cv-eyes" aria-hidden="true">
+  <span class="cv-eye"><span class="cv-eye__pupil"></span></span>
+  {%- if count == 2 -%}<span class="cv-eye"><span class="cv-eye__pupil"></span></span>{%- endif -%}
+</span>

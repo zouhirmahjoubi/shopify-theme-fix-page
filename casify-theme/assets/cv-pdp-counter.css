@@ -957,10 +957,9 @@ html.cvc-zoom-open { overflow: hidden; }
 .no-js .cvc__add-total:not(.cvc__add-total--nojs) { display: none; }
 /* Buy now is a script button (add, then go to checkout); without JS it would do nothing. */
 .no-js .cvc__buy { display: none; }
-/* Add to bag: the bag icon becomes a check while cv-product.js shows "In your bag" (is-done).
+/* Add to bag: a check shows while cv-product.js says "In your bag" (is-done).
    A colour and icon state, kept under reduced motion and without the motion module. */
 .cvc__add-check { display: none; }
-.cvc__add.is-done .cvc__add-bag { display: none; }
 .cvc__add.is-done .cvc__add-check { display: block; }
 /* Buy now ticket punch (cv-pdp-counter-motion.js adds the svg only while motion runs). */
 .cvc .cvc__buy { position: relative; }

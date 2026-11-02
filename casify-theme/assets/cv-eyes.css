@@ -1,0 +1,83 @@
+/* Casify: googly eyes on the Add to bag and Buy now pills (snippets/cv-eyes.liquid, assets/cv-eyes.js).
+   Open and looking straight ahead without JS or with reduced motion. */
+/* ds-allow-hardcode:start  eye sizes follow each pill's height; a blink is faster than any theme.css duration token. */
+.cv-eyes-host { --cv-eye: 40px; --cv-eye-inset: 6px; --cv-eye-n: 1; position: relative; }
+.cv-eyes-host--2 { --cv-eye-n: 2; }
+
+/* The eyes sit at the pill's end, so the label centres in the room left beside them. */
+.cvc button.cv-eyes-host, .cvqp button.cv-eyes-host {
+  padding-right: calc(var(--cv-eye-inset) + (var(--cv-eye) + 2px) * var(--cv-eye-n) + 6px);
+}
+/* The gloss stripe would run behind the eyes. */
+.cvc .cv-eyes-host::after { content: none; }
+
+.cvc-sticky .cv-eyes-host { --cv-eye: 32px; --cv-eye-inset: 7px; }
+.cvqp .cv-eyes-host { --cv-eye: 40px; --cv-eye-inset: 7px; }
+
+.cv-eyes {
+  position: absolute; z-index: 1; top: 50%; right: var(--cv-eye-inset);
+  display: flex; gap: 2px;
+  margin-top: calc(var(--cv-eye) / -2);
+  pointer-events: none;
+}
+.cv-eye {
+  position: relative; flex: none;
+  width: var(--cv-eye); height: var(--cv-eye);
+  border-radius: 50%;
+  background: var(--white);
+  transition: transform 70ms var(--ease-standard);
+}
+.cv-eye__pupil {
+  position: absolute; left: 32%; top: 32%;
+  width: 36%; height: 36%;
+  border-radius: 50%;
+  background: var(--black);
+  transition: transform 110ms var(--ease-standard);
+}
+
+/* A blink, and a button that can't be pressed yet. cv-product.js keeps the button disabled while it shows is-done. */
+.cv-eyes.is-blinking .cv-eye,
+:disabled:not(.is-done) > .cv-eyes .cv-eye { transform: scaleY(.16); }
+.is-done > .cv-eyes .cv-eye { animation: cv-eyes-happy 560ms var(--ease-standard); }
+@keyframes cv-eyes-happy {
+  0%, 36%, 64%, 100% { transform: none; }
+  18%, 82% { transform: scaleY(.16); }
+}
+
+/* The swap hero's round Add to bag badge: the eyes sit above the label, shut when the look is sold out. */
+.cvsw__bag { --cv-eye: 32px; --cv-eye-inset: 0; }
+.cvsw__bag .cv-eyes { position: static; margin: 0; }
+.cvsw__bag:not([data-cvqp-open]) .cv-eye { transform: scaleY(.16); }
+@media (max-width: 749px) {
+  .cvsw__bag { --cv-eye: 25px; }
+}
+
+/* "To checkout…" needs the whole pill, and the page is about to leave. */
+.cvc .cvc__buy.is-busy { padding-right: 12px; }
+.cvc__buy.is-busy > .cv-eyes { display: none; }
+
+/* The two-column product page is tightest here: smaller eyes, so the labels keep their room. */
+@media (min-width: 990px) and (max-width: 1140px) {
+  .cvc__buttons button.cv-eyes-host { --cv-eye: 34px; padding-left: 12px; }
+}
+/* Phones: one eye per button in the sticky bar. */
+@media (max-width: 749px) {
+  .cvc-sticky .cv-eyes-host { --cv-eye: 28px; --cv-eye-inset: 8px; --cv-eye-n: 1; }
+  .cvc-sticky .cv-eye + .cv-eye { display: none; }
+}
+/* The price stays beside the buttons; the variant is already named in the buy box. */
+@media (max-width: 480px) {
+  .cvc-sticky__variant { display: none; }
+}
+/* Too narrow for the price too: the buttons take the bar. */
+@media (max-width: 340px) {
+  .cvc-sticky .cvc-sticky__info { display: none; }
+  .cvc-sticky .cvc-sticky__buttons { flex: 1; }
+  .cvc-sticky .cv-eyes-host { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-eye, .cv-eye__pupil { transition: none; }
+  .is-done > .cv-eyes .cv-eye { animation: none; }
+}
+/* ds-allow-hardcode:end */

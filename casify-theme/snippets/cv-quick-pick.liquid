@@ -12,7 +12,7 @@
   Behaviour + motion: assets/cv-quick-pick.js. Styles: assets/cv-quick-pick.css.
 {%- endcomment -%}
 {{ 'cv-quick-pick.css' | asset_url | stylesheet_tag }}
-{%- comment -%} .btn sets display, so the hidden attribute needs its own rule (move into cv-quick-pick.css, requests/INF-2.md). {%- endcomment -%}
+{%- comment -%} .cvqp__buy sets display, so the hidden attribute needs its own rule (move into cv-quick-pick.css, requests/INF-2.md). {%- endcomment -%}
 <style>.cvqp__buy[hidden]{display:none}</style>
 <dialog class="cvqp" id="cvqp-{{ sid }}" aria-labelledby="cvqpTitle-{{ sid }}" data-cvqp
         data-money-format="{{ shop.money_format | escape }}"
@@ -43,12 +43,13 @@
       <h2 class="cvqp__title" id="cvqpTitle-{{ sid }}" data-cvqp-title></h2>
       <p class="cvqp__price"><span data-cvqp-price></span> <s data-cvqp-was hidden></s></p>
       <div class="cvqp__options" data-cvqp-options></div>
-      <button type="button" class="cvqp__add" data-cvqp-add disabled>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <button type="button" class="cvqp__add cv-eyes-host" data-cvqp-add disabled>
         <span data-cvqp-add-label>{{ 'general.quick_pick.add' | t }}</span>
+        {%- render 'cv-eyes' -%}
       </button>
-      <button type="button" class="cvqp__buy btn btn--ghost btn--block" data-cvqp-buy disabled hidden>
+      <button type="button" class="cvqp__buy cv-eyes-host cv-eyes-host--2" data-cvqp-buy disabled hidden>
         <span data-cvqp-buy-label>{{ 'general.quick_pick.buy_now' | t }}</span>
+        {%- render 'cv-eyes', count: 2 -%}
       </button>
       <p class="cvqp__status" data-cvqp-status role="status" aria-live="polite"></p>
       <a class="cvqp__more" href="{{ routes.all_products_collection_url }}" data-cvqp-more>{{ 'general.quick_pick.more' | t }}</a>

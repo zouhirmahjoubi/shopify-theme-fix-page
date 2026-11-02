@@ -17,7 +17,7 @@
  *            pulses when the shopper picks; the picked swatch pops
  *   add      the button squashes; the photo-ticket token is flown by
  *            cv-commerce-motion.js on cart:added (one token per add)
- *   buy now  ticket punch: a border draws during the POST, the arrow slides out
+ *   buy now  ticket punch: a border draws during the POST
  *   below    complete-the-set cards pop onto the counter (and fly to the bag
  *            when added); review stars pop in
  *
@@ -582,15 +582,14 @@
     /* cvs:added: no token here any more. cv-product.js sends cart:added with from and img, and
        cv-commerce-motion.js flies it (one token per add). */
 
-    /* Buy now: squash, then keep the arrow nudging toward checkout until the page leaves. */
+    /* Buy now: squash, then draw the ticket punch until the page leaves. */
     listen(root, 'cvs:buying', function (e) {
       var btn = e.detail && e.detail.button;
       if (!btn) return;
       gsap.fromTo(btn, { scaleX: 1, scaleY: 1 }, { scaleX: 1.04, scaleY: 0.9, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.out', clearProps: 'transform' });
-      var arrow = btn.querySelector('svg:not(.cvc__punch)');
-      /* Ticket punch: a dashed border draws round the button while the cart is updated, then the
-         arrow slides out toward checkout. If the page stays (an error), it all runs back. A
-         MutationObserver on the class (cv-product.js drops is-busy) replaces the old polling. */
+      /* Ticket punch: a dashed border draws round the button while the cart is updated. If the page
+         stays (an error), it runs back. A MutationObserver on the class (cv-product.js drops is-busy)
+         replaces the old polling. */
       var punch = btn.querySelector('.cvc__punch');
       if (!punch) {
         punch = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -607,11 +606,9 @@
       var ring = punch.firstChild;
       var tl = gsap.timeline();
       tl.fromTo(ring, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power1.inOut' }, 0);
-      if (arrow) tl.to(arrow, { x: 14, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.75);
       var watch = new MutationObserver(function () {
         if (btn.classList.contains('is-busy')) return;
         watch.disconnect();
-        tl.eventCallback('onReverseComplete', function () { if (arrow) gsap.set(arrow, { clearProps: 'transform,opacity' }); });
         tl.timeScale(2).reverse();
       });
       watch.observe(btn, { attributes: true, attributeFilter: ['class'] });

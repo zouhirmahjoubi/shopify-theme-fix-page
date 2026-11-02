@@ -190,7 +190,6 @@
   box-shadow: 0 0 0 10px rgb(var(--glass-tint, 253 249 241) / .55), 0 22px 36px -18px rgba(126, 26, 23, .7);
   font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
 }
-.cvsw__bag svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
 .cvsw__bag:not([data-cvqp-open]) { background: var(--cocoa-500, #6B4229); }
 
 .cvsw__more { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
