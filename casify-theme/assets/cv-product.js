@@ -499,6 +499,10 @@
     }
 
     var snapshot = { variant: null, qty: 1, pct: 0, each: 0, total: 0, lines: [], canBuy: false };
+    /* While the stage shows the 3D view, a render swaps the photo under it only when the shopper picks
+       another case. The first render, a pack tap or a refresh keep the model's still, so no variant
+       photo flashes in before the live model takes over (assets/cv-pdp-model.js). */
+    var shownVariant = null;
 
     /* Repaint every price, stock and label surface from the real variants and pack. */
     function render() {
@@ -620,7 +624,10 @@
         }
       }
       if (els.stickyBtn) els.stickyBtn.disabled = !canBuy;
-      if (variant.featured_image && variant.featured_image.src) swapImage(variant.featured_image.src);
+      var onModel = !!$('.cvc__stage.is-3d', root);
+      var picked = shownVariant !== null && variant.id !== shownVariant;
+      if (variant.featured_image && variant.featured_image.src && (!onModel || picked)) swapImage(variant.featured_image.src);
+      shownVariant = variant.id;
 
       syncAvailability();
       snapshot = { variant: variant, qty: qty, pct: pct, each: each, total: total, lines: lines, canBuy: canBuy };

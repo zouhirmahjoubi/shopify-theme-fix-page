@@ -1,10 +1,12 @@
-"""Build a textured GLB of a printed tough phone case (iPhone 16 Pro body) for Shopify 3D media.
+"""Build a textured GLB of a printed phone case (iPhone 16 Pro body) for Shopify 3D media.
 
-usage: python make_case_glb.py <artwork.png (1:2 portrait)> <out.glb> [--matte]
+usage: python make_case_glb.py <artwork.png (1:2 portrait)> <out.glb> [--matte] [--clear]
 
-The artwork wraps the back and the outer side walls like the Printify tough case print;
-the front bumper, camera bezel and button covers are black TPU. Units are metres, Y up,
-the printed back faces +Z so viewers open on the artwork.
+Tough (default): the artwork wraps the back and the outer side walls like the Printify tough case print;
+the front bumper, camera bezel and button covers are black TPU.
+--clear: the artwork covers the flat back only; walls, bezel and button covers are clear, so the phone
+(Black Titanium frame) shows through. case_art.py makes either artwork from a print file.
+Units are metres, Y up, the printed back faces +Z so viewers open on the artwork.
 """
 import io, json, math, struct, sys
 import numpy as np
@@ -65,6 +67,11 @@ def art_uv(xy):
     return np.column_stack([xy[:, 0] / WA + 0.5, 0.5 - xy[:, 1] / HA])
 
 
+def back_uv(xy):
+    """Clear cases: the artwork spans the flat back edge to edge."""
+    return np.column_stack([(xy[:, 0] + HW - RB) / (2 * (HW - RB)), (HH - RB - xy[:, 1]) / (2 * (HH - RB))])
+
+
 class Prim:
     def __init__(self):
         self.P, self.N, self.UV, self.I, self.n = [], [], [], [], 0
@@ -119,7 +126,8 @@ def flat_ring(base, d, z, nz, uv=False):
     xy = p0 + n2 * d
     P = np.column_stack([xy, np.full(len(xy), z)])
     N = np.tile([0, 0, nz], (len(xy), 1)).astype(float)
-    return P, N, (art_uv(xy) if uv else np.zeros((len(xy), 2)))
+    UV = uv(xy) if callable(uv) else art_uv(xy) if uv else np.zeros((len(xy), 2))
+    return P, N, UV
 
 
 def fan(prim, ring, center):
@@ -174,15 +182,51 @@ def build():
     loft(m['tpu'], profile(case, bump))
     fan(m['screen'], flat_ring(case, -LIPW, ZS, -1), [0, 0, ZS])
 
-    # raised camera bezel, then the cut-out wall down to the phone back
+    loft(m['tpu'], profile(hole, bezel()))
+    camera(m, hole)
+    controls(m, 'tpu')
+    return m
+
+
+def build_clear():
+    m = {k: Prim() for k in
+         ['print', 'clear', 'frame', 'opening', 'phone_back', 'plateau', 'lens_metal', 'lens_glass', 'flash', 'screen']}
+    case = rrect(0, 0, HW, HH, R)
+    hole = rrect(PCX, PCY, HOLE, HOLE, HOLE_R)
+    phone = rrect(0, 0, PW / 2, PH / 2, PR)
+
+    # printed flat back (annulus around the camera bezel), then the clear shell: back fillet, wall, front fillet, lip
+    loft(m['print'], [flat_ring(case, -RB, ZB, 1, uv=back_uv), flat_ring(hole, BEZ_W, ZB, 1, uv=back_uv)])
+    wall = fillet(-RB, ZB - RB, RB, 0, pi / 2, 9) + fillet(-RF, ZF + RF, RF, pi / 2, pi)
+    wall += fillet(-(LIPW - 0.5), ZF + 0.5, 0.5, pi, 1.5 * pi)
+    wall.append((-LIPW, ZS, -1, 0))
+    loft(m['clear'], profile(case, wall))
+    fan(m['screen'], flat_ring(case, -LIPW, ZS, -1), [0, 0, ZS])
+    loft(m['clear'], profile(hole, bezel()))
+
+    # the phone seen through the walls: titanium frame with rounded edges, back glass up to the cut-out
+    loft(m['frame'], profile(phone, fillet(-0.6, ZPB - 0.6, 0.6, 0, pi / 2, 4) + fillet(-0.6, ZS + 0.6, 0.6, pi / 2, pi, 4)))
+    loft(m['phone_back'], [flat_ring(phone, -0.6, ZPB, 1), flat_ring(hole, 0, ZPB, 1)])
+    camera(m, hole)
+    controls(m, 'clear')
+    for y, length in [(37.5, 7.5), (23.0, 13.0), (7.0, 13.0)]:
+        superellipsoid(m['frame'], [PW / 2, y, -0.6], [0.6, length / 2 - 0.6, 1.0])
+    superellipsoid(m['frame'], [-PW / 2, 26.0, -0.6], [0.6, 9.4, 1.0])
+    return m
+
+
+def bezel():
+    """Raised camera bezel, then the cut-out wall down to the phone back."""
     bez = [(BEZ_W, ZB, 1, 0), (BEZ_W, ZB + BEZ_H - 0.6, 1, 0)]
     bez += [(BEZ_W - 0.6 + 0.6 * math.cos(a), ZB + BEZ_H - 0.6 + 0.6 * math.sin(a), math.cos(a), math.sin(a))
             for a in np.linspace(0, pi / 2, 7)]
     bez += [(0.3 + 0.3 * math.cos(a), ZB + BEZ_H - 0.3 + 0.3 * math.sin(a), math.cos(a), math.sin(a))
             for a in np.linspace(pi / 2, pi, 5)]
     bez.append((0, ZPB, -1, 0))
-    loft(m['tpu'], profile(hole, bez))
+    return bez
 
+
+def camera(m, hole):
     # phone back visible inside the cut-out, camera plateau
     plat = rrect(PCX, PCY, PLAT, PLAT, HOLE_R - 1.0)
     loft(m['phone_back'], [flat_ring(hole, 0, ZPB, 1), flat_ring(plat, 0, ZPB, 1)])
@@ -216,26 +260,28 @@ def build():
         loft(m['plateau'], profile(c, [(2.6, ZPT, 1, 0), (2.6, ZPT + 0.2, 1, 0)]))
         fan(m[mat], flat_ring(c, 2.6, ZPT + 0.2, 1), [PCX + lx, PCY + ly, ZPT + 0.2])
 
+
+def controls(m, cover):
     # button covers: action + volume on +X (phone's left), side button on -X
     zc = -0.6
     for y, length in [(37.5, 7.5), (23.0, 13.0), (7.0, 13.0)]:
-        superellipsoid(m['tpu'], [HW, y, zc], [0.9, length / 2, 1.6])
-    superellipsoid(m['tpu'], [-HW, 26.0, zc], [0.9, 10.0, 1.6])
+        superellipsoid(m[cover], [HW, y, zc], [0.9, length / 2, 1.6])
+    superellipsoid(m[cover], [-HW, 26.0, zc], [0.9, 10.0, 1.6])
     # openings: Camera Control cut-out on -X, charging/speaker slot on the bottom
     superellipsoid(m['opening'], [-HW, -22.5, -0.3], [0.08, 9.5, 1.7])
     superellipsoid(m['opening'], [0, -HH, -0.3], [13.0, 0.08, 2.0])
-    return m
 
 
 def srgb(hexs):
     return [((int(hexs[i:i + 2], 16) / 255 + 0.055) / 1.055) ** 2.4 for i in (0, 2, 4)] + [1.0]
 
 
-def write_glb(m, art_path, out, matte):
-    img = Image.open(art_path).convert('RGB').resize((1024, 2048), Image.LANCZOS)
+def write_glb(m, art, out, matte=False, clear=False):
+    img = art if isinstance(art, Image.Image) else Image.open(art)
+    img = img.convert('RGB').resize((1024, 2048), Image.LANCZOS)
     jpg = io.BytesIO(); img.save(jpg, 'JPEG', quality=90, optimize=True)
 
-    print_mat = {'name': 'Printed shell (%s)' % ('matte' if matte else 'glossy'),
+    print_mat = {'name': 'Printed back' if clear else 'Printed shell (%s)' % ('matte' if matte else 'glossy'),
                  'pbrMetallicRoughness': {'baseColorTexture': {'index': 0}, 'metallicFactor': 0,
                                           'roughnessFactor': 0.6 if matte else 0.42}}
     if not matte:
@@ -253,7 +299,11 @@ def write_glb(m, art_path, out, matte):
             'lens_metal': pbr('Lens ring', '4a4a4c', 0.3, 1.0),
             'lens_glass': pbr('Lens glass', '07080c', 0.04),
             'flash': pbr('Flash', 'ebe5d2', 0.35),
-            'screen': pbr('Screen', '050506', 0.06)}
+            'screen': pbr('Screen', '050506', 0.06),
+            'clear': {'name': 'Clear shell', 'alphaMode': 'BLEND',
+                      'pbrMetallicRoughness': {'baseColorFactor': srgb('eef2f6')[:3] + [0.25],
+                                               'metallicFactor': 0, 'roughnessFactor': 0.05}},
+            'frame': pbr('Phone frame', '3c3c3d', 0.35, 1.0)}
 
     blob, views, accs, prims, materials = bytearray(), [], [], [], []
 
@@ -289,10 +339,11 @@ def write_glb(m, art_path, out, matte):
     views.append({'buffer': 0, 'byteOffset': len(blob), 'byteLength': len(jpg.getvalue())})
     blob.extend(jpg.getvalue())
 
+    name = 'Clear case' if clear else 'Tough case'
     gltf = {'asset': {'version': '2.0', 'generator': 'casify make_case_glb.py'},
             'scene': 0, 'scenes': [{'nodes': [0]}],
-            'nodes': [{'mesh': 0, 'name': 'Tough case'}],
-            'meshes': [{'name': 'Tough case', 'primitives': prims}],
+            'nodes': [{'mesh': 0, 'name': name}],
+            'meshes': [{'name': name, 'primitives': prims}],
             'materials': materials,
             'textures': [{'sampler': 0, 'source': 0}],
             'images': [{'bufferView': len(views) - 1, 'mimeType': 'image/jpeg'}],
@@ -317,4 +368,5 @@ def write_glb(m, art_path, out, matte):
 
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
-    write_glb(build(), args[0], args[1], '--matte' in sys.argv)
+    clear = '--clear' in sys.argv
+    write_glb(build_clear() if clear else build(), args[0], args[1], '--matte' in sys.argv, clear)

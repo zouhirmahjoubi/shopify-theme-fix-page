@@ -431,7 +431,8 @@
             </button>
             {%- if model_media != blank and product.media.size > 1 -%}
               <div class="cvc__model" data-cvc-model{% unless model_main %} hidden{% endunless %}>
-                <template>{{ model_media | model_viewer_tag: image_size: '1400x', reveal: 'auto', camera-orbit: '-25deg 75deg auto', shadow-intensity: '1', alt: model_media.alt }}</template>
+                {%- comment -%} Neutral lighting keeps pale prints their real colour; the default room light washes them to white. {%- endcomment -%}
+                <template>{{ model_media | model_viewer_tag: image_size: '1400x', reveal: 'auto', camera-orbit: '-25deg 75deg auto', shadow-intensity: '1', environment-image: 'neutral', alt: model_media.alt }}</template>
                 <button type="button" class="cvc__xr" data-shopify-xr data-shopify-model3d-id="{{ model_media.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg>
                   <span>{{ 'products.gallery.view_in_space' | t }}</span>

@@ -22,3 +22,6 @@ __pycache__/
 Thumbs.db
 .DS_Store
 backup-live-*/
+
+# Generated 3D models and stills (case_3d/render_glb.py, make_case_glb.py)
+/case_3d/out/
