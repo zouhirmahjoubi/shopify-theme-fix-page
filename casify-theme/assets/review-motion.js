@@ -500,7 +500,8 @@
         }, 0.24);
       }
       if (bars.length) timeline.from(bars, { scaleX: 0, transformOrigin: '0% 50%', duration: 0.55, ease: 'power3.out', stagger: 0.06 }, 0.34);
-      if (cta) timeline.from(cta, { scale: 0.84, opacity: 0, duration: 0.45, ease: 'back.out(2.2)' }, 0.6);
+      // fromTo, not from: from() read the button's start scale back as its end and left it at 84%.
+      if (cta) timeline.fromTo(cta, { scale: 0.84, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(2.2)', clearProps: 'transform,opacity' }, 0.6);
 
       ScrollTrigger.create({
         trigger: ticket || root,
