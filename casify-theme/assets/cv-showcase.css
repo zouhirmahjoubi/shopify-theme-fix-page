@@ -3,7 +3,7 @@
    Cards dealt onto the counter from one stack, product photography revealed
    like a shop-window display, badge stamped, and CTA drawn as an enamel sign.
    Loads after theme.css (section-rendered <link>, always after <head>), so
-   it wins the cascade on the shared .cv-showcase/.cv-show-card selectors —
+   it wins the cascade on the shared .cv-showcase/.cv-show-card selectors;
    new card internals live entirely under the cvsh- prefix.
    Motion lives in cv-showcase-motion.js; this file is the finished state.
    ========================================================================= */
@@ -49,9 +49,12 @@
   position: absolute; z-index: 0; inset: 0; margin: 0; overflow: hidden;
   background: inherit; transform-origin: 50% 65%;
 }
+/* No translateZ(0) here: on every card it put each photo on its own compositor layer, and then
+   the ring, badge, pills and link drawn over it had to be layers too (about 300 on the home page,
+   which Chrome re-sorted on every animation frame). The hover depth (cv-showcase-motion.js)
+   moves the photo with GSAP, which lifts it onto a layer only while it moves. */
 .cvsh-card__image {
   display: block; width: 100%; height: 100%; object-position: center;
-  transform: translateZ(0);
 }
 .cvsh-card__media--cover .cvsh-card__image { object-fit: cover; }
 .cvsh-card__media--contain .cvsh-card__image { object-fit: contain; padding: 16px 18px 42px; }
@@ -90,10 +93,11 @@
   box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .28);
 }
 .cvsh-card--cream .cvsh-card__pill { background: rgba(74, 51, 36, .06); box-shadow: inset 0 0 0 1px rgba(74, 51, 36, .16); }
+/* Solid enough to read without a backdrop blur: a blur behind each pill made every card a
+   compositor layer of its own, for a photo that showed through at 22%. */
 .cvsh-card--has-image .cvsh-card__pill {
-  color: var(--cream-50); background: rgba(51, 35, 26, .78);
+  color: var(--cream-50); background: rgba(51, 35, 26, .84);
   box-shadow: inset 0 0 0 1px rgba(255, 253, 248, .34), 0 4px 12px rgba(28, 19, 13, .18);
-  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
 }
 
 .cvsh-card__body { display: flex; flex-direction: column; gap: 9px; padding: 22px 24px 26px; flex: 1; }
@@ -213,15 +217,16 @@
 .cvsh-card--product .cvsh-card__body > .cvsh-sign-cta { margin-top: 4px; }
 
 /* -------------------------------------------------------------------------
-   Rail: more than three cards scroll sideways, three to a view on desktop,
-   two on tablets, one and a peek on phones. The row's padding/negative
-   margin leaves room for the card shadows and the hover tilt.
+   Rail: more than three cards scroll sideways, five to a view on desktop
+   (Zouhir, 2026-11-09), four on small laptops, three on tablets, one and a
+   peek on phones. The row's padding/negative margin leaves room for the
+   card shadows and the hover tilt.
    ------------------------------------------------------------------------- */
 .cvsh__rail { position: relative; }
 .cvsh--rail .cvsh__row {
-  --cvsh-gap: 28px;
+  --cvsh-gap: 20px; --cvsh-per: 5; /* ds-allow-hardcode: the theme has no spacing tokens */
   grid-template-columns: none; grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 2 * var(--cvsh-gap)) / 3);
+  grid-auto-columns: calc((100% - (var(--cvsh-per) - 1) * var(--cvsh-gap)) / var(--cvsh-per));
   gap: var(--cvsh-gap);
   overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory; scroll-padding-inline: 6px;
@@ -262,9 +267,16 @@
 .cvsh__btn:disabled { opacity: .3; cursor: default; box-shadow: none; }
 .cvsh.is-static .cvsh__bar { display: none; }
 
-@media (max-width: 1099px) {
-  .cvsh--rail .cvsh__row { --cvsh-gap: 22px; grid-auto-columns: calc((100% - var(--cvsh-gap)) / 2); }
+/* ds-allow-hardcode:start  Cards per view and the gap between them; no spacing tokens exist.
+   Five start where the page reaches its full 1160px, so a five-up card is always 206px wide and
+   its title column 174px; four and three never go narrower than that. */
+@media (max-width: 1159px) {
+  .cvsh--rail .cvsh__row { --cvsh-gap: 18px; --cvsh-per: 4; }
 }
+@media (max-width: 999px) {
+  .cvsh--rail .cvsh__row { --cvsh-gap: 16px; --cvsh-per: 3; }
+}
+/* ds-allow-hardcode:end */
 @media (max-width: 699px) {
   .cvsh--rail .cvsh__row { --cvsh-gap: 14px; grid-auto-columns: 84%; }
   .cvsh__bar { gap: 12px; }
@@ -275,6 +287,41 @@
   .cvsh--rail .cvsh__row { scroll-behavior: auto; }
   .cvsh__btn { transition: none; }
 }
+
+/* ds-allow-hardcode:start  Five, four or three to a view, a rail card is 206-311px wide, so it
+   takes the measures of the collection grid's four-across card below: smaller price and padding,
+   and no round mint on the stretched sign, where it would squash into an oval. The title is a
+   step smaller still and a hair tighter (16px, -0.01em): at 17px, 2 of the 163 case titles needed
+   a third line in the 174px column. The pills keep their 10px: two of them stack at this width
+   either way, and one fits. */
+@media (min-width: 700px) {
+  .cvsh--rail .cvsh-card { border-radius: 18px; }
+  .cvsh--rail .cvsh-card--has-image .cvsh-card__stage { padding: 14px; }
+  .cvsh--rail .cvsh-card__badge { top: 12px; padding: 4px 13px 4px 17px; font-size: 10px; }
+  .cvsh--rail .cvsh-card__badge.is-pill { left: 12px; padding-left: 12px; }
+  .cvsh--rail .cvsh-card__body { gap: 7px; padding: 16px 16px 18px; }
+  /* Two title lines and three description lines are kept even when the copy is shorter, so the
+     description, facts and price start at one height across the row. */
+  .cvsh--rail .cvsh-card__title { font-size: 16px; line-height: 1.18; letter-spacing: -.01em; min-height: 2.36em; }
+  .cvsh--rail .cvsh-card__desc { font-size: 13px; line-height: 1.5; min-height: 4.5em; }
+  .cvsh--rail .cvsh-card__facts { gap: 3px 8px; font-size: 10.5px; letter-spacing: .04em; }
+  .cvsh--rail .cvsh-card__facts span + span::before { margin-right: 8px; }
+  .cvsh--rail .cvsh-card__now { font-size: 22px; }
+  .cvsh--rail .cvsh-card__was { font-size: 12.5px; }
+  .cvsh--rail .cvsh-sign-cta { min-height: 50px; padding: 0 46px 0 50px; }
+  .cvsh--rail .cvsh-sign-cta__mint { display: none; }
+  .cvsh--rail .cvsh-sign-cta__arrow { right: 16px; width: 20px; }
+  .cvsh--rail .cvsh-sign-cta__label { font-size: 11px; letter-spacing: .1em; }
+}
+/* ds-allow-hardcode:end */
+
+/* Speed (2026-11-09): a product card's photo stage skips style, layout and paint while it is off
+   screen. The home rail holds 49 cards (more than half of the page's elements) and every late
+   stylesheet or web font made a phone lay all of them out again while the page loaded. The stage
+   keeps its size when skipped (square by aspect-ratio, min-height 0) and already clips its
+   overflow, so nothing moves or changes when a card scrolls in. Not on the sign button: its
+   peppermint hangs over the button's edge, and content-visibility would clip it. */
+.cvsh-card--product .cvsh-card__stage { content-visibility: auto; contain-intrinsic-size: auto none; }
 
 /* -------------------------------------------------------------------------
    The card's button as a <button> or inside an add-to-bag <form>
@@ -326,3 +373,32 @@ button.cvsh-sign-cta:disabled .cvsh-sign-cta__base { fill: var(--cvsh-cta-fill);
   .cvl__grid--showcase .cvsh-sign-cta__long { display: none; }
   .cvl__grid--showcase .cvsh-sign-cta__short { display: inline; }
 }
+
+/* ds-allow-hardcode:start  Four across on wide screens (Zouhir, 2026-11-09). The card is about
+   250-265px wide there, so it tightens a step: smaller title, price and padding, both pills kept.
+   The sign's art stretches with the button (preserveAspectRatio none), so the round mint would
+   squash into an oval: it goes, the striped end stays, and the short label fits between the
+   stripes and the arrow. Sizes are this card's own measures, as in the rules above. */
+@media (min-width: 1100px) {
+  .cvl__grid.cvl__grid--showcase { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px 18px; }
+  .cvl__grid--showcase .cvsh-card { border-radius: 18px; }
+  .cvl__grid--showcase .cvsh-card--has-image .cvsh-card__stage { padding: 14px; }
+  .cvl__grid--showcase .cvsh-card__badge { top: 12px; padding: 4px 13px 4px 17px; font-size: 10px; }
+  .cvl__grid--showcase .cvsh-card__badge.is-pill { left: 12px; padding-left: 12px; }
+  .cvl__grid--showcase .cvsh-card__pills { gap: 5px; }
+  .cvl__grid--showcase .cvsh-card__pill { padding: 4px 8px; font-size: 9px; letter-spacing: .04em; }
+  .cvl__grid--showcase .cvsh-card__body { gap: 7px; padding: 16px 16px 18px; }
+  .cvl__grid--showcase .cvsh-card--product .cvsh-card__title { font-size: 17px; line-height: 1.18; }
+  .cvl__grid--showcase .cvsh-card__desc { font-size: 13px; line-height: 1.5; }
+  .cvl__grid--showcase .cvsh-card__facts { gap: 3px 8px; font-size: 10.5px; letter-spacing: .04em; }
+  .cvl__grid--showcase .cvsh-card__facts span + span::before { margin-right: 8px; }
+  .cvl__grid--showcase .cvsh-card__now { font-size: 22px; }
+  .cvl__grid--showcase .cvsh-card__was { font-size: 12.5px; }
+  .cvl__grid--showcase .cvsh-sign-cta { min-height: 50px; padding: 0 46px 0 50px; }
+  .cvl__grid--showcase .cvsh-sign-cta__mint { display: none; }
+  .cvl__grid--showcase .cvsh-sign-cta__arrow { right: 16px; width: 20px; }
+  .cvl__grid--showcase .cvsh-sign-cta__label { font-size: 11px; letter-spacing: .1em; }
+  .cvl__grid--showcase .cvsh-sign-cta__long { display: none; }
+  .cvl__grid--showcase .cvsh-sign-cta__short { display: inline; }
+}
+/* ds-allow-hardcode:end */
