@@ -1199,6 +1199,7 @@
           assign vr_reviews = true
         endif
       -%}
+      <!--VRDBG reviews={{ vr_reviews }} shop={{ vr_shop_clips }} blocks={% for b in section.blocks %}{{ b.type }}:{{ b.settings.mp4_asset | default: '-' }};{% endfor %} handle={{ product.handle }}-->
       {%- if vr_reviews or vr_shop_clips > 0 -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', shop_type: 'shop_clip', reviews: vr_reviews, settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
     </div>
   </div>
