@@ -30,7 +30,10 @@
   if external_count > 0
     assign external_rating = jm_a[1] | plus: 0 | times: 1.0 | divided_by: external_count | round: 1
   endif
-  assign has_store_rating = external_count > 0
+  assign has_store_rating = false
+  if external_count > 0
+    assign has_store_rating = true
+  endif
   assign external_percent = external_rating | times: 20 | round
   assign external_rating_text = external_rating | append: ''
   assign external_count_text = external_count | append: ''
