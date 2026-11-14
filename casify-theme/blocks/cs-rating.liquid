@@ -1,6 +1,8 @@
 {%- comment -%}
   The product's Judge.me rating (verified buyers and imported reviews, snippets/cv-jm-verified.liquid).
-  The old "Manual rating" source is no longer shown: a typed rating can't be verified.
+  A product with no review of its own falls back to the store-wide Judge.me rating,
+  labelled "Store rating". The old "Manual rating" source is no longer shown: a typed
+  rating can't be verified.
 {%- endcomment -%}
 {%- liquid
   assign rating_value = 0
@@ -13,9 +15,29 @@
   {%- liquid
     assign jm_parts = jm_stats | split: '␟'
     assign rating_count = jm_parts[0] | plus: 0
+    assign rating_is_store = false
     if rating_count > 0
       assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
       assign has_rating = true
+    else
+      comment
+        No review of this product's own: fall back to the store-wide Judge.me
+        rating, labelled "Store rating".
+      endcomment
+      capture jm_store
+        render 'cv-jm-verified', mode: 'stats', scope: 'all'
+      endcapture
+      assign js_parts = jm_store | split: '␟'
+      assign rating_count = js_parts[0] | plus: 0
+      if rating_count > 0
+        assign rating_value = js_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+        assign has_rating = true
+        assign rating_is_store = true
+      endif
+    endif
+    assign rating_label = block.settings.label
+    if rating_is_store and rating_label == blank
+      assign rating_label = 'products.review_badges.store_rating' | t
     endif
   -%}
 {%- endif -%}
@@ -28,10 +50,10 @@
       {%- render 'cv-stars', fill: star_fill -%}
     </span>
     <strong class="csp-inline__score">{{ rating_value | round: 1 }}</strong>
-    {%- if rating_count > 0 or block.settings.label != blank -%}
+    {%- if rating_count > 0 or rating_label != blank -%}
       <span class="csp-inline__detail">
         {%- if rating_count > 0 -%}({{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}){%- endif -%}
-        {%- if block.settings.label != blank -%}{% if rating_count > 0 %} · {% endif %}{{ block.settings.label | escape }}{%- endif -%}
+        {%- if rating_label != blank -%}{% if rating_count > 0 %} · {% endif %}{{ rating_label | escape }}{%- endif -%}
       </span>
     {%- endif -%}
   {%- endcapture -%}
@@ -53,14 +75,14 @@
     <span class="csp-rating__stars" role="img" aria-label="Rating: {{ rating_value | round: 1 }} out of 5 stars">
       {%- render 'cv-stars', fill: star_fill -%}
     </span>
-    {%- if rating_count > 0 or block.settings.label != blank -%}
+    {%- if rating_count > 0 or rating_label != blank -%}
       <span class="csp-rating__detail">
         {%- if rating_count > 0 -%}
           {{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}
         {%- endif -%}
-        {%- if block.settings.label != blank -%}
+        {%- if rating_label != blank -%}
           {% if rating_count > 0 %}<span aria-hidden="true">·</span>{% endif %}
-          {{ block.settings.label | escape }}
+          {{ rating_label | escape }}
         {%- endif -%}
       </span>
     {%- endif -%}
@@ -85,7 +107,7 @@
       ],
       "default": "product"
     },
-    { "type": "product", "id": "rating_product", "label": "Product", "info": "Leave blank to use the current product on product pages. Counts its Judge.me reviews (verified buyers and imported)." },
+    { "type": "product", "id": "rating_product", "label": "Product", "info": "Leave blank to use the current product on product pages. Counts its Judge.me reviews (verified buyers and imported); with none of its own, shows the store-wide Judge.me rating labelled \"Store rating\"." },
     { "type": "range", "id": "manual_rating", "label": "Manual rating (no longer shown)", "min": 0, "max": 5, "step": 0.1, "default": 0 },
     { "type": "text", "id": "label", "label": "Optional source label" },
     { "type": "header", "content": "Layout" },

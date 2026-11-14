@@ -11,6 +11,18 @@
   assign rating_avg = 0
   if rating_count > 0
     assign rating_avg = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+  else
+    comment
+      No review of this product's own: fall back to the store-wide Judge.me rating.
+    endcomment
+    capture jm_store
+      render 'cv-jm-verified', mode: 'stats', scope: 'all'
+    endcapture
+    assign js_parts = jm_store | split: '␟'
+    assign rating_count = js_parts[0] | plus: 0
+    if rating_count > 0
+      assign rating_avg = js_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+    endif
   endif
   assign model_oi = -1
   assign style_oi = -1

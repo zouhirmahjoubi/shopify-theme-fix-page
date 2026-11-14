@@ -2,9 +2,10 @@
   Summary under the product title ("summary" block in sections/cv-product-counter.liquid):
   stars · rating · (count reviews), then price · compare-at · Save, then a one-line pitch.
 
-  Every number is live: the rating comes only from this product's Judge.me reviews
-  (verified buyers and imported ones; snippets/cv-jm-verified.liquid). Typed-in and
-  unverified reviews never count, and no store rating stands in for the product's own. Reviews of
+  Every number is live: the rating comes from this product's Judge.me reviews
+  (verified buyers and imported ones; snippets/cv-jm-verified.liquid), falling back
+  to the store-wide Judge.me rating, labelled "Store rating", while the product has
+  no review of its own. Typed-in and unverified reviews never count. Reviews of
   cases the shop sent as gifts stay out of a buyer's rating; while no buyer has reviewed
   the product, their rating shows and the count says "gifted cases". With none at all,
   the "no reviews" label links to the reviews section. The prices come from the selected
@@ -25,6 +26,8 @@
 
   comment
     Stats (cv-jm-verified): buyers' count and sum, then gifted cases' count and sum.
+    With no review of its own at all, the product falls back to the store-wide
+    Judge.me rating and says so ("Store rating").
   endcomment
   assign jm_parts = jm_stats | split: '␟'
   assign jm_n = jm_parts[0] | plus: 0
@@ -36,6 +39,17 @@
     assign rating_value = jm_parts[3] | plus: 0 | times: 1.0 | divided_by: jm_gift_n
     assign rating_count = jm_gift_n
     assign rating_is_gift = true
+  else
+    capture jm_store
+      render 'cv-jm-verified', mode: 'stats', scope: 'all'
+    endcapture
+    assign js_parts = jm_store | split: '␟'
+    assign store_n = js_parts[0] | plus: 0
+    if store_n > 0
+      assign rating_value = js_parts[1] | plus: 0 | times: 1.0 | divided_by: store_n
+      assign rating_count = store_n
+      assign rating_is_store = true
+    endif
   endif
   assign can_write = false
   if block.settings.empty_label != blank

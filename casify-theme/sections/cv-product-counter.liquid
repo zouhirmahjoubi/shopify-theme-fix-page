@@ -305,7 +305,8 @@
 
   comment
     Ratings: this product's Judge.me reviews (verified buyers and imported; snippets/cv-jm-verified.liquid).
-    No reviews, no stars: an empty product shows no star fill (PRODUCT.md:102, STORE-FACTS 7, gate G1).
+    A product with no review of its own falls back to the store-wide Judge.me rating,
+    labelled "Store rating". No Judge.me review at all, no stars (gate G1).
   endcomment
   capture jm_stats
     render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle
@@ -315,10 +316,23 @@
   assign rating_value = 0
   assign star_pct = 0
   assign has_rating = false
+  assign rating_is_store = false
   if rating_count > 0
     assign has_rating = true
     assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
     assign star_pct = rating_value | times: 20.0 | round: 1
+  else
+    capture jm_store
+      render 'cv-jm-verified', mode: 'stats', scope: 'all'
+    endcapture
+    assign js_parts = jm_store | split: '␟'
+    assign rating_count = js_parts[0] | plus: 0
+    if rating_count > 0
+      assign has_rating = true
+      assign rating_is_store = true
+      assign rating_value = js_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+      assign star_pct = rating_value | times: 20.0 | round: 1
+    endif
   endif
 
   comment
@@ -682,7 +696,7 @@
             {%- if has_rating -%}
               {%- render 'cv-stars', fill: star_pct, class: 'cvc__stars' -%}
               {%- assign rating_shown = rating_value | round: 1 -%}
-              <span class="cvc__rating-text" data-cvc-rating-text><span aria-hidden="true">{{ rating_shown }}</span> <span class="cvc__visually-hidden">{{ 'products.rating.out_of' | t: rating: rating_shown }}, </span><span class="cvc__rating-separator" aria-hidden="true">·</span><u>{% if rating_count == 1 %}{{ 'products.rating.reviews_one' | t: count: rating_count }}{% else %}{{ 'products.rating.reviews_other' | t: count: rating_count }}{% endif %}</u></span>
+              <span class="cvc__rating-text" data-cvc-rating-text><span aria-hidden="true">{{ rating_shown }}</span> <span class="cvc__visually-hidden">{{ 'products.rating.out_of' | t: rating: rating_shown }}, </span><span class="cvc__rating-separator" aria-hidden="true">·</span>{% if rating_is_store %}<span aria-hidden="true">{{ 'products.rating.store_rating_label' | t }} · </span><span class="cvc__visually-hidden">{{ 'products.rating.store_rating_label' | t }}, </span><span class="cvc__rating-separator" aria-hidden="true">·</span>{% endif %}<u>{% if rating_count == 1 %}{{ 'products.rating.reviews_one' | t: count: rating_count }}{% else %}{{ 'products.rating.reviews_other' | t: count: rating_count }}{% endif %}</u></span>
             {%- else -%}
               {%- liquid
                 assign proof_text = 'products.rating.no_reviews_yet' | t
