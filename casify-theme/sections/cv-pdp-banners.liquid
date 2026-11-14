@@ -1,0 +1,460 @@
+{%- comment -%}
+  Casify product page: "Product: feature banners", wide story banners under the delivery dates.
+  Adapted on 2026-11-14 from four Amazon A+ banners the merchant sent (another brand's pictures
+  and claims, so none of them are used): the layout is kept, every picture and word is Casify's
+  own and true for the product the section sits on.
+
+    Fit     two of this product's own variant photos, each on a different phone, and the number
+            of phone models in its model option. When the shopper confirms a phone in the buy
+            box, the first photo becomes that phone (assets/cv-pdp-banners.js, cvs:change).
+    Build   this case type's layers, drawn from the product's own photo, with the specs Printify
+            gives for the type. The type test is the counter's and the comparison table's
+            (tags, then title, Magnetic first, because some Magnetic cases carry "tough case").
+    Photos  merchant photos, each captioned with what it shows and linked to that case.
+
+  A product without a phone-model option renders nothing; a banner without its data hides.
+  Styles: assets/cv-pdp-banners.css. Motion: assets/cv-pdp-banners.js (entrance only, none under
+  reduced motion; without JavaScript everything shows in its final place).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+
+  comment
+    The phone-model option, found the same way as in sections/cv-product-counter.liquid.
+  endcomment
+  assign model_oi = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable'
+      assign model_oi = forloop.index0
+      break
+    endif
+  endfor
+  if model_oi == -1
+    for option in product.options_with_values
+      assign fv = option.values.first | downcase
+      if fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign model_oi = forloop.index0
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if model_oi >= 0 -%}
+  {%- liquid
+    assign case_type = ''
+    assign type_tags = product.tags | join: '|' | downcase
+    assign type_title = product.title | downcase
+    if type_tags contains 'magnetic case' or type_title contains 'magnetic' or type_title contains 'magsafe'
+      assign case_type = 'magnetic'
+    elsif type_tags contains 'clear case' or type_title contains 'clear'
+      assign case_type = 'clear'
+    elsif type_tags contains 'tough case' or type_title contains 'tough'
+      assign case_type = 'tough'
+    endif
+
+    assign design_name = product.title | split: ' Phone Case' | first | strip
+    if design_name == product.title
+      assign design_name = product.title | split: ' | ' | first | strip
+    endif
+
+    assign models = product.options_with_values[model_oi].values
+    assign model_count = models.size
+    assign model_list = models | join: '|' | downcase
+    assign brand_list = ''
+    if model_list contains 'iphone'
+      assign brand_list = brand_list | append: '|iPhone'
+    endif
+    if model_list contains 'galaxy' or model_list contains 'samsung'
+      assign brand_list = brand_list | append: '|Samsung'
+    endif
+    if model_list contains 'pixel'
+      assign brand_list = brand_list | append: '|Pixel'
+    endif
+    assign brand_arr = brand_list | remove_first: '|' | split: '|'
+    assign brands = ''
+    case brand_arr.size
+      when 1
+        assign brands = brand_arr.first
+      when 2
+        assign brands = brand_arr | join: ' & '
+      when 3
+        assign brands = brand_arr[0] | append: ', ' | append: brand_arr[1] | append: ' & ' | append: brand_arr[2]
+    endcase
+
+    comment
+      Phone A is the first model on the list (the newest phone). Phone B is the first model of
+      another brand, so the two photos show different camera layouts; on a one-brand case it is
+      the middle of the list. Each is the first variant of that model with a photo.
+    endcomment
+    assign model_a = models.first
+    assign ma = model_a | downcase
+    assign key_a = 's'
+    if ma contains 'iphone'
+      assign key_a = 'i'
+    elsif ma contains 'pixel'
+      assign key_a = 'p'
+    endif
+    assign model_b = ''
+    for m in models
+      assign md = m | downcase
+      assign key_m = 's'
+      if md contains 'iphone'
+        assign key_m = 'i'
+      elsif md contains 'pixel'
+        assign key_m = 'p'
+      endif
+      if key_m != key_a
+        assign model_b = m
+        break
+      endif
+    endfor
+    if model_b == '' and model_count > 2
+      assign mid = model_count | divided_by: 2
+      assign model_b = models[mid]
+    endif
+
+    assign var_a = nil
+    assign var_b = nil
+    for v in product.variants
+      if v.featured_image == blank
+        continue
+      endif
+      assign vm = v.options[model_oi]
+      if var_a == nil and vm == model_a
+        assign var_a = v
+      elsif var_b == nil and model_b != '' and vm == model_b
+        assign var_b = v
+      endif
+      if var_a != nil and var_b != nil
+        break
+      endif
+    endfor
+    if var_a != nil and var_b != nil and var_a.featured_image.id == var_b.featured_image.id
+      assign var_b = nil
+    endif
+    assign build_pic = product.featured_image
+    if var_a != nil
+      assign build_pic = var_a.featured_image
+    endif
+  -%}
+  {{ 'cv-pdp-banners.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cv-pdp-banners.js' | asset_url }}" defer></script>
+  <section class="cvbn" data-cvbn aria-labelledby="cvbn-h-{{ section.id }}" style="--cvbn-pt: {{ st.padding_top }}px; --cvbn-pb: {{ st.padding_bottom }}px;">
+    <h2 class="cvbn__vh" id="cvbn-h-{{ section.id }}">{{ st.heading | default: 'About this case' | escape }}</h2>
+    <div class="cvbn__inner">
+      {%- assign photos_done = false -%}
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'fit' -%}
+            {%- if var_a != nil -%}
+              {%- liquid
+                assign bs = block.settings
+                assign chip_note = bs.chip_note | replace: '[brands]', brands
+                if brands == blank
+                  assign chip_note = ''
+                endif
+                assign alt_a = design_name | append: ' case on ' | append: model_a
+                assign alt_b = ''
+                if var_b != nil
+                  assign alt_b = design_name | append: ' case on ' | append: model_b
+                endif
+              -%}
+              <article class="cvbn__card cvbn--fit{% if var_b == nil %} cvbn--fit-one{% endif %}" data-cvbn-item {{ block.shopify_attributes }}>
+                <div class="cvbn__copy">
+                  <h3 class="cvbn__title">{{ bs.heading | escape }}</h3>
+                  {%- if bs.text != blank -%}<p class="cvbn__text">{{ bs.text | escape }}</p>{%- endif -%}
+                  <p class="cvbn__chip">
+                    <span class="cvbn__chip-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.6"/><rect x="8.6" y="4.6" width="3.6" height="3.6" rx="1"/><path d="M10.5 18.5h3"/></svg>
+                    </span>
+                    <span class="cvbn__chip-body">
+                      <span class="cvbn__chip-line"><b class="cvbn__chip-num">{{ model_count }}</b> {{ bs.chip_label | escape }}</span>
+                      {%- if chip_note != blank -%}<span class="cvbn__chip-note">{{ chip_note | escape }}</span>{%- endif -%}
+                    </span>
+                  </p>
+                </div>
+                {%- comment -%}
+                  Each device blends its white photo background into the card (mix-blend-mode on
+                  the same element that rotates, because a transformed parent would isolate it).
+                  The dark tag rides on the device and stays dark under the blend.
+                {%- endcomment -%}
+                <div class="cvbn__phones">
+                  <div class="cvbn__device cvbn__device--a" data-cvbn-phone>
+                    <span class="cvbn__tag" data-cvbn-tag>{{ model_a | escape }}</span>
+                    <figure class="cvbn__phone">
+                      {{ var_a.featured_image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 620px, 360px', loading: 'lazy', alt: alt_a, class: 'cvbn__phone-img' }}
+                    </figure>
+                  </div>
+                  {%- if var_b != nil -%}
+                    <div class="cvbn__device cvbn__device--b">
+                      <span class="cvbn__tag">{{ model_b | escape }}</span>
+                      <figure class="cvbn__phone">
+                        {{ var_b.featured_image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200, 1600', sizes: '(min-width: 990px) 620px, 360px', loading: 'lazy', alt: alt_b, class: 'cvbn__phone-img' }}
+                      </figure>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <script type="application/json" data-cvbn-fit-json>{"model": {{ model_a | json }}, "yours": {{ bs.yours_label | json }}, "alt": {{ design_name | append: ' case on ' | json }}}</script>
+              </article>
+            {%- endif -%}
+
+          {%- when 'build' -%}
+            {%- if case_type != '' and build_pic != blank -%}
+              {%- liquid
+                assign bs = block.settings
+                case case_type
+                  when 'tough'
+                    assign b_head = bs.tough_heading
+                    assign b_text = bs.tough_text
+                    assign b_stat = bs.tough_stat
+                    assign b_unit = bs.tough_unit
+                    assign b_cap = bs.tough_caption
+                    assign b_chip = bs.tough_chip
+                    assign b_chip_note = bs.tough_chip_note
+                    assign b_fine = ''
+                    assign b_layers = bs.tough_layers
+                    assign b_icon = 'wireless'
+                  when 'magnetic'
+                    assign b_head = bs.magnetic_heading
+                    assign b_text = bs.magnetic_text
+                    assign b_stat = bs.magnetic_stat
+                    assign b_unit = bs.magnetic_unit
+                    assign b_cap = bs.magnetic_caption
+                    assign b_chip = bs.magnetic_chip
+                    assign b_chip_note = bs.magnetic_chip_note
+                    assign b_fine = bs.magnetic_fine
+                    assign b_layers = bs.magnetic_layers
+                    assign b_icon = 'magnet'
+                  else
+                    assign b_head = bs.clear_heading
+                    assign b_text = bs.clear_text
+                    assign b_stat = bs.clear_stat
+                    assign b_unit = bs.clear_unit
+                    assign b_cap = bs.clear_caption
+                    assign b_chip = bs.clear_chip
+                    assign b_chip_note = bs.clear_chip_note
+                    assign b_fine = ''
+                    assign b_layers = bs.clear_layers
+                    assign b_icon = 'wireless'
+                endcase
+                assign layer_names = b_layers | split: '|'
+                assign layer_n = layer_names.size
+                if layer_n > 3
+                  assign layer_n = 3
+                endif
+              -%}
+              {%- if b_head != blank and layer_n > 0 -%}
+                <article class="cvbn__card cvbn--build cvbn--{{ case_type }}" data-cvbn-item style="--cvbn-n: {{ layer_n }};" {{ block.shopify_attributes }}>
+                  <div class="cvbn__copy">
+                    <h3 class="cvbn__title">{{ b_head | escape }}</h3>
+                    {%- if b_text != blank -%}<p class="cvbn__text">{{ b_text | escape }}</p>{%- endif -%}
+                    {%- if b_stat != blank -%}
+                      <p class="cvbn__stat">
+                        <span class="cvbn__stat-fig"><b>{{ b_stat | escape }}</b>{%- if b_unit != blank -%} <span>{{ b_unit | escape }}</span>{%- endif -%}</span>
+                        {%- if b_cap != blank -%}<span class="cvbn__stat-cap">{{ b_cap | escape }}</span>{%- endif -%}
+                      </p>
+                    {%- endif -%}
+                    {%- if b_fine != blank -%}<p class="cvbn__fine">{{ b_fine | escape }}</p>{%- endif -%}
+                  </div>
+                  <div class="cvbn__visual">
+                    {%- if b_chip != blank -%}
+                      <p class="cvbn__chip cvbn__chip--callout">
+                        <span class="cvbn__chip-icon" aria-hidden="true">
+                          {%- if b_icon == 'magnet' -%}
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="7.4"/><circle cx="12" cy="12" r="3.6"/><path d="M12 19.4v2.1"/></svg>
+                          {%- else -%}
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5a10.6 10.6 0 0 1 15 0"/><path d="M7.4 12.6a6.4 6.4 0 0 1 9.2 0"/><path d="M12.9 14.6 10.6 18h2.8l-2.3 3.4"/></svg>
+                          {%- endif -%}
+                        </span>
+                        <span class="cvbn__chip-body">
+                          <span class="cvbn__chip-line"><b>{{ b_chip | escape }}</b></span>
+                          {%- if b_chip_note != blank -%}<span class="cvbn__chip-note">{{ b_chip_note | escape }}</span>{%- endif -%}
+                        </span>
+                      </p>
+                    {%- endif -%}
+                    <div class="cvbn__stack" aria-hidden="true">
+                      <div class="cvbn__iso">
+                        {%- for name in layer_names limit: 3 -%}
+                          {%- liquid
+                            assign z = layer_n | minus: forloop.index
+                            assign lname = name | downcase
+                            assign kind = 'lining'
+                            if forloop.first
+                              assign kind = 'print'
+                            elsif lname contains 'magnet'
+                              assign kind = 'magnet'
+                            elsif lname contains 'side'
+                              assign kind = 'sides'
+                            endif
+                          -%}
+                          <div class="cvbn__layer cvbn__layer--{{ kind }}" style="--z: {{ z }};">
+                            {%- if kind == 'print' -%}
+                              {{ build_pic | image_url: width: 900 | image_tag: widths: '500, 700, 900', sizes: '360px', loading: 'lazy', alt: '', class: 'cvbn__layer-img' }}
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                      {%- for name in layer_names limit: 3 -%}
+                        {%- assign z = layer_n | minus: forloop.index -%}
+                        <span class="cvbn__pin" style="--z: {{ z }};">{{ forloop.index }}</span>
+                      {%- endfor -%}
+                    </div>
+                    <ol class="cvbn__layers">
+                      {%- for name in layer_names limit: 3 -%}
+                        {%- assign z = layer_n | minus: forloop.index -%}
+                        <li class="cvbn__layer-name" style="--z: {{ z }};"><span class="cvbn__layer-num" aria-hidden="true">{{ forloop.index }}</span>{{ name | strip | escape }}</li>
+                      {%- endfor -%}
+                    </ol>
+                  </div>
+                </article>
+              {%- endif -%}
+            {%- endif -%}
+
+          {%- when 'photo' -%}
+            {%- if photos_done -%}{%- continue -%}{%- endif -%}
+            {%- assign photos_done = true -%}
+            {%- capture photo_cards -%}
+              {%- for pb in section.blocks -%}
+                {%- if pb.type != 'photo' -%}{%- continue -%}{%- endif -%}
+                {%- liquid
+                  assign ps = pb.settings
+                  assign has_pic = false
+                  if ps.image != blank or ps.image_asset != blank
+                    assign has_pic = true
+                  endif
+                -%}
+                {%- unless has_pic -%}{%- continue -%}{%- endunless -%}
+                <figure class="cvbn__photo" {{ pb.shopify_attributes }}>
+                  <div class="cvbn__photo-frame">
+                    {%- if ps.image != blank -%}
+                      {{ ps.image | image_url: width: 1200 | image_tag: widths: '540, 720, 960, 1200', sizes: '(min-width: 990px) 480px, calc(100vw - 32px)', loading: 'lazy', alt: ps.alt, class: 'cvbn__photo-img' }}
+                    {%- else -%}
+                      <img class="cvbn__photo-img" src="{{ ps.image_asset | asset_img_url: '720x' }}" srcset="{{ ps.image_asset | asset_img_url: '540x' }} 540w, {{ ps.image_asset | asset_img_url: '720x' }} 720w, {{ ps.image_asset | asset_img_url: '1080x' }} 1080w" sizes="(min-width: 990px) 480px, calc(100vw - 32px)" width="1080" height="1440" loading="lazy" alt="{{ ps.alt | escape }}">
+                    {%- endif -%}
+                  </div>
+                  {%- if ps.caption != blank or ps.detail != blank -%}
+                    <figcaption class="cvbn__photo-cap">
+                      <span class="cvbn__photo-words">
+                        {%- if ps.caption != blank -%}<span class="cvbn__photo-name">{{ ps.caption | escape }}</span>{%- endif -%}
+                        {%- if ps.detail != blank -%}<span class="cvbn__photo-meta">{{ ps.detail | escape }}</span>{%- endif -%}
+                      </span>
+                      {%- if ps.product != blank -%}
+                        {%- if ps.product.id == product.id -%}
+                          <span class="cvbn__photo-link is-this">{{ st.this_label | escape }}</span>
+                        {%- else -%}
+                          <a class="cvbn__photo-link" href="{{ ps.product.url }}">{{ st.see_label | escape }}<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h9.5M8.5 4l4 4-4 4"/></svg></a>
+                        {%- endif -%}
+                      {%- endif -%}
+                    </figcaption>
+                  {%- endif -%}
+                </figure>
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- if photo_cards != blank -%}
+              <div class="cvbn__photos" data-cvbn-item>
+                {%- if st.photos_heading != blank -%}<h3 class="cvbn__photos-title">{{ st.photos_heading | escape }}</h3>{%- endif -%}
+                <div class="cvbn__photo-row">{{ photo_cards }}</div>
+              </div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: feature banners",
+  "tag": "div",
+  "class": "section-cv-pdp-banners",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "paragraph", "content": "Wide banners built from this product's own photos and data. Fit counts its phone models; Build shows its case type (Tough, Magnetic or Clear). Keep every line true for every case of that type." },
+    { "type": "text", "id": "heading", "label": "Section name (screen readers)", "default": "About this case" },
+    { "type": "text", "id": "photos_heading", "label": "Photos heading", "default": "In the hand" },
+    { "type": "text", "id": "see_label", "label": "Photo link", "default": "See this case" },
+    { "type": "text", "id": "this_label", "label": "Photo of this product", "default": "This case" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Top padding", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Bottom padding", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "fit",
+      "name": "Fit",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Two of this product's own photos, each on a different phone, and its number of phone models." },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Made for your phone" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Pick your model and the cutouts line up with its camera, buttons and ports." },
+        { "type": "text", "id": "chip_label", "label": "After the model count", "default": "phone models" },
+        { "type": "text", "id": "chip_note", "label": "Under the model count", "info": "[brands] becomes iPhone, Samsung or Pixel, from this product's model list.", "default": "[brands]" },
+        { "type": "text", "id": "yours_label", "label": "Tag once the shopper picks a phone", "info": "[model] is the phone they picked.", "default": "Your [model]" }
+      ]
+    },
+    {
+      "type": "build",
+      "name": "Build",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Shows this product's case type only. Layers: up to three, separated by |, the first is the printed shell drawn from the product photo. Keep every line true for every case of that type." },
+        { "type": "header", "content": "Tough" },
+        { "type": "text", "id": "tough_heading", "label": "Heading", "default": "Hard shell, soft lining" },
+        { "type": "text", "id": "tough_text", "label": "Text", "default": "A polycarbonate shell over a TPU lining resists daily knocks, and the open ports keep charging easy." },
+        { "type": "text", "id": "tough_stat", "label": "Big figure", "default": "2" },
+        { "type": "text", "id": "tough_unit", "label": "After the figure", "default": "layers" },
+        { "type": "text", "id": "tough_caption", "label": "Under the figure", "default": "Polycarbonate shell, TPU lining" },
+        { "type": "text", "id": "tough_chip", "label": "Callout", "default": "Wireless charging" },
+        { "type": "text", "id": "tough_chip_note", "label": "Callout note", "default": "Supported, not MagSafe" },
+        { "type": "text", "id": "tough_layers", "label": "Layers", "default": "Polycarbonate shell, printed|TPU lining" },
+        { "type": "header", "content": "Magnetic" },
+        { "type": "text", "id": "magnetic_heading", "label": "Heading", "default": "Hard shell, soft lining" },
+        { "type": "text", "id": "magnetic_text", "label": "Text", "default": "A polycarbonate shell over a cushioned TPU lining takes everyday knocks." },
+        { "type": "text", "id": "magnetic_stat", "label": "Big figure", "default": "2" },
+        { "type": "text", "id": "magnetic_unit", "label": "After the figure", "default": "layers" },
+        { "type": "text", "id": "magnetic_caption", "label": "Under the figure", "default": "Polycarbonate shell, cushioned TPU lining" },
+        { "type": "text", "id": "magnetic_chip", "label": "Callout", "default": "Built-in magnet" },
+        { "type": "text", "id": "magnetic_chip_note", "label": "Callout note", "default": "MagSafe accessories snap into place" },
+        { "type": "text", "id": "magnetic_fine", "label": "Small print", "default": "Compatibility with non-Apple chargers is not guaranteed." },
+        { "type": "text", "id": "magnetic_layers", "label": "Layers", "default": "Polycarbonate shell, printed|Magnet for MagSafe|Cushioned TPU lining" },
+        { "type": "header", "content": "Clear" },
+        { "type": "text", "id": "clear_heading", "label": "Heading", "default": "Clear back, soft sides" },
+        { "type": "text", "id": "clear_text", "label": "Text", "default": "The print sits on a clear polycarbonate back. Soft TPU sides cushion the edges and keep your phone slim." },
+        { "type": "text", "id": "clear_stat", "label": "Big figure" },
+        { "type": "text", "id": "clear_unit", "label": "After the figure" },
+        { "type": "text", "id": "clear_caption", "label": "Under the figure" },
+        { "type": "text", "id": "clear_chip", "label": "Callout", "default": "Wireless charging" },
+        { "type": "text", "id": "clear_chip_note", "label": "Callout note", "default": "Supported" },
+        { "type": "text", "id": "clear_layers", "label": "Layers", "default": "Clear polycarbonate back, printed|Soft clear TPU sides" }
+      ]
+    },
+    {
+      "type": "photo",
+      "name": "Photo",
+      "limit": 4,
+      "settings": [
+        { "type": "paragraph", "content": "Photos sit side by side in one row. Say what the photo shows in the caption." },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "image_asset", "label": "Or a theme file", "info": "Used when no photo is chosen, for example cv-clip-snow-day-penguin.jpg." },
+        { "type": "text", "id": "alt", "label": "Photo description (screen readers)" },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "The design shown, for example Snow Day." },
+        { "type": "text", "id": "detail", "label": "Caption detail", "info": "Case type, finish and phone shown." },
+        { "type": "product", "id": "product", "label": "Case shown", "info": "Links the caption to it. On that case's own page the link reads as this case." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature banners",
+      "blocks": [
+        { "type": "fit" },
+        { "type": "build" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

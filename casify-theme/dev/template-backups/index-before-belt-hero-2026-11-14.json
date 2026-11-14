@@ -1,0 +1,1761 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "press": {
+      "type": "cv-press",
+      "settings": {
+        "product": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+        "collection": "tough-cases"
+      }
+    },
+    "swap_hero": {
+      "type": "cv-swap-hero",
+      "settings": {
+        "collection": "tough-cases",
+        "product_a": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+        "product_b": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+        "product_c": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+        "name_c": "Beary Christmas",
+        "product_d": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+        "pad_top": 16
+      }
+    },
+    "case_rail": {
+      "type": "cv-case-rail",
+      "settings": {}
+    },
+    "trust_bar": {
+      "type": "cv-trust-bar",
+      "blocks": {
+        "t-0": {
+          "type": "item",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Free shipping",
+            "body": "On every order"
+          }
+        },
+        "t-1": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "Damage covered",
+            "body": "Free replacement or refund"
+          }
+        },
+        "t-2": {
+          "type": "item",
+          "settings": {
+            "icon": "lock-secure",
+            "title": "Secure checkout",
+            "body": "100% safe & encrypted"
+          }
+        },
+        "t-3": {
+          "type": "item",
+          "settings": {
+            "icon": "clock",
+            "title": "Printed to order",
+            "body": "In the USA, then shipped with tracking"
+          }
+        }
+      },
+      "block_order": [
+        "t-0",
+        "t-1",
+        "t-2",
+        "t-3"
+      ],
+      "settings": {}
+    },
+    "phone_scan": {
+      "type": "cv-phone-scan",
+      "settings": {
+        "heading_1": "Made to",
+        "heading_2": "measure",
+        "kicker": "Cases for iPhone 18 Pro & iPhone 18 Pro Max",
+        "lede": "Scroll on and we'll size them up at the counter.",
+        "hero_cta": "Find my case",
+        "tag_1": "Free shipping",
+        "tag_2": "Printed to order",
+        "statement": "One mould per model. Pick your iPhone and the fit is exact: cameras, buttons and ports right where they belong.",
+        "scan_id": "Nº 18",
+        "scan_text": "Two new iPhones on the counter. One quick scan finds the cases cut for each.",
+        "show_checks": true,
+        "stamp": "Fit found",
+        "fit_eyebrow": "The fitting room",
+        "fit_heading": "Which one's yours?",
+        "closing": "Your iPhone, sized up. Pick your model and see every case made for it.",
+        "fit_collection": "",
+        "ticket_cta": "Shop cases",
+        "fit_18_url": "",
+        "fit_pro_url": "",
+        "fit_promax_url": "",
+        "other_label": "Different phone? Browse every case",
+        "other_url": "",
+        "case_finish": "solid",
+        "case_color": "#c4302b",
+        "show_store_rating": false,
+        "store_rating": "",
+        "store_rating_count": "",
+        "phone_1_label": "iPhone 18 Pro",
+        "phone_1_body": "iphone-18-pro",
+        "phone_1_color": "#9fb8b1",
+        "phone_1_url": "shopify://collections/iphone",
+        "phone_2_label": "iPhone 18 Pro Max",
+        "phone_2_body": "iphone-18-pro-max",
+        "phone_2_color": "#5b1f2a",
+        "phone_2_url": "shopify://collections/iphone"
+      }
+    },
+    "casify_hero_U3GTzw": {
+      "type": "casify-hero",
+      "disabled": true,
+      "name": "Casify storyboard hero",
+      "settings": {
+        "featured_product": "",
+        "heading": "Your iPhone. Your colour.",
+        "supporting_text": "Cases for iPhone 18 Pro and Pro Max.",
+        "cta_label": "Shop cases",
+        "details_label": "View details",
+        "fallback_cta_url": "",
+        "enable_intro": true,
+        "model_option_name": "Applicable model",
+        "color_option_name": "Color",
+        "model_1_value": "iPhone 18 Pro 17 Pro",
+        "model_1_label": "iPhone 18 Pro",
+        "model_2_value": "iPhone 18 Pro Max 17 Pro Max",
+        "model_2_label": "iPhone 18 Pro Max",
+        "show_service_facts": true,
+        "fact_1_title": "Free shipping",
+        "fact_1_text": "Every order",
+        "fact_2_title": "Damage covered",
+        "fact_2_text": "Free replacement",
+        "fact_3_title": "Printed to order",
+        "fact_3_text": "In the USA"
+      }
+    },
+    "spotlight": {
+      "type": "cv-spotlight",
+      "settings": {
+        "eyebrow": "Now in the shop",
+        "heading": "Protection you forget is even there",
+        "subheading": "<p>Each case is printed after you order it and made for your exact phone model.</p>",
+        "cta_label": "Find my model",
+        "cta_url": "/collections/all",
+        "cta2_label": "",
+        "cta2_url": "",
+        "count_collection": "frontpage",
+        "image_url": "",
+        "image_alt": ""
+      }
+    },
+    "orbit": {
+      "type": "cv-orbit",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "Section 3D — the turntable",
+        "heading": "The collection, in 3D",
+        "subheading": "<p>Watch it turn, or drag to spin. Every case comes with the same shop promises.</p>",
+        "link_label": "View all",
+        "limit": 6,
+        "hold": 3.5,
+        "perk_shipping": "Free shipping",
+        "perk_shipping_note": "On every order",
+        "perk_returns": "Damage covered",
+        "perk_returns_note": "Free replacement or refund",
+        "perk_dispatch": "Printed to order",
+        "perk_dispatch_note": "In the USA, shipped with tracking",
+        "perk_checkout": "Secure checkout",
+        "perk_checkout_note": "Encrypted by Shopify",
+        "show_packs": true,
+        "pack_2_pct": 18,
+        "pack_3_pct": 31
+      }
+    },
+    "shop": {
+      "type": "cv-collection-row",
+      "disabled": true,
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "Best sellers",
+        "heading": "Most protected this month",
+        "subheading": "<p>One mould per model. Pick the phone and the fit is exact.</p>",
+        "link_label": "View all",
+        "limit": 4
+      }
+    },
+    "showcase": {
+      "type": "cv-showcase",
+      "blocks": {
+        "card-peppermint-christmas-dual-layer": {
+          "type": "card",
+          "settings": {
+            "product": "peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-dual-layer-tough-case",
+            "title": "Peppermint Christmas, Dual-Layer",
+            "description": "A vintage candy-shop Christmas print on a dual-layer tough case, cut for iPhone, Pixel and Galaxy.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Dual-layer tough",
+            "pill_2_icon": "candy-cane",
+            "pill_2_text": "Christmas print",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-two-in-one-space-case": {
+          "type": "card",
+          "settings": {
+            "product": "two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+            "title": "Two-in-One Space Case",
+            "description": "Clear acrylic back with a built-in magnetic kickstand and four-corner drop protection.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic kickstand",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "4-corner protection",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-sweet-little-life-cherry-plaid": {
+          "type": "card",
+          "settings": {
+            "product": "cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case",
+            "title": "Sweet Little Life, Cherry Plaid",
+            "description": "Pale-blue gingham and tiny cherries on a magnetic impact case, in glossy or matte.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "MagSafe compatible",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Impact-resistant",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-metal-lens-ring-case": {
+          "type": "card",
+          "settings": {
+            "product": "metal-lens-case-high-end-anti-drop-pc-case",
+            "title": "Metal Lens Ring Case",
+            "description": "A hard anti-drop PC case with a metal ring guarding each camera lens.",
+            "pill_1_icon": "camera-lip",
+            "pill_1_text": "Metal lens rings",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Anti-drop PC",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-a-little-softer-pink-bow": {
+          "type": "card",
+          "settings": {
+            "product": "phone-case-a-little-softer-pink-bow-protective-tough-case",
+            "title": "A Little Softer, Pink Bow",
+            "description": "Soft pink stripes and bows on a glossy two-piece tough case with a screen-guarding bezel.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Two-piece tough",
+            "pill_2_icon": "wireless-charge",
+            "pill_2_text": "Wireless charging",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-glitter-airbag-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design",
+            "title": "Glitter Airbag Stand Case",
+            "description": "Gradient glitter in a clear shell, with air-cushioned corners and a magnetic ring stand.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Airbag corners",
+            "pill_2_icon": "magnet-ring",
+            "pill_2_text": "Magnetic stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-anti-yellowing-clear-case": {
+          "type": "card",
+          "settings": {
+            "product": "transparent-anti-yellowing-pc-phone-case-for-apple-iphone",
+            "title": "Anti-Yellowing Clear Case",
+            "description": "Clear PC with a coating that resists yellowing, and exact cutouts for every port and button.",
+            "pill_1_icon": "no-yellow",
+            "pill_1_text": "Anti-yellowing",
+            "pill_2_icon": "precision-fit",
+            "pill_2_text": "Precision cut",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-tech-fabric-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "tech-fabric-magnetic-phone-case-for-iphone",
+            "title": "Tech Fabric Magnetic Case",
+            "description": "Woven tech-fabric texture over a shockproof magnetic case, with a camera button.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "button-click",
+            "pill_2_text": "Camera button",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-peppermint-christmas-magnetic": {
+          "type": "card",
+          "settings": {
+            "product": "peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-magnetic-impact-resistant-case",
+            "title": "Peppermint Christmas, Magnetic",
+            "description": "The candy-shop Christmas print on a magnetic impact-resistant case, in glossy or matte.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "MagSafe compatible",
+            "pill_2_icon": "candy-cane",
+            "pill_2_text": "Christmas print",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-chain-crossbody-case": {
+          "type": "card",
+          "settings": {
+            "product": "chain-crossbody-phone-case",
+            "title": "Chain Crossbody Case",
+            "description": "A purple case on a crossbody strap with gold clasps, so your phone rides hands-free.",
+            "pill_1_icon": "lock-secure",
+            "pill_1_text": "Crossbody strap",
+            "pill_2_icon": "device",
+            "pill_2_text": "iPhone + Samsung",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-eagle-eye-metal-lens-case": {
+          "type": "card",
+          "settings": {
+            "product": "eagle-eye-metal-lens-magnetic-phone-case-for-iphone",
+            "title": "Eagle Eye Metal Lens Case",
+            "description": "A clear anti-fingerprint back, a metal frame around the lenses and a built-in magnetic ring.",
+            "pill_1_icon": "camera-lip",
+            "pill_1_text": "Metal lens frame",
+            "pill_2_icon": "magnet-ring",
+            "pill_2_text": "Magnetic",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-rigid-defender-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "iphone-18-magnetic-shockproof-protective-case-rigid-defender-for-iphone-18-pro",
+            "title": "Rigid Defender Magnetic Case",
+            "description": "A rigid shockproof case with a built-in magnetic ring, cut for iPhone and Galaxy S.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Shockproof",
+            "pill_2_icon": "magnet-ring",
+            "pill_2_text": "Magnetic",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-2-in-1-space-case": {
+          "type": "card",
+          "settings": {
+            "product": "2-in-1-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+            "title": "2-in-1 Space Case",
+            "description": "A tinted acrylic case with a magnetic ring mount that flips out as a kickstand.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic mount",
+            "pill_2_icon": "check",
+            "pill_2_text": "Kickstand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-ice-cream-magnetic-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-stand-phone-case-for-iphone",
+            "title": "Ice-Cream Magnetic Stand Case",
+            "description": "A soft color case with a magnetic ring holder that folds out as a stand.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic holder",
+            "pill_2_icon": "check",
+            "pill_2_text": "Built-in stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-transparent-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "transparent-magnetic-phone-case-for-iphone",
+            "title": "Transparent Magnetic Case",
+            "description": "A crystal-clear magnetic case with a camera cutout, with a shutter button or full-cover buttons.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "sparkle-clear",
+            "pill_2_text": "Transparent",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-metal-protective-case": {
+          "type": "card",
+          "settings": {
+            "product": "metal-protective-phone-case-for-iphone-and-samsung",
+            "title": "Metal Protective Case",
+            "description": "A black rugged metal case cut for iPhones and Samsung Galaxy phones, old and new.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Rugged metal",
+            "pill_2_icon": "device",
+            "pill_2_text": "iPhone + Samsung",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-plated-clear-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "mobile-phone-case-apple",
+            "title": "Plated Clear Magnetic Case",
+            "description": "A clear back framed in plated edges, with metal lens rings and a magnetic ring.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic ring",
+            "pill_2_icon": "camera-lip",
+            "pill_2_text": "Lens rings",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-embossed-magnetic-shockproof-cas": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-shockproof-phone-case-for-iphone",
+            "title": "Embossed Magnetic Shockproof Case",
+            "description": "An embossed art pattern on a slim hard PC shell, with strong magnets and drop protection.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Shockproof PC",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-diamond-pattern-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "diamond-pattern-magnetic-phone-case-for-iphone",
+            "title": "Diamond Pattern Magnetic Case",
+            "description": "A diamond Kevlar-style pattern with a skin-feel grip, full coverage and strong magnets.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Full coverage",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-bracket-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "bracket-mobile-phone-case-magnetic-protective-case",
+            "title": "Bracket Magnetic Case",
+            "description": "A slim TPU case with built-in magnets for MagSafe and a fold-out bracket stand.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "MagSafe compatible",
+            "pill_2_icon": "check",
+            "pill_2_text": "Built-in stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-frosted-magnetic-half-cover": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-protective-phone-case-for-iphone",
+            "title": "Frosted Magnetic Half-Cover",
+            "description": "A slim frosted PC half-cover with strong magnets that shrugs off fingerprints and scratches.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "slim",
+            "pill_2_text": "Slim half-cover",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-bitcoin-magnetic-case": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-bitcoin-design-phone-case",
+            "title": "Bitcoin Magnetic Case",
+            "description": "A Bitcoin-pattern hard shell with built-in magnets: slim, shockproof and scratch-resistant.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Shockproof PC",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-canvas-magnetic-full-cover": {
+          "type": "card",
+          "settings": {
+            "product": "canvas-magnetic-phone-case-full-cover",
+            "title": "Canvas Magnetic Full-Cover",
+            "description": "Horse-to-success canvas art on a full-body case whose magnets hold MagSafe accessories.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "MagSafe compatible",
+            "pill_2_icon": "drop-shield",
+            "pill_2_text": "Full-body",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-matte-magnetic-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-stand-phone-case-matte-skin-fee-lprotective-case",
+            "title": "Matte Magnetic Stand Case",
+            "description": "Matte skin-feel PC with a magnetic ring and an invisible kickstand for hands-free viewing.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic ring",
+            "pill_2_icon": "check",
+            "pill_2_text": "Hidden kickstand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-matte-lens-holder-case": {
+          "type": "card",
+          "settings": {
+            "product": "skin-like-matte-magnetic-lens-holder-phone-case",
+            "title": "Matte Lens-Holder Case",
+            "description": "A non-slip matte case with a magnetic ring, a lens film guard and a built-in stand.",
+            "pill_1_icon": "camera-lip",
+            "pill_1_text": "Lens guard",
+            "pill_2_icon": "check",
+            "pill_2_text": "Built-in stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-fine-hole-silicone-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "fine-hole-liquid-silicone-phone-case-magnetic-stand",
+            "title": "Fine-Hole Silicone Stand Case",
+            "description": "Soft liquid silicone with a magnetic stand ring and a dedicated AI button.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "MagSafe compatible",
+            "pill_2_icon": "button-click",
+            "pill_2_text": "AI button",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-silicone-magnetic-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-silicone-phone-case-with-stand-for-iphone",
+            "title": "Silicone Magnetic Stand Case",
+            "description": "Ultra-thin liquid silicone with magnets and a hidden stand for portrait or landscape.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "check",
+            "pill_2_text": "Hidden stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-sandblasted-360-ring-case": {
+          "type": "card",
+          "settings": {
+            "product": "sandblasted-magnetic-suction-phone-case",
+            "title": "Sandblasted 360° Ring Case",
+            "description": "A sandblasted matte finish with a 360° rotating magnetic ring that works as a stand.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "360° ring stand",
+            "pill_2_icon": "slim",
+            "pill_2_text": "Slim fit",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-slim-silicone-stand-case": {
+          "type": "card",
+          "settings": {
+            "product": "magnetic-phone-case-with-stand-for-iphone-series",
+            "title": "Slim Silicone Stand Case",
+            "description": "Ultra-thin liquid silicone with built-in magnets and a stand, in pine or teal green.",
+            "pill_1_icon": "magnet-ring",
+            "pill_1_text": "Magnetic",
+            "pill_2_icon": "check",
+            "pill_2_text": "Built-in stand",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "teal",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-peppermint-christmas-tough": {
+          "type": "card",
+          "settings": {
+            "product": "peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-protective-tough-case",
+            "title": "Peppermint Christmas, Tough",
+            "description": "The candy-shop Christmas print on a protective tough case for iPhone and Galaxy.",
+            "pill_1_icon": "drop-shield",
+            "pill_1_text": "Tough case",
+            "pill_2_icon": "candy-cane",
+            "pill_2_text": "Christmas print",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "dark",
+            "button_tone": "teal",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        },
+        "card-camera-lens-protective-film": {
+          "type": "card",
+          "settings": {
+            "product": "camera-lens-protective-film",
+            "title": "Camera Lens Protective Film",
+            "description": "Tempered-glass lens covers with an anti-reflective coating, for iPhone 17 Pro and Pro Max.",
+            "pill_1_icon": "camera-lip",
+            "pill_1_text": "Tempered glass",
+            "pill_2_icon": "sparkle-clear",
+            "pill_2_text": "AR coating",
+            "badge_text": "",
+            "badge_tone": "red",
+            "badge_style": "ribbon",
+            "panel_tone": "cream",
+            "button_tone": "red",
+            "button_label": "",
+            "image_fit": "cover",
+            "icon": "ring-dot",
+            "price": "",
+            "compare_price": "",
+            "rating_count": ""
+          }
+        }
+      },
+      "block_order": [
+        "card-peppermint-christmas-dual-layer",
+        "card-two-in-one-space-case",
+        "card-sweet-little-life-cherry-plaid",
+        "card-metal-lens-ring-case",
+        "card-a-little-softer-pink-bow",
+        "card-glitter-airbag-stand-case",
+        "card-anti-yellowing-clear-case",
+        "card-tech-fabric-magnetic-case",
+        "card-peppermint-christmas-magnetic",
+        "card-chain-crossbody-case",
+        "card-eagle-eye-metal-lens-case",
+        "card-rigid-defender-magnetic-case",
+        "card-2-in-1-space-case",
+        "card-ice-cream-magnetic-stand-case",
+        "card-transparent-magnetic-case",
+        "card-metal-protective-case",
+        "card-plated-clear-magnetic-case",
+        "card-embossed-magnetic-shockproof-cas",
+        "card-diamond-pattern-magnetic-case",
+        "card-bracket-magnetic-case",
+        "card-frosted-magnetic-half-cover",
+        "card-bitcoin-magnetic-case",
+        "card-canvas-magnetic-full-cover",
+        "card-matte-magnetic-stand-case",
+        "card-matte-lens-holder-case",
+        "card-fine-hole-silicone-stand-case",
+        "card-silicone-magnetic-stand-case",
+        "card-sandblasted-360-ring-case",
+        "card-slim-silicone-stand-case",
+        "card-peppermint-christmas-tough",
+        "card-camera-lens-protective-film"
+      ],
+      "settings": {
+        "eyebrow": "Shop the range",
+        "heading": "Every case on the counter",
+        "subheading": "<p>[count] pieces, each cut for its own list of phones. Swipe through the lot.</p>",
+        "source": "products",
+        "collection": "",
+        "limit": 50,
+        "cta_label": "Shop now",
+        "sale_badge": "Save [percent]%",
+        "new_badge": "New",
+        "link_label": "See every case"
+      }
+    },
+    "feature_tabs": {
+      "type": "cv-feature-tabs",
+      "blocks": {
+        "tab-1": {
+          "type": "tab",
+          "settings": {
+            "label": "Protection",
+            "icon": "drop-shield",
+            "media_alt": "",
+            "tone": "red",
+            "heading": "Protection you forget is there",
+            "text": "<p>Slim in the hand, tough where it counts. Cut for your exact phone, not a size that’s “close enough.”</p>",
+            "link": "shopify://collections/all",
+            "link_label": "Shop cases"
+          }
+        },
+        "tab-2": {
+          "type": "tab",
+          "settings": {
+            "label": "Charging",
+            "icon": "wireless-charge",
+            "media_alt": "",
+            "tone": "teal",
+            "heading": "Wireless charging",
+            "text": "<p>Every case works with wireless chargers. Magnetic cases also hold MagSafe chargers and accessories.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "tab-3": {
+          "type": "tab",
+          "settings": {
+            "label": "Fit",
+            "icon": "precision-fit",
+            "media_alt": "",
+            "tone": "gold",
+            "heading": "Made for your exact model",
+            "text": "<p>Each case is made for one phone model. Pick yours on the product page and the cutouts line up with its buttons, ports and camera.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "tab-4": {
+          "type": "tab",
+          "settings": {
+            "label": "Finish",
+            "icon": "sparkle-clear",
+            "media_alt": "",
+            "tone": "red",
+            "heading": "Candy stripes that stay put",
+            "text": "<p>Screen-printed candy stripes under a UV-cured top coat.</p>",
+            "link": "",
+            "link_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab-1",
+        "tab-2",
+        "tab-3",
+        "tab-4"
+      ],
+      "settings": {
+        "heading": "Made for the way you carry",
+        "intro": "Four things every Casify case is built around.",
+        "surface": "cream"
+      }
+    },
+    "collage": {
+      "type": "cv-collage",
+      "blocks": {
+        "iphone": {
+          "type": "collection",
+          "settings": {
+            "collection": "iphone",
+            "kicker": "Collection",
+            "show_count": true
+          }
+        },
+        "clear": {
+          "type": "product",
+          "settings": {
+            "product": "transparent-anti-yellowing-pc-phone-case-for-apple-iphone",
+            "second_image": true,
+            "kicker": "Clear case"
+          }
+        },
+        "crossbody": {
+          "type": "product",
+          "settings": {
+            "product": "chain-crossbody-phone-case",
+            "second_image": true,
+            "kicker": "Crossbody"
+          }
+        }
+      },
+      "block_order": [
+        "iphone",
+        "clear",
+        "crossbody"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Straight from the <em>shop window</em>",
+        "subheading": "",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "tone": "page",
+        "parallax": true,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "value": {
+      "type": "cv-value-stack",
+      "blocks": {
+        "fix-0": {
+          "type": "fix",
+          "settings": {
+            "icon": "honeycomb",
+            "metric_value": "12",
+            "metric_unit": "ft",
+            "problem": "It cracks on the first real drop",
+            "body": "<p>Slim usually means solid plastic corners that pass the shock straight into the frame. These corners are a honeycomb of collapsing air cells — they crush, absorb, and spring back. 26 drops onto concrete from 12 feet, no phone damage.</p>",
+            "them_title": "Typical slim case",
+            "them_label": "6–8 ft",
+            "us_title": "Casify",
+            "us_label": "12 ft"
+          }
+        },
+        "fix-1": {
+          "type": "fix",
+          "settings": {
+            "icon": "magnet-ring",
+            "metric_value": "1400",
+            "metric_unit": "g",
+            "problem": "The magnet lets go when you need it",
+            "body": "<p>\"MagSafe compatible\" is a sticker, not a spec. We publish pull force. Eighteen N52 magnets in a full ring hold 1,400 g, so your phone stays on the vent mount over a speed bump — and still charges at the full Qi2 25W.</p>",
+            "them_title": "Category average",
+            "them_label": "800–900 g",
+            "us_title": "Casify",
+            "us_label": "1,400 g"
+          }
+        },
+        "fix-2": {
+          "type": "fix",
+          "settings": {
+            "icon": "no-yellow",
+            "metric_value": "36",
+            "metric_unit": "mo",
+            "problem": "Clear turns yellow by month four",
+            "body": "<p>Cheap TPU oxidises under UV and skin oil — that's why your last clear case looked like an old fingernail. This back is UV-stable polycarbonate with a bonded top coat: no measurable colour shift after the equivalent of three years outdoors.</p>",
+            "them_title": "Standard TPU",
+            "them_label": "Yellow by month 4",
+            "us_title": "Casify",
+            "us_label": "No shift at 36 mo"
+          }
+        },
+        "ben-0": {
+          "type": "benefit",
+          "settings": {
+            "icon": "wireless-charge",
+            "title": "Qi2 25W charging",
+            "body": "Full-speed wireless charging with the case on — no adapter, no guessing."
+          }
+        },
+        "ben-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "camera-lip",
+            "title": "Raised camera lip",
+            "body": "1.4 mm of rim means the lens sits clear of the table face-down."
+          }
+        },
+        "ben-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "button-click",
+            "title": "Buttons that still click",
+            "body": "Harder-durometer covers moulded in, so they never go mushy."
+          }
+        },
+        "ben-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "precision-fit",
+            "title": "Cut from the CAD file",
+            "body": "One mould per model — no universal shells, no loose corners."
+          }
+        },
+        "ben-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "sparkle-clear",
+            "title": "Anti-fingerprint coat",
+            "body": "Wipes clean and keeps an even finish after months in a pocket."
+          }
+        },
+        "ben-5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "30 days to decide",
+            "body": "Any reason, prepaid label, refunded as soon as it's scanned."
+          }
+        },
+        "bar-0": {
+          "type": "bar",
+          "settings": {
+            "name": "Casify",
+            "value": "12.0 ft",
+            "pct": 100,
+            "highlight": true
+          }
+        },
+        "bar-1": {
+          "type": "bar",
+          "settings": {
+            "name": "Rugged bulk case",
+            "value": "10.5 ft",
+            "pct": 88,
+            "highlight": false
+          }
+        },
+        "bar-2": {
+          "type": "bar",
+          "settings": {
+            "name": "Designer clear case",
+            "value": "7.2 ft",
+            "pct": 60,
+            "highlight": false
+          }
+        },
+        "bar-3": {
+          "type": "bar",
+          "settings": {
+            "name": "Slim hard shell",
+            "value": "5.1 ft",
+            "pct": 42,
+            "highlight": false
+          }
+        },
+        "bar-4": {
+          "type": "bar",
+          "settings": {
+            "name": "Marketplace case",
+            "value": "2.9 ft",
+            "pct": 24,
+            "highlight": false
+          }
+        },
+        "bar-5": {
+          "type": "bar",
+          "settings": {
+            "name": "No case",
+            "value": "0.9 ft",
+            "pct": 8,
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "fix-0",
+        "fix-1",
+        "fix-2",
+        "ben-0",
+        "ben-1",
+        "ben-2",
+        "ben-3",
+        "ben-4",
+        "ben-5",
+        "bar-0",
+        "bar-1",
+        "bar-2",
+        "bar-3",
+        "bar-4",
+        "bar-5"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "Section 01 — why it wins",
+        "heading": "Three things every other case gets wrong",
+        "subheading": "<p>Not adjectives. Three measurements, each one taken in a lab and published in full.</p>",
+        "benefits_heading": "Everything else you get",
+        "proof_eyebrow": "Measured, not claimed",
+        "proof_heading": "Drop height before the phone was damaged",
+        "proof_footnote": "Independent lab, 26 drops per unit onto concrete, MIL-STD-810G 516.6."
+      }
+    },
+    "us_vs_them": {
+      "type": "cv-vs",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "us_text": "Cut for your exact model",
+            "them_text": "One size stretched across models"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "us_text": "Works with wireless chargers",
+            "them_text": "Some block wireless charging"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "us_text": "Free shipping on every order",
+            "them_text": "Shipping often added at checkout"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "us_text": "Free replacement if damaged",
+            "them_text": "Damage often at your own cost"
+          }
+        }
+      },
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4"
+      ],
+      "settings": {
+        "eyebrow": "Us vs. them",
+        "heading": "Not all cases are made the same",
+        "subheading": "",
+        "surface": "white",
+        "us_label": "Casify",
+        "us_product": "mobile-phone-case-apple",
+        "us_sticker": "Damage covered",
+        "them_label": "Ordinary cases",
+        "note": "Every Casify case ships with the same shop promises.",
+        "button_label": "Find my model",
+        "button_link": "shopify://collections/all",
+        "button_note": "Free shipping on every order"
+      }
+    },
+    "ugc": {
+      "type": "cv-ugc",
+      "settings": {
+        "eyebrow": "Section 03 — your clips",
+        "heading": "Your case, on camera",
+        "subheading": "<p>Videos from real customers go up here once people send them in.</p>",
+        "hint": "Tap any clip for sound",
+        "cta_label": "Find my model",
+        "empty_heading": "No customer clips yet",
+        "empty_text": "Filmed an unboxing or your case out and about? Send it to us through the contact page."
+      }
+    },
+    "iphone": {
+      "type": "cv-collection-row",
+      "settings": {
+        "collection": "iphone",
+        "eyebrow": "Cut for your model",
+        "heading": "Every iPhone we make",
+        "subheading": "<p>If your model is listed, there is a mould for it. If it isn't, we haven't made it yet.</p>",
+        "link_label": "See all iPhone",
+        "limit": 4
+      }
+    },
+    "social": {
+      "type": "cv-social-proof",
+      "settings": {
+        "heading": "The proof, as it arrives",
+        "enable_3d": true,
+        "empty_heading": "No published reviews yet",
+        "empty_text": "The first customer review will set the score, not us.",
+        "write_url": "",
+        "write_label": "Write the first review",
+        "ledger_empty_text": "Customer notes will appear here automatically as they are published.",
+        "source_note": "No sample quotes and no press logos. Product reviews appear here as customers publish them.",
+        "thank_you_heading": "Thank you.",
+        "thank_you_text": "For helping us build the record one honest review at a time.",
+        "badge_heading": "Source checked"
+      }
+    },
+    "trustpilot_reviews": {
+      "type": "trustpilot-reviews",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "rating": "0",
+            "title": "",
+            "text": "",
+            "author": "",
+            "date": ""
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3"
+      ],
+      "settings": {
+        "heading": "Rated by verified buyers",
+        "accent_text": "Straight from our shoppers",
+        "intro": "",
+        "profile_url": "",
+        "trustscore": 0,
+        "link_label": "Read all reviews",
+        "surface": "white",
+        "layout": "carousel"
+      }
+    },
+    "facebook_testimonials": {
+      "type": "facebook-testimonials",
+      "blocks": {
+        "post-1": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        },
+        "post-2": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        },
+        "post-3": {
+          "type": "post",
+          "settings": {
+            "author": "",
+            "post_time": "",
+            "post_text": "",
+            "image_alt": "",
+            "source_url": "",
+            "reactions_text": "",
+            "comments_text": "",
+            "shares_text": "",
+            "reply_1_author": "",
+            "reply_1_text": "",
+            "reply_2_author": "",
+            "reply_2_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "post-1",
+        "post-2",
+        "post-3"
+      ],
+      "settings": {
+        "heading": "Seen on Facebook",
+        "accent_text": "From our community",
+        "intro": "",
+        "surface": "cream",
+        "layout": "carousel",
+        "float_cards": true
+      }
+    },
+    "customer_reviews": {
+      "type": "customer-reviews-carousel",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "review_text": "",
+            "reviewer_name": "",
+            "reviewer_detail": "",
+            "rating": "0",
+            "image_alt": "",
+            "featured_product": ""
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3"
+      ],
+      "settings": {
+        "heading": "Customer reviews",
+        "accent_text": "In their own words",
+        "description": "",
+        "surface": "cream",
+        "empty_heading": "There are no reviews to display yet."
+      }
+    },
+    "facebook_comments": {
+      "type": "facebook-comments",
+      "blocks": {
+        "comment-1": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        },
+        "comment-2": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        },
+        "comment-3": {
+          "type": "comment",
+          "settings": {
+            "name": "",
+            "comment": "",
+            "date": "",
+            "source_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "comment-1",
+        "comment-2",
+        "comment-3"
+      ],
+      "settings": {
+        "heading": "In their words",
+        "intro": "",
+        "empty_text": "Customer comments will appear here when added.",
+        "surface": "cream",
+        "desktop_columns": "three",
+        "card_spacing": 24
+      }
+    },
+    "risk": {
+      "type": "cv-guarantee",
+      "blocks": {
+        "g-0": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "returns",
+            "title": "Damage covered",
+            "body": "Arrived damaged, misprinted or wrong? Write to us within 30 days of delivery and we send a new one or refund you. No need to send it back."
+          }
+        },
+        "g-3": {
+          "type": "guarantee",
+          "settings": {
+            "icon": "truck-fast",
+            "title": "Printed to order",
+            "body": "Each case is printed in the USA after you order, then shipped with tracking. Shipping is free."
+          }
+        },
+        "faq-0": {
+          "type": "faq",
+          "settings": {
+            "question": "Will it fit my exact model?",
+            "answer": "<p>Each case is made for one phone model. Pick yours on the product page and the cutouts line up with its buttons, ports and camera.</p>",
+            "default_open": true
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "Does wireless charging still work?",
+            "answer": "<p>Yes. All three cases work with wireless chargers, and you don't need to take the case off. Only Magnetic cases have a built-in magnet for MagSafe chargers and accessories.</p>",
+            "default_open": false
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "What are the cases made of?",
+            "answer": "<p>Tough and Magnetic cases have a hard polycarbonate shell over a soft TPU lining. Clear cases have a clear polycarbonate back with soft, clear TPU sides. The design is printed onto the case itself.</p>",
+            "default_open": false
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "Glossy or matte?",
+            "answer": "<p>Tough and Magnetic cases come in both. Glossy gives bright, saturated colour. Matte has a softer, low-shine look.</p>",
+            "default_open": false
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I ordered the wrong model?",
+            "answer": "<p>Write to us right away with your order number. Until your case goes to print, we can change the model or cancel the order. Once printing starts, we can't change it.</p>",
+            "default_open": false
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "Why is a multi-pack cheaper per case?",
+            "answer": "<p>Same case, one shipment. Sending two or three together costs us less than separate orders, so the saving goes to you: 18% off each for 2 cases, 31% off each for 3.</p>",
+            "default_open": false
+          }
+        },
+        "note-0": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Free shipping on every order"
+          }
+        },
+        "note-1": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Free replacement if damaged"
+          }
+        },
+        "note-2": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Printed to order in the USA"
+          }
+        },
+        "note-3": {
+          "type": "closer_note",
+          "settings": {
+            "text": "Secure checkout"
+          }
+        }
+      },
+      "block_order": [
+        "g-0",
+        "g-3",
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5",
+        "note-0",
+        "note-1",
+        "note-2",
+        "note-3"
+      ],
+      "settings": {
+        "guard_eyebrow": "Section 06: zero risk",
+        "guard_heading": "Every reason not to buy, removed",
+        "faq_eyebrow": "Still deciding?",
+        "faq_heading": "The questions we actually get asked",
+        "closer_eyebrow": "One case, one decision",
+        "closer_heading": "Protect it before you need to",
+        "closer_body": "<p>Pick your model, choose a design, and we print it for you. Shipping is free.</p>",
+        "closer_cta": "Find my model",
+        "closer_url": "/collections/all"
+      }
+    },
+    "offer_delivery": {
+      "type": "cv-offer-courier",
+      "settings": {
+        "eyebrow": "From the counter",
+        "heading": "Two cases? 18% off each. Three? 31% off.",
+        "text": "<p>Pick a pack on any case and the saving comes off automatically at checkout. No code needed.</p>",
+        "code": "",
+        "apply_code": false,
+        "button_label": "Shop cases",
+        "link": "shopify://collections/all",
+        "fine_print": "Free shipping on every order",
+        "tone": "red",
+        "display": "inline",
+        "popup_delay": 12,
+        "popup_days": 7,
+        "bubble_before": "Hold on, I’ve got something for you!",
+        "bubble_after": "Here you go!"
+      }
+    },
+    "signup": {
+      "type": "cv-signup-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Letters from the <em>sweet shop</em>",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>New designs and restocks, posted straight to your inbox.</p>",
+            "text_style": "body"
+          }
+        },
+        "form": {
+          "type": "email_form",
+          "settings": {
+            "button_label": "",
+            "fine_print": "Unsubscribe any time.",
+            "postmark_text": "Posted"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "form"
+      ],
+      "settings": {
+        "show_background_image": true,
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "box_tone": "paper",
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    }
+  },
+  "order": [
+    "swap_hero",
+    "trust_bar",
+    "showcase",
+    "press",
+    "phone_scan",
+    "casify_hero_U3GTzw",
+    "spotlight",
+    "orbit",
+    "shop",
+    "feature_tabs",
+    "case_rail",
+    "collage",
+    "value",
+    "us_vs_them",
+    "ugc",
+    "iphone",
+    "social",
+    "trustpilot_reviews",
+    "facebook_testimonials",
+    "customer_reviews",
+    "facebook_comments",
+    "risk",
+    "offer_delivery",
+    "signup"
+  ]
+}

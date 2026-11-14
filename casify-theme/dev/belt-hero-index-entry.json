@@ -1,0 +1,77 @@
+{
+  "_note": "Home template entry for the belt hero, as pushed to the unpublished preview theme #186717274189 on 2026-11-14. To use it: take a fresh copy of the live templates/index.json, add this under \"sections\" as \"belt_hero\", put \"belt_hero\" first in \"order\", and set \"disabled\": true on \"swap_hero\" (the template then holds 25 sections, the limit).",
+  "belt_hero": {
+    "type": "cv-belt-hero",
+    "blocks": {
+      "case_1": {
+        "type": "case",
+        "settings": {
+          "product": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_2": {
+        "type": "case",
+        "settings": {
+          "product": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_3": {
+        "type": "case",
+        "settings": {
+          "product": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+          "name": "Beary Christmas"
+        }
+      },
+      "case_4": {
+        "type": "case",
+        "settings": {
+          "product": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_5": {
+        "type": "case",
+        "settings": {
+          "product": "candy-canes-retro-pantry-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_6": {
+        "type": "case",
+        "settings": {
+          "product": "vintage-glass-ornaments-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_7": {
+        "type": "case",
+        "settings": {
+          "product": "dear-santa-embroidered-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_8": {
+        "type": "case",
+        "settings": {
+          "product": "oh-deer-patchwork-bunny-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      },
+      "case_9": {
+        "type": "case",
+        "settings": {
+          "product": "jingle-bells-moroccan-tile-christmas-phone-case-for-iphone-samsung-pixel-tough-case"
+        }
+      }
+    },
+    "block_order": [
+      "case_1",
+      "case_2",
+      "case_3",
+      "case_4",
+      "case_5",
+      "case_6",
+      "case_7",
+      "case_8",
+      "case_9"
+    ],
+    "settings": {
+      "collection": "tough-cases"
+    }
+  }
+}

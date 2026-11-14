@@ -1,0 +1,428 @@
+{%- comment -%}
+  Casify: "Belt hero" (adapted from the Landside belt hero shown on Scrolltide).
+
+  Up to nine cases stand on a belt that turns. The front case is sharp and
+  large, the ones behind it smaller and soft. Dragging, the arrow keys or a
+  tap on a side case turns the belt; the name, the facts, the price and Add to
+  bag follow the front case. A tap on the front case opens it: the others fade
+  into the page, a counter ticket drops in on its cord and swings, and a scan
+  line passes over the case and leaves numbered markers (case, finish, fit).
+  "Grid" lays the same cases out as a grid; "Belt" sends them back.
+  Six or nine cases, so the grid's three columns fill evenly.
+
+  The cases. "Case" blocks pick products by hand, in order; the collection
+  fills the belt up to the chosen count. Each is a real product: its 3D still
+  (the transparent picture the product page opens on: the casify.model_still
+  metafield, or the 3D model's own preview picture), short name (the title
+  before " Phone Case"), case type (the title after "|"), finish (the Surface
+  or Finish option), phone model count (the option whose values name phones,
+  as in cv-is-case) and price. A product with no 3D still shows its first
+  photo. Nothing is typed in by hand except an optional short name.
+
+  Add to bag opens the quick pick (snippets/cv-quick-pick.liquid), which asks
+  for the phone before it adds anything.
+
+  First paint needs no script: cv-belt-hero.css stands the belt at rest on the
+  first case with CSS trigonometry, and that case's name, facts, price and
+  links are printed here. assets/cv-belt-hero.js (a module, printed below)
+  takes the same layout over and adds the motion with GSAP (core and
+  SplitText, both always loaded by the layout). Reduced motion: the belt, the
+  ticket and the grid still work; nothing glides, swings or scans, and the
+  belt never turns on its own. No JS: the belt at rest, every case a link.
+
+  Speed: products are read one at a time and only as far as needed. A case on
+  the file route has its still in a metafield; only a case whose still is the
+  3D model's preview picture reads that product's media list.
+{%- endcomment -%}
+{{ 'cv-belt-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign coll = st.collection | default: collections.all
+  assign max = st.count | default: 9 | plus: 0
+  assign picked = section.blocks | map: 'settings' | map: 'product'
+  assign picked_names = section.blocks | map: 'settings' | map: 'name'
+  assign picked_attrs = section.blocks | map: 'shopify_attributes'
+
+  assign n = 0
+  assign used = '|'
+  assign items_html = ''
+  assign labels_html = ''
+  assign index_html = ''
+  assign data_json = ''
+  assign sep = ''
+-%}
+
+{%- comment -%} Pass 1: the Case blocks, in order. Pass 2: the collection, until the belt is full. {%- endcomment -%}
+{%- for pass in (1..2) -%}
+  {%- liquid
+    if pass == 1
+      assign source = picked
+    else
+      if n >= max or st.fill == false
+        break
+      endif
+      assign source = coll.products
+    endif
+  -%}
+  {%- for p in source -%}
+    {%- liquid
+      if n >= max
+        break
+      endif
+      if p == blank
+        continue
+      endif
+      assign key = p.id | append: '|'
+      assign probe = '|' | append: key
+      if used contains probe
+        continue
+      endif
+
+      comment
+        The picture: the 3D still. File-route cases keep it in a metafield; the rest
+        carry it as their 3D model's preview picture.
+      endcomment
+      assign pic = p.metafields.casify.model_still.value
+      assign flat = false
+      if pic == blank
+        assign model = p.media | where: 'media_type', 'model' | first
+        assign pic = model.preview_image
+      endif
+      if pic == blank
+        assign pic = p.featured_image
+        assign flat = true
+      endif
+      if pic == blank
+        continue
+      endif
+      assign used = used | append: key
+
+      assign short = p.title | split: ' Phone Case' | first | strip
+      assign tail = short | slice: -10, 10
+      if tail == ' Christmas'
+        assign cut = short.size | minus: 10
+        assign short = short | slice: 0, cut
+      endif
+      assign attrs = ''
+      if pass == 1
+        assign custom_name = picked_names[forloop.index0]
+        if custom_name != blank
+          assign short = custom_name
+        endif
+        assign attrs = picked_attrs[forloop.index0]
+      endif
+      assign edge = ''
+      if p.title contains '|'
+        assign edge = p.title | split: '|' | last | strip
+      endif
+
+      comment
+        Phone models: the option named like a phone model, or (as in cv-is-case) the one
+        whose first value names a phone; Printify calls it "Size".
+      endcomment
+      assign models = 0
+      assign finish = ''
+      for option in p.options_with_values
+        assign oname = option.name | downcase
+        assign fv = option.values.first | downcase
+        if models == 0
+          if oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'applicable' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+            assign models = option.values.size
+            continue
+          endif
+        endif
+        if oname contains 'surface' or oname contains 'finish'
+          assign finish = option.values | join: ' or '
+        endif
+      endfor
+      assign fit_text = ''
+      if models > 1
+        assign fit_text = st.fit_text | replace: '[count]', models
+      endif
+      assign meta = edge
+      if fit_text != blank
+        if meta != blank
+          assign meta = meta | append: ' · '
+        endif
+        assign meta = meta | append: fit_text
+      endif
+
+      assign price_text = p.price | money | strip_html
+      if p.price_varies
+        assign price_text = st.from_label | append: ' ' | append: price_text
+      endif
+      assign was = ''
+      if p.compare_at_price > p.price
+        assign was = p.compare_at_price | money | strip_html
+      endif
+      assign num = n | plus: 1 | prepend: '0' | slice: -2, 2
+
+      comment
+        Picture sizes: the front case is drawn largest, the next one a little smaller, the
+        rest small and soft. The script raises a case's size when it comes to the front.
+      endcomment
+      assign sizes_full = '(min-width: 990px) 620px, 440px'
+      assign sizes = '(min-width: 990px) 300px, 220px'
+      assign prio = 'low'
+      if n == 0
+        assign sizes = sizes_full
+        assign prio = 'high'
+      elsif n == 1
+        assign sizes = '(min-width: 990px) 460px, 340px'
+      endif
+
+      if n == 0
+        assign first_short = short
+        assign first_edge = edge
+        assign first_finish = finish
+        assign first_fit = fit_text
+        assign first_meta = meta
+        assign first_price = price_text
+        assign first_was = was
+        assign first_url = p.url
+        assign first_handle = p.handle
+        assign first_available = p.available
+      endif
+    -%}
+    {%- capture one_item -%}
+      <a class="cvbh__item{% if flat %} cvbh__item--flat{% endif %}" href="{{ p.url }}" style="--i: {{ n }};" data-cvbh-item data-sizes="{{ sizes_full }}" aria-label="{{ short | escape }}, {{ price_text | escape }}" draggable="false" {{ attrs }}>
+        <span class="cvbh__pic">
+          {{- pic | image_url: width: 1100 | image_tag: widths: '240, 360, 480, 660, 880, 1100', sizes: sizes, alt: '', loading: 'eager', fetchpriority: prio, decoding: 'async', class: 'cvbh__img', draggable: 'false' -}}
+        </span>
+      </a>
+    {%- endcapture -%}
+    {%- capture one_label -%}
+      <span class="cvbh__label" data-cvbh-label><b class="cvbh__num">{{ num }}</b><span class="cvbh__label-name">{{ short | escape }}</span><span class="cvbh__label-price">{{ price_text | escape }}</span></span>
+    {%- endcapture -%}
+    {%- capture one_index -%}
+      <li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="{{ short | escape }}"{% if n == 0 %} aria-current="true"{% endif %}>{{ num }}</button></li>
+    {%- endcapture -%}
+    {%- capture one_json -%}
+      {{- sep -}}{"n": {{ num | json }}, "short": {{ short | json }}, "edge": {{ edge | json }}, "finish": {{ finish | json }}, "fit": {{ fit_text | json }}, "meta": {{ meta | json }}, "price": {{ price_text | json }}, "was": {{ was | json }}, "url": {{ p.url | json }}, "handle": {{ p.handle | json }}, "available": {{ p.available | json }}}
+    {%- endcapture -%}
+    {%- liquid
+      assign items_html = items_html | append: one_item
+      assign labels_html = labels_html | append: one_label
+      assign index_html = index_html | append: one_index
+      assign data_json = data_json | append: one_json
+      assign sep = ','
+      assign n = n | plus: 1
+    -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- liquid
+  assign total = n | prepend: '0' | slice: -2, 2
+  assign title_size = 's'
+  if first_short.size > 26
+    assign title_size = 'l'
+  elsif first_short.size > 16
+    assign title_size = 'm'
+  endif
+  assign count_text = st.count_text | replace: '[n]', '01' | replace: '[total]', total
+  assign show_shipping = false
+  if settings.cv_free_shipping_all and st.shipping_text != blank
+    assign show_shipping = true
+  endif
+-%}
+
+{%- if n > 0 -%}
+<section
+  class="cvbh"
+  id="cvbh-{{ section.id }}"
+  data-cvbh
+  data-autoplay="{{ st.autoplay }}"
+  data-interval="{{ st.interval }}"
+  data-t-drag="{{ st.drag_label | escape }}"
+  data-t-bring="{{ st.bring_label | escape }}"
+  data-t-view="{{ st.open_label | escape }}"
+  data-t-close="{{ st.close_label | escape }}"
+  data-t-running="{{ st.running_label | escape }}"
+  data-t-paused="{{ st.paused_label | escape }}"
+  data-t-count="{{ st.count_text | escape }}"
+  style="--cvbh-n: {{ n }}; --cvbh-pad-bottom: {{ st.pad_bottom }}px;"
+  aria-labelledby="cvbh-title-{{ section.id }}"
+>
+  <div class="cvbh__bar">
+    {%- comment -%} The page's H1 says what the shop sells; the big name below is the front case. {%- endcomment -%}
+    {%- if st.kicker != blank -%}<h1 class="cvbh__kicker">{{ st.kicker | escape }}</h1>{%- endif -%}
+    {%- if st.all_label != blank and coll.url != blank -%}
+      <a class="cvbh__all" href="{{ coll.url }}">
+        <span>{{ st.all_label | replace: '[count]', coll.products_count | escape }}</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    {%- endif -%}
+    <div class="cvbh__views" role="group" aria-label="{{ st.views_label | escape }}" data-cvbh-views hidden>
+      <button type="button" class="cvbh__view" data-cvbh-view="belt" aria-pressed="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><ellipse cx="12" cy="12" rx="9" ry="4.5"/><circle class="cvbh__view-dot" cx="12" cy="12" r="1.6"/></svg>
+        <span>{{ st.view_belt | escape }}</span>
+      </button>
+      <button type="button" class="cvbh__view" data-cvbh-view="grid" aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M5 5h4v4H5zM15 5h4v4h-4zM5 15h4v4H5zM15 15h4v4h-4z"/></svg>
+        <span>{{ st.view_grid | escape }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="cvbh__body" data-cvbh-body>
+    <div class="cvbh__ring" data-cvbh-ring role="group" aria-roledescription="carousel" aria-label="{{ st.stage_label | escape }}">
+      <span class="cvbh__track" aria-hidden="true"></span>
+      {{ items_html }}
+      <div class="cvbh__scan" data-cvbh-scan aria-hidden="true" hidden><span class="cvbh__scan-line" data-cvbh-scan-line></span></div>
+      <div class="cvbh__markers" data-cvbh-markers hidden>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="fit" style="--mx: 30%; --my: 17%;"><span class="cvbh__sr">{{ st.label_fit | escape }}</span><span aria-hidden="true">03</span></button>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="edge" style="--mx: 3%; --my: 50%;"><span class="cvbh__sr">{{ st.label_edge | escape }}</span><span aria-hidden="true">01</span></button>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="finish" style="--mx: 64%; --my: 66%;"><span class="cvbh__sr">{{ st.label_finish | escape }}</span><span aria-hidden="true">02</span></button>
+      </div>
+      <div class="cvbh__labels" aria-hidden="true">{{ labels_html }}</div>
+    </div>
+
+    <nav class="cvbh__index" aria-label="{{ st.index_label | escape }}" data-cvbh-index hidden>
+      <p class="cvbh__index-title" aria-hidden="true">{{ st.index_label | escape }}</p>
+      <ol role="list">{{ index_html }}</ol>
+    </nav>
+
+    <div class="cvbh__info" data-cvbh-info>
+      <p class="cvbh__status">
+        <button type="button" class="cvbh__run" data-cvbh-run aria-pressed="false" hidden>
+          <span class="cvbh__dot" aria-hidden="true"></span><span data-cvbh-run-label>{{ st.paused_label | escape }}</span>
+        </button>
+        <span class="cvbh__count"><span class="cvbh__flap" data-cvbh-flap><span class="cvbh__flap-d">0</span><span class="cvbh__flap-d">1</span></span><span class="cvbh__count-of">/ {{ total }}</span></span>
+      </p>
+      <h2 class="cvbh__title" id="cvbh-title-{{ section.id }}" data-size="{{ title_size }}" data-cvbh-title-wrap><a href="{{ first_url }}" data-cvbh-title>{{ first_short | escape }}</a></h2>
+      <p class="cvbh__meta" data-cvbh-meta>{{ first_meta | escape }}</p>
+    </div>
+
+    <div class="cvbh__card" data-cvbh-card>
+      <p class="cvbh__card-head"><span>{{ st.card_label | escape }}</span><span data-cvbh-card-num aria-hidden="true">01</span></p>
+      <dl class="cvbh__rows">
+        <div class="cvbh__row" data-cvbh-row="edge"{% if first_edge == blank %} hidden{% endif %}><dt>{{ st.label_edge | escape }}</dt><dd data-cvbh-val="edge">{{ first_edge | escape }}</dd></div>
+        <div class="cvbh__row" data-cvbh-row="finish"{% if first_finish == blank %} hidden{% endif %}><dt>{{ st.label_finish | escape }}</dt><dd data-cvbh-val="finish">{{ first_finish | escape }}</dd></div>
+        <div class="cvbh__row" data-cvbh-row="fit"{% if first_fit == blank %} hidden{% endif %}><dt>{{ st.label_fit | escape }}</dt><dd data-cvbh-val="fit">{{ first_fit | escape }}</dd></div>
+      </dl>
+      <div class="cvbh__buy">
+        <p class="cvbh__price"><span data-cvbh-price>{{ first_price | escape }}</span> <s data-cvbh-was{% if first_was == blank %} hidden{% endif %}>{{ first_was | escape }}</s></p>
+        <a class="cvbh__cta cv-eyes-host" href="{{ first_url }}" data-cvbh-bag{% if first_available %} data-cvqp-open{% endif %} data-handle="{{ first_handle }}" data-url="{{ first_url }}">
+          <span data-cvbh-bag-label data-add="{{ st.bag_label | escape }}" data-sold="{{ st.sold_label | escape }}">{% if first_available %}{{ st.bag_label | escape }}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
+          {%- render 'cv-eyes', count: 1 -%}
+        </a>
+      </div>
+      {%- if show_shipping -%}<p class="cvbh__facts">{{ st.shipping_text | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="cvbh__open" data-cvbh-open hidden>
+      <p class="cvbh__open-num" data-cvbh-open-num>{{ count_text | escape }}</p>
+      <p class="cvbh__open-name" data-size="{{ title_size }}" data-cvbh-open-name>{{ first_short | escape }}</p>
+      <p class="cvbh__open-meta" data-cvbh-open-meta>{{ first_meta | escape }}</p>
+    </div>
+    <p class="cvbh__hint" data-cvbh-hint hidden>{{ st.hint | escape }}</p>
+
+    <button type="button" class="cvbh__close" data-cvbh-close aria-controls="cvbh-ticket-{{ section.id }}" hidden>
+      <span>{{ st.close_label | escape }}</span>
+      <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="cvbh__ticket" id="cvbh-ticket-{{ section.id }}" data-cvbh-ticket role="region" aria-labelledby="cvbh-tname-{{ section.id }}" hidden>
+      <div class="cvbh__swing" data-cvbh-swing>
+        <span class="cvbh__cord" aria-hidden="true"></span>
+        <div class="cvbh__paper">
+          <span class="cvbh__eyelet" aria-hidden="true"></span>
+          <p class="cvbh__t-brand">{{ shop.name | escape }}</p>
+          <p class="cvbh__t-sub">{{ st.ticket_label | escape }}</p>
+          <div class="cvbh__t-head">
+            <span class="cvbh__flap cvbh__flap--lg" data-cvbh-tflap aria-hidden="true"><span class="cvbh__flap-d">0</span><span class="cvbh__flap-d">1</span></span>
+            <p class="cvbh__t-of" data-cvbh-tof>{{ count_text | escape }}</p>
+          </div>
+          <p class="cvbh__t-name" id="cvbh-tname-{{ section.id }}" data-cvbh-tname>{{ first_short | escape }}</p>
+          <dl class="cvbh__t-rows">
+            <div class="cvbh__t-row" data-cvbh-trow="edge"{% if first_edge == blank %} hidden{% endif %}><dt><b>01</b>{{ st.label_edge | escape }}</dt><dd data-cvbh-tval="edge">{{ first_edge | escape }}</dd></div>
+            <div class="cvbh__t-row" data-cvbh-trow="finish"{% if first_finish == blank %} hidden{% endif %}><dt><b>02</b>{{ st.label_finish | escape }}</dt><dd data-cvbh-tval="finish">{{ first_finish | escape }}</dd></div>
+            <div class="cvbh__t-row" data-cvbh-trow="fit"{% if first_fit == blank %} hidden{% endif %}><dt><b>03</b>{{ st.label_fit | escape }}</dt><dd data-cvbh-tval="fit">{{ first_fit | escape }}</dd></div>
+          </dl>
+          <p class="cvbh__t-total"><span>{{ st.price_label | escape }}</span><span class="cvbh__t-sum"><s data-cvbh-twas{% if first_was == blank %} hidden{% endif %}>{{ first_was | escape }}</s><b data-cvbh-tprice>{{ first_price | escape }}</b></span></p>
+          <a class="cvbh__cta cvbh__cta--ticket cv-eyes-host" href="{{ first_url }}" data-cvbh-tbag{% if first_available %} data-cvqp-open{% endif %} data-handle="{{ first_handle }}" data-url="{{ first_url }}">
+            <span data-cvbh-tbag-label>{% if first_available %}{{ st.bag_label | escape }}{% else %}{{ st.sold_label | escape }}{% endif %}</span>
+            {%- render 'cv-eyes', count: 1 -%}
+          </a>
+          <a class="cvbh__t-link" href="{{ first_url }}" data-cvbh-tlink>
+            <span>{{ st.view_label | escape }}</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <p class="cvbh__t-foot">{% if show_shipping %}<span>{{ st.shipping_text | escape }}</span>{% endif %}<span>{{ shop.name | escape }}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span class="cvbh__cursor" data-cvbh-cursor aria-hidden="true"></span>
+  <p class="cvbh__sr" data-cvbh-status aria-live="polite"></p>
+  <script type="application/json" data-cvbh-data>[{{ data_json }}]</script>
+</section>
+<script type="module" src="{{ 'cv-belt-hero.js' | asset_url }}"></script>
+{%- elsif request.design_mode -%}
+  <p class="cvbh-empty">Belt hero: pick a collection, or add Case blocks, with cases that have a picture.</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Belt hero",
+  "tag": "div",
+  "class": "section-cv-belt-hero",
+  "settings": [
+    { "type": "paragraph", "content": "Up to nine cases stand on a turning belt. Shoppers drag it or tap a case to bring it forward, tap the front case to open its ticket, and switch to a grid of all of them. Add Case blocks to pick cases by hand; the collection fills the rest." },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Fills the belt after any Case blocks, and is where the \"see all\" link goes. Cases show their 3D still; one without it shows its first photo." },
+    { "type": "select", "id": "count", "label": "Cases on the belt", "options": [{ "value": "6", "label": "6" }, { "value": "9", "label": "9" }], "default": "9", "info": "Six or nine, so the grid view fills three even columns." },
+    { "type": "checkbox", "id": "fill", "label": "Fill the belt from the collection", "default": true, "info": "Off: only the Case blocks show." },
+    { "type": "header", "content": "Top row" },
+    { "type": "text", "id": "kicker", "label": "Small heading", "default": "Christmas phone cases", "info": "This is the page's main heading (H1) for search engines. Leave empty if another section on the page has the H1." },
+    { "type": "text", "id": "all_label", "label": "See all link", "default": "See all [count] cases", "info": "[count] is the number of products in the collection. Leave empty to hide the link." },
+    { "type": "text", "id": "view_belt", "label": "Belt view button", "default": "Belt" },
+    { "type": "text", "id": "view_grid", "label": "Grid view button", "default": "Grid" },
+    { "type": "text", "id": "views_label", "label": "Name of the view buttons (screen readers)", "default": "View" },
+    { "type": "text", "id": "stage_label", "label": "Name of the belt (screen readers)", "default": "Cases on the belt" },
+    { "type": "text", "id": "index_label", "label": "Number list title", "default": "Cases" },
+    { "type": "header", "content": "Front case" },
+    { "type": "text", "id": "card_label", "label": "Card title", "default": "This case" },
+    { "type": "text", "id": "label_edge", "label": "Case type label", "default": "Case", "info": "The value is the part of the product title after |." },
+    { "type": "text", "id": "label_finish", "label": "Finish label", "default": "Finish", "info": "The value is the product's Surface or Finish option." },
+    { "type": "text", "id": "label_fit", "label": "Fit label", "default": "Fits" },
+    { "type": "text", "id": "fit_text", "label": "Fit text", "default": "[count] phone models", "info": "[count] is the number of phone models the case is made for. Hidden when there is one or none." },
+    { "type": "text", "id": "from_label", "label": "Label before a price that varies", "default": "From" },
+    { "type": "text", "id": "bag_label", "label": "Add to bag button", "default": "Add to bag" },
+    { "type": "text", "id": "sold_label", "label": "Sold out label", "default": "Sold out" },
+    { "type": "text", "id": "shipping_text", "label": "Shipping line", "default": "Free shipping", "info": "Shown only when Theme settings > Packs and shipping > Free shipping on every order is on." },
+    { "type": "header", "content": "Ticket (open case)" },
+    { "type": "text", "id": "ticket_label", "label": "Ticket title", "default": "Counter ticket" },
+    { "type": "text", "id": "count_text", "label": "Position line", "default": "Case [n] of [total]" },
+    { "type": "text", "id": "price_label", "label": "Price label", "default": "Price" },
+    { "type": "text", "id": "view_label", "label": "Product page link", "default": "View case" },
+    { "type": "text", "id": "hint", "label": "Hint under the open case", "default": "Tap a number on the case" },
+    { "type": "text", "id": "close_label", "label": "Close button", "default": "Close" },
+    { "type": "header", "content": "Pointer label (mouse only)" },
+    { "type": "text", "id": "drag_label", "label": "Over the belt", "default": "Drag" },
+    { "type": "text", "id": "bring_label", "label": "Over a side case", "default": "Bring in" },
+    { "type": "text", "id": "open_label", "label": "Over the front case", "default": "View" },
+    { "type": "header", "content": "Motion" },
+    { "type": "checkbox", "id": "autoplay", "label": "Turn the belt on its own", "default": true, "info": "It stops at the shopper's first touch and has a pause button. Never runs with reduced motion." },
+    { "type": "range", "id": "interval", "label": "Seconds on each case", "min": 3, "max": 8, "step": 0.5, "unit": "s", "default": 4.5 },
+    { "type": "text", "id": "running_label", "label": "Pause button, belt turning", "default": "Belt running" },
+    { "type": "text", "id": "paused_label", "label": "Pause button, belt stopped", "default": "Belt paused" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 80, "step": 8, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "case",
+      "name": "Case",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Case" },
+        { "type": "text", "id": "name", "label": "Short name", "info": "Optional. Empty uses the product title before \"Phone Case\"." }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [
+    { "name": "Belt hero" }
+  ]
+}
+{% endschema %}

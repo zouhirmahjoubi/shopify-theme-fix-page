@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Belt hero preview</title>
+<style>
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:700;font-display:swap;src:url(/assets/cv-f-playfair-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:700;font-display:swap;src:url(/assets/cv-f-playfair-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-playfair-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-playfair-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:800;font-display:swap;src:url(/assets/cv-f-playfair-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:800;font-display:swap;src:url(/assets/cv-f-playfair-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:900;font-display:swap;src:url(/assets/cv-f-playfair-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:900;font-display:swap;src:url(/assets/cv-f-playfair-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:italic;font-weight:400;font-display:swap;src:url(/assets/cv-f-baskerville-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:italic;font-weight:400;font-display:swap;src:url(/assets/cv-f-baskerville-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-baskerville-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-baskerville-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-baskerville-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-baskerville-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Parisienne';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-parisienne-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Parisienne';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-parisienne-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Special Elite';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-special-elite-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Special Elite';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/cv-f-special-elite-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/cv-f-caveat-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/cv-f-caveat-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-caveat-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/cv-f-caveat-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>
+
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/cv-eyes.css">
+<style>
+  /* Stand-ins for the store header (142px on phones, 154px on wide screens, sticky) and the next section. */
+  .dev-header { position: sticky; top: 0; z-index: 50; display: grid; place-items: center; height: 142px; background: var(--cream-50); border-bottom: 2px solid var(--red-500); font: 12px/1 var(--font-label); letter-spacing: .14em; text-transform: uppercase; color: var(--cocoa-400); }
+  @media (min-width: 990px) { .dev-header { height: 154px; } }
+  .dev-next { display: grid; place-items: center; height: 70vh; font: 12px/1 var(--font-label); letter-spacing: .14em; text-transform: uppercase; color: var(--cocoa-400); }
+</style>
+<script>
+  // ?reduce=1 answers the reduced-motion question with yes, so that path can be checked in a
+  // browser that cannot switch the preference (the stylesheet's own @media rule is mirrored below).
+  if (/[?&]reduce=1/.test(location.search)) {
+    var mm = window.matchMedia.bind(window);
+    window.matchMedia = function (q) {
+      return /prefers-reduced-motion/.test(q) ? { matches: true, media: q, addEventListener: function () {}, removeEventListener: function () {} } : mm(q);
+    };
+    document.documentElement.classList.add('dev-reduce');
+  }
+</script>
+<style>.dev-reduce .cvbh *, .dev-reduce .cvbh *::before, .dev-reduce .cvbh *::after { transition-duration: 1ms !important; animation: none !important; }</style>
+<script src="/assets/gsap.min.js" defer></script>
+<script src="/assets/gsap-CustomEase.min.js" defer></script>
+<script src="/assets/gsap-CustomBounce.min.js" defer></script>
+<script src="/assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="/assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="/assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="/assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="/assets/gsap-SplitText.min.js" defer></script>
+<script src="/assets/gsap-init.js" defer></script>
+
+</head>
+<body>
+<div class="dev-header">Store header (stand-in)</div>
+<main id="MainContent">
+<div class="shopify-section section-cv-belt-hero"><link rel="stylesheet" href="/assets/cv-belt-hero.css"><section
+  class="cvbh"
+  id="cvbh-preview"
+  data-cvbh
+  data-autoplay="true"
+  data-interval="4.5"
+  data-t-drag="Drag"
+  data-t-bring="Bring in"
+  data-t-view="View"
+  data-t-close="Close"
+  data-t-running="Belt running"
+  data-t-paused="Belt paused"
+  data-t-count="Case [n] of [total]"
+  style="--cvbh-n: 9; --cvbh-pad-bottom: 24px;"
+  aria-labelledby="cvbh-title-preview"
+>
+  <div class="cvbh__bar"><h1 class="cvbh__kicker">Christmas phone cases</h1><a class="cvbh__all" href="/collections/tough-cases">
+        <span>See all 163 cases</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a><div class="cvbh__views" role="group" aria-label="View" data-cvbh-views hidden>
+      <button type="button" class="cvbh__view" data-cvbh-view="belt" aria-pressed="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><ellipse cx="12" cy="12" rx="9" ry="4.5"/><circle class="cvbh__view-dot" cx="12" cy="12" r="1.6"/></svg>
+        <span>Belt</span>
+      </button>
+      <button type="button" class="cvbh__view" data-cvbh-view="grid" aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M5 5h4v4H5zM15 5h4v4h-4zM5 15h4v4H5zM15 15h4v4h-4z"/></svg>
+        <span>Grid</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="cvbh__body" data-cvbh-body>
+    <div class="cvbh__ring" data-cvbh-ring role="group" aria-roledescription="carousel" aria-label="Cases on the belt">
+      <span class="cvbh__track" aria-hidden="true"></span>
+      <a class="cvbh__item" href="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 0;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Snow Day Penguin, $37.99" draggable="false" data-shopify-editor-block="case-0">
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/snow-day-penguin-tough-case-3d-still.png?v=1793759392&width=1100 1100w" sizes="(min-width: 990px) 620px, 440px" width="1100" height="1023" alt="" loading="eager" fetchpriority="high" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 1;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Hot Cocoa Season, $37.99" draggable="false" data-shopify-editor-block="case-1">
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/hot-cocoa-season-tough-3d-still.png?v=1793761601&width=1100 1100w" sizes="(min-width: 990px) 460px, 340px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 2;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Beary Christmas, $37.99" draggable="false" data-shopify-editor-block="case-2">
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/beary-christmas-polar-bear-tough-3d-still.png?v=1793761601&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 3;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Merry &amp; Bright Fox, $37.99" draggable="false" data-shopify-editor-block="case-3">
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/preview_images/merry-bright-fox-tough-3d-still.png?v=1793761489&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/candy-canes-retro-pantry-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 4;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Candy Canes Retro Pantry, $37.99" draggable="false" >
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/candy-canes-retro-pantry-tough-3d-still.png?v=1793992172&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/vintage-glass-ornaments-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 5;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Vintage Glass Ornaments, $37.99" draggable="false" >
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/vintage-glass-ornaments-tough-3d-still.png?v=1793991885&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/dear-santa-embroidered-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 6;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Dear Santa Embroidered, $37.99" draggable="false" >
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/dear-santa-embroidered-tough-3d-still.png?v=1793991885&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/oh-deer-patchwork-bunny-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 7;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Oh Deer Patchwork Bunny, $37.99" draggable="false" >
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/oh-deer-patchwork-bunny-tough-3d-still.png?v=1794160682&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a><a class="cvbh__item" href="/products/jingle-bells-moroccan-tile-christmas-phone-case-for-iphone-samsung-pixel-tough-case" style="--i: 8;" data-cvbh-item data-sizes="(min-width: 990px) 620px, 440px" aria-label="Jingle Bells Moroccan Tile, $37.99" draggable="false" >
+        <span class="cvbh__pic"><img src="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=1100" srcset="https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=240 240w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=360 360w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=480 480w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=660 660w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=880 880w, https://cdn.shopify.com/s/files/1/0793/5515/0413/files/jingle-bells-moroccan-tile-tough-3d-still.png?v=1793991417&width=1100 1100w" sizes="(min-width: 990px) 300px, 220px" width="1100" height="1023" alt="" loading="eager" fetchpriority="low" decoding="async" class="cvbh__img" draggable="false"></span>
+      </a>
+      <div class="cvbh__scan" data-cvbh-scan aria-hidden="true" hidden><span class="cvbh__scan-line" data-cvbh-scan-line></span></div>
+      <div class="cvbh__markers" data-cvbh-markers hidden>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="fit" style="--mx: 30%; --my: 17%;"><span class="cvbh__sr">Fits</span><span aria-hidden="true">03</span></button>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="edge" style="--mx: 3%; --my: 50%;"><span class="cvbh__sr">Case</span><span aria-hidden="true">01</span></button>
+        <button type="button" class="cvbh__marker" data-cvbh-marker="finish" style="--mx: 64%; --my: 66%;"><span class="cvbh__sr">Finish</span><span aria-hidden="true">02</span></button>
+      </div>
+      <div class="cvbh__labels" aria-hidden="true"><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">01</b><span class="cvbh__label-name">Snow Day Penguin</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">02</b><span class="cvbh__label-name">Hot Cocoa Season</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">03</b><span class="cvbh__label-name">Beary Christmas</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">04</b><span class="cvbh__label-name">Merry &amp; Bright Fox</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">05</b><span class="cvbh__label-name">Candy Canes Retro Pantry</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">06</b><span class="cvbh__label-name">Vintage Glass Ornaments</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">07</b><span class="cvbh__label-name">Dear Santa Embroidered</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">08</b><span class="cvbh__label-name">Oh Deer Patchwork Bunny</span><span class="cvbh__label-price">$37.99</span></span><span class="cvbh__label" data-cvbh-label><b class="cvbh__num">09</b><span class="cvbh__label-name">Jingle Bells Moroccan Tile</span><span class="cvbh__label-price">$37.99</span></span></div>
+    </div>
+
+    <nav class="cvbh__index" aria-label="Cases" data-cvbh-index hidden>
+      <p class="cvbh__index-title" aria-hidden="true">Cases</p>
+      <ol role="list"><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Snow Day Penguin" aria-current="true">01</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Hot Cocoa Season">02</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Beary Christmas">03</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Merry &amp; Bright Fox">04</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Candy Canes Retro Pantry">05</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Vintage Glass Ornaments">06</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Dear Santa Embroidered">07</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Oh Deer Patchwork Bunny">08</button></li><li><button type="button" class="cvbh__idx" data-cvbh-idx aria-label="Jingle Bells Moroccan Tile">09</button></li></ol>
+    </nav>
+
+    <div class="cvbh__info" data-cvbh-info>
+      <p class="cvbh__status">
+        <button type="button" class="cvbh__run" data-cvbh-run aria-pressed="false" hidden>
+          <span class="cvbh__dot" aria-hidden="true"></span><span data-cvbh-run-label>Belt paused</span>
+        </button>
+        <span class="cvbh__count"><span class="cvbh__flap" data-cvbh-flap><span class="cvbh__flap-d">0</span><span class="cvbh__flap-d">1</span></span><span class="cvbh__count-of">/ 09</span></span>
+      </p>
+      <h2 class="cvbh__title" id="cvbh-title-preview" data-size="s" data-cvbh-title-wrap><a href="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-cvbh-title>Snow Day Penguin</a></h2>
+      <p class="cvbh__meta" data-cvbh-meta>Tough Case · 49 phone models</p>
+    </div>
+
+    <div class="cvbh__card" data-cvbh-card>
+      <p class="cvbh__card-head"><span>This case</span><span data-cvbh-card-num aria-hidden="true">01</span></p>
+      <dl class="cvbh__rows">
+        <div class="cvbh__row" data-cvbh-row="edge"><dt>Case</dt><dd data-cvbh-val="edge">Tough Case</dd></div>
+        <div class="cvbh__row" data-cvbh-row="finish"><dt>Finish</dt><dd data-cvbh-val="finish">Glossy or Matte</dd></div>
+        <div class="cvbh__row" data-cvbh-row="fit"><dt>Fits</dt><dd data-cvbh-val="fit">49 phone models</dd></div>
+      </dl>
+      <div class="cvbh__buy">
+        <p class="cvbh__price"><span data-cvbh-price>$37.99</span> <s data-cvbh-was>$59.99</s></p>
+        <a class="cvbh__cta cv-eyes-host" href="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-cvbh-bag data-cvqp-open data-handle="snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-url="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case">
+          <span data-cvbh-bag-label data-add="Add to bag" data-sold="Sold out">Add to bag</span><span class="cv-eyes" aria-hidden="true">
+  <span class="cv-eye"><span class="cv-eye__pupil"></span></span></span>
+</a>
+      </div><p class="cvbh__facts">Free shipping</p></div>
+
+    <div class="cvbh__open" data-cvbh-open hidden>
+      <p class="cvbh__open-num" data-cvbh-open-num>Case 01 of 09</p>
+      <p class="cvbh__open-name" data-size="s" data-cvbh-open-name>Snow Day Penguin</p>
+      <p class="cvbh__open-meta" data-cvbh-open-meta>Tough Case · 49 phone models</p>
+    </div>
+    <p class="cvbh__hint" data-cvbh-hint hidden>Tap a number on the case</p>
+
+    <button type="button" class="cvbh__close" data-cvbh-close aria-controls="cvbh-ticket-preview" hidden>
+      <span>Close</span>
+      <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="cvbh__ticket" id="cvbh-ticket-preview" data-cvbh-ticket role="region" aria-labelledby="cvbh-tname-preview" hidden>
+      <div class="cvbh__swing" data-cvbh-swing>
+        <span class="cvbh__cord" aria-hidden="true"></span>
+        <div class="cvbh__paper">
+          <span class="cvbh__eyelet" aria-hidden="true"></span>
+          <p class="cvbh__t-brand">Casify</p>
+          <p class="cvbh__t-sub">Counter ticket</p>
+          <div class="cvbh__t-head">
+            <span class="cvbh__flap cvbh__flap--lg" data-cvbh-tflap aria-hidden="true"><span class="cvbh__flap-d">0</span><span class="cvbh__flap-d">1</span></span>
+            <p class="cvbh__t-of" data-cvbh-tof>Case 01 of 09</p>
+          </div>
+          <p class="cvbh__t-name" id="cvbh-tname-preview" data-cvbh-tname>Snow Day Penguin</p>
+          <dl class="cvbh__t-rows">
+            <div class="cvbh__t-row" data-cvbh-trow="edge"><dt><b>01</b>Case</dt><dd data-cvbh-tval="edge">Tough Case</dd></div>
+            <div class="cvbh__t-row" data-cvbh-trow="finish"><dt><b>02</b>Finish</dt><dd data-cvbh-tval="finish">Glossy or Matte</dd></div>
+            <div class="cvbh__t-row" data-cvbh-trow="fit"><dt><b>03</b>Fits</dt><dd data-cvbh-tval="fit">49 phone models</dd></div>
+          </dl>
+          <p class="cvbh__t-total"><span>Price</span><span class="cvbh__t-sum"><s data-cvbh-twas>$59.99</s><b data-cvbh-tprice>$37.99</b></span></p>
+          <a class="cvbh__cta cvbh__cta--ticket cv-eyes-host" href="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-cvbh-tbag data-cvqp-open data-handle="snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-url="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case">
+            <span data-cvbh-tbag-label>Add to bag</span><span class="cv-eyes" aria-hidden="true">
+  <span class="cv-eye"><span class="cv-eye__pupil"></span></span></span>
+</a>
+          <a class="cvbh__t-link" href="/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case" data-cvbh-tlink>
+            <span>View case</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <p class="cvbh__t-foot"><span>Free shipping</span><span>Casify</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span class="cvbh__cursor" data-cvbh-cursor aria-hidden="true"></span>
+  <p class="cvbh__sr" data-cvbh-status aria-live="polite"></p>
+  <script type="application/json" data-cvbh-data>[{"n": "01", "short": "Snow Day Penguin", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "02", "short": "Hot Cocoa Season", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "03", "short": "Beary Christmas", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "04", "short": "Merry & Bright Fox", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "05", "short": "Candy Canes Retro Pantry", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/candy-canes-retro-pantry-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "candy-canes-retro-pantry-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "06", "short": "Vintage Glass Ornaments", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/vintage-glass-ornaments-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "vintage-glass-ornaments-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "07", "short": "Dear Santa Embroidered", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/dear-santa-embroidered-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "dear-santa-embroidered-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "08", "short": "Oh Deer Patchwork Bunny", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/oh-deer-patchwork-bunny-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "oh-deer-patchwork-bunny-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true},{"n": "09", "short": "Jingle Bells Moroccan Tile", "edge": "Tough Case", "finish": "Glossy or Matte", "fit": "49 phone models", "meta": "Tough Case · 49 phone models", "price": "$37.99", "was": "$59.99", "url": "/products/jingle-bells-moroccan-tile-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "handle": "jingle-bells-moroccan-tile-christmas-phone-case-for-iphone-samsung-pixel-tough-case", "available": true}]</script>
+</section>
+</div>
+<div class="dev-next">Next section (stand-in)</div>
+</main>
+<script src="/assets/cv-eyes.js" defer></script>
+<script>
+  // The store's quick pick dialog is not part of this page: note the tap instead of leaving it.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-cvqp-open], .cvbh__t-link, .cvbh__all, .cvbh__title a');
+    if (!a) return;
+    e.preventDefault();
+    window.__devTaps = (window.__devTaps || []).concat([a.getAttribute('data-handle') || a.getAttribute('href')]);
+  });
+</script>
+</body>
+</html>
