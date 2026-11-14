@@ -17,14 +17,14 @@
   <footer class="cvf-footer">
     {%- if section.settings.show_sign -%}
       <div class="cvf-sign">
-        <img class="cvf-sign__img" src="{{ 'footer-thank-you-sign.webp' | asset_url }}" width="900" height="470" alt="Thank you — come again soon!" loading="lazy" decoding="async">
+        <img class="cvf-sign__img" src="{{ 'footer-thank-you-sign.webp' | asset_url }}" width="900" height="470" alt="Thank you, come again soon!" loading="lazy" decoding="async">
       </div>
     {%- endif -%}
 
     <div class="footer__inner cvf-ledger" data-cvf-ledger>
       <div class="cvf-brand">
         {% render 'casify-logo', variant: 'dark', size: 32 %}
-        <p class="cvf-blurb">{{ section.settings.blurb | default: 'An old-fashioned candy shop, online. Tins, cases, ribbons — wrapped by hand since 1920.' | escape | newline_to_br }}</p>
+        <p class="cvf-blurb">{{ section.settings.blurb | default: 'Printed phone cases for iPhone, Samsung and Pixel. Each case is printed after you order, and shipping is free.' | escape | newline_to_br }}</p>
 
         {%- if section.settings.show_newsletter -%}
           {%- form 'customer', id: 'cvf-newsletter', class: 'cvf-news' -%}
@@ -120,7 +120,7 @@
       "type": "textarea",
       "id": "blurb",
       "label": "Brand blurb",
-      "default": "An old-fashioned candy shop, online. Tins, cases, ribbons — wrapped by hand since 1920."
+      "default": "Printed phone cases for iPhone, Samsung and Pixel. Each case is printed after you order, and shipping is free."
     },
     { "type": "header", "content": "Newsletter" },
     {
@@ -131,7 +131,7 @@
       "info": "Signups are saved as customers tagged \"newsletter\" who accept marketing emails."
     },
     { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Join the sweet list" },
-    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "You're on the list — sweets are on their way." },
+    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "You're on the list." },
     { "type": "header", "content": "Decoration" },
     { "type": "checkbox", "id": "show_sign", "label": "Show \"thank you\" hanging sign", "default": true },
     { "type": "checkbox", "id": "show_shelf", "label": "Show shop-items shelf", "default": true },

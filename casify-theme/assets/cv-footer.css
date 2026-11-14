@@ -1,5 +1,5 @@
 /* =========================================================================
-   Casify — footer (sections/footer.liquid)
+   Casify: footer (sections/footer.liquid)
    Stripe band with scallops, the hanging "thank you" sign, link columns with
    a newsletter, the shop-items shelf and the bottom bar.
    Motion lives in cv-footer.js; everything here renders correctly without JS.
@@ -70,7 +70,8 @@
   content: ""; display: block; width: 28px; height: 3px; margin-top: 8px; border-radius: 2px;
   background: repeating-linear-gradient(-45deg, var(--red-500) 0 4px, var(--cream-50) 4px 8px);
 }
-.cvf-blurb { font-style: italic; color: var(--cocoa-500); font-size: 14px; line-height: 1.6; max-width: 38ch; margin: 14px 0 18px; }
+/* Balanced lines: the last line never holds one lonely word. */
+.cvf-blurb { font-style: italic; color: var(--cocoa-500); font-size: 14px; line-height: 1.6; max-width: 38ch; margin: 14px 0 18px; text-wrap: balance; }
 .cvf-ledger ul { color: var(--cocoa-600); }
 .cvf-ledger ul a { color: var(--cocoa-600); }
 .cvf-footer ul a {
