@@ -4,7 +4,7 @@
   comment
     Both tickets read Judge.me through snippets/cv-jm-verified.liquid:
     the product ticket averages this product's verified buyer reviews,
-    the store ticket all verified reviews (product and store, every type).
+    the store ticket all Judge.me reviews (verified and imported; product and store, every type).
     Stats: buyers' count and sum first, then gifted cases' — the score never
     counts a gifted case.
   endcomment
@@ -84,7 +84,7 @@
               <p>{{ external_count_text }} {{ section.settings.rating_count_label | escape }}</p>
               {%- else -%}
               <h3>—/5 {{ section.settings.rating_label | escape }}</h3>
-              <p>Shows once Judge.me has a verified review</p>
+              <p>Shows once Judge.me has a review</p>
               {%- endif -%}
             </div>
           </article>
@@ -199,8 +199,8 @@
     { "type": "text", "id": "anchor", "label": "Anchor", "default": "cvc-reviews", "info": "The buy box rating link points here." },
     { "type": "text", "id": "collage_label", "label": "Collage label", "default": "Store rating and customer service highlights" },
     { "type": "header", "content": "Store rating (from Judge.me)" },
-    { "type": "text", "id": "external_rating", "label": "Rating out of 5 (no longer used)", "info": "The store rating now comes live from Judge.me verified reviews (all review types)." },
-    { "type": "text", "id": "external_count", "label": "Rating count (no longer used)", "info": "The count now comes live from Judge.me verified reviews." },
+    { "type": "text", "id": "external_rating", "label": "Rating out of 5 (no longer used)", "info": "The store rating now comes live from Judge.me reviews (all review types)." },
+    { "type": "text", "id": "external_count", "label": "Rating count (no longer used)", "info": "The count now comes live from Judge.me reviews." },
     { "type": "text", "id": "external_source", "label": "Source", "default": "Judge.me" },
     { "type": "text", "id": "rating_label", "label": "Rating label", "default": "store rating" },
     { "type": "text", "id": "rating_count_label", "label": "Count label", "default": "published ratings" },

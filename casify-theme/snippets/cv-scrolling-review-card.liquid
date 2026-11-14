@@ -6,6 +6,7 @@
 
   @param {string} [quote] - The review text, already shortened.
   @param {boolean} [gifted] - The case was a gift from the shop: the ticket says "Gifted case".
+  @param {boolean} [imported] - The review was imported from another provider: the ticket says "Imported review".
   @param {string} [name] - The reviewer's name as Judge.me shows it.
   @param {number} [rating] - Stars from 0 to 5; 0 hides them.
   @param {string} [case_name] - The case the review is about, when it isn't the product on the page.
@@ -44,6 +45,8 @@
       {%- endif -%}
       {%- if gifted -%}
         <span class="cvsr-card__tag cvsr-card__tag--gift">Gifted case</span>
+      {%- elsif imported -%}
+        <span class="cvsr-card__tag cvsr-card__tag--import">Imported review</span>
       {%- else -%}
         <span class="cvsr-card__tag">Verified buyer</span>
       {%- endif -%}

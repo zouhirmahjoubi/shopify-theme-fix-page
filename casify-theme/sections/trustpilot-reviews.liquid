@@ -4,7 +4,7 @@
 
 {%- comment -%}
   Every review and the rating summary come from Judge.me through
-  snippets/cv-jm-verified.liquid: verified buyers only, all review types
+  snippets/cv-jm-verified.liquid: verified buyers and imported reviews, all review types
   (product reviews and store reviews), newest first. Typed-in "review"
   blocks are no longer shown (they stay in the schema so saved templates
   still load); an @app block still shows the review platform's own widget.
@@ -122,7 +122,7 @@
               <span class="cvtp__who">
                 <cite>{{ f[3] | escape }}</cite>
                 {%- if r_date != blank -%}<span>{{ r_date }}</span>{%- endif -%}
-                <span>{% if f[8] == 'gift' %}Gifted case{% else %}Verified buyer{% endif %}{% if f[7] == 'product' and f[5] != blank %} · {{ f[5] | escape }} case{% endif %}</span>
+                <span>{% if f[8] == 'gift' %}Gifted case{% elsif f[9] == 'import' %}Imported review{% else %}Verified buyer{% endif %}{% if f[7] == 'product' and f[5] != blank %} · {{ f[5] | escape }} case{% endif %}</span>
               </span>
             </div>
           </article>
@@ -175,7 +175,7 @@
   "class": "section-casify-trustpilot-reviews",
   "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
-    { "type": "paragraph", "content": "Reviews and the rating summary come live from Judge.me (verified buyers only, product and store reviews). To show a review platform's own widget instead, add its app block to this section." },
+    { "type": "paragraph", "content": "Reviews and the rating summary come live from Judge.me (verified buyers and imported reviews, product and store reviews). To show a review platform's own widget instead, add its app block to this section." },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Rated by verified buyers" },
     { "type": "text", "id": "accent_text", "label": "Accent heading", "default": "Straight from our shoppers" },
     { "type": "text", "id": "intro", "label": "Intro text" },

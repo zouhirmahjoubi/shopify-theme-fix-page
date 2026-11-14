@@ -6,7 +6,7 @@
 {%- capture jm_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle -%}{%- endcapture -%}
 {%- liquid
   comment
-    The rating: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+    The rating: this product's Judge.me reviews (verified buyers and imported; snippets/cv-jm-verified.liquid).
   endcomment
   assign jm_parts = jm_stats | split: '␟'
   assign rating_count = jm_parts[0] | plus: 0

@@ -14,7 +14,7 @@
   is the checkout price. Buy now adds the same line and goes to checkout.
 
   Product ratings, here and in the Product structured data, come only from this
-  product's Judge.me reviews by verified buyers (snippets/cv-jm-verified.liquid).
+  product's Judge.me reviews (verified buyers and imported; snippets/cv-jm-verified.liquid).
   Until one exists the row reads "No reviews yet". The store rating tickets and strip show a
   merchant-supplied store rating (the combined Google and Trustpilot figure, labelled
   as such) and never feed product review data.
@@ -304,7 +304,7 @@
   endif
 
   comment
-    Ratings: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+    Ratings: this product's Judge.me reviews (verified buyers and imported; snippets/cv-jm-verified.liquid).
     No reviews, no stars: an empty product shows no star fill (PRODUCT.md:102, STORE-FACTS 7, gate G1).
   endcomment
   capture jm_stats
@@ -1255,7 +1255,7 @@
     { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "info": "Used only when the selected variant has no higher compare-at price, and only for shoppers paying in the shop currency. Use a price the case really sold at." },
     { "type": "header", "content": "Rating" },
     { "type": "checkbox", "id": "show_price_saving", "label": "Show the \"You save\" line", "default": true, "info": "Under the title, when the variant has a real compare-at price. Turn off if the \"Rating, price & pitch\" block already shows the saving." },
-    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Counts this product's Judge.me reviews from verified buyers only." },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Counts this product's Judge.me reviews (verified buyers and imported)." },
     { "type": "text", "id": "reviews_anchor", "label": "Reviews section anchor", "default": "cvc-reviews" },
     { "type": "header", "content": "Main image awning" },
     { "type": "checkbox", "id": "show_awning", "label": "Hang a shop awning over the main photo", "default": false, "info": "A 3D fabric canopy that unrolls on load and sways in the breeze. Flat for shoppers who prefer reduced motion." },
@@ -1404,18 +1404,18 @@
       "name": "Rating, price & pitch",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Shows under the product title: stars, rating and review count, then price, the variant's real compare-at price and saving, then a one-line pitch. The stars count only this product's Judge.me reviews from verified buyers." },
+        { "type": "paragraph", "content": "Shows under the product title: stars, rating and review count, then price, the variant's real compare-at price and saving, then a one-line pitch. The stars count only this product's Judge.me reviews (verified buyers and imported)." },
         {
           "type": "select",
           "id": "rating_source",
           "label": "Rating",
           "options": [
-            { "value": "auto", "label": "Verified Judge.me reviews" },
+            { "value": "auto", "label": "Judge.me reviews" },
             { "value": "product", "label": "Verified reviews only" },
             { "value": "store", "label": "Verified reviews (old store option)" }
           ],
           "default": "auto",
-          "info": "Every choice now shows the same thing: this product's Judge.me reviews from verified buyers."
+          "info": "Every choice now shows the same thing: this product's Judge.me reviews (verified buyers and imported)."
         },
         { "type": "text", "id": "reviews_article", "label": "Review widget blog post (no longer used)", "default": "customer-reviews/reviews" },
         { "type": "text", "id": "empty_label", "label": "Text with no reviews yet", "default": "Be the first to review", "info": "Links to the reviews section. Leave empty to hide." },
@@ -1440,7 +1440,7 @@
       "name": "Store rating strip",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Shows under the Add to bag button. Reads the live Judge.me store rating (verified buyers, all review types); hidden until Judge.me has one and while the section's store rating is off." },
+        { "type": "paragraph", "content": "Shows under the Add to bag button. Reads the live Judge.me store rating (verified buyers and imported, all review types); hidden until Judge.me has one and while the section's store rating is off." },
         { "type": "text", "id": "rating", "label": "Rating (no longer used)", "info": "The strip now reads the live Judge.me rating." },
         { "type": "text", "id": "review_count", "label": "Review count (no longer used)", "info": "The count now comes from Judge.me." },
         { "type": "text", "id": "headline", "label": "Short quote", "info": "Optional. A word or phrase taken from a real review, e.g. Amazing." },

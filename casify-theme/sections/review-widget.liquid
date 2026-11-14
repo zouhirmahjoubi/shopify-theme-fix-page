@@ -3,11 +3,11 @@
   "Write a review" form that sends each review to Judge.me.
 
   Every review shown comes through snippets/cv-jm-verified.liquid: Judge.me
-  reviews whose reviewer's email matched an order. Imported, typed-in and
+  reviews from verified buyers or imported from another provider. Typed-in and
   unverified reviews never show here, whatever Judge.me publishes in its own
   widgets. On a product page that product's reviews come first, then (if chosen)
   reviews of other cases and of the store, each labelled with what it's about.
-  Anywhere else every verified review shows. A review of a case the shop sent
+  Anywhere else every review shows. A review of a case the shop sent
   as a gift carries "Gifted case" in place of the verified badge and is left
   out of the score; with no buyer review yet, the score is labelled as theirs.
 
@@ -372,8 +372,12 @@
             if f[8] == 'gift'
               assign c_gift = true
             endif
+            assign c_import = false
+            if f[9] == 'import'
+              assign c_import = true
+            endif
           -%}
-          {%- render 'rw-review-card', rating: f[0], title: f[1], text: f[2], author: f[3], date: c_date, verified: true, verified_label: st.verified_label, gifted: c_gift -%}
+          {%- render 'rw-review-card', rating: f[0], title: f[1], text: f[2], author: f[3], date: c_date, verified: true, verified_label: st.verified_label, gifted: c_gift, imported: c_import -%}
         {%- endfor -%}
 
         {%- comment -%} 2. Everything else: other cases and the store, labelled {%- endcomment -%}
@@ -388,6 +392,10 @@
             if f[8] == 'gift'
               assign c_gift = true
             endif
+            assign c_import = false
+            if f[9] == 'import'
+              assign c_import = true
+            endif
             assign p_title = ''
             assign p_url = ''
             if f[7] == 'store'
@@ -399,7 +407,7 @@
               endif
             endif
           -%}
-          {%- render 'rw-review-card', rating: f[0], title: f[1], text: f[2], author: f[3], date: c_date, verified: true, verified_label: st.verified_label, gifted: c_gift, product_title: p_title, product_url: p_url, product_label: st.other_label -%}
+          {%- render 'rw-review-card', rating: f[0], title: f[1], text: f[2], author: f[3], date: c_date, verified: true, verified_label: st.verified_label, gifted: c_gift, imported: c_import, product_title: p_title, product_url: p_url, product_label: st.other_label -%}
         {%- endfor -%}
       </div>
 
@@ -409,7 +417,7 @@
         </div>
       {%- endif -%}
     {%- elsif request.design_mode -%}
-      <p class="rw-editor-hint">Judge.me reviews from verified buyers show here. Imported and unverified reviews never do. None yet.</p>
+      <p class="rw-editor-hint">Judge.me reviews (verified buyers and imported) show here. Unverified reviews never do. None yet.</p>
     {%- endif -%}
   </div>
 </section>
@@ -421,13 +429,13 @@
   "class": "section-review-widget",
   "settings": [
     { "type": "header", "content": "Content" },
-    { "type": "paragraph", "content": "Shows Judge.me reviews from verified buyers only. Imported and unverified reviews never show here. Judge.me's review request emails bring verified reviews in after each order." },
+    { "type": "paragraph", "content": "Shows Judge.me reviews (verified buyers and imported from another provider). Unverified reviews never show here. Judge.me's review request emails bring verified reviews in after each order." },
     { "type": "text", "id": "heading", "label": "Heading", "default": "What our customers say" },
     { "type": "text", "id": "subheading", "label": "Subheading", "default": "Real reviews from real people" },
     { "type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true },
     { "type": "text", "id": "count_text", "label": "Review count line", "default": "Based on [count] reviews" },
     { "type": "text", "id": "count_others_text", "label": "Review count line with other cases", "default": "Based on [count] reviews of our cases", "info": "Used when reviews of other cases are shown too." },
-    { "type": "text", "id": "trust_note", "label": "Line under the summary", "default": "Reviews from verified buyers only." },
+    { "type": "text", "id": "trust_note", "label": "Line under the summary", "default": "Judge.me reviews: verified buyers and imported." },
     { "type": "text", "id": "anchor", "label": "Anchor", "default": "cvc-reviews", "info": "The stars under the product title link here. Keep it the same as the product section's \"Reviews section anchor\"." },
     {
       "type": "select",

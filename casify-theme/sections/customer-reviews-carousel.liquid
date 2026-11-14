@@ -2,12 +2,12 @@
 <script src="{{ 'casify-customer-reviews.js' | asset_url }}" defer></script>
 
 {%- comment -%}
-  Customer reviews: Judge.me reviews from verified buyers only, newest first
+  Customer reviews: Judge.me reviews (verified buyers and imported reviews), newest first
   (snippets/cv-jm-verified.liquid). Imported, typed-in and unverified reviews
   never show, and the section takes no app blocks, so Judge.me's own widgets
   (which show every published review) can't be dropped in here. The old
   "Review" blocks stay in the schema so saved templates still load, but they
-  are not shown. With no verified review the section renders nothing.
+  are not shown. With no review the section renders nothing.
 {%- endcomment -%}
 {%- capture ccr_jm -%}{%- render 'cv-jm-verified', mode: 'rows', scope: 'all', limit: 12 -%}{%- endcapture -%}
 {%- liquid
@@ -121,7 +121,7 @@
 
               <div class="ccr__reviewer">
                 {%- if f[3] != blank -%}<cite>{{ f[3] | escape }}</cite>{%- endif -%}
-                <span>{% if f[8] == 'gift' %}Gifted case{% else %}Verified buyer{% endif %}{% if r_date != blank %} · {{ r_date }}{% endif %}</span>
+                <span>{% if f[8] == 'gift' %}Gifted case{% elsif f[9] == 'import' %}Imported review{% else %}Verified buyer{% endif %}{% if r_date != blank %} · {{ r_date }}{% endif %}</span>
               </div>
 
               {%- if featured_product.url != blank -%}
@@ -157,7 +157,7 @@
       <div class="ccr__empty">
         <span class="ccr__empty-symbol" aria-hidden="true">“ ”</span>
         <p>{{ section.settings.empty_heading | escape }}</p>
-        <small>Judge.me reviews from verified buyers show here. Imported and unverified reviews never do.</small>
+        <small>Judge.me reviews (verified buyers and imported) show here. Unverified reviews never do.</small>
       </div>
     {%- endif -%}
   </div>
@@ -185,14 +185,14 @@
       "default": "cream"
     },
     { "type": "text", "id": "empty_heading", "label": "Empty state text (theme editor only)", "default": "There are no reviews to display yet." },
-    { "type": "paragraph", "content": "Shows Judge.me reviews from verified buyers only, newest 12. Imported and unverified reviews never show here. Hidden on the store until there is one." }
+    { "type": "paragraph", "content": "Shows Judge.me reviews (verified buyers and imported), newest 12. Unverified reviews never show here. Hidden on the store until there is one." }
   ],
   "blocks": [
     {
       "type": "review",
       "name": "Old review (not shown)",
       "settings": [
-        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews from verified buyers. You can delete this block." },
+        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews (verified buyers and imported). You can delete this block." },
         { "type": "textarea", "id": "review_text", "label": "Customer review" },
         { "type": "text", "id": "reviewer_name", "label": "Customer name" },
         { "type": "text", "id": "reviewer_detail", "label": "Optional customer detail" },

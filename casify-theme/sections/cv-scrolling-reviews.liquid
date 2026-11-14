@@ -6,11 +6,11 @@
   conveyor. Each quote is a die-cut paper ticket with a monogram (or photo)
   in a brass ring, star rating and name (snippets/cv-scrolling-review-card.liquid).
 
-  The tickets are Judge.me reviews from verified buyers only
+  The tickets are Judge.me reviews (verified buyers and imported)
   (snippets/cv-jm-verified.liquid): imported, typed-in and unverified reviews
   never show. A review of another case names that case on its ticket. Old
   "Review" blocks stay in the schema so saved templates still load, but they
-  are not shown. With no verified review the section renders nothing on the
+  are not shown. With no review the section renders nothing on the
   live store and a hint in the theme editor.
 
   "Random order" (on by default) shuffles the tickets on every page view
@@ -34,8 +34,8 @@
 {%- comment -%}
   Every ticket is rendered once, then dealt across the rows. "TONE" is filled
   in per row below so each row runs through the three avatar colours.
-  Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift.
-  A review of a case the shop sent as a gift carries "Gifted case", not "Verified buyer".
+  Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift, import.
+  A gifted case carries "Gifted case"; an imported review carries "Imported review".
 {%- endcomment -%}
 {%- capture cvsr_cards -%}
   {%- assign cvsr_reviews = cvsr_jm | split: '␞' -%}
@@ -54,12 +54,16 @@
       if f[8] == 'gift'
         assign is_gift = true
       endif
+      assign is_import = false
+      if f[9] == 'import'
+        assign is_import = true
+      endif
     -%}
-    {%- render 'cv-scrolling-review-card', quote: q, name: f[3], rating: f[0], case_name: case_name, tone: 'TONE', gifted: is_gift -%}
+    {%- render 'cv-scrolling-review-card', quote: q, name: f[3], rating: f[0], case_name: case_name, tone: 'TONE', gifted: is_gift, imported: is_import -%}
     <!--cvsr-cut-->
   {%- endfor -%}
   {%- if request.design_mode and cvsr_reviews.size == 0 -%}
-    {%- render 'cv-scrolling-review-card', hint: 'Judge.me reviews from verified buyers appear here. None yet.' -%}
+    {%- render 'cv-scrolling-review-card', hint: 'Judge.me reviews (verified buyers and imported) appear here. None yet.' -%}
     <!--cvsr-cut-->
   {%- endif -%}
 {%- endcapture -%}
@@ -166,7 +170,7 @@
     { "type": "header", "content": "Reviews" },
     {
       "type": "paragraph",
-      "content": "Shows Judge.me reviews from verified buyers only, newest 25. Imported and unverified reviews never show here."
+      "content": "Shows Judge.me reviews (verified buyers and imported), newest 25. Unverified reviews never show here."
     },
     {
       "type": "checkbox", "id": "shuffle", "label": "Random order", "default": true,
@@ -181,7 +185,7 @@
       "type": "review",
       "name": "Old review (not shown)",
       "settings": [
-        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews from verified buyers. You can delete this block." },
+        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews (verified buyers and imported). You can delete this block." },
         { "type": "textarea", "id": "quote", "label": "Quote" },
         { "type": "text", "id": "name", "label": "Customer name" },
         { "type": "range", "id": "rating", "label": "Star rating", "min": 0, "max": 5, "step": 1, "default": 5 },

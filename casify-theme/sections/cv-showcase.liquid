@@ -34,7 +34,7 @@
   assign shown = ','
   assign total = 0
 -%}
-{%- comment -%} Stars on the cards: verified Judge.me reviews only, read once for every card. {%- endcomment -%}
+{%- comment -%} Stars on the cards: Judge.me reviews (verified and imported), read once for every card. {%- endcomment -%}
 {%- capture jm_map -%}{%- render 'cv-jm-verified', mode: 'map' -%}{%- endcapture -%}
 {%- capture cards -%}
   {%- for block in section.blocks -%}

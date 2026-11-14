@@ -4,7 +4,7 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   comment
-    The rating: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+    The rating: this product's Judge.me reviews (verified buyers and imported; snippets/cv-jm-verified.liquid).
   endcomment
   assign jm_parts = jm_stats | split: '␟'
   assign rating_count = jm_parts[0] | plus: 0

@@ -127,7 +127,7 @@
       "app_heading": "Read every customer note"
     },
     "review_badges": {
-      "aria_label": "Store rating: {{ rating }} out of 5 from {{ count }} verified Judge.me reviews",
+      "aria_label": "Store rating: {{ rating }} out of 5 from {{ count }} Judge.me reviews",
       "store_rating": "Store rating",
       "trustpilot": "Trustpilot",
       "google": "Google",
@@ -139,8 +139,8 @@
       "trustpilot_label": "Rated {{ rating }} out of 5 from {{ count }} reviews on Trustpilot",
       "trustpilot_label_no_count": "Rated {{ rating }} out of 5 on Trustpilot",
       "combined": "Judge.me",
-      "combined_label": "Store rating: {{ rating }} out of 5 from {{ count }} verified Judge.me reviews",
-      "combined_label_no_count": "Store rating: {{ rating }} out of 5 from verified Judge.me reviews"
+      "combined_label": "Store rating: {{ rating }} out of 5 from {{ count }} Judge.me reviews",
+      "combined_label_no_count": "Store rating: {{ rating }} out of 5 from Judge.me reviews"
     },
     "price_offer": { "now": "Now", "compare_at": "Compare at", "off": "off", "you_save": "You save" },
     "gallery": {
@@ -390,8 +390,8 @@
       "heading": "Rated by verified buyers",
       "score": "{{ score }} / 5",
       "rating": "{{ rating }} out of 5 stars",
-      "total": "{{ count }} verified reviews",
-      "on_trustpilot": "from verified buyers",
+      "total": "{{ count }} reviews",
+      "on_trustpilot": "on Judge.me",
       "new_window": "(opens in a new window)",
       "carousel_label": "Customer reviews; use arrow keys to browse",
       "previous_review": "Previous review",
