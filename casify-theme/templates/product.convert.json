@@ -87,7 +87,8 @@
             "text": "Printed to order in the USA"
           }
         },
-        "google-rating": {"disabled": true, 
+        "google-rating": {
+          "disabled": true,
           "type": "google_rating",
           "settings": {}
         },
@@ -114,7 +115,7 @@
         "sales-note"
       ]
     },
-    "clips": {"disabled": true, 
+    "clips": {
       "type": "cv-pdp-ugc",
       "settings": {
         "heading": "Three clips from the counter",
@@ -536,7 +537,8 @@
       ],
       "settings": {}
     },
-    "before_after": {"disabled": true, 
+    "before_after": {
+      "disabled": true,
       "type": "cv-pdp-before-after",
       "blocks": {
         "comparison_1": {

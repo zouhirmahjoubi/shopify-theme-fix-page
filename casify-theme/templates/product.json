@@ -320,7 +320,6 @@
       }
     },
     "clips": {
-      "disabled": true,
       "type": "cv-pdp-ugc",
       "blocks": {
         "c-snap": {
