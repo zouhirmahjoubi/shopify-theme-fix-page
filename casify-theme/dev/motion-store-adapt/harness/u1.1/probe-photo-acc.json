@@ -1,0 +1,121 @@
+{
+ "runs": [
+  {
+   "name": "default",
+   "rating": {
+    "text": "4.7 out of 5, 12 reviews",
+    "scoreCount": 1
+   },
+   "photo": {
+    "next": "../../../../assets/best-case-in-hand.png",
+    "mid": "inset(24.8253% 0% 0%)"
+   },
+   "photo_end": {
+    "clip": "none",
+    "inline": ""
+   },
+   "acc_open_mid": {
+    "open": true,
+    "closing": false,
+    "h": 74,
+    "inline": "74.0662px"
+   },
+   "acc_open_end": {
+    "open": true,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_close_mid": {
+    "open": true,
+    "closing": true,
+    "h": 88,
+    "inline": "88px"
+   },
+   "acc_close_end": {
+    "open": false,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_key_open": {
+    "open": true,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "errors": [],
+   "checks": {
+    "rating_once": true,
+    "photo_end_clean": true,
+    "acc_open_end": true,
+    "acc_close_end": true,
+    "acc_key_open": true,
+    "no_errors": true,
+    "photo_mid_clipped": true,
+    "acc_open_mid_tween": true,
+    "acc_close_mid_still_open": true
+   },
+   "pass": true
+  },
+  {
+   "name": "rm",
+   "rating": {
+    "text": "4.7 out of 5, 12 reviews",
+    "scoreCount": 1
+   },
+   "photo": {
+    "next": "../../../../assets/best-case-in-hand.png",
+    "mid": "none"
+   },
+   "photo_end": {
+    "clip": "none",
+    "inline": ""
+   },
+   "acc_open_mid": {
+    "open": true,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_open_end": {
+    "open": true,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_close_mid": {
+    "open": false,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_close_end": {
+    "open": false,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "acc_key_open": {
+    "open": true,
+    "closing": false,
+    "h": 93,
+    "inline": ""
+   },
+   "errors": [],
+   "checks": {
+    "rating_once": true,
+    "photo_end_clean": true,
+    "acc_open_end": true,
+    "acc_close_end": true,
+    "acc_key_open": true,
+    "no_errors": true,
+    "photo_never_clipped": true,
+    "acc_native_open": true,
+    "acc_native_close": true
+   },
+   "pass": true
+  }
+ ],
+ "pass": true
+}

@@ -1,0 +1,56 @@
+{
+ "_note": "U1.2 fixture: a product with no phone-model option (Color only, from tools/fixtures/product-no-model.json), untracked inventory.",
+ "template": {
+  "file": "templates/product.json",
+  "key": "carousel"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Fixture: Case Charm Strap",
+  "handle": "fixture-case-charm-strap",
+  "vendor": "Casify",
+  "options": [
+   "Color"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo"
+   }
+  ],
+  "variants": [
+   {
+    "id": 43001,
+    "options": [
+     "Russet Brown"
+    ],
+    "price": 1999,
+    "media": 0
+   },
+   {
+    "id": 43002,
+    "options": [
+     "Black"
+    ],
+    "price": 1999,
+    "media": 1
+   }
+  ]
+ },
+ "harness": {
+  "js": [
+   "theme.js",
+   "cv-motion.js",
+   "cv-product.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ],
+  "module_js": [
+   "cv-pdp-carousel.js"
+  ]
+ }
+}

@@ -6,7 +6,11 @@
 (function () {
   'use strict';
 
-  var THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+  // Keep this a const. Shopify's CDN minifies theme assets: while this file
+  // was plain ES5 it was served with import() rewritten as require(), which
+  // browsers lack, so the 3D never loaded. With ES2015 syntax the CDN keeps
+  // import(), as it does in the other three.js modules.
+  const THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
   var instances = new WeakMap();
 
   function reducedMotion() {
@@ -14,6 +18,7 @@
   }
 
   function supportsWebGL() {
+    if (window.cvWebGL) return window.cvWebGL();
     try {
       var canvas = document.createElement('canvas');
       return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
@@ -114,12 +119,16 @@
 
   function mountThree(root, cleanups) {
     var host = root.querySelector('[data-cv-proof-three]');
-    if (!host || root.getAttribute('data-three-enabled') !== 'true' || reducedMotion() || !supportsWebGL()) return;
+    if (!host || root.getAttribute('data-three-enabled') !== 'true' || reducedMotion()) return;
 
     var disposed = false;
 
-    import(THREE_URL).then(function (THREE) {
-      if (disposed || !host.isConnected) return;
+    // The 3D starts as the shopper scrolls towards the proof, not during page load.
+    (window.cvNear ? window.cvNear(host, 2) : Promise.resolve()).then(function () {
+      if (disposed || !host.isConnected || !supportsWebGL()) return null;
+      return import(THREE_URL);
+    }).then(function (THREE) {
+      if (!THREE || disposed || !host.isConnected) return;
 
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);

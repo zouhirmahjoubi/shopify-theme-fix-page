@@ -1,0 +1,2053 @@
+{
+  "runs": [
+    {
+      "variant": "default",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "scrollTriggerPerCycle": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "listenerTotalPerCycle": [
+        83,
+        83,
+        83,
+        83
+      ],
+      "steps": {
+        "load_pack2": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 4,
+          "inlineStyles": [
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3_mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            0
+          ],
+          "lidVisible": [
+            false,
+            false,
+            true
+          ],
+          "caseTransform": [
+            "matrix(1, 0, 0, 1, 83.2591, 651)",
+            "matrix(1, 0, 0, 1, 231.259, 651)",
+            "matrix(1, 0, 0, 1, 377, -1.6985)"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132,
+            132
+          ],
+          "tweens": 2,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 132px; height: 128px; top: 0px; left: 0px; transform: translate3d(83.2591px, 651px, 0px); max-width: 132px; max-height: 128px; min-width: 132px; min-height: 128px;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 132px; height: 128px; top: 0px; left: 0px; transform: translate3d(231.259px, 651px, 0px); max-width: 132px; max-height: 128px; min-width: 132px; min-height: 128px;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 132px; height: 128px; top: 0px; left: 0px; transform: translate3d(377px, -1.6985px, 0px); max-width: 132px; max-height: 128px; min-width: 0px; min-height: 128px; opacity: 1.0425; visibility: inherit;",
+            "opacity: 0; visibility: hidden;",
+            "opacity: 1; visibility: inherit;"
+          ],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 2
+        },
+        "pack3": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 7,
+          "inlineStyles": [
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 2
+        },
+        "pack1": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": true,
+          "shown": 1,
+          "photoOpacity": [
+            1
+          ],
+          "lidVisible": [
+            false
+          ],
+          "caseTransform": [
+            "none"
+          ],
+          "photoTransform": [
+            "none"
+          ],
+          "caseWidths": [
+            0
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4
+          ],
+          "photoTiltCss": [
+            -4
+          ],
+          "photoTranslate": [
+            0
+          ],
+          "flips": 3
+        },
+        "pack2_mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            0.0114,
+            0
+          ],
+          "lidVisible": [
+            true,
+            true
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "matrix(0.978641, 0.205576, -0.205576, 0.978641, 0, -118.632)",
+            "matrix(0.978148, -0.207912, 0.207912, 0.978148, 0, -120)"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 4,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 0.0114; visibility: inherit; transform: translate3d(0px, -118.632px, 0px) rotate(11.8632deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0.9947; visibility: inherit; transform: translate(-50%, 0%) translate3d(0.3676px, -26.1995px, 0px) rotate(-5.8215deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(0px, -120px) rotate(-12deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit; transform: translate(-50%, 0%) translate3d(0px, -25.2656px, 0px) rotate(5.8305deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            12,
+            -12
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            119,
+            120
+          ],
+          "flips": 4
+        },
+        "pack2_again": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        },
+        "after_unload": {
+          "bound": false,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        },
+        "after_load": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            0.1221,
+            0
+          ],
+          "lidVisible": [
+            true,
+            true
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "matrix(0.983144, 0.182834, -0.182834, 0.983144, 0, -105.349)",
+            "matrix(0.978148, -0.207912, 0.207912, 0.978148, 0, -120)"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 4,
+          "inlineStyled": 4,
+          "inlineStyles": [
+            "opacity: 0.1221; visibility: inherit; transform: translate3d(0px, -105.349px, 0px) rotate(10.5349deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0.9562; visibility: inherit; transform: translate(-50%, 0%) translate3d(3.0629px, -27.6627px, 0px) rotate(-4.5123deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(0px, -120px) rotate(-12deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit; transform: translate(-50%, 0%) translate3d(-0.0005px, -26.0003px, 0px) rotate(5.9998deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            11,
+            -12
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            105,
+            120
+          ],
+          "flips": 5
+        }
+      },
+      "hop": {
+        "changed": true,
+        "mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "matrix(0.990358, -0.138532, 0.138532, 0.990358, 0, -21.9257)"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 2,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit; transform: translate3d(0px, -21.9257px, 0px) rotate(-7.9629deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            -8
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            22
+          ],
+          "flips": 4
+        },
+        "end": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-50%, 0%) translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        }
+      },
+      "checks": {
+        "cycles >= 4": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "pack motion re-bound after cycles": true,
+        "motion class only with motion": true,
+        "load pack 2: 2 boxes open and settled": true,
+        "pack 3: 3 boxes open and settled": true,
+        "pack 3: Flip ran with motion, not under rm": true,
+        "pack 3 mid: tweens with motion, none under rm": true,
+        "boxes have real width": true,
+        "pack 1 hides the slots": true,
+        "pack 2 again: 2 boxes open and settled": true,
+        "pack 2 mid: lids pop with motion only": true,
+        "slot change hops and settles": true,
+        "unload reverts (no tweens, no inline styles left, unbound)": true,
+        "load re-binds": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "ok": true
+    },
+    {
+      "variant": "default",
+      "viewport": [
+        375,
+        812
+      ],
+      "scrollTriggerPerCycle": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "listenerTotalPerCycle": [
+        83,
+        83,
+        83,
+        83
+      ],
+      "steps": {
+        "load_pack2": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 4,
+          "inlineStyles": [
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3_mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            0
+          ],
+          "lidVisible": [
+            false,
+            false,
+            true
+          ],
+          "caseTransform": [
+            "matrix(1, 0, 0, 1, 11.073, 682)",
+            "matrix(1, 0, 0, 1, 123.073, 682)",
+            "matrix(1, 0, 0, 1, 232, -3.3481)"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104,
+            104
+          ],
+          "tweens": 2,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 104px; height: 102px; top: 0px; left: 0px; transform: translate3d(11.073px, 682px, 0px); max-width: 104px; max-height: 102px; min-width: 104px; min-height: 102px;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 104px; height: 102px; top: 0px; left: 0px; transform: translate3d(123.073px, 682px, 0px); max-width: 104px; max-height: 102px; min-width: 104px; min-height: 102px;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none; padding: 0px; grid-area: 1 / 1 / 1 / 1; transition: none; position: absolute; width: 104px; height: 102px; top: 0px; left: 0px; transform: translate3d(232px, -3.3481px, 0px); max-width: 104px; max-height: 102px; min-width: 0px; min-height: 102px; opacity: 1.0837; visibility: inherit;",
+            "opacity: 0; visibility: hidden;",
+            "opacity: 1; visibility: inherit;"
+          ],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 2
+        },
+        "pack3": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 7,
+          "inlineStyles": [
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 2
+        },
+        "pack1": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": true,
+          "shown": 1,
+          "photoOpacity": [
+            1
+          ],
+          "lidVisible": [
+            false
+          ],
+          "caseTransform": [
+            "none"
+          ],
+          "photoTransform": [
+            "none"
+          ],
+          "caseWidths": [
+            0
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4
+          ],
+          "photoTiltCss": [
+            -4
+          ],
+          "photoTranslate": [
+            0
+          ],
+          "flips": 3
+        },
+        "pack2_mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            0,
+            0
+          ],
+          "lidVisible": [
+            true,
+            true
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "matrix(0.978148, 0.207912, -0.207912, 0.978148, 0, -120)",
+            "matrix(0.978148, -0.207912, 0.207912, 0.978148, 0, -120)"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 4,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(0px, -120px) rotate(12deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0.9996; visibility: inherit; transform: translate3d(0.0255px, -26.0138px, 0px) rotate(-5.9876deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(0px, -120px) rotate(-12deg); translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit; transform: translate3d(0px, -22.75px, 0px) rotate(5.25deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            12,
+            -12
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            120,
+            120
+          ],
+          "flips": 4
+        },
+        "pack2_again": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        },
+        "after_unload": {
+          "bound": false,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        },
+        "after_load": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            0.1507,
+            0
+          ],
+          "lidVisible": [
+            true,
+            true
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "matrix(0.984222, 0.176935, -0.176935, 0.984222, 0, -101.913)",
+            "matrix(0.978148, -0.207912, 0.207912, 0.978148, 0, -120)"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 4,
+          "inlineStyled": 4,
+          "inlineStyles": [
+            "opacity: 0.1507; visibility: inherit; transform: translate3d(0px, -101.913px, 0px) rotate(10.1913deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0.9447; visibility: inherit; transform: translate3d(3.87px, -28.1009px, 0px) rotate(-4.1203deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(0px, -120px) rotate(-12deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0.9999; visibility: inherit; transform: translate3d(-0.0076px, -26.0041px, 0px) rotate(5.9963deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            10,
+            -12
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            102,
+            120
+          ],
+          "flips": 5
+        }
+      },
+      "hop": {
+        "changed": true,
+        "mid": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "matrix(0.99057, -0.137007, 0.137007, 0.99057, 0, -21.7494)"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 2,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit; transform: translate3d(0px, -21.7494px, 0px) rotate(-7.8747deg); translate: none; rotate: none; scale: none;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            -8
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            22
+          ],
+          "flips": 4
+        },
+        "end": {
+          "bound": true,
+          "motionClass": true,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 9,
+          "inlineStyles": [
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;",
+            "translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(-70px, -64px) rotate(-28deg); translate: none; rotate: none; scale: none;",
+            "visibility: inherit; translate: none; rotate: none; scale: none;",
+            "opacity: 1; visibility: inherit;",
+            "opacity: 0; visibility: hidden; transform: translate(70px, -64px) rotate(28deg); translate: none; rotate: none; scale: none;"
+          ],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 4
+        }
+      },
+      "checks": {
+        "cycles >= 4": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "pack motion re-bound after cycles": true,
+        "motion class only with motion": true,
+        "load pack 2: 2 boxes open and settled": true,
+        "pack 3: 3 boxes open and settled": true,
+        "pack 3: Flip ran with motion, not under rm": true,
+        "pack 3 mid: tweens with motion, none under rm": true,
+        "boxes have real width": true,
+        "pack 1 hides the slots": true,
+        "pack 2 again: 2 boxes open and settled": true,
+        "pack 2 mid: lids pop with motion only": true,
+        "slot change hops and settles": true,
+        "unload reverts (no tweens, no inline styles left, unbound)": true,
+        "load re-binds": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "ok": true
+    },
+    {
+      "variant": "rm",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "scrollTriggerPerCycle": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "listenerTotalPerCycle": [
+        80,
+        80,
+        80,
+        80
+      ],
+      "steps": {
+        "load_pack2": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3_mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack1": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": true,
+          "shown": 1,
+          "photoOpacity": [
+            1
+          ],
+          "lidVisible": [
+            false
+          ],
+          "caseTransform": [
+            "none"
+          ],
+          "photoTransform": [
+            "none"
+          ],
+          "caseWidths": [
+            0
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4
+          ],
+          "photoTiltCss": [
+            -4
+          ],
+          "photoTranslate": [
+            0
+          ],
+          "flips": 0
+        },
+        "pack2_mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack2_again": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "after_unload": {
+          "bound": false,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "after_load": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        }
+      },
+      "hop": {
+        "changed": true,
+        "mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "end": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            132,
+            132
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        }
+      },
+      "checks": {
+        "cycles >= 4": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "pack motion re-bound after cycles": true,
+        "motion class only with motion": true,
+        "load pack 2: 2 boxes open and settled": true,
+        "pack 3: 3 boxes open and settled": true,
+        "pack 3: Flip ran with motion, not under rm": true,
+        "pack 3 mid: tweens with motion, none under rm": true,
+        "boxes have real width": true,
+        "pack 1 hides the slots": true,
+        "pack 2 again: 2 boxes open and settled": true,
+        "pack 2 mid: lids pop with motion only": true,
+        "slot change hops and settles": true,
+        "unload reverts (no tweens, no inline styles left, unbound)": true,
+        "load re-binds": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "ok": true
+    },
+    {
+      "variant": "rm",
+      "viewport": [
+        375,
+        812
+      ],
+      "scrollTriggerPerCycle": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "listenerTotalPerCycle": [
+        80,
+        80,
+        80,
+        80
+      ],
+      "steps": {
+        "load_pack2": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3_mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack3": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 3,
+          "photoOpacity": [
+            1,
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTiltCss": [
+            -4,
+            3,
+            -2
+          ],
+          "photoTranslate": [
+            0,
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack1": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": true,
+          "shown": 1,
+          "photoOpacity": [
+            1
+          ],
+          "lidVisible": [
+            false
+          ],
+          "caseTransform": [
+            "none"
+          ],
+          "photoTransform": [
+            "none"
+          ],
+          "caseWidths": [
+            0
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4
+          ],
+          "photoTiltCss": [
+            -4
+          ],
+          "photoTranslate": [
+            0
+          ],
+          "flips": 0
+        },
+        "pack2_mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "pack2_again": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "after_unload": {
+          "bound": false,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "after_load": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        }
+      },
+      "hop": {
+        "changed": true,
+        "mid": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        },
+        "end": {
+          "bound": true,
+          "motionClass": false,
+          "slotsHidden": false,
+          "shown": 2,
+          "photoOpacity": [
+            1,
+            1
+          ],
+          "lidVisible": [
+            false,
+            false
+          ],
+          "caseTransform": [
+            "none",
+            "none"
+          ],
+          "photoTransform": [
+            "none",
+            "none"
+          ],
+          "caseWidths": [
+            104,
+            104
+          ],
+          "tweens": 0,
+          "inlineStyled": 0,
+          "inlineStyles": [],
+          "photoTilt": [
+            -4,
+            3
+          ],
+          "photoTiltCss": [
+            -4,
+            3
+          ],
+          "photoTranslate": [
+            0,
+            0
+          ],
+          "flips": 0
+        }
+      },
+      "checks": {
+        "cycles >= 4": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "pack motion re-bound after cycles": true,
+        "motion class only with motion": true,
+        "load pack 2: 2 boxes open and settled": true,
+        "pack 3: 3 boxes open and settled": true,
+        "pack 3: Flip ran with motion, not under rm": true,
+        "pack 3 mid: tweens with motion, none under rm": true,
+        "boxes have real width": true,
+        "pack 1 hides the slots": true,
+        "pack 2 again: 2 boxes open and settled": true,
+        "pack 2 mid: lids pop with motion only": true,
+        "slot change hops and settles": true,
+        "unload reverts (no tweens, no inline styles left, unbound)": true,
+        "load re-binds": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "ok": true
+    }
+  ],
+  "pass": true
+}

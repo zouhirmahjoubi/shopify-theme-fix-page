@@ -1,22 +1,39 @@
 {{ 'cv-customer-experience.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign rating = product.metafields.reviews.rating.value
-  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  comment
+    Both tickets read Judge.me through snippets/cv-jm-verified.liquid:
+    the product ticket averages this product's verified buyer reviews,
+    the store ticket all verified reviews (product and store, every type).
+    Stats: buyers' count and sum first, then gifted cases' — the score never
+    counts a gifted case.
+  endcomment
+  capture jm_product
+    render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle
+  endcapture
+  assign jm_p = jm_product | split: '␟'
+  assign rating_count = jm_p[0] | plus: 0
   assign has_rating = false
   assign rating_value = 0
   assign rating_max = 5
-  if rating != blank and rating_count > 0
+  if rating_count > 0
     assign has_rating = true
-    assign rating_value = rating.rating
-    assign rating_max = rating.scale_max | default: 5
+    assign rating_value = jm_p[1] | plus: 0 | times: 1.0 | divided_by: rating_count | round: 1
   endif
 
-  assign external_rating = section.settings.external_rating | default: '4.9' | plus: 0
-  assign external_count = section.settings.external_count | default: '952' | plus: 0
+  capture jm_all
+    render 'cv-jm-verified', mode: 'stats', scope: 'all'
+  endcapture
+  assign jm_a = jm_all | split: '␟'
+  assign external_count = jm_a[0] | plus: 0
+  assign external_rating = 0
+  if external_count > 0
+    assign external_rating = jm_a[1] | plus: 0 | times: 1.0 | divided_by: external_count | round: 1
+  endif
+  assign has_store_rating = external_count > 0
   assign external_percent = external_rating | times: 20 | round
-  assign external_rating_text = external_rating | round: 1
-  assign external_count_text = external_count
+  assign external_rating_text = external_rating | append: ''
+  assign external_count_text = external_count | append: ''
 
   assign ticket_blocks = 0
   assign experience_blocks = 0
@@ -55,16 +72,23 @@
         <span class="cvx__pin cvx__pin--two" data-cvx-pin aria-hidden="true"></span>
 
         <div class="cvx__tickets">
+          {%- if has_store_rating or request.design_mode -%}
           <article class="cvx-ticket cvx-ticket--rating" data-cvx-ticket>
             <span class="cvx-ticket__avatar cvx-ticket__avatar--gold" aria-hidden="true">
               {%- render 'cv-icon', name: 'star', size: 16 -%}
             </span>
             <div>
               <p class="cvx-ticket__kicker">{{ section.settings.external_source | escape }}</p>
+              {%- if has_store_rating -%}
               <h3>{{ external_rating_text }}/5 {{ section.settings.rating_label | escape }}</h3>
               <p>{{ external_count_text }} {{ section.settings.rating_count_label | escape }}</p>
+              {%- else -%}
+              <h3>—/5 {{ section.settings.rating_label | escape }}</h3>
+              <p>Shows once Judge.me has a verified review</p>
+              {%- endif -%}
             </div>
           </article>
+          {%- endif -%}
 
           <article class="cvx-ticket cvx-ticket--product" data-cvx-ticket>
             <span class="cvx-ticket__avatar cvx-ticket__avatar--product" aria-hidden="true">
@@ -174,10 +198,10 @@
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Real store feedback, backed by the service promises that shape every order." },
     { "type": "text", "id": "anchor", "label": "Anchor", "default": "cvc-reviews", "info": "The buy box rating link points here." },
     { "type": "text", "id": "collage_label", "label": "Collage label", "default": "Store rating and customer service highlights" },
-    { "type": "header", "content": "Store rating" },
-    { "type": "text", "id": "external_rating", "label": "Rating out of 5", "default": "4.9" },
-    { "type": "text", "id": "external_count", "label": "Rating count", "default": "952" },
-    { "type": "text", "id": "external_source", "label": "Source", "default": "Trustpilot + Google" },
+    { "type": "header", "content": "Store rating (from Judge.me)" },
+    { "type": "text", "id": "external_rating", "label": "Rating out of 5 (no longer used)", "info": "The store rating now comes live from Judge.me verified reviews (all review types)." },
+    { "type": "text", "id": "external_count", "label": "Rating count (no longer used)", "info": "The count now comes live from Judge.me verified reviews." },
+    { "type": "text", "id": "external_source", "label": "Source", "default": "Judge.me" },
     { "type": "text", "id": "rating_label", "label": "Rating label", "default": "store rating" },
     { "type": "text", "id": "rating_count_label", "label": "Count label", "default": "published ratings" },
     { "type": "textarea", "id": "rating_body", "label": "Rating row text", "default": "Rated [rating] out of 5 across [count] reviews on [source].", "info": "Use [rating], [count], and [source] to insert the live section values." },

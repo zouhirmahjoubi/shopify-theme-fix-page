@@ -1,0 +1,20 @@
+{% doc %}
+  The product's variants as JSON for data-variants on the product sections
+  (sections/cv-product-counter.liquid, sections/cv-product.liquid), read by assets/cv-product.js
+  and passed on to the scripts that listen for "cvs:change".
+
+  Only the fields those scripts read: id, title, options, price, compare_at_price, available,
+  inventory_management and featured_image (id and src, src in the same form as Shopify's own
+  variant JSON). `product.variants | json` printed every field of every variant (selling plans,
+  quantity rules, weights, barcodes, image dates...): 162 KB of HTML on a 98-variant case, about
+  33 KB this way. Add a field here before a script starts reading it from a variant.
+
+  @param {product} product - The product whose variants are printed.
+
+  @example
+  {%- capture cv_variants -%}{%- render 'cv-variants-json', product: product -%}{%- endcapture -%}
+  data-variants="{{ cv_variants | strip | escape }}"
+{% enddoc %}
+[{%- for v in product.variants -%}
+{"id":{{ v.id }},"title":{{ v.title | json }},"options":{{ v.options | json }},"price":{{ v.price | json }},"compare_at_price":{{ v.compare_at_price | json }},"available":{{ v.available | json }},"inventory_management":{{ v.inventory_management | json }},"featured_image":{% if v.featured_image %}{"id":{{ v.featured_image.id | json }},"src":{{ v.featured_image | image_url | json }}}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}]

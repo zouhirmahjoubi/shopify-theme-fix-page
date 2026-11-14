@@ -67,7 +67,9 @@
           mask: linear-gradient(#000 0 0) 0 0 / 100% calc(100% - 3px) no-repeat,
                 conic-gradient(from -45deg at 50% 100%, #000 90deg, #0000 0) 0 100% / 6px 3px repeat-x;
 }
-.cvh-ticker__track { display: flex; align-items: center; width: max-content; height: calc(100% - 2px); }
+/* will-change: GSAP moves the track on every frame of every page; on its own layer each frame
+   is a move, not a repaint of the text (same for the spinning mint faces below). */
+.cvh-ticker__track { display: flex; align-items: center; width: max-content; height: calc(100% - 2px); will-change: transform; }
 .cvh-ticker__track span {
   font-family: var(--font-label); font-size: 10px; line-height: 1;
   letter-spacing: var(--tracking-label); text-transform: uppercase;
@@ -92,7 +94,7 @@
   width: var(--mint); height: var(--mint); border-radius: 50%;
   box-shadow: 0 3px 6px rgba(51,35,26,.24);
 }
-.casify-sign__mint img { display: block; width: 100%; height: 100%; }
+.casify-sign__mint img { display: block; width: 100%; height: 100%; will-change: transform; }
 /* Gloss sits on the wrapper so it stays put while the candy face spins. */
 .casify-sign__mint::after {
   content: ""; position: absolute; inset: 9%; border-radius: 50%; pointer-events: none;

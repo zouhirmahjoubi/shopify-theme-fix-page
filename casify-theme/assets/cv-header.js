@@ -375,25 +375,81 @@
       var loops = [];
       if (awning) {
         // One 36px stripe period; the scallops read the same variable so they drift in step.
-        loops.push(gsap.fromTo(awning, { '--cvh-drift': '0px' }, { '--cvh-drift': '36px', duration: 5, ease: 'none', repeat: -1 }));
-      }
-      if (mintFaces.length) {
-        var spin = gsap.timeline({ repeat: -1 });
-        mintFaces.forEach(function (face, i) {
-          spin.to(face, { rotation: i % 2 ? -360 : 360, duration: 10, ease: 'none' }, 0);
+        // The drift is slow (about 7px a second), so the variable is written only when it
+        // reaches the next device pixel: the stripes move exactly as before, but the awning
+        // (a background and mask under a drop-shadow) repaints 14 to 22 times a second
+        // instead of on every frame of every page. Gusts still speed the tween up.
+        var driftStep = 1 / Math.max(1, Math.round(window.devicePixelRatio || 1));
+        var drift = { px: 0 };
+        var driftShown = null;
+        var driftLoop = gsap.fromTo(drift, { px: 0 }, {
+          px: 36, duration: 5, ease: 'none', repeat: -1,
+          onUpdate: function () {
+            var v = Math.round(Math.round(drift.px / driftStep) * driftStep * 1000) / 1000;
+            if (v === driftShown) return;
+            driftShown = v;
+            awning.style.setProperty('--cvh-drift', v + 'px');
+          }
         });
-        loops.push(spin);
+        loops.push(driftLoop);
+        // Speed: the drift runs only while the awning is on screen. Only the nav stays pinned, so
+        // after the first scroll the awning is gone, and this endless tween kept GSAP's ticker
+        // asking for a frame on every frame of the visit. Paused, it lets the ticker sleep.
+        if ('IntersectionObserver' in window) {
+          var awningSeen = new IntersectionObserver(function (entries) {
+            if (entries[entries.length - 1].isIntersecting) driftLoop.resume();
+            else driftLoop.pause();
+          });
+          awningSeen.observe(awning);
+          cleanups.push(function () { awningSeen.disconnect(); });
+        }
       }
+      /* The mint faces and the ticker turn with element.animate(): the compositor moves them,
+         so a page at rest needs no main-thread frame for them. As GSAP tweens they restyled
+         three elements and re-layered the page on every frame of every page. Gusts (mints)
+         and the ticker's hover stop still ease their speed: GSAP tweens a pace object and
+         hands its value to the animations' playback rate, as the old timeScale tweens did. */
+      var spins = [];
+      var tickerSpin = null;
+      var pace = { gust: 1, hover: 1 };
+      function endless(el, keyframes, ms) {
+        if (!el || !el.animate) return null;
+        var anim = el.animate(keyframes, { duration: ms, iterations: Infinity, easing: 'linear' });
+        cleanups.push(function () { anim.cancel(); });
+        return anim;
+      }
+      function setRate(anim, rate) {
+        if (!anim || anim.cvhRate === rate) return;
+        anim.cvhRate = rate;
+        if (anim.updatePlaybackRate) anim.updatePlaybackRate(rate);
+        else anim.playbackRate = rate;
+      }
+      function applyPace() {
+        spins.forEach(function (anim) { setRate(anim, pace.gust); });
+        setRate(tickerSpin, pace.hover);
+      }
+      mintFaces.forEach(function (face, i) {
+        var turn = i % 2 ? -360 : 360;
+        var anim = endless(face, [{ transform: 'rotate(0deg)' }, { transform: 'rotate(' + turn + 'deg)' }], 10000);
+        if (anim) spins.push(anim);
+      });
       if (track) {
-        var tickerLoop = gsap.to(track, { xPercent: -50, duration: 42, ease: 'none', repeat: -1 });
-        listen(ticker, 'mouseenter', function () { gsap.to(tickerLoop, { timeScale: 0, duration: 0.4, overwrite: 'auto' }); });
-        listen(ticker, 'mouseleave', function () { gsap.to(tickerLoop, { timeScale: 1, duration: 0.6, overwrite: 'auto' }); });
+        tickerSpin = endless(track, [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], 42000);
+        if (tickerSpin) {
+          listen(ticker, 'mouseenter', function () { gsap.to(pace, { hover: 0, duration: 0.4, overwrite: 'auto', onUpdate: applyPace }); });
+          listen(ticker, 'mouseleave', function () { gsap.to(pace, { hover: 1, duration: 0.6, overwrite: 'auto', onUpdate: applyPace }); });
+        }
       }
 
       function gust(strength) {
-        if (!loops.length) return;
-        gsap.to(loops, { timeScale: 1 + strength, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
-        gsap.to(loops, { timeScale: 1, duration: 1.4, delay: 0.25, ease: 'power2.inOut' });
+        if (loops.length) {
+          gsap.to(loops, { timeScale: 1 + strength, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
+          gsap.to(loops, { timeScale: 1, duration: 1.4, delay: 0.25, ease: 'power2.inOut' });
+        }
+        if (spins.length) {
+          gsap.to(pace, { gust: 1 + strength, duration: 0.25, ease: 'power2.out', overwrite: 'auto', onUpdate: applyPace });
+          gsap.to(pace, { gust: 1, duration: 1.4, delay: 0.25, ease: 'power2.inOut', onUpdate: applyPace });
+        }
       }
 
       if (ScrollTrigger) {
@@ -418,8 +474,18 @@
       var tl = gsap.timeline({ defaults: { duration: 0.6, ease: 'power3.out' } });
       if (valance) tl.fromTo(valance, { scaleY: 0 }, { scaleY: 1, duration: 0.9, ease: 'elastic.out(1, 0.35)' }, 0);
       if (ticker) tl.fromTo(ticker, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 0.1);
-      tl.fromTo($$('.topbar__inner > *', root), { autoAlpha: 0, y: 6 },
-        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, clearProps: 'transform' }, 0.12);
+      // Speed: pieces that are display:none at this width (the topbar pill on small phones, the
+      // desktop links below 981px) are left out. GSAP finds no box for them and measures each by
+      // moving it out of the page and back, two forced layouts per element, for nothing anyone
+      // sees. Left out, they simply show at once if the window later grows to show them.
+      var shown = function (el) { return getComputedStyle(el).display !== 'none'; };
+      var linkBar = nav.querySelector('.nav__links');
+      var shownLinks = linkBar && !shown(linkBar) ? [] : links;
+      var topKids = $$('.topbar__inner > *', root).filter(shown);
+      if (topKids.length) {
+        tl.fromTo(topKids, { autoAlpha: 0, y: 6 },
+          { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, clearProps: 'transform' }, 0.12);
+      }
       if (plaque) {
         tl.fromTo(plaque, { autoAlpha: 0, y: -16, rotation: -10 },
           { autoAlpha: 1, y: 0, rotation: 0, duration: 1.2, ease: 'elastic.out(1, 0.4)' }, 0.15);
@@ -428,8 +494,10 @@
         tl.fromTo(mints, { autoAlpha: 0, scale: 0.2, x: function (i) { return i ? -18 : 18; } },
           { autoAlpha: 1, scale: 1, x: 0, duration: 0.7, ease: 'back.out(2)', stagger: 0.08 }, 0.3);
       }
-      tl.fromTo(links, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05, clearProps: 'transform' }, 0.28)
-        .fromTo(iconBtns, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, stagger: 0.05 }, 0.34)
+      if (shownLinks.length) {
+        tl.fromTo(shownLinks, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05, clearProps: 'transform' }, 0.28);
+      }
+      tl.fromTo(iconBtns, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, stagger: 0.05 }, 0.34)
         .fromTo(btnIcons, { scale: 0.3, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.6, stagger: 0.05, ease: 'back.out(2.4)' }, 0.34);
       // Background tabs and prerenders get no animation frames; don't leave the header at its hidden start state.
       if (document.visibilityState === 'hidden') tl.progress(1);

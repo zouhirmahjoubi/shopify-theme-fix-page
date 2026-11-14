@@ -75,7 +75,7 @@
     Shopify takes a percentage discount off the line and rounds to the cent, so the slip does too.
   endcomment
   assign active_line = cvar.price | times: active_qty
-  assign active_off = active_line | times: active_pct | divided_by: 100.0 | round
+  assign active_off = active_line | times: active_pct | divided_by: 100.0 | floor
   assign active_total = active_line | minus: active_off
 
   comment
@@ -95,10 +95,12 @@
   endif
   assign step = 0
 -%}
+{%- comment -%} Only the variant fields the scripts read (snippets/cv-variants-json.liquid). {%- endcomment -%}
+{%- capture cv_variants -%}{%- render 'cv-variants-json', product: product -%}{%- endcapture -%}
 
 <section class="cvs" id="cvPdp" data-cv-pdp
          style="--cvs-frame: url('{{ 'pdp-slip-frame.webp' | asset_url }}'); --cvs-paper: url('{{ 'pdp-slip-paper.png' | asset_url }}');"
-         data-variants="{{ product.variants | json | escape }}"
+         data-variants="{{ cv_variants | strip | escape }}"
          data-current-options="{{ cvar.options | json | escape }}"
          data-money-format="{{ shop.money_format | escape }}">
   <div class="cvs__inner">
@@ -256,7 +258,7 @@
                   {%- liquid
                     assign t_qty = b.settings.qty | at_least: 1
                     assign t_line = cvar.price | times: t_qty
-                    assign t_off = t_line | times: b.settings.discount_pct | divided_by: 100.0 | round
+                    assign t_off = t_line | times: b.settings.discount_pct | divided_by: 100.0 | floor
                     assign t_each = t_line | minus: t_off | divided_by: t_qty
                   -%}
                   <button type="button" class="cvs__pack" role="radio"

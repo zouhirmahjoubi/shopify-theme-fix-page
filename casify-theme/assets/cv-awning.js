@@ -13,11 +13,12 @@
  * three.js is fetched only when an awning is on the page and the render loop
  * runs only while the photo is on screen.
  */
-const CVAW_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVAW_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const CVAW_TONES = ['red', 'teal'];
 let cvawThree = null;
 
 function cvawWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     return Boolean(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
@@ -177,9 +178,12 @@ async function cvawInit(holder) {
   const state = { amp: IDLE, unroll: 1 };
   const start = performance.now();
 
+  let drawnAt = 0;
   function draw() {
     if (!mesh) return;
-    const t = (performance.now() - start) / 1000;
+    const now = performance.now();
+    drawnAt = now;
+    const t = (now - start) / 1000;
     const pos = mesh.geometry.attributes.position;
     const arr = pos.array;
     const sw = W / stripes;
@@ -199,6 +203,14 @@ async function cvawInit(holder) {
     mesh.scale.y = state.unroll;
     renderer.render(scene, camera);
   }
+  // The running loop: at rest the canopy only sways slowly, and every frame recomputes each
+  // vertex and its normals, so it draws every other frame (30 a second on a 60 Hz screen;
+  // they look the same). A gust, the unroll and the colour swipe raise amp or lower unroll
+  // and draw every frame. A draw asked for directly (resize, swipe while paused) always runs.
+  function tick() {
+    if (state.amp <= IDLE + 0.02 && state.unroll >= 0.999 && performance.now() - drawnAt < 24) return;
+    draw();
+  }
 
   if (!build()) return function () {};
   // Unroll from the rod only while the section still hides its intro pieces
@@ -217,7 +229,7 @@ async function cvawInit(holder) {
   function setRunning(on) {
     if (on === running) return;
     running = on;
-    renderer.setAnimationLoop(on ? draw : null);
+    renderer.setAnimationLoop(on ? tick : null);
   }
 
   let intro = null;

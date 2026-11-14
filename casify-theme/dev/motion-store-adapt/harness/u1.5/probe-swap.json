@@ -1,0 +1,243 @@
+{
+  "runs": [
+    {
+      "variant": "default",
+      "flip": true,
+      "swap1": {
+        "at0": {
+          "badgeTf": "matrix(0.3, 0, 0, 0.3, 0, 0)",
+          "busy": "true",
+          "num": "3",
+          "chipOp": [
+            "0",
+            "0"
+          ],
+          "chipTf": [
+            "matrix(0.6, 0, 0, 0.6, 0, 0)",
+            "matrix(0.6, 0, 0, 0.6, 0, 0)"
+          ]
+        },
+        "mid": {
+          "badgeTf": "matrix(1.0653, 0, 0, 1.0653, 0, 0)",
+          "busy": "true",
+          "num": "17",
+          "chipOp": [
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "matrix(1.0444, 0, 0, 1.0444, 0, 0)",
+            "matrix(1.0523, 0, 0, 1.0523, 0, 0)"
+          ],
+          "chipIds": [
+            "chip:iPhone 17",
+            "chip:Clear all"
+          ]
+        },
+        "end": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "27",
+          "chipOp": [
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            "chip:iPhone 17",
+            "chip:Clear all"
+          ]
+        }
+      },
+      "swap2": {
+        "at0": {
+          "badgeTf": "matrix(0.3, 0, 0, 0.3, 0, 0)",
+          "busy": "true",
+          "num": "27",
+          "chipOp": [
+            "0",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "matrix(0.6, 0, 0, 0.6, 0, 0)",
+            "matrix(1, 0, 0, 1, -72, 0)",
+            "matrix(1, 0, 0, 1, -72, 0)"
+          ]
+        },
+        "mid": {
+          "badgeTf": "matrix(1.0741, 0, 0, 1.0741, 0, 0)",
+          "busy": "true",
+          "num": "20",
+          "chipOp": [
+            "1",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "matrix(1.035, 0, 0, 1.035, 0, 0)",
+            "matrix(1, 0, 0, 1, -66.3289, 0)",
+            "matrix(1, 0, 0, 1, -66.3289, 0)"
+          ],
+          "chipIds": [
+            "chip:Black",
+            "chip:iPhone 17",
+            "chip:Clear all"
+          ]
+        },
+        "end": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "12",
+          "chipOp": [
+            "1",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            "chip:Black",
+            "chip:iPhone 17",
+            "chip:Clear all"
+          ]
+        }
+      },
+      "stamp": {
+        "mid": {
+          "tf": "matrix(1.03212, -0.0193816, 0.0193816, 1.03212, 0, 0)",
+          "text": "2 cases in your bag: 18% off at checkout. Add 1 more for 31% off."
+        },
+        "end": "none"
+      },
+      "errors": [],
+      "ok": true
+    },
+    {
+      "variant": "rm",
+      "flip": true,
+      "swap1": {
+        "at0": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "27",
+          "chipOp": [
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none"
+          ]
+        },
+        "mid": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "27",
+          "chipOp": [
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            null,
+            null
+          ]
+        },
+        "end": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "27",
+          "chipOp": [
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            null,
+            null
+          ]
+        }
+      },
+      "swap2": {
+        "at0": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "12",
+          "chipOp": [
+            "1",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none",
+            "none"
+          ]
+        },
+        "mid": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "12",
+          "chipOp": [
+            "1",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            null,
+            null,
+            null
+          ]
+        },
+        "end": {
+          "badgeTf": "none",
+          "busy": null,
+          "num": "12",
+          "chipOp": [
+            "1",
+            "1",
+            "1"
+          ],
+          "chipTf": [
+            "none",
+            "none",
+            "none"
+          ],
+          "chipIds": [
+            null,
+            null,
+            null
+          ]
+        }
+      },
+      "stamp": {
+        "mid": {
+          "tf": "none",
+          "text": "2 cases in your bag: 18% off at checkout. Add 1 more for 31% off."
+        },
+        "end": "none"
+      },
+      "errors": [],
+      "ok": true
+    }
+  ],
+  "pass": true
+}

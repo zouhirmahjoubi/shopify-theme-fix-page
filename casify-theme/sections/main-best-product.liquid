@@ -1,9 +1,17 @@
 {{ 'best-product.css' | asset_url | stylesheet_tag }}
 
+{%- capture jm_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle -%}{%- endcapture -%}
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign rating = product.metafields.reviews.rating.value
-  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  comment
+    The rating: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+  endcomment
+  assign jm_parts = jm_stats | split: '␟'
+  assign rating_count = jm_parts[0] | plus: 0
+  assign rating_avg = 0
+  if rating_count > 0
+    assign rating_avg = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+  endif
   assign model_oi = -1
   assign style_oi = -1
   for option in product.options_with_values
@@ -185,12 +193,11 @@
       <div class="best-buy" id="best-buy-{{ section.id }}">
         <div class="best-buy__eyebrow">{{ section.settings.eyebrow | escape }}</div>
         <h1>{{ section.settings.heading | default: product.title | escape }}</h1>
-        {%- comment -%} Real product rating only (reviews metafields). The star bar is clipped to the value, never five full stars. {%- endcomment -%}
-        {%- if rating != blank and rating_count > 0 -%}
+        {%- comment -%} Real product rating only (verified Judge.me reviews). The star bar is clipped to the value, never five full stars. {%- endcomment -%}
+        {%- if rating_count > 0 -%}
           {%- liquid
-            assign scale_max = rating.scale_max | default: 5 | times: 1.0
-            assign star_pct = rating.rating | times: 100 | divided_by: scale_max | round: 1
-            assign rating_value = rating.rating | round: 1
+            assign star_pct = rating_avg | times: 20.0 | round: 1
+            assign rating_value = rating_avg | round: 1
             if rating_count == 1
               assign reviews_label = 'products.rating.reviews_one' | t: count: rating_count
             else
@@ -272,9 +279,9 @@
           {%- if show_packs -%}
             {%- liquid
               assign line2 = start_price | times: 2
-              assign each2 = line2 | times: pct2 | divided_by: 100.0 | round | minus: line2 | times: -1 | divided_by: 2
+              assign each2 = line2 | times: pct2 | divided_by: 100.0 | floor | minus: line2 | times: -1 | divided_by: 2
               assign line3 = start_price | times: 3
-              assign each3 = line3 | times: pct3 | divided_by: 100.0 | round | minus: line3 | times: -1 | divided_by: 3
+              assign each3 = line3 | times: pct3 | divided_by: 100.0 | floor | minus: line3 | times: -1 | divided_by: 3
             -%}
             <div class="best-packs best-js-only" role="radiogroup" aria-label="{{ 'products.best.packs_label' | t | escape }}" data-best-packs data-cvm-packs>
               <span class="best-packs__highlight" data-cvm-pack-highlight aria-hidden="true"></span>

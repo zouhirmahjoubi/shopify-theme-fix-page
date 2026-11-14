@@ -1,0 +1,10 @@
+  default  375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default  768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  default 1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm       768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  rm      1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 1
+  nojs     375px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs     768px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+  nojs    1440px  page errors 0  console errors 0  net errors 0  failed expects 0  allowed 0  calls 0
+shoot: 9 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\harness\u1.4\shots-vx2\cart-empty; console.json written; PASS

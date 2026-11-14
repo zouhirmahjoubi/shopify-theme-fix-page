@@ -34,7 +34,7 @@
  * the whole panel work the same, without transforms.
  */
 
-const CVCR_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVCR_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const fineQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -46,6 +46,7 @@ function cvcrLoadThree() {
 }
 
 function cvcrWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     return Boolean(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
@@ -111,7 +112,10 @@ async function cvcrRide(root, options) {
   const holder = root.querySelector('[data-cvcr-canvas]');
   const stage = root.querySelector('[data-cvcr-stage]');
   const gsap = window.gsap;
-  if (!holder || !stage || !gsap || !cvcrWebGL()) return null;
+  if (!holder || !stage || !gsap) return null;
+  // The ride starts as the shopper scrolls towards the carousel, not during page load.
+  if (window.cvNear) await window.cvNear(holder, 2);
+  if (!root.isConnected || !cvcrWebGL()) return null;
 
   let THREE;
   try {
@@ -1181,7 +1185,7 @@ function cvcrInit(root) {
       }
 
       const subtotal = shown.p * state.qty;
-      const total = d && typeof d.total === 'number' ? d.total : subtotal - Math.round((subtotal * state.pct) / 100);
+      const total = d && typeof d.total === 'number' ? d.total : subtotal - Math.floor((subtotal * state.pct) / 100); // Shopify rounds the discount down to the cent
       els.pack.hidden = state.qty < 2;
       if (state.qty > 1) {
         els.packText.textContent = fill(state.pct > 0 ? t.pack : t.packPlain, { qty: state.qty, total: money(total), pct: state.pct });

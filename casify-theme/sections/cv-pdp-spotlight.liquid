@@ -36,7 +36,7 @@
 
   assign pack_qty = section.settings.pack_qty | at_least: 1
   assign pack_line = cvar.price | times: pack_qty
-  assign pack_off = pack_line | times: section.settings.pack_pct | divided_by: 100.0 | round
+  assign pack_off = pack_line | times: section.settings.pack_pct | divided_by: 100.0 | floor
   assign pack_each = pack_line | minus: pack_off | divided_by: pack_qty
 
   comment

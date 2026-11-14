@@ -139,9 +139,11 @@
     var setters = null;
     function makeSetters() {
       var gsap = window.gsap;
-      return slots.map(function (slot) {
-        var hanger = one('[data-cvrl-hanger]', slot);
-        gsap.set(hanger, { transformOrigin: '50% 8px', transformPerspective: 1100 });
+      var hangerEls = slots.map(function (slot) { return one('[data-cvrl-hanger]', slot); });
+      // One set for every hanger: GSAP reads a new target's transform before it writes, so a set
+      // per hanger forced a style and layout pass per slot while the page was starting up.
+      gsap.set(hangerEls, { transformOrigin: '50% 8px', transformPerspective: 1100 });
+      return hangerEls.map(function (hanger) {
         return {
           x: gsap.quickSetter(hanger, 'x', 'px'),
           z: gsap.quickSetter(hanger, 'z', 'px'),
@@ -162,14 +164,16 @@
       return clamp(Math.round(scrollLeft / pitch), 0, n - 1);
     }
     function paint() {
-      pos = track.scrollLeft / pitch;
+      // Read the scroll once: reading it again after the writes below forced a layout each paint.
+      var left = track.scrollLeft;
+      pos = left / pitch;
       for (var i = 0; i < n; i++) {
         var o = i - pos;
         place[i].o = o;
         slots[i].style.setProperty('--oa', Math.min(1, Math.abs(o)).toFixed(3));
         if (setters) placeSlot(i);
       }
-      var next = frontOf(track.scrollLeft);
+      var next = frontOf(left);
       if (next !== index && !sheetOpen) setFront(next, true);
     }
 
@@ -835,7 +839,9 @@
             .set(sticker, { autoAlpha: 1 }, 1.45)
             .to(sticker, { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(2.6)' }, 1.45)
             .set(under, { clearProps: 'opacity,visibility' }, 1.95)
-            .fromTo(sticker, { scaleX: 1, scaleY: 1, rotation: 0 }, { scaleX: 1.04, scaleY: 0.93, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.out', clearProps: 'transform,opacity,visibility' }, 1.97);
+            // immediateRender: false, or building the timeline renders this squash's start (scale 1,
+            // no turn) at once and overwrites the 1.32 / -7deg start above: the stamp-down never played.
+            .fromTo(sticker, { scaleX: 1, scaleY: 1, rotation: 0 }, { scaleX: 1.04, scaleY: 0.93, duration: 0.1, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false, clearProps: 'transform,opacity,visibility' }, 1.97);
           if (foil) entrance.fromTo(foil, { '--cvrl-sheen': '130%' }, { '--cvrl-sheen': '-30%', duration: 0.9, ease: 'power2.inOut' }, 1.95);
         }
         if (script) entrance.to(script, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power1.inOut', clearProps: 'clipPath' }, 2.1);

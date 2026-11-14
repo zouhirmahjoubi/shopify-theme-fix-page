@@ -36,6 +36,7 @@ HOLE, HOLE_R = PLAT + 1.0, 9.0                # case cut-out
 BEZ_W, BEZ_H = 1.8, 1.5                       # raised bezel width / height above the back
 
 CORNERS = [(-90, 0, (1, -1)), (0, 90, (1, 1)), (90, 180, (-1, 1)), (180, 270, (-1, -1))]
+PHONE_BACK = '3d3c3a'                         # Black Titanium back glass; case_art paints it into clear-print gaps
 
 
 def rrect(cx, cy, hw, hh, r, nc=NC):
@@ -294,8 +295,8 @@ def write_glb(m, art, out, matte=False, clear=False):
     mats = {'print': print_mat,
             'tpu': pbr('Black TPU bumper', '141414', 0.55),
             'opening': pbr('Opening', '030303', 0.9),
-            'phone_back': pbr('Phone back glass', '3d3c3a', 0.45),
-            'plateau': pbr('Camera plateau', '3d3c3a', 0.12),
+            'phone_back': pbr('Phone back glass', PHONE_BACK, 0.45),
+            'plateau': pbr('Camera plateau', PHONE_BACK, 0.12),
             'lens_metal': pbr('Lens ring', '4a4a4c', 0.3, 1.0),
             'lens_glass': pbr('Lens glass', '07080c', 0.04),
             'flash': pbr('Flash', 'ebe5d2', 0.35),

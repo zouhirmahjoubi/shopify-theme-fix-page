@@ -1,0 +1,64 @@
+{
+ "768": {
+  "loaded": {
+   "sy": 2810,
+   "top": 0,
+   "h": 4348,
+   "st": 7
+  },
+  "reduce_100ms": {
+   "sy": 2810,
+   "top": 0,
+   "h": 4348,
+   "st": 7
+  },
+  "reduce_1600ms": {
+   "sy": 0,
+   "top": 2810,
+   "h": 4348,
+   "st": 0
+  },
+  "scroll_events_after_reduce": [
+   0
+  ],
+  "back_3000ms": {
+   "sy": 0,
+   "top": 2810,
+   "h": 4348,
+   "st": 8
+  },
+  "scroll_events_after_back": [],
+  "errs": []
+ },
+ "375": {
+  "loaded": {
+   "sy": 2703,
+   "top": -0.0,
+   "h": 4001,
+   "st": 7
+  },
+  "reduce_100ms": {
+   "sy": 2703,
+   "top": -0.0,
+   "h": 4001,
+   "st": 7
+  },
+  "reduce_1600ms": {
+   "sy": 0,
+   "top": 2703,
+   "h": 4001,
+   "st": 0
+  },
+  "scroll_events_after_reduce": [
+   0
+  ],
+  "back_3000ms": {
+   "sy": 0,
+   "top": 2703,
+   "h": 4001,
+   "st": 8
+  },
+  "scroll_events_after_back": [],
+  "errs": []
+ }
+}

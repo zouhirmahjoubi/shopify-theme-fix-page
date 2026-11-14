@@ -37,7 +37,7 @@
         "apply_code": false,
         "button_label": "Choose your pack",
         "link": "",
-        "fine_print": "Free shipping on every order · 30-day returns",
+        "fine_print": "Free shipping on every order",
         "tone": "red",
         "display": "popup",
         "popup_delay": 5,

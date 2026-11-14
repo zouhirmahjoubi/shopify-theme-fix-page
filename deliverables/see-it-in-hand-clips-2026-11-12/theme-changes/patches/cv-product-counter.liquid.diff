@@ -1,0 +1,91 @@
+--- live-base/sections/cv-product-counter.liquid	2026-11-12 04:09:16.957934300 +0100
++++ push/sections/cv-product-counter.liquid	2026-11-12 04:09:17.133150100 +0100
+@@ -1156,18 +1156,36 @@
+         A third grid item: on desktop it sits in the photo column under the
+         photo (assets/cv-pdp-video-reviews.css), in one column it follows the
+         buy box. Renders nothing until this product has a clip.
++
++        Two kinds of clip share the row. Customer clips ("Video review" blocks)
++        show only while "Show customer clips" is ticked. Shop clips ("Shop clip"
++        blocks) are the shop's own: they show without a name, stars or quote,
++        and are matched to this product by its handle, a text compare that
++        loads no product.
+       {%- endcomment -%}
+       {%- liquid
+         assign vr_block = nil
++        assign vr_shop_clips = 0
+         for b in section.blocks
+           if b.type == 'video_reviews'
+-            assign vr_block = b
+-            break
++            if vr_block == nil
++              assign vr_block = b
++            endif
++          elsif b.type == 'shop_clip'
++            if b.settings.product_handle == blank or b.settings.product_handle == product.handle
++              if b.settings.video != blank or b.settings.mp4_url != blank or b.settings.mp4_asset != blank or b.settings.poster != blank or b.settings.poster_asset != blank
++                assign vr_shop_clips = vr_shop_clips | plus: 1
++              endif
++            endif
+           endif
+         endfor
+         assign vr_uid = section.id | append: '-vr'
++        assign vr_reviews = false
++        if vr_block.settings.show_clips
++          assign vr_reviews = true
++        endif
+       -%}
+-      {%- if vr_block.settings.show_clips -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
++      {%- if vr_reviews or vr_shop_clips > 0 -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', shop_type: 'shop_clip', reviews: vr_reviews, settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
+     </div>
+   </div>
+ 
+@@ -1528,6 +1546,7 @@
+       "limit": 1,
+       "settings": [
+         { "type": "paragraph", "content": "Customer video reviews show under the product photo. Add a \"Video review\" block for each clip; the row appears once this product has one. This block only changes the words." },
++        { "type": "paragraph", "content": "Clips you made yourself go in \"Shop clip\" blocks. They show in the same row with no name, stars or quote, under the \"Shop clips\" words below." },
+         { "type": "checkbox", "id": "show_clips", "label": "Show customer clips", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only for real clips from real buyers: names, stars and quotes must be theirs." },
+         { "type": "text", "id": "heading", "label": "Heading", "default": "Case clips" },
+         { "type": "text", "id": "lede", "label": "Text", "info": "Optional line under the heading." },
+@@ -1537,6 +1556,13 @@
+         { "type": "text", "id": "anon_label", "label": "Name when none is given", "default": "Customer" },
+         { "type": "text", "id": "submit_label", "label": "Send-a-clip link", "default": "Filmed yours? Send it in" },
+         { "type": "url", "id": "submit_url", "label": "Send-a-clip page", "info": "The link shows only when a page is chosen, for example your contact page." },
++        { "type": "header", "content": "Shop clips" },
++        { "type": "paragraph", "content": "Used when the row holds only clips you made yourself. Keep these words true of the clips: nothing that says a customer filmed or said it." },
++        { "type": "text", "id": "shop_heading", "label": "Heading", "default": "See it in hand" },
++        { "type": "text", "id": "shop_lede", "label": "Text", "info": "Optional line under the heading." },
++        { "type": "text", "id": "shop_bought_label", "label": "Label before the phone", "default": "Shown on" },
++        { "type": "text", "id": "ai_label", "label": "Label on AI-made clips", "default": "Made with AI", "info": "Shows on every shop clip ticked \"Made with AI\"." },
++        { "type": "text", "id": "shop_hint", "label": "Hint", "default": "Tap a clip to see it larger" },
+         { "type": "header", "content": "Shopping panel" },
+         { "type": "text", "id": "model_label", "label": "Phone label", "default": "Your phone" },
+         { "type": "text", "id": "model_placeholder", "label": "Phone placeholder", "default": "Select your phone model" },
+@@ -1565,6 +1591,26 @@
+         { "type": "text", "id": "colour", "label": "Colour", "info": "Write it exactly as the product's colour option, and the player offers \"Choose this colour\"." },
+         { "type": "product", "id": "product", "label": "Only show on", "info": "Leave blank to show this clip on every product that uses this template." }
+       ]
++    },
++    {
++      "type": "shop_clip",
++      "name": "Shop clip",
++      "settings": [
++        { "type": "paragraph", "content": "A clip you made yourself, shown under the product photo with no name, stars or quote. Never use it for a customer's clip: that goes in a \"Video review\" block." },
++        { "type": "video", "id": "video", "label": "Video", "info": "Upright 9:16 works best." },
++        { "type": "text", "id": "mp4_url", "label": "Or a direct MP4 link", "info": "Used when no video is uploaded." },
++        { "type": "image_picker", "id": "poster", "label": "Cover image", "info": "Shown until the clip plays. The clip's own first frame works best." },
++        { "type": "header", "content": "Or files kept in the theme" },
++        { "type": "paragraph", "content": "For clips stored in this theme's assets folder. Used when no video, link or cover image is set above." },
++        { "type": "text", "id": "mp4_asset", "label": "Video file name", "info": "For example \"cv-clip-snow-day-penguin.mp4\"." },
++        { "type": "text", "id": "poster_asset", "label": "Cover image file name", "info": "For example \"cv-clip-snow-day-penguin.jpg\"." },
++        { "type": "header", "content": "About the clip" },
++        { "type": "text", "id": "alt", "label": "What the clip shows", "info": "Read out by screen readers, for example \"Snow Day Penguin case on an iPhone 18 Pro Max\". Blank uses the product name." },
++        { "type": "text", "id": "phone", "label": "Shown on", "info": "The phone and finish in the clip, for example \"iPhone 18 Pro Max · Glossy\"." },
++        { "type": "checkbox", "id": "ai_made", "label": "Made with AI", "default": false, "info": "Tick when the clip was generated with AI. The clip then carries a \"Made with AI\" label." },
++        { "type": "checkbox", "id": "silent", "label": "No sound", "default": true, "info": "Hides the sound buttons on a clip that has no audio." },
++        { "type": "text", "id": "product_handle", "label": "Only show on (product handle)", "info": "The last part of the product's web address. Blank shows the clip on every product that uses this template." }
++      ]
+     }
+   ],
+   "presets": [

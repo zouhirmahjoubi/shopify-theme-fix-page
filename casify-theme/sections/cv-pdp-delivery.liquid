@@ -32,21 +32,64 @@
   assign country = localization.country.iso_code | upcase
   assign zone_min = 0
   assign zone_max = 0
+  comment
+    The product's case type, for Country timing blocks limited to some case types (each type has
+    its own print partner and carrier times). Magnetic first: Printify tags some Magnetic cases
+    "tough case" too.
+  endcomment
+  assign case_type = ''
+  assign tag_list = product.tags | join: '|' | downcase
+  assign ptitle = product.title | downcase
+  if tag_list contains 'magnetic case' or ptitle contains 'magnetic' or ptitle contains 'magsafe'
+    assign case_type = 'magnetic'
+  elsif tag_list contains 'clear case' or ptitle contains 'clear impact'
+    assign case_type = 'clear'
+  elsif tag_list contains 'tough case' or ptitle contains 'tough case'
+    assign case_type = 'tough'
+  endif
+
   assign zones = section.blocks | where: 'type', 'zone'
+  assign zone_hit = false
   for z in zones
+    assign types_ok = true
+    if z.settings.case_types != blank
+      assign zone_types = z.settings.case_types | downcase | remove: ' ' | split: ','
+      unless zone_types contains case_type
+        assign types_ok = false
+      endunless
+    endif
+    unless types_ok
+      continue
+    endunless
     assign codes = z.settings.countries | upcase | remove: ' ' | split: ','
     if codes contains country
+      assign zone_hit = true
       assign zone_min = z.settings.extra_min | default: 0
       assign zone_max = z.settings.extra_max | default: zone_min
       break
     endif
   endfor
 
+  comment
+    The last step's days hold for the "dated countries" and the Country timing blocks only.
+    Shoppers anywhere else get its "no days" text instead of a date that may not be true for them.
+  endcomment
+  assign last_dated = true
+  if st.dated_countries != blank and zone_hit == false
+    assign home_codes = st.dated_countries | upcase | remove: ' ' | split: ','
+    unless home_codes contains country
+      assign last_dated = false
+    endunless
+  endif
+
   assign steps = section.blocks | where: 'type', 'step'
   assign dated_steps = 0
   assign head_title = ''
   assign head_range = ''
   for b in steps
+    if forloop.last and last_dated == false
+      continue
+    endif
     if b.settings.min_days != blank
       assign dated_steps = dated_steps | plus: 1
       assign h_min = b.settings.min_days
@@ -105,12 +148,18 @@
             assign s = b.settings
             assign min_d = s.min_days
             assign max_d = s.max_days | default: s.min_days
+            if forloop.last and last_dated == false
+              assign min_d = nil
+              assign max_d = nil
+            endif
             if forloop.last and min_d != blank
               assign min_d = min_d | plus: zone_min
               assign max_d = max_d | plus: zone_max
             endif
-            if min_d != blank and max_d < min_d
-              assign max_d = min_d
+            if min_d != blank
+              if max_d < min_d
+                assign max_d = min_d
+              endif
             endif
           -%}
           <li
@@ -172,6 +221,7 @@
   "settings": [
     { "type": "paragraph", "content": "Dates are worked out in the shopper's browser from the rules below, in your shop's time zone. Only enter times you can keep." },
     { "type": "text", "id": "kicker", "label": "Label", "default": "Estimated" },
+    { "type": "text", "id": "dated_countries", "label": "Countries the last step's days are for", "info": "Two-letter codes, comma separated, e.g. US. Shoppers elsewhere see the last step's \"no days\" text unless a Country timing block covers them. Leave empty to show the dates everywhere." },
     { "type": "checkbox", "id": "business_days", "label": "Count business days only", "info": "Skips Saturdays, Sundays and the holidays below.", "default": true },
     { "type": "textarea", "id": "holidays", "label": "Holidays (no dispatch or delivery)", "info": "Dates as YYYY-MM-DD, separated by commas. E.g. 2026-12-25, 2026-12-26" },
     { "type": "header", "content": "Daily cut-off" },
@@ -220,6 +270,7 @@
       "settings": [
         { "type": "paragraph", "content": "Adds days to the last step for shoppers in these countries (from Shopify's country detection)." },
         { "type": "text", "id": "countries", "label": "Country codes", "info": "Two-letter codes, comma separated. E.g. AU, NZ" },
+        { "type": "text", "id": "case_types", "label": "Case types", "info": "Optional. tough, magnetic or clear, comma separated: the block then applies to those cases only. Empty: every product. The first matching block wins." },
         { "type": "number", "id": "extra_min", "label": "Extra days (earliest)" },
         { "type": "number", "id": "extra_max", "label": "Extra days (latest)" }
       ]

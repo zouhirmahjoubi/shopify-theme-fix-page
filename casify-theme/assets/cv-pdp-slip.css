@@ -4,8 +4,9 @@
    on the right with numbered lines: 1 your phone, 2 style, 3 how many, then
    the handwritten total and the add-to-bag button.
    Motion lives in cv-pdp-slip-motion.js; this file is the finished state.
+   Caveat is self-hosted in snippets/cv-fonts.liquid (it used to be an
+   @import of Google Fonts here, a chained request to another server).
    ========================================================================= */
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap");
 
 .cvs {
   --cvs-ink: var(--cocoa-700);

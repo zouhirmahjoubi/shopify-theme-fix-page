@@ -1,0 +1,366 @@
+{
+ "penguin": {
+  "title": "Snow Day Penguin Christmas Phone Case for iPhone & Samsung | Magnetic Impact-Resistant Case",
+  "handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+  "product_gid": "gid://shopify/Product/15448944640077",
+  "variant_gid": "gid://shopify/ProductVariant/67840403636301",
+  "variant": "iPhone 18 Pro Max / Glossy",
+  "ref_front_shopify": "https://cdn.shopify.com/s/files/1/0793/5515/0413/files/10586993569742785376_2048.jpg?v=1793244632",
+  "ref_angle_printify": "https://images.printify.com/mockup/6acd46d6dead6e821c030cc0/427650/152259/snow-day-penguin-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case.jpg?camera_label=front-2",
+  "frame": {
+   "attempts": [
+    {
+     "taskId": "1021b519bb890de3f6bd7ca2a79d60f6",
+     "model": "nano-banana-2-1",
+     "resolution": "2K",
+     "credits_expected": 6,
+     "submitted_utc": "2026-11-12T02:08:50+00:00",
+     "state": "success",
+     "credits": 6,
+     "resultUrl": "https://tempfile.aiquickdraw.com/workers/images/image_1fc99ff1665002e83af3c2023b3b5588.jpg",
+     "file": "frames/penguin-frame-a1.jpg"
+    }
+   ]
+  },
+  "clip": {
+   "attempts": [
+    {
+     "taskId": "540e5bcabc758009fa9957dd741d54ec",
+     "model": "bytedance/v1-pro-fast-image-to-video",
+     "resolution": "720p",
+     "duration": "5",
+     "credits_expected": 16,
+     "first_frame": "frames/penguin-frame-a1.jpg",
+     "submitted_utc": "2026-11-12T02:11:18+00:00",
+     "state": "success",
+     "credits": 16,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794449489532-e0lhkbwhmql.mp4",
+     "file": "raw/penguin-a1.mp4",
+     "verdict": "REJECTED: output was landscape 1248x704 (model default 16:9, no aspect setting in its docs); the lettering turned to gibberish as it zoomed out"
+    },
+    {
+     "taskId": "c11115943f3ebc1fef6522834a67a22f",
+     "model": "bytedance/seedance-2-mini",
+     "resolution": "480p",
+     "aspect_ratio": "9:16",
+     "duration": 5,
+     "generate_audio": false,
+     "first_frame": "frames/penguin-frame-a1.jpg",
+     "last_frame": "same as first (loop)",
+     "credits_expected": 19,
+     "submitted_utc": "2026-11-12T02:15:25+00:00",
+     "state": "success",
+     "credits": 19,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794449790498-e8l71gome3e.mp4",
+     "file": "raw/penguin-a2.mp4",
+     "verdict": "ACCEPTED: 496x864, 5.04 s, no audio stream; print, lettering, camera opening and phone shape correct in every 5th frame"
+    }
+   ]
+  }
+ },
+ "beary": {
+  "title": "Beary Christmas Polar Bear Phone Case for iPhone & Samsung | Magnetic Impact-Resistant Case",
+  "handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+  "product_gid": "gid://shopify/Product/15448942313549",
+  "variant_gid": "gid://shopify/ProductVariant/67840340557901",
+  "variant": "iPhone 18 Pro Max / Glossy",
+  "ref_front_shopify": "https://cdn.shopify.com/s/files/1/0793/5515/0413/files/8745092848594061195_2048.jpg?v=1793240239",
+  "ref_angle_printify": "https://images.printify.com/mockup/6acd47b8b4b7a98e6a058405/427650/152259/beary-christmas-polar-bear-phone-case-for-iphone-samsung-magnetic-impact-resistant-case.jpg?camera_label=front-2",
+  "frame": {
+   "attempts": [
+    {
+     "taskId": "730d7b7ba264f5a227721d85042b2b86",
+     "model": "nano-banana-2-1",
+     "resolution": "2K",
+     "credits_expected": 6,
+     "submitted_utc": "2026-11-12T02:20:19+00:00",
+     "state": "success",
+     "credits": 6,
+     "resultUrl": "https://tempfile.aiquickdraw.com/models/nano-banana-2.1/1794450094801-gyo1i4nt5pg.jpg",
+     "file": "frames/beary-frame-a1.jpg",
+     "verdict": "ACCEPTED: print, lettering, camera opening and phone shape match the store photo"
+    }
+   ]
+  },
+  "clip": {
+   "attempts": [
+    {
+     "taskId": "c15ea771ca83d6797da820c75745563f",
+     "model": "bytedance/seedance-2-mini",
+     "resolution": "480p",
+     "aspect_ratio": "9:16",
+     "duration": 5,
+     "generate_audio": false,
+     "first_frame": "frames/beary-frame-a1.jpg",
+     "last_frame": "same as first (loop)",
+     "credits_expected": 19,
+     "submitted_utc": "2026-11-12T02:25:39+00:00",
+     "state": "success",
+     "credits": 19,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794450408735-m34csmzxi5d.mp4",
+     "file": "raw/beary-a1.mp4",
+     "verdict": "KEPT AS FALLBACK: print and camera right, but a glare sweep washes the artwork for about half a second and the thin script word \"Christmas\" shimmers mid-clip"
+    },
+    {
+     "taskId": "64a6675855411442449cf6004159683c",
+     "model": "bytedance/seedance-2-mini",
+     "resolution": "480p",
+     "aspect_ratio": "9:16",
+     "duration": 5,
+     "generate_audio": false,
+     "first_frame": "frames/beary-frame-a1-crop.jpg (tighter crop of the accepted frame)",
+     "first_frame_url": "https://tempfile.redpandaai.co/kieai/11683805/casify/clips/1794450710183-ajxs7jbv0v4.jpg",
+     "last_frame": "same as first (loop)",
+     "credits_expected": 19,
+     "submitted_utc": "2026-11-12T02:32:16+00:00",
+     "state": "success",
+     "credits": 19,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794450795801-iau6x7pl8vg.mp4",
+     "file": "raw/beary-a2.mp4",
+     "verdict": "ACCEPTED: 496x864, 5.04 s, no audio stream; bear, both words, camera opening and phone shape hold in every 5th frame; a soft glare passes over the bear for a moment mid-tilt"
+    }
+   ]
+  }
+ },
+ "mistletoe": {
+  "title": "Mistletoe Christmas Phone Case for iPhone & Samsung | Magnetic Impact-Resistant Case",
+  "handle": "mistletoe-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+  "product_gid": "gid://shopify/Product/15448934449229",
+  "variant_gid": "gid://shopify/ProductVariant/67840265027661",
+  "variant": "iPhone 18 Pro Max / Glossy",
+  "ref_front_shopify": "https://cdn.shopify.com/s/files/1/0793/5515/0413/files/5650262724792698063_2048.jpg?v=1793238168",
+  "ref_angle_printify": "https://images.printify.com/mockup/6acd698d9a6036284209a3b3/427650/152259/mistletoe-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case.jpg?camera_label=front-2",
+  "frame": {
+   "attempts": [
+    {
+     "taskId": "3864cac1311d1e98735287e1210af1c8",
+     "model": "nano-banana-2-1",
+     "resolution": "2K",
+     "credits_expected": 6,
+     "submitted_utc": "2026-11-12T02:20:19+00:00",
+     "state": "success",
+     "credits": 6,
+     "resultUrl": "https://tempfile.aiquickdraw.com/models/nano-banana-2.1/1794450058169-oy15rrgc52m.jpg",
+     "file": "frames/mistletoe-frame-a1.jpg",
+     "verdict": "REJECTED as generated: label text is right but the flash sits beside the lenses instead of the far right of the camera plateau"
+    }
+   ],
+   "repair": {
+    "file": "frames/mistletoe-frame-a1-camfix.jpg",
+    "cropped": "frames/mistletoe-frame-a1-camfix-crop.jpg",
+    "how": "inside of the camera opening replaced with the same area of the store photo (affine fit of the opening, feathered edge), then cropped tighter to 1080x1920; no credits",
+    "uploaded_url": "https://tempfile.redpandaai.co/kieai/11683805/casify/clips/1794450515295-54x2i93k2jn.jpg"
+   }
+  },
+  "clip": {
+   "attempts": [
+    {
+     "taskId": "0cbcd179d90a05c505d56ce0ebbd71f4",
+     "model": "bytedance/seedance-2-mini",
+     "resolution": "480p",
+     "aspect_ratio": "9:16",
+     "duration": 5,
+     "generate_audio": false,
+     "first_frame": "frames/mistletoe-frame-a1-camfix-crop.jpg",
+     "last_frame": "same as first (loop)",
+     "credits_expected": 19,
+     "submitted_utc": "2026-11-12T02:28:58+00:00",
+     "state": "success",
+     "credits": 19,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794450618090-32jhftfrtkd.mp4",
+     "file": "raw/mistletoe-a1.mp4",
+     "verdict": "ACCEPTED: 496x864, 5.04 s, no audio stream; label lettering, camera opening and phone shape hold in every 5th frame; the smallest ruler text is below the clip resolution"
+    }
+   ]
+  }
+ },
+ "humbug": {
+  "title": "Bah Humbug Christmas Phone Case | Grumpy Persian Cat in Santa Hat on Green Polka Dots | MagSafe Compatible Tough Case",
+  "handle": "bah-humbug-christmas-phone-case-grumpy-persian-cat-in-santa-hat-on-green-polka-dots-magsafe-compatible-tough-case",
+  "product_gid": "gid://shopify/Product/15448952864845",
+  "variant_gid": "gid://shopify/ProductVariant/67840586219597",
+  "variant": "iPhone 18 Pro Max / Glossy",
+  "ref_front_shopify": "https://cdn.shopify.com/s/files/1/0793/5515/0413/files/16120514171705871489_2048.jpg?v=1793259959",
+  "ref_angle_printify": "https://images.printify.com/mockup/6acd2a7cb4b7a98e6a056800/427650/152259/bah-humbug-christmas-phone-case-grumpy-persian-cat-in-santa-hat-on-green-polka-dots-magsafe-compatible-tough-case.jpg?camera_label=front-2",
+  "frame": {
+   "attempts": [
+    {
+     "taskId": "839f5b3f7d6f1d3bdfabe89d929bca83",
+     "model": "nano-banana-2-1",
+     "resolution": "2K",
+     "credits_expected": 6,
+     "submitted_utc": "2026-11-12T02:20:19+00:00",
+     "state": "fail",
+     "note": "angle reference URL was mistyped (HTTP 400); only the straight-on store photo was a valid reference for this attempt",
+     "credits": 0,
+     "failMsg": "Image fetch failed (mistyped angle reference URL); not charged"
+    },
+    {
+     "taskId": "e63200443e0634f60d923f2bd29ce0a7",
+     "model": "nano-banana-2-1",
+     "resolution": "2K",
+     "credits_expected": 6,
+     "submitted_utc": "2026-11-12T02:23:49+00:00",
+     "state": "success",
+     "credits": 6,
+     "resultUrl": "https://tempfile.aiquickdraw.com/workers/images/image_34f4f7383094bb2ad2311f3efe85b02d.jpg",
+     "file": "frames/humbug-frame-a2.jpg",
+     "verdict": "ACCEPTED: print, lettering, camera opening and phone shape match the store photo"
+    }
+   ]
+  },
+  "clip": {
+   "attempts": [
+    {
+     "taskId": "8d9c8d6c47b32cae9d8605d10f9a7a97",
+     "model": "bytedance/seedance-2-mini",
+     "resolution": "480p",
+     "aspect_ratio": "9:16",
+     "duration": 5,
+     "generate_audio": false,
+     "first_frame": "frames/humbug-frame-a2.jpg",
+     "last_frame": "same as first (loop)",
+     "credits_expected": 19,
+     "submitted_utc": "2026-11-12T02:26:08+00:00",
+     "state": "success",
+     "credits": 19,
+     "resultUrl": "https://tempfile.aiquickdraw.com/seedance/1794450451307-baj1po8npc.mp4",
+     "file": "raw/humbug-a1.mp4",
+     "verdict": "ACCEPTED: 496x864, 5.04 s, no audio stream; polka dots, cat badge, lettering, camera opening and phone shape hold; lettering is foreshortened at the steepest turn"
+    }
+   ]
+  }
+ },
+ "_summary": {
+  "written_utc": "2026-11-12T03:06:18+00:00",
+  "kie_credits": {
+   "start_balance": 140.43,
+   "spent": 135,
+   "end_balance_expected": 5.43,
+   "breakdown": {
+    "start frames (nano-banana-2-1, 2K, 4 x 6)": 24,
+    "rejected first clip (bytedance/v1-pro-fast-image-to-video, came back 16:9)": 16,
+    "clips (bytedance/seedance-2-mini, 480p, 5 s, 5 x 19: one per design + a second Beary take)": 95
+   }
+  },
+  "final_clips": {
+   "penguin": {
+    "mp4": "final/cv-clip-snow-day-penguin.mp4",
+    "cover": "final/cv-clip-snow-day-penguin.jpg",
+    "bytes": 455212
+   },
+   "beary": {
+    "mp4": "final/cv-clip-beary-christmas.mp4",
+    "cover": "final/cv-clip-beary-christmas.jpg",
+    "bytes": 763674
+   },
+   "mistletoe": {
+    "mp4": "final/cv-clip-kissing-mistletoe.mp4",
+    "cover": "final/cv-clip-kissing-mistletoe.jpg",
+    "bytes": 629149
+   },
+   "humbug": {
+    "mp4": "final/cv-clip-bah-humbug.mp4",
+    "cover": "final/cv-clip-bah-humbug.jpg",
+    "bytes": 571129
+   }
+  },
+  "clip_format": "496x864 H.264, 24 fps, 133 frames (5.54 s), no audio stream; frames 0-120 from the model, 121-132 a made transition back to frame 0 (make_loop.py) so the loop is seamless",
+  "chosen_takes": {
+   "penguin": "raw/penguin-a2.mp4",
+   "beary": "raw/beary-a2.mp4",
+   "mistletoe": "raw/mistletoe-a1.mp4",
+   "humbug": "raw/humbug-a1.mp4"
+  },
+  "preview_theme": {
+   "id": 186593804365,
+   "name": "Casify shop clips preview 2026-11-12",
+   "role": "unpublished",
+   "live_theme_untouched": 186064961613,
+   "state": "synced with live about 03:20 UTC on 2026-11-12 after another session pushed 22 files live at 03:03 UTC; a full pull shows the preview differs from live only in this task's 13 files",
+   "state_2026-11-12_19:13_utc": "holds the same 5 files as live after the all-products push (template pushed 19:13 UTC); other files are live as of 18:55 UTC"
+  },
+  "theme_files": "theme-changes/push (live copies + this task only, rebased onto the 03:03 UTC live state), theme-changes/live-base, theme-changes/patches, theme-changes/README.txt",
+  "live_push": {
+   "pushed_utc": "2026-11-12 16:12 to 16:14",
+   "theme": 186064961613,
+   "on": "Zouhir typed \"Push to live\"",
+   "files": 13,
+   "order": [
+    "8 clip files + css + js",
+    "snippets/cv-video-reviews.liquid",
+    "sections/cv-product-counter.liquid",
+    "templates/product.json (live copy of 16:10 UTC + 4 shop_clip blocks)"
+   ],
+   "verified": "pull-back: all 13 files match; 4 live product pages at 375 px show the row, the right clip plays, no Liquid errors, no sideways scroll, CLS 0; a product without a clip is unchanged",
+   "note": "the live template had changed since the morning (an Apps section and saved defaults, 25 sections); the 4 blocks were re-added to that newer copy"
+  },
+  "live_template_overwritten": {
+   "when_utc": "2026-11-12 18:58:33",
+   "what": "templates/product.json on live was saved from the theme editor (a Judge.me preview badge app block added to main, summary rating_source auto -> product); the save no longer held the 4 shop_clip blocks, so no product page showed a clip until the push below",
+   "seen": "live copy pulled 18:55 UTC still had the blocks; the copy pulled 19:08 UTC did not; the live Snow Day page had no clip row at about 19:15 UTC"
+  },
+  "all_products_live_push": {
+   "asked": "Zouhir: \"i want the 4 ugc videos in all products by default product page\"",
+   "pushed_utc": "2026-11-12 19:19:07 to 19:19:38",
+   "theme": 186064961613,
+   "on": "Zouhir typed \"Push to live\"",
+   "files": 5,
+   "order": [
+    "assets/cv-pdp-video-reviews.css + assets/cv-pdp-video-reviews.js + snippets/cv-video-reviews.liquid",
+    "sections/cv-product-counter.liquid",
+    "templates/product.json (live copy of 19:18 UTC + 4 shop_clip blocks + shop_heading_all and shop_lede in the video-reviews block; the Judge.me badge block and rating_source kept)"
+   ],
+   "scope": "all 485 active products use the default product template (templateSuffix null on every one), so the row shows on every product page",
+   "what_shoppers_read": {
+    "heading": "Our cases in hand",
+    "line": "Magnetic cases on iPhone 18 Pro Max, glossy finish.",
+    "on_each_clip": "Made with AI",
+    "under_each_clip": "Design + the design name as a link to that case: Snow Day, Beary Christmas, Mistletoe, Bah Humbug",
+    "on_the_clip_s_own_page": "This case + the name, and that clip comes first",
+    "button": "Pause clips",
+    "tablet_and_desktop_hint": "Tap a clip to see it larger",
+    "large_player": "design name, Made with AI, Shown on iPhone 18 Pro Max · Glossy, then See this case (another product) or the normal buy panel (this product)",
+    "never": "stars, reviewer names, quotes, a score, verified"
+   },
+   "verified": "pull-back at 19:19:57 UTC: all 5 files match; live pages at 375 px: Garden Club Sampler Tough and Yuletide Hours Tough (4 clips, design links), Bah Humbug (own clip first, This case, buy panel in the player), large player with See this case; live Snow Day page at 1280 px; no Liquid errors, no sideways scroll, CLS 0 at phone width",
+   "files_kept": "theme-changes/all-products/push (what is live), theme-changes/all-products/live-base (live right before), build_template_all.py, all_products_edit.py, tpl_diff.py; screenshots in preview-screens/all-products and live-screens/all-products",
+   "caution": "a theme editor tab opened before this push still holds the older template and writes it back when it saves: reload the editor first",
+   "committed": false
+  },
+  "declined_2026-11-12": {
+   "asked": "Zouhir: \"add rating and name and text to ugc video\"",
+   "answer": "not done: orders were exactly 0 and the four products had no reviews.rating, so a name, stars or a quote on an AI-made clip would be an invented customer review; a caption written as the shop was offered instead and he chose it"
+  },
+  "captions_live_push": {
+   "asked": "Zouhir: \"remove made with ai\" (19:28 UTC), then clicked \"Add captions\" and \"Push, no label\"",
+   "pushed_utc": "2026-11-12 19:47:49 to 19:48:16",
+   "theme": 186064961613,
+   "files": 4,
+   "order": [
+    "assets/cv-pdp-video-reviews.css + snippets/cv-video-reviews.liquid",
+    "sections/cv-product-counter.liquid (new text setting caption on the shop_clip block)",
+    "templates/product.json (live copy of 19:47 UTC + caption on the 4 blocks + ai_made false on the 4 blocks)"
+   ],
+   "captions": {
+    "Snow Day": "Skating penguin on ice blue.",
+    "Beary Christmas": "Polar bear with a gift on red.",
+    "Mistletoe": "Mistletoe label on pink hearts.",
+    "Bah Humbug": "Grumpy cat on green polka dots."
+   },
+   "label": "the \"Made with AI\" label is off on the clips and in the large player, at his choice. Before choosing he was told twice that the clips are AI-generated and look like real footage, that the EU AI Act (Article 50, applies since 2026-08-02) asks businesses to disclose that, that the store sells to EU countries, and that keeping the label (or a small note) was the recommended option. Back on per clip: tick \"Made with AI\" on each Shop clip block, or run add_captions.py with --label on.",
+   "what_shoppers_read": {
+    "heading": "Our cases in hand",
+    "line": "Magnetic cases on iPhone 18 Pro Max, glossy finish.",
+    "under_each_clip": "Design (or This case) + the design name + the caption",
+    "button": "Pause clips",
+    "tablet_and_desktop_hint": "Tap a clip to see it larger",
+    "large_player": "design name, the caption, Shown on iPhone 18 Pro Max · Glossy, then See this case (another product) or the normal buy panel (this product)",
+    "never": "stars, reviewer names, quotes, a score, verified"
+   },
+   "verified": "all five live copies matched the base right before; pull-back at 19:48:26 UTC: 4/4 match, js untouched; live at 375 px: Garden Club Sampler Tough (captions on two even lines, stubs level, no label), the Mistletoe page (own clip first, This case, buy panel in the player), large player with caption and See this case; live at 1280 px: Yuletide Hours Tough; no Liquid errors, no sideways scroll, CLS 0 at phone width",
+   "files_kept": "theme-changes/captions/push (what is live), theme-changes/captions/live-base (live right before), theme-changes/captions/add_captions.py; screenshots in preview-screens/captions, preview-screens/no-ai-label, live-screens/captions",
+   "committed": false
+  }
+ }
+}

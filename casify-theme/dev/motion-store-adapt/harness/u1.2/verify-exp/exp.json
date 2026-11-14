@@ -1,0 +1,1868 @@
+{
+ "default-375": {
+  "sw": 375,
+  "cw": 375,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__pause-label",
+    37,
+    1,
+    34,
+    1,
+    "PAUSE THE RIDE"
+   ],
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     718,
+     343,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     784,
+     343,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     558,
+     343,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     624,
+     343,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     413,
+     343,
+     100
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     346,
+     293,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     237,
+     343,
+     158
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     535,
+     343,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 6,
+  "mid": {
+   "dbl": [],
+   "ctl_add_op": 1,
+   "ctl_price_op": 1
+  },
+  "focus": [
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__chip",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "rgb(196, 48, 43) 0px 0px 0px 1px, rgba(126, 26, 23, 0.6) 0px",
+    "fv": true
+   },
+   {
+    "tag": "SELECT",
+    "cls": "",
+    "inCvcr": true,
+    "outline": "none 3px rgb(51, 35, 26)",
+    "shadow": "rgb(205, 227, 224) 0px 0px 0px 3px",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__pack-pill",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__add",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "rgb(126, 26, 23) 0px 4px 0px 0px, rgba(126, 26, 23, 0.6) 0px",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__buy-now",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BODY",
+    "cls": "harness",
+    "inCvcr": false,
+    "outline": "none 3px rgb(74, 51, 36)",
+    "shadow": "none",
+    "fv": false
+   },
+   {
+    "tag": "A",
+    "cls": "",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "A",
+    "cls": "",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvc__photo-ticket",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "none",
+    "fv": true
+   }
+  ],
+  "noModel": {
+   "status": "Pick your phone model first, so the case fits.",
+   "active": true,
+   "wanted": true
+  },
+  "modelOpts": [
+   [
+    "",
+    "Select your phone model",
+    false
+   ],
+   [
+    "iPhone 17 Pro Max",
+    "iPhone 17 Pro Max",
+    false
+   ],
+   [
+    "iPhone 17 Pro",
+    "iPhone 17 Pro",
+    false
+   ],
+   [
+    "iPhone 17",
+    "iPhone 17",
+    false
+   ]
+  ],
+  "addStates": [
+   [
+    60,
+    [
+     "",
+     "cvcr__add is-done",
+     "In your bag",
+     true,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ],
+   [
+    400,
+    [
+     "",
+     "cvcr__add is-done",
+     "In your bag",
+     true,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ],
+   [
+    1200,
+    [
+     "",
+     "cvcr__add is-done",
+     "In your bag",
+     true,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ],
+   [
+    2600,
+    [
+     "",
+     "cvcr__add",
+     "Add 2 cases $81.98",
+     false,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ]
+  ],
+  "errors": []
+ },
+ "default-768": {
+  "sw": 768,
+  "cw": 768,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     718,
+     736,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     785,
+     736,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     557,
+     736,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     623,
+     736,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     466,
+     736,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     398,
+     685,
+     29
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     289,
+     735,
+     159
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     534,
+     736,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 5,
+  "mid": {
+   "dbl": [],
+   "ctl_add_op": 1,
+   "ctl_price_op": 1
+  },
+  "errors": []
+ },
+ "default-1440": {
+  "sw": 1440,
+  "cw": 1440,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     670,
+     500,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     736,
+     500,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     510,
+     500,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     576,
+     500,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     419,
+     500,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     825,
+     352,
+     450,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     233,
+     500,
+     168
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     487,
+     500,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 8,
+  "mid": {
+   "dbl": [
+    [
+     "cvcr__chip",
+     "transform, border-color, background-color, box-shadow",
+     "0.24s, 0.16s, 0.16s, 0.16s",
+     "y|scale"
+    ],
+    [
+     "cvcr__chip",
+     "transform, border-color, background-color, box-shadow",
+     "0.24s, 0.16s, 0.16s, 0.16s",
+     "y|scale"
+    ]
+   ],
+   "ctl_add_op": 1,
+   "ctl_price_op": 1
+  },
+  "errors": []
+ },
+ "rm-375": {
+  "sw": 375,
+  "cw": 375,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     718,
+     343,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     784,
+     343,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     558,
+     343,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     624,
+     343,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     413,
+     343,
+     100
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     346,
+     293,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     237,
+     343,
+     158
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     535,
+     343,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 0,
+  "mid": null,
+  "focus": [
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__chip",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "rgb(196, 48, 43) 0px 0px 0px 1px, rgba(126, 26, 23, 0.6) 0px",
+    "fv": true
+   },
+   {
+    "tag": "SELECT",
+    "cls": "",
+    "inCvcr": true,
+    "outline": "none 3px rgb(51, 35, 26)",
+    "shadow": "rgb(205, 227, 224) 0px 0px 0px 3px",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__pack-pill",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__add",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "rgb(126, 26, 23) 0px 4px 0px 0px, rgba(126, 26, 23, 0.6) 0px",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvcr__buy-now",
+    "inCvcr": true,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BODY",
+    "cls": "harness",
+    "inCvcr": false,
+    "outline": "none 3px rgb(74, 51, 36)",
+    "shadow": "none",
+    "fv": false
+   },
+   {
+    "tag": "A",
+    "cls": "",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "A",
+    "cls": "",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(78, 124, 123)",
+    "shadow": "none",
+    "fv": true
+   },
+   {
+    "tag": "BUTTON",
+    "cls": "cvc__photo-ticket",
+    "inCvcr": false,
+    "outline": "solid 3px rgb(210, 181, 124)",
+    "shadow": "none",
+    "fv": true
+   }
+  ],
+  "noModel": {
+   "status": "Pick your phone model first, so the case fits.",
+   "active": true,
+   "wanted": true
+  },
+  "modelOpts": [
+   [
+    "",
+    "Select your phone model",
+    false
+   ],
+   [
+    "iPhone 17 Pro Max",
+    "iPhone 17 Pro Max",
+    false
+   ],
+   [
+    "iPhone 17 Pro",
+    "iPhone 17 Pro",
+    false
+   ],
+   [
+    "iPhone 17",
+    "iPhone 17",
+    false
+   ]
+  ],
+  "addStates": [
+   [
+    60,
+    [
+     "",
+     "cvcr__add is-busy",
+     "Adding\u2026 $81.98",
+     true,
+     "",
+     "pdp.html"
+    ]
+   ],
+   [
+    400,
+    [
+     "",
+     "cvcr__add is-done",
+     "In your bag",
+     true,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ],
+   [
+    1200,
+    [
+     "",
+     "cvcr__add is-done",
+     "In your bag",
+     true,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ],
+   [
+    2600,
+    [
+     "",
+     "cvcr__add",
+     "Add 2 cases $81.98",
+     false,
+     "2 cases added to your bag.",
+     "pdp.html"
+    ]
+   ]
+  ],
+  "errors": []
+ },
+ "rm-768": {
+  "sw": 768,
+  "cw": 768,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     718,
+     736,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     784,
+     736,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     557,
+     736,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     623,
+     736,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     466,
+     736,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     399,
+     686,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     291,
+     736,
+     158
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     534,
+     736,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 0,
+  "mid": null,
+  "errors": []
+ },
+ "rm-1440": {
+  "sw": 1440,
+  "cw": 1440,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     670,
+     500,
+     56
+    ],
+    "txt": "Add 2 cases $81.98"
+   },
+   "buyNow": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     736,
+     500,
+     52
+    ],
+    "txt": "Buy now"
+   },
+   "model": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     510,
+     500,
+     52
+    ],
+    "txt": "Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17"
+   },
+   "packs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     576,
+     500,
+     48
+    ],
+    "txt": "1 case 2 cases 18% OFF 3 cases 31% OFF"
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     419,
+     500,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     825,
+     352,
+     450,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     233,
+     500,
+     168
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     487,
+     500,
+     301
+    ],
+    "txt": "YOUR PHONE Select your phone model iPhone 17 Pro Max iPhone 17 Pro iPhone 17 1 c"
+   },
+   "nojs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Choose your phone model"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__pack-pill",
+    "true",
+    0
+   ],
+   [
+    "cvcr__pack-pill",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": 0,
+  "mid": null,
+  "errors": []
+ },
+ "nojs-375": {
+  "sw": 375,
+  "cw": 375,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Add to bag "
+   },
+   "buyNow": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Buy now "
+   },
+   "model": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17"
+   },
+   "packs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " "
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     811,
+     343,
+     100
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     744,
+     293,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     635,
+     343,
+     158
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Your phone Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17 Change"
+   },
+   "nojs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     933,
+     258,
+     50
+    ],
+    "txt": "CHOOSE YOUR PHONE MODEL"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": null,
+  "mid": null,
+  "errors": []
+ },
+ "nojs-768": {
+  "sw": 768,
+  "cw": 768,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Add to bag "
+   },
+   "buyNow": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Buy now "
+   },
+   "model": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17"
+   },
+   "packs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " "
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     1104,
+     736,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     41,
+     1037,
+     686,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     929,
+     736,
+     158
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Your phone Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17 Change"
+   },
+   "nojs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     16,
+     1172,
+     258,
+     50
+    ],
+    "txt": "CHOOSE YOUR PHONE MODEL"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": null,
+  "mid": null,
+  "errors": []
+ },
+ "nojs-1440": {
+  "sw": 1440,
+  "cw": 1440,
+  "wide": [],
+  "clipped": [
+   [
+    "cvcr__sr",
+    110,
+    1,
+    19,
+    1,
+    "Previous colour"
+   ],
+   [
+    "cvcr__sr",
+    82,
+    1,
+    19,
+    1,
+    "Next colour"
+   ]
+  ],
+  "faint": [],
+  "ctl": {
+   "add": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Add to bag "
+   },
+   "buyNow": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Buy now "
+   },
+   "model": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17"
+   },
+   "packs": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": " "
+   },
+   "chips": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     595,
+     500,
+     46
+    ],
+    "txt": "Russet Brown Black Blue"
+   },
+   "price": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     825,
+     528,
+     450,
+     28
+    ],
+    "txt": "$49.99"
+   },
+   "ticket": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     409,
+     500,
+     168
+    ],
+    "txt": "YOUR COLOUR 1 OF 3 Russet Brown Made for 3 phone models $49.99"
+   },
+   "buy": {
+    "vis": false,
+    "op": 1,
+    "r": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "txt": "Your phone Select your phone modeliPhone 17 Pro MaxiPhone 17 ProiPhone 17 Change"
+   },
+   "nojs": {
+    "vis": true,
+    "op": 1,
+    "r": [
+     800,
+     663,
+     258,
+     50
+    ],
+    "txt": "CHOOSE YOUR PHONE MODEL"
+   }
+  },
+  "live": [
+   [
+    "cvcr__name",
+    null,
+    "polite",
+    "Russet Brown"
+   ],
+   [
+    "cvcr__status",
+    "status",
+    "polite",
+    ""
+   ]
+  ],
+  "radios": [
+   [
+    "cvcr__chip",
+    "true",
+    0
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ],
+   [
+    "cvcr__chip",
+    "false",
+    -1
+   ]
+  ],
+  "dashes": [],
+  "dbl": [],
+  "st": null,
+  "mid": null,
+  "errors": []
+ }
+}

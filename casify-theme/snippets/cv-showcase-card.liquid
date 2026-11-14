@@ -24,6 +24,7 @@
   @param {string} [wrapper] - Outer element, 'li' (default) or 'article'.
   @param {boolean} [pick] - Button picks the variant (quick pick) or adds to bag instead of linking.
   @param {boolean} [reveal] - Add the theme's scroll reveal to the card.
+  @param {string} [jm_map] - Verified Judge.me ratings, built once by the section with snippets/cv-jm-verified.liquid (mode 'map'). Without it the card shows no stars.
 {% enddoc %}
 {%- liquid
   assign has_block = false
@@ -262,8 +263,25 @@
         endif
       endif
     endfor
-    assign i_rating = item.metafields.reviews.rating.value
-    assign i_count = item.metafields.reviews.rating_count.value | default: 0
+    comment
+      Stars: this product's Judge.me reviews by verified buyers only, read from the
+      section's jm_map ("|handle:rating" once per review).
+    endcomment
+    assign i_count = 0
+    assign i_sum = 0
+    assign jm_key = '|' | append: item.handle | append: ':'
+    if jm_map contains jm_key
+      assign jm_bits = jm_map | split: jm_key
+      for bit in jm_bits offset: 1
+        assign bit_r = bit | slice: 0 | plus: 0
+        assign i_count = i_count | plus: 1
+        assign i_sum = i_sum | plus: bit_r
+      endfor
+    endif
+    assign i_avg = 0
+    if i_count > 0
+      assign i_avg = i_sum | times: 1.0 | divided_by: i_count
+    endif
   endif
 
   comment
@@ -344,11 +362,11 @@
 
   <div class="cvsh-card__body">
     {%- if has_item -%}
-      {%- if i_rating != blank and i_count > 0 -%}
-        {%- assign i_pct = i_rating.rating | times: 100.0 | divided_by: i_rating.scale_max | round: 1 -%}
+      {%- if i_count > 0 -%}
+        {%- assign i_pct = i_avg | times: 20.0 | round: 1 -%}
         <div class="cvsh-card__rating">
           {%- render 'cv-stars', fill: i_pct, class: 'cvsh-card__stars' -%}
-          <span>{{ i_rating.rating | round: 1 }} <span class="cvsh-sr">out of {{ i_rating.scale_max }} stars,</span>({{ i_count }})</span>
+          <span>{{ i_avg | round: 1 }} <span class="cvsh-sr">out of 5 stars,</span>({{ i_count }})</span>
         </div>
       {%- endif -%}
     {%- endif -%}

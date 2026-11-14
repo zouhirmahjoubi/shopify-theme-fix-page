@@ -367,7 +367,21 @@
     return target.matches && target.matches('[data-cvcl]') ? target : one('[data-cvcl]', target);
   }
 
-  boot(document);
+  /* Speed: on page load the collage's motion is built only once it is about 1.5 screens away
+     (window.cvNear in layout/theme.liquid), in a task of its own, instead of inside the page's
+     start-up task (about 140 ms at 4x CPU on a mid-range phone, 2026-11-09). CSS hides nothing
+     before it runs, and a tile tapped before then opens its video link, as without JS. The theme
+     editor and section reloads build at once, as before. */
+  function bootLater(scope) {
+    all('[data-cvcl]', scope).forEach(function (root) {
+      if ((window.Shopify && window.Shopify.designMode) || typeof window.cvNear !== 'function') { init(root); return; }
+      window.cvNear(root, 1.5).then(function () {
+        setTimeout(function () { if (root.isConnected) init(root); }, 0);
+      });
+    });
+  }
+
+  bootLater(document);
 
   window.addEventListener('load', function () {
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();

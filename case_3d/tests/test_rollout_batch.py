@@ -87,6 +87,21 @@ def test_log_rows_keep_only_confirmed_new_products():
     assert out[0]['model'] == 'M1' and out[0]['batch'] == 2
 
 
+def test_ready_rows_gather_finished_products_with_a_model_from_every_batch():
+    catalog = {r['gid']: r for r in rows(5)}
+    g = lambda i: 'gid://shopify/Product/%d' % i
+    plan = [[g(0), g(1)], [g(2), g(3), g(4)]]
+    states = {1: {'urls': {'m0.glb': 'U0'}, 'models': {g(0): 'M0', g(1): 'M1'}},
+              2: {'urls': {'m2.glb': 'U2'}, 'models': {g(2): 'M2'}}}
+    log = {'products': [{'product': g(0)}]}
+    batch, state = rb.ready_rows(catalog, plan, states, [g(3), g(1), g(2), g(0)], log)
+    assert [(r['gid'], r['batch']) for r in batch] == [(g(1), 1), (g(2), 2)]   # 3 has no model yet, 0 is logged
+    assert state == {'urls': {'m0.glb': 'U0', 'm2.glb': 'U2'}, 'models': {g(0): 'M0', g(1): 'M1', g(2): 'M2'}}
+    assert 'batch' not in catalog[g(1)]
+    out = rb.log_rows(batch, state, ['M1', 'M2'], {}, log, None)
+    assert [(r['product'], r['batch']) for r in out] == [(g(1), 1), (g(2), 2)]
+
+
 def test_targets_from_a_persisted_tool_result(tmp_path):
     payload = {'data': {'stagedUploadsCreate': {'stagedTargets': [{'resourceUrl': 'R', 'url': 'U', 'parameters': []}], 'userErrors': []}}}
     wrapped = tmp_path / 'wrapped.txt'

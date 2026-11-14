@@ -1,0 +1,70 @@
+--- "E:/Shopify Theme Fix & Page/deliverables/see-it-in-hand-clips-2026-11-12/theme-changes/live-base/templates/product.json"	2026-11-12 17:11:44.991464700 +0100
++++ "E:/Shopify Theme Fix & Page/deliverables/see-it-in-hand-clips-2026-11-12/theme-changes/push/templates/product.json"	2026-11-12 17:11:44.991464700 +0100
+@@ -153,6 +153,54 @@
+             "colour": "",
+             "product": ""
+           }
++        },
++        "shop-clip-snow-day-penguin": {
++          "type": "shop_clip",
++          "settings": {
++            "mp4_asset": "cv-clip-snow-day-penguin.mp4",
++            "poster_asset": "cv-clip-snow-day-penguin.jpg",
++            "alt": "Snow Day Penguin case on an iPhone 18 Pro Max, held in a hand",
++            "phone": "iPhone 18 Pro Max · Glossy",
++            "ai_made": true,
++            "silent": true,
++            "product_handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case"
++          }
++        },
++        "shop-clip-beary-christmas": {
++          "type": "shop_clip",
++          "settings": {
++            "mp4_asset": "cv-clip-beary-christmas.mp4",
++            "poster_asset": "cv-clip-beary-christmas.jpg",
++            "alt": "Beary Christmas polar bear case on an iPhone 18 Pro Max, held in a hand",
++            "phone": "iPhone 18 Pro Max · Glossy",
++            "ai_made": true,
++            "silent": true,
++            "product_handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-magnetic-impact-resistant-case"
++          }
++        },
++        "shop-clip-kissing-mistletoe": {
++          "type": "shop_clip",
++          "settings": {
++            "mp4_asset": "cv-clip-kissing-mistletoe.mp4",
++            "poster_asset": "cv-clip-kissing-mistletoe.jpg",
++            "alt": "Kissing Mistletoe case on an iPhone 18 Pro Max, held in a hand",
++            "phone": "iPhone 18 Pro Max · Glossy",
++            "ai_made": true,
++            "silent": true,
++            "product_handle": "mistletoe-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case"
++          }
++        },
++        "shop-clip-bah-humbug": {
++          "type": "shop_clip",
++          "settings": {
++            "mp4_asset": "cv-clip-bah-humbug.mp4",
++            "poster_asset": "cv-clip-bah-humbug.jpg",
++            "alt": "Bah Humbug grumpy cat case on an iPhone 18 Pro Max, held in a hand",
++            "phone": "iPhone 18 Pro Max · Glossy",
++            "ai_made": true,
++            "silent": true,
++            "product_handle": "bah-humbug-christmas-phone-case-grumpy-persian-cat-in-santa-hat-on-green-polka-dots-magsafe-compatible-tough-case"
++          }
+         }
+       },
+       "block_order": [
+@@ -167,7 +215,11 @@
+         "sales-note",
+         "sales-rocket",
+         "video-reviews",
+-        "video-review-1"
++        "video-review-1",
++        "shop-clip-snow-day-penguin",
++        "shop-clip-beary-christmas",
++        "shop-clip-kissing-mistletoe",
++        "shop-clip-bah-humbug"
+       ],
+       "settings": {
+         "crumb_label": "Cases",

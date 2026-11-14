@@ -17,8 +17,8 @@
       "blocks": {
         "t-0": { "type": "trust", "settings": { "icon": "lock-secure", "text": "Encrypted, secure checkout" } },
         "t-1": { "type": "trust", "settings": { "icon": "truck-fast", "text": "Free shipping" } },
-        "t-2": { "type": "trust", "settings": { "icon": "returns", "text": "30-day returns" } },
-        "t-3": { "type": "trust", "settings": { "icon": "clock", "text": "Ships in 1-3 business days" } }
+        "t-2": { "type": "trust", "settings": { "icon": "returns", "text": "Free replacement if damaged" } },
+        "t-3": { "type": "trust", "settings": { "icon": "clock", "text": "Printed to order in the USA" } }
       },
       "block_order": ["t-0", "t-1", "t-2", "t-3"]
     }

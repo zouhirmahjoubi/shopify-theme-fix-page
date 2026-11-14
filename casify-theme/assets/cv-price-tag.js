@@ -10,10 +10,11 @@
  * The HTML tag is the finished version and always carries the live price.
  * Reduced motion or no WebGL: it stays the static HTML tag.
  */
-const CVPT_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVPT_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 let cvptThree = null;
 
 function cvptWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     return Boolean(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
@@ -279,8 +280,12 @@ async function cvptInit(tag, model) {
   const swing = { theta: 0, omega: 0, drop: 0, flip: 0 };
   let last = performance.now();
   const start = last;
+  let drawnAt = 0;
+  let drawnFlip = 0;
   function frame() {
     const now = performance.now();
+    drawnAt = now;
+    drawnFlip = swing.flip;
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     const t = (now - start) / 1000;
@@ -291,6 +296,14 @@ async function cvptInit(tag, model) {
     pivot.position.y = swing.drop;
     card.rotation.y = 0.22 * Math.sin(t * 0.7) + swing.flip;
     renderer.render(scene, camera);
+  }
+  // The running loop: calm (only the breeze moving it), the tag draws every other frame
+  // (30 a second on a 60 Hz screen; they look the same). A kick, the drop-in and the price
+  // flip draw every frame. A skipped frame leaves `last` alone, so the next one integrates
+  // the whole time (dt is real time). A frame asked for directly (resize) always draws.
+  function tick() {
+    if (performance.now() - drawnAt < 24 && Math.abs(swing.omega) < 0.15 && swing.drop === 0 && swing.flip === drawnFlip) return;
+    frame();
   }
 
   // Drop in while the page intro still hides it; otherwise swing into view.
@@ -331,7 +344,7 @@ async function cvptInit(tag, model) {
     if (on === running) return;
     running = on;
     if (on) last = performance.now();
-    renderer.setAnimationLoop(on ? frame : null);
+    renderer.setAnimationLoop(on ? tick : null);
   }
   const io = new IntersectionObserver(function (entries) {
     visible = entries[0].isIntersecting;

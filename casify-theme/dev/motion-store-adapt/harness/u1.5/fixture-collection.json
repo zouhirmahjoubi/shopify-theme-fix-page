@@ -1,0 +1,184 @@
+{
+ "_note": "U1.5 store check fixture (minimal, hand-made).",
+ "template_name": "collection",
+ "collection": {
+  "title": "All cases",
+  "url": "/collections/all",
+  "description": "",
+  "products_count": 3,
+  "sort_options": [
+   {
+    "value": "manual",
+    "name": "Featured"
+   }
+  ],
+  "default_sort_by": "manual",
+  "filters": [
+   {
+    "type": "list",
+    "label": "Color",
+    "param_name": "filter.v.option.color",
+    "values": [
+     {
+      "label": "Black",
+      "value": "Black",
+      "param_name": "filter.v.option.color",
+      "count": 2,
+      "active": false
+     }
+    ],
+    "active_values": []
+   },
+   {
+    "type": "list",
+    "label": "Phone model",
+    "param_name": "filter.v.option.model",
+    "values": [
+     {
+      "label": "iPhone 17",
+      "value": "iPhone 17",
+      "param_name": "filter.v.option.model",
+      "count": 3,
+      "active": false
+     }
+    ],
+    "active_values": []
+   }
+  ],
+  "products": [
+   {
+    "id": 1,
+    "handle": "cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case",
+    "title": "Cherry Plaid Magnetic Case",
+    "url": "/products/cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Color",
+      "values": [
+       "Black",
+       "Blue"
+      ]
+     },
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17",
+       "iPhone 17 Pro"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "Black / iPhone 17",
+      "id": 10,
+      "available": true
+     },
+     {
+      "title": "Blue / iPhone 17 Pro",
+      "id": 11,
+      "available": true
+     }
+    ],
+    "tags": [
+     "magnetic"
+    ],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 10
+    }
+   },
+   {
+    "id": 2,
+    "handle": "peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-dual-layer-tough-case",
+    "title": "Peppermint Tough Case",
+    "url": "/products/peppermint-candy-christmas-phone-case-have-yourself-a-sweet-little-christmas-dual-layer-tough-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Color",
+      "values": [
+       "Black",
+       "Blue"
+      ]
+     },
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17",
+       "iPhone 16"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "Black / iPhone 17",
+      "id": 20,
+      "available": true
+     },
+     {
+      "title": "Blue / iPhone 16",
+      "id": 21,
+      "available": true
+     }
+    ],
+    "tags": [],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 20
+    }
+   },
+   {
+    "id": 3,
+    "handle": "camera-lens-protective-film",
+    "title": "Camera Lens Protective Film",
+    "url": "/products/camera-lens-protective-film",
+    "available": true,
+    "has_only_default_variant": true,
+    "options_with_values": [],
+    "variants": [
+     {
+      "title": "Default Title",
+      "id": 30,
+      "available": true
+     }
+    ],
+    "tags": [],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 30
+    }
+   }
+  ]
+ },
+ "template": {
+  "file": "templates/collection.json",
+  "key": "main"
+ }
+}

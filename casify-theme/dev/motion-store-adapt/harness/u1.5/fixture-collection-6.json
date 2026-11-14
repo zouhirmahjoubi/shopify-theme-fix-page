@@ -1,0 +1,338 @@
+{
+ "_note": "U1.5 verify fixture: 6 products, with and without phone model options, one active filter.",
+ "template_name": "collection",
+ "collection": {
+  "title": "All cases",
+  "url": "/collections/all",
+  "description": "",
+  "products_count": 6,
+  "sort_options": [
+   {
+    "value": "manual",
+    "name": "Featured"
+   }
+  ],
+  "default_sort_by": "manual",
+  "filters": [
+   {
+    "type": "list",
+    "label": "Color",
+    "param_name": "filter.v.option.color",
+    "values": [
+     {
+      "label": "Black",
+      "value": "Black",
+      "param_name": "filter.v.option.color",
+      "count": 2,
+      "active": false,
+      "url_to_add": "/collections/all?filter.v.option.color=Black",
+      "url_to_remove": "/collections/all"
+     }
+    ],
+    "active_values": []
+   },
+   {
+    "type": "list",
+    "label": "Phone model",
+    "param_name": "filter.v.option.model",
+    "values": [
+     {
+      "label": "iPhone 17",
+      "value": "iPhone 17",
+      "param_name": "filter.v.option.model",
+      "count": 3,
+      "active": true,
+      "url_to_add": "/collections/all?filter.v.option.model=iPhone 17",
+      "url_to_remove": "/collections/all"
+     }
+    ],
+    "active_values": [
+     {
+      "label": "iPhone 17",
+      "value": "iPhone 17",
+      "param_name": "filter.v.option.model",
+      "count": 3,
+      "active": true,
+      "url_to_add": "/collections/all?filter.v.option.model=iPhone 17",
+      "url_to_remove": "/collections/all"
+     }
+    ]
+   }
+  ],
+  "products": [
+   {
+    "id": 1,
+    "handle": "cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case",
+    "title": "Cherry Plaid Magnetic Case",
+    "url": "/products/cherry-plaid-phone-case-sweet-little-life-magnetic-impact-resistant-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Color",
+      "values": [
+       "Black",
+       "Blue"
+      ]
+     },
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17",
+       "iPhone 17 Pro"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "Black / iPhone 17",
+      "id": 10,
+      "available": true
+     },
+     {
+      "title": "Blue / iPhone 17 Pro",
+      "id": 11,
+      "available": true
+     }
+    ],
+    "tags": [
+     "magnetic"
+    ],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 10
+    }
+   },
+   {
+    "id": 2,
+    "handle": "peppermint-tough-case",
+    "title": "Peppermint Tough Case",
+    "url": "/products/peppermint-tough-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17",
+       "iPhone 16",
+       "iPhone 15"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "iPhone 17",
+      "id": 20,
+      "available": true
+     },
+     {
+      "title": "iPhone 16",
+      "id": 21,
+      "available": true
+     },
+     {
+      "title": "iPhone 15",
+      "id": 22,
+      "available": true
+     }
+    ],
+    "tags": [],
+    "price": 2499,
+    "price_min": 2499,
+    "price_varies": false,
+    "compare_at_price": 3499,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 20
+    }
+   },
+   {
+    "id": 4,
+    "handle": "gumdrop-slim-case",
+    "title": "Gumdrop Slim Case",
+    "url": "/products/gumdrop-slim-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Color",
+      "values": [
+       "Pink",
+       "Mint"
+      ]
+     },
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "Pink / iPhone 17",
+      "id": 40,
+      "available": true
+     },
+     {
+      "title": "Mint / iPhone 17",
+      "id": 41,
+      "available": true
+     }
+    ],
+    "tags": [],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 40
+    }
+   },
+   {
+    "id": 5,
+    "handle": "licorice-clear-case",
+    "title": "Licorice Clear Case",
+    "url": "/products/licorice-clear-case",
+    "available": false,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17",
+       "Galaxy S25"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "iPhone 17",
+      "id": 50,
+      "available": false
+     },
+     {
+      "title": "Galaxy S25",
+      "id": 51,
+      "available": false
+     }
+    ],
+    "tags": [],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 50
+    }
+   },
+   {
+    "id": 3,
+    "handle": "camera-lens-protective-film",
+    "title": "Camera Lens Protective Film",
+    "url": "/products/camera-lens-protective-film",
+    "available": true,
+    "has_only_default_variant": true,
+    "options_with_values": [],
+    "variants": [
+     {
+      "title": "Default Title",
+      "id": 30,
+      "available": true
+     }
+    ],
+    "tags": [],
+    "price": 2999,
+    "price_min": 2999,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 30
+    }
+   },
+   {
+    "id": 6,
+    "handle": "lollipop-magsafe-case",
+    "title": "Lollipop MagSafe Case",
+    "url": "/products/lollipop-magsafe-case",
+    "available": true,
+    "has_only_default_variant": false,
+    "options_with_values": [
+     {
+      "name": "Style",
+      "values": [
+       "Glossy",
+       "Matte"
+      ]
+     },
+     {
+      "name": "Model",
+      "values": [
+       "iPhone 17 Pro",
+       "Pixel 10"
+      ]
+     }
+    ],
+    "variants": [
+     {
+      "title": "Glossy / iPhone 17 Pro",
+      "id": 60,
+      "available": true
+     },
+     {
+      "title": "Matte / Pixel 10",
+      "id": 61,
+      "available": true
+     }
+    ],
+    "tags": [
+     "magnetic"
+    ],
+    "price": 2799,
+    "price_min": 2799,
+    "price_varies": true,
+    "compare_at_price": 0,
+    "featured_image": "asset:best-case-detail.png",
+    "metafields": {
+     "reviews": {}
+    },
+    "created_at": "2025-01-01",
+    "selected_or_first_available_variant": {
+     "id": 60
+    }
+   }
+  ]
+ },
+ "template": {
+  "file": "templates/collection.json",
+  "key": "main"
+ }
+}

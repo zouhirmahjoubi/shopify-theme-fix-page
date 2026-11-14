@@ -9,7 +9,7 @@
  * still (the coin renders once, no spin). three.js is only fetched when the
  * section is on the page and WebGL works; its loop runs only while on screen.
  */
-const CVVS_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVVS_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 let cvvsThree = null;
 
 function cvvsLoadThree() {
@@ -18,6 +18,7 @@ function cvvsLoadThree() {
 }
 
 function cvvsWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     return Boolean(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
@@ -164,7 +165,10 @@ function cvvsEdgeTexture(THREE, root) {
 
 async function cvvsToken(root, reduced) {
   const holder = root.querySelector('[data-cvvs-token]');
-  if (!holder || !cvvsWebGL()) return function () {};
+  if (!holder) return function () {};
+  // The coin waits until the shopper scrolls towards it; the rows animate as before.
+  if (window.cvNear) await window.cvNear(holder, 2);
+  if (!root.isConnected || !cvvsWebGL()) return function () {};
 
   let THREE;
   try {

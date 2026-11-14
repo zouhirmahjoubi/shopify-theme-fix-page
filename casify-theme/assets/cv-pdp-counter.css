@@ -281,6 +281,25 @@
   font-size: 41px; line-height: .95; letter-spacing: -.02em;
   color: var(--cvc-ink); text-wrap: balance;
 }
+/* Short title: what the case is, quiet under the design name. */
+.cvc__title-sub {
+  display: block; margin-top: 10px;
+  font-family: var(--font-body); font-weight: 400; font-size: 15px; line-height: 1.35; letter-spacing: 0;
+  color: var(--cvc-muted); text-wrap: pretty;
+}
+
+/* Feature chips for the case type.
+   ds-allow-hardcode: px sizes follow this file's own scale (the theme has no spacing or radius tokens); colours are tokens. */
+.cvc__chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.cvc__chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px 5px 9px;
+  font-family: var(--font-label); font-size: 12px; line-height: 1.2;
+  color: var(--cvc-ink);
+  background: var(--cream-50);
+  border: 1px solid var(--cvc-rule); border-radius: 999px;
+}
+.cvc__chip svg { flex: none; color: var(--teal-500); }
 
 .cvc__price-saving {
   display: inline-flex; align-items: center; gap: 5px;
@@ -486,6 +505,31 @@ a.cvrb__chip:focus-visible { outline: 3px solid var(--focus-ring, var(--teal-500
   content: ""; position: absolute; left: 50%; top: 8%; bottom: 8%; width: 2px; background: var(--cocoa-600); transform: rotate(45deg);
 }
 .cvc__swatch:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 3px; }
+
+/* Case switcher: this design as each case type, one tile per product.
+   ds-allow-hardcode: px sizes follow this file's own scale (the theme has no spacing or radius tokens); colours are tokens. */
+.cvc__types {
+  display: grid; grid-template-columns: repeat(var(--cvc-types, 3), minmax(0, 1fr)); gap: 8px;
+  margin: 6px 0 14px; padding: 0; list-style: none;
+}
+.cvc__type {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 10px; align-items: center;
+  height: 100%; min-height: 60px; padding: 8px 10px 8px 8px;
+  color: var(--cvc-ink); text-decoration: none;
+  background: var(--cream-50);
+  border: 1.5px solid var(--cvc-rule); border-radius: 12px;
+  transition: translate 180ms var(--ease-standard), border-color 180ms var(--ease-standard);
+}
+.cvc__type-pic { grid-row: 1 / 3; width: 44px; height: 44px; overflow: hidden; border-radius: 8px; background: var(--cream-200); }
+.cvc__type-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cvc__type-name { align-self: end; font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.1; }
+.cvc__type-price { align-self: start; font-family: var(--font-label); font-size: 12px; line-height: 1.3; color: var(--cvc-muted); font-variant-numeric: tabular-nums; }
+.cvc__type[aria-current] { border-color: var(--cvc-red); box-shadow: inset 0 0 0 1px var(--cvc-red); background: var(--cream-100); }
+.cvc__type[aria-current] .cvc__type-price { color: var(--cvc-red-deep); }
+.cvc__type:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 3px; }
+@media (hover: hover) {
+  .cvc__type:not([aria-current]):hover { translate: 0 -2px; border-color: var(--cvc-muted); }
+}
 /* values without their own photo: text pills */
 .cvc__swatches--text .cvc__swatch {
   width: auto; height: auto; min-height: 44px; padding: 8px 16px;
@@ -554,6 +598,11 @@ a.cvrb__chip:focus-visible { outline: 3px solid var(--focus-ring, var(--teal-500
   box-shadow: 0 2px 0 var(--cvc-red-deep);
 }
 .cvc__pack--teal .cvc__flag { background: var(--teal-600); box-shadow: 0 2px 0 #3e605e; }
+/* The pack's saving in money, under its per-case price. */
+.cvc__pack-save { margin-top: 4px; padding: 2px 8px 3px; border-radius: 999px; font-family: var(--font-label); font-size: 11px; line-height: 1.25; white-space: nowrap; color: var(--cream-50); background: var(--teal-600); } /* ds-allow-hardcode: this file's px scale */
+.cvc__pack--teal .cvc__pack-save { background: var(--cvc-red); }
+.cvc__pack-save[hidden] { display: none; }
+.cvc__packs-note { margin: 8px 0 0; font-family: var(--font-label); font-size: 13px; line-height: 1.35; color: var(--cvc-muted); } /* ds-allow-hardcode: this file's px scale */
 .cvc__pack:focus-visible { outline: 2px solid var(--cvc-red); outline-offset: 4px; }
 
 /* ---------- Savings meter ---------- */
@@ -622,6 +671,12 @@ a.cvrb__chip:focus-visible { outline: 3px solid var(--focus-ring, var(--teal-500
   font-family: var(--font-label); font-size: 15px; line-height: 1.25; color: var(--cvc-ink);
 }
 .cvc__shipby svg { flex: none; width: 20px; height: 20px; color: var(--cocoa-500); }
+/* Secure checkout + the payment methods Shopify has enabled. */
+.cvc__pay { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 0; } /* ds-allow-hardcode: this file's px scale */
+.cvc__pay-label { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-family: var(--font-label); font-size: 13px; line-height: 1.2; color: var(--cvc-ink); } /* ds-allow-hardcode: this file's px scale */
+.cvc__pay-label svg { flex: none; color: var(--teal-600); }
+.cvc__pay-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; } /* ds-allow-hardcode: this file's px scale */
+.cvc__pay-icon { display: block; width: 38px; height: 24px; } /* ds-allow-hardcode: payment icon art is drawn at 38 by 24 */
 
 /* ---------- Shop promises: three postage stamps ---------- */
 /* Perforated cream paper (round holes on every edge, the page showing through), a tinted
@@ -696,6 +751,8 @@ a.cvrb__chip:focus-visible { outline: 3px solid var(--focus-ring, var(--teal-500
 .cvc__acc-a > :last-child { margin-bottom: 0; }
 .cvc__facts { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
 .cvc__facts b { color: var(--cvc-ink); font-weight: 700; }
+.cvc__acc-count { margin-left: 4px; font-family: var(--font-label); font-weight: 400; font-size: 12px; color: var(--cvc-muted); } /* ds-allow-hardcode: this file's px scale */
+.cvc__fits { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2px 16px; margin: 0; padding: 0; list-style: none; color: var(--cvc-ink); } /* ds-allow-hardcode: this file's px scale */
 
 /* ---------- Zoom dialog ---------- */
 .cvc-zoom {
@@ -754,6 +811,8 @@ html.cvc-zoom-open { overflow: hidden; }
   transition: transform 320ms var(--ease-standard);
 }
 .cvc-sticky.is-visible { transform: translate(-50%, 0); }
+/* The bar floats over the page end; room under the footer so it never covers the last links. */
+body:has(.cvc-sticky[data-sticky-early]) { padding-bottom: 76px; } /* ds-allow-hardcode: bar height plus its 8px gap */
 .cvc-sticky__pic { flex: none; width: 48px; height: 48px; overflow: hidden; border-radius: 50%; background: var(--cream-200); box-shadow: 0 0 0 3px var(--cream-100), 0 0 0 4px rgba(74, 51, 36, .2); }
 .cvc-sticky__pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .cvc-sticky__info { flex: 1; min-width: 0; display: grid; gap: 2px; }
@@ -893,6 +952,14 @@ html.cvc-zoom-open { overflow: hidden; }
   .cvc__tag-sale-copy small { font-size: 6px; }
   .cvc__vendor { font-size: 10px; }
   .cvc__title { max-width: calc(100% - 96px); margin-top: 8px; font-size: 29px; line-height: .98; }
+  .cvc__title-sub { margin-top: 8px; font-size: 13.5px; } /* ds-allow-hardcode: this file's px scale */
+  .cvc__chips { margin-top: 10px; } /* ds-allow-hardcode: this file's px scale */
+  .cvc__chip { font-size: 11px; padding: 4px 9px 4px 7px; } /* ds-allow-hardcode: this file's px scale */
+  /* Three tiles side by side on a phone: picture over name and price. */
+  .cvc__type { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; justify-items: center; row-gap: 3px; padding: 8px 6px 7px; text-align: center; } /* ds-allow-hardcode: this file's px scale */
+  .cvc__type-pic { grid-row: auto; width: 40px; height: 40px; } /* ds-allow-hardcode: this file's px scale */
+  .cvc__type-name { font-size: 14px; } /* ds-allow-hardcode: this file's px scale */
+  .cvc__type-price { font-size: 11px; } /* ds-allow-hardcode: this file's px scale */
   .cvc__tag:has(> .cvc__tag-sale:not([hidden])) + .cvc__title { max-width: calc(100% - 120px); }
   .cvc__price-saving { margin-top: 7px; font-size: 10px; }
   .cvc__rating { gap: 8px; font-size: 12px; }

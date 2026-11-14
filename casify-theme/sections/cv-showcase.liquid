@@ -34,6 +34,8 @@
   assign shown = ','
   assign total = 0
 -%}
+{%- comment -%} Stars on the cards: verified Judge.me reviews only, read once for every card. {%- endcomment -%}
+{%- capture jm_map -%}{%- render 'cv-jm-verified', mode: 'map' -%}{%- endcapture -%}
 {%- capture cards -%}
   {%- for block in section.blocks -%}
     {%- if block.type == 'card' and total < limit -%}
@@ -52,7 +54,7 @@
         endif
       -%}
       {%- unless skip -%}
-        {%- render 'cv-showcase-card', item: bp, block: block, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
+        {%- render 'cv-showcase-card', item: bp, block: block, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge, jm_map: jm_map -%}
         {%- assign total = total | plus: 1 -%}
       {%- endunless -%}
     {%- endif -%}
@@ -63,7 +65,7 @@
       {%- assign key = item.id | prepend: ',' | append: ',' -%}
       {%- unless shown contains key -%}
         {%- assign shown = shown | append: item.id | append: ',' -%}
-        {%- render 'cv-showcase-card', item: item, short_title: true, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge -%}
+        {%- render 'cv-showcase-card', item: item, short_title: true, index: total, sid: section.id, cta_label: section.settings.cta_label, sale_badge: section.settings.sale_badge, new_badge: section.settings.new_badge, jm_map: jm_map -%}
         {%- assign total = total | plus: 1 -%}
       {%- endunless -%}
     {%- endfor -%}

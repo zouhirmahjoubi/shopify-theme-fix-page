@@ -26,7 +26,7 @@
  * Reduced motion: nothing here runs and the icons sit still. No WebGL: the
  * tiles are still dealt in, and their SVG icons pop and draw on.
  */
-const CVCF_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVCF_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 // Canvas overhang around the card (px): the falling case and sparks spill past the tiles.
 const PAD = { t: 30, r: 14, b: 14, l: 14 };
@@ -44,6 +44,7 @@ let cvcfThree = null;
 function cvcfRelease() { document.documentElement.classList.remove('cvcf-pending'); }
 
 function cvcfWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl'));

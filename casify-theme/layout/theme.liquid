@@ -6,22 +6,71 @@
       Reveal safety (INF-0). theme.css hides reveal start states ([data-cv-reveal],
       [data-cm-reveal], [data-halo-reveal], .cv-split words, .cv-callout) only under
       html.js, so without JavaScript every node is visible. html.cv-reveal-timeout
-      switches those start states off again: it is set here when a reveal engine
+      switches those start states off again: it is set when a reveal engine
       (cv-motion.js, theme.js) has not booted once the deferred scripts have run,
-      or 2.5 s after this line, whichever comes first; by cv-motion.js if its boot
-      throws; and by halo.js's onerror below.
+      or 2.5 s after the rest of the page starts to arrive, whichever comes
+      first; by cv-motion.js if its boot throws; and by halo.js's onerror below.
+      The 2.5 s countdown is started by the one-line script right below Shopify's
+      header tag, not here: on a streamed page this part runs while the sections
+      are still rendering on the server, seconds before the scripts can boot.
     {%- endcomment -%}
     <script>
       (function (d, w) {
         var h = d.documentElement;
         h.className = h.className.replace('no-js', 'js');
-        function check() {
+        w.cvRevealCheck = function () {
           var ok = w.CVMotion && w.CVMotion.ready && w.CASIFY_FNS && w.CASIFY_FNS.revealReady;
           if (!ok) h.classList.add('cv-reveal-timeout');
-        }
-        w.setTimeout(check, 2500);
-        d.addEventListener('DOMContentLoaded', function () { w.setTimeout(check, 0); });
+        };
+        d.addEventListener('DOMContentLoaded', function () { w.setTimeout(w.cvRevealCheck, 0); });
       })(document, window);
+    </script>
+    {%- comment -%}
+      Shared 3D helpers for the section modules (assets/cv-*.js), before any
+      stylesheet so the parser runs this at once.
+      CV_THREE_URL: three.js 0.186.0, the version the modules used to import
+      from cdn.jsdelivr.net, as jsDelivr's minified build in this theme's
+      assets. Same server as the page, so no extra connection, and about half
+      the bytes. three.module.min.js imports ./three.core.min.js by a path
+      with no ?v=, so an upgrade must ship both files under new names.
+      cvWebGL(): one WebGL probe per page, cached. Each module used to probe
+      with a throwaway context of its own; one costs about as much as a real
+      one, and Android Chrome keeps at most 8 live contexts per page.
+      cvNear(el, screens): resolves once el is within that many screen
+      heights of the viewport, so a section far down the page builds its 3D
+      scene as the shopper scrolls towards it, not during page load.
+    {%- endcomment -%}
+    <script>
+      window.CV_THREE_URL = {{ 'three.module.min.js' | asset_url | json }};
+      (function (w, d) {
+        var gl;
+        w.cvWebGL = function () {
+          if (gl === undefined) {
+            gl = false;
+            try {
+              var c = d.createElement('canvas');
+              var ctx = w.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'));
+              if (ctx) {
+                gl = true;
+                var lose = ctx.getExtension('WEBGL_lose_context');
+                if (lose) lose.loseContext();
+              }
+            } catch (e) { gl = false; }
+          }
+          return gl;
+        };
+        w.cvNear = function (el, screens) {
+          return new Promise(function (resolve) {
+            if (!el || !('IntersectionObserver' in w)) { resolve(); return; }
+            var io = new IntersectionObserver(function (entries) {
+              for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) { io.disconnect(); resolve(); return; }
+              }
+            }, { rootMargin: Math.round((screens || 2) * 100) + '% 0px' });
+            io.observe(el);
+          });
+        };
+      })(window, document);
     </script>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="canonical" href="{{ canonical_url }}">
@@ -30,11 +79,54 @@
       the shop name itself unless the merchant sets a homepage title in Online
       Store > Preferences; it used to render "Casify | Casify". Without that
       setting the home page gets a descriptive fallback instead of a bare name.
+      Product pages with no SEO title of their own (product admin > Search
+      engine listing, metafield global.title_tag) build the title from the
+      product title. Shopify's page_title cuts it at 70 characters, which left
+      "Samsung | | Casify", cut words ("| Tough Cas") and one title for a
+      design's Clear, Magnetic and Tough cases. The rule keeps the part before
+      the first " | " without the device list after "Phone Case for ", and
+      the last part without "Impact-Resistant", "Impact" and "Compatible":
+      "Stay Cozy Patchwork Bunny Christmas Phone Case | Clear Case | Casify".
+      Over 70 characters it tries, in order: "Case" off the case type,
+      "Christmas" off the name, then both. Words are never cut. The result is
+      escaped like page_title, so the escape on og:title leaves it as it is.
     {%- endcomment -%}
     {%- liquid
       assign seo_title = page_title | default: shop.name
       if template.name == 'index' and seo_title == shop.name
         assign seo_title = 'general.meta.home_title' | t: shop: shop.name
+      elsif template.name == 'product' and product.metafields.global.title_tag == blank
+        assign title_parts = product.title | split: ' | '
+        assign title_name = title_parts.first | default: product.title
+        if title_name contains 'Phone Case for '
+          assign title_name = title_name | split: 'Phone Case for ' | first | append: 'Phone Case'
+        endif
+        assign title_kind = ''
+        if title_parts.size > 1
+          assign title_kind = title_parts.last | remove: ' Impact-Resistant' | remove: ' Impact' | remove: ' Compatible' | prepend: ' | '
+        endif
+        assign title_kind_short = title_kind
+        assign title_kind_end = title_kind | slice: -5, 5
+        if title_kind_end == ' Case'
+          assign title_kind_size = title_kind.size | minus: 5
+          assign title_kind_short = title_kind | slice: 0, title_kind_size
+        endif
+        assign title_name_short = title_name | replace: ' Christmas Phone Case', ' Phone Case'
+        assign title_shop = ' | ' | append: shop.name
+        if product.title contains shop.name
+          assign title_shop = ''
+        endif
+        assign seo_title = title_name | append: title_kind | append: title_shop
+        if seo_title.size > 70
+          assign seo_title = title_name | append: title_kind_short | append: title_shop
+        endif
+        if seo_title.size > 70
+          assign seo_title = title_name_short | append: title_kind | append: title_shop
+        endif
+        if seo_title.size > 70
+          assign seo_title = title_name_short | append: title_kind_short | append: title_shop
+        endif
+        assign seo_title = seo_title | escape
       else
         if current_tags
           assign joined_tags = current_tags | join: ', '
@@ -56,9 +148,21 @@
       Preferences for the home page, or the product, collection or page's own
       description). When it is empty, fall back to a line built only from
       confirmed store facts. Cart and search stay without one: they aren't indexed.
+      Product pages with no SEO description of their own (metafield
+      global.description_tag) take theirs from
+      snippets/cv-product-meta-description.liquid instead of Shopify's text;
+      the snippet's comment has the rule. It returns plain text, escaped below.
     {%- endcomment -%}
     {%- liquid
       assign meta_description = page_description
+      if template.name == 'product' and product.metafields.global.description_tag == blank
+        capture product_meta_description
+          render 'cv-product-meta-description', product: product
+        endcapture
+        if product_meta_description != blank
+          assign meta_description = product_meta_description
+        endif
+      endif
       if meta_description == blank
         case template.name
           when 'index'
@@ -182,11 +286,29 @@
     {%- render 'palette-vars' -%}
     <script>window.themeMoneyFormat = {{ shop.money_format | json }};</script>
     {%- comment -%}
-      Script loading. content_for_layout is fully rendered before this layout,
-      so a section's own markup tells us whether its script is needed: each
-      section-specific script below loads only when that section is on the
-      page. In the theme editor (request.design_mode) everything loads, because
-      a section added there is injected without re-rendering this layout.
+      Streaming. Shopify sends this layout in two parts. Everything above its
+      header tag on the next line goes to the browser as soon as it is rendered,
+      while the sections are still rendering, so the stylesheets, font rules and
+      inline scripts up there load during that wait. The rest of the page
+      follows when the sections are done. Rules for the part above the tag:
+      - It never reads the rendered sections (no "contains" check on the page
+        content). That would render every section first, and the early part
+        would leave only when the whole page is ready.
+      - No inline script there reads window.Shopify: the tag defines it.
+      - The tag stays plain and inside head: no filter, no if or capture around
+        it, not in a snippet.
+    {%- endcomment -%}
+    {{ content_for_header }}
+    {%- comment -%} Reveal safety countdown (see the top of this file): 2.5 s from the moment the rest of the page starts to arrive. {%- endcomment -%}
+    <script>window.setTimeout(window.cvRevealCheck, 2500);</script>
+    {%- comment -%}
+      Script loading. Everything from here to the end of head reads
+      content_for_layout, which is why it sits below Shopify's header tag.
+      content_for_layout is fully rendered by now, so a section's own markup
+      tells us whether its script is needed: each section-specific script below
+      loads only when that section is on the page. In the theme editor
+      (request.design_mode) everything loads, because a section added there is
+      injected without re-rendering this layout.
       Generic GSAP plugin opt-ins: a section prints data-cv-gsap-drag or
       data-cv-gsap-flip anywhere in its first server render (Flip also brings
       MotionPathPlugin), so no unit edits this layout for a plugin.
@@ -227,7 +349,6 @@
     {%- if editor or content_for_layout contains 'data-motion-dev' -%}
       {%- render 'motion' -%}
     {%- endif -%}
-    {{ content_for_header }}
   </head>
   {%- liquid
     assign tpl_class = ''

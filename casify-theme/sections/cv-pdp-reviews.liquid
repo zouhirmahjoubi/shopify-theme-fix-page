@@ -3,18 +3,21 @@
 {{ 'cv-pdp-home.css' | asset_url | stylesheet_tag }}
 {{ 'cv-pdp-reviews.css' | asset_url | stylesheet_tag }}
 
+{%- capture jm_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle -%}{%- endcapture -%}
 {%- liquid
-  assign rating = product.metafields.reviews.rating.value
-  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+  comment
+    The rating: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+  endcomment
+  assign jm_parts = jm_stats | split: '␟'
+  assign rating_count = jm_parts[0] | plus: 0
   assign has_rating = false
   assign rating_value = 0
   assign rating_max = 5
   assign star_pct = 0
-  if rating != blank and rating_count > 0
+  if rating_count > 0
     assign has_rating = true
-    assign rating_value = rating.rating
-    assign rating_max = rating.scale_max | default: 5
-    assign star_pct = rating_value | times: 100.0 | divided_by: rating_max | round: 1
+    assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count | round: 1
+    assign star_pct = rating_value | times: 20.0 | round: 1
   endif
   assign app_blocks = 0
   for block in section.blocks

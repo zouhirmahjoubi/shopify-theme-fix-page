@@ -15,7 +15,7 @@
             "rating_source": "auto",
             "show_price": true,
             "save_style": "amount",
-            "tagline": "Premium woven texture. Strong magnetic connection. Everyday protection for your iPhone",
+            "tagline": "Printed after you order and made for your exact phone model.",
             "pitch_products": [
               "tech-fabric-magnetic-phone-case-for-iphone"
             ],
@@ -66,17 +66,18 @@
           "type": "service",
           "settings": {
             "icon": "returns",
-            "text": "30-day returns"
+            "text": "Free replacement if damaged"
           }
         },
         "svc-dispatch": {
           "type": "service",
           "settings": {
             "icon": "box",
-            "text": "Ships in 1-3 business days"
+            "text": "Printed to order in the USA"
           }
         },
         "google-rating": {
+          "disabled": true,
           "type": "google_rating",
           "settings": {
             "rating": "4.9",
@@ -174,8 +175,8 @@
         "empty_rating_link": "Write the first review",
         "show_external_review_badges": true,
         "show_store_rating": true,
-        "external_review_rating": "4.9",
-        "external_review_count": "952",
+        "external_review_rating": "",
+        "external_review_count": "",
         "google_reviews_url": "",
         "trustpilot_rating": "",
         "trustpilot_review_count": "",
@@ -197,13 +198,20 @@
         "show_buy_now": true,
         "buy_label": "Buy now",
         "sticky_cta": "Add to bag",
-        "dispatch_max": 3,
+        "dispatch_max": 10,
         "ship_by_text": "Order today, ships by [date]",
-        "ship_by_fallback": "Ships in 1-3 business days",
-        "details_label": "Details",
+        "ship_by_fallback": "Printed to order, then shipped with tracking",
+        "details_label": "Case details",
         "brand_label": "Brand",
-        "shipping_label": "Shipping & returns",
-        "shipping_text": "<p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p>"
+        "shipping_label": "Shipping",
+        "shipping_text": "<p>Free shipping on every order. Each case is printed after you order, which takes up to 10 business days, then ships with tracking. In the United States it arrives 2 to 5 business days after it ships. <a href=\"/pages/shipping-policy\">Delivery times for other countries</a></p>",
+        "pack_save_text": "Save [amount]",
+        "packs_note": "Mix any designs. Every case in your bag counts toward the pack price.",
+        "show_payment_icons": true,
+        "pay_label": "Secure checkout",
+        "fits_label": "Fits these phones",
+        "damage_label": "Damage cover",
+        "damage_text": "<p>If your case arrives damaged, misprinted or wrong, write to help@casify.shop within 30 days of delivery with your order number and a photo. We send a new one or refund you in full, and you don't need to send the old case back. <a href=\"/pages/return-policy\">Returns and refunds</a></p>"
       }
     },
     "delivery": {
@@ -225,7 +233,7 @@
             "title": "Leaves our shop",
             "icon": "shop",
             "min_days": 1,
-            "max_days": 3,
+            "max_days": 10,
             "no_date_text": "Shown at checkout"
           }
         },
@@ -234,19 +242,71 @@
           "settings": {
             "title": "At your door",
             "icon": "home",
-            "no_date_text": "Shown at checkout"
+            "no_date_text": "Shown at checkout",
+            "min_days": 3,
+            "max_days": 15
+          }
+        },
+        "zone-ca": {
+          "type": "zone",
+          "settings": {
+            "countries": "CA",
+            "case_types": "tough",
+            "extra_min": 3,
+            "extra_max": 10
+          }
+        },
+        "zone-europe": {
+          "type": "zone",
+          "settings": {
+            "countries": "AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU, IE, IT, LV, LT, LU, MT, NL, PL, PT, RO, SK, SI, ES, SE, NO, CH, GB",
+            "case_types": "tough",
+            "extra_min": 0,
+            "extra_max": 5
+          }
+        },
+        "zone-oceania": {
+          "type": "zone",
+          "settings": {
+            "countries": "AU, NZ",
+            "case_types": "tough",
+            "extra_min": 1,
+            "extra_max": 5
+          }
+        },
+        "zone-choice-eu": {
+          "type": "zone",
+          "settings": {
+            "countries": "HR, RO, SI",
+            "case_types": "magnetic, clear",
+            "extra_min": 3,
+            "extra_max": 10
+          }
+        },
+        "zone-choice-world": {
+          "type": "zone",
+          "settings": {
+            "countries": "CA, AT, BE, BG, CY, CZ, DE, DK, EE, ES, FI, FR, GR, IE, LV, MT, NL, PL, PT, SE, IT, HU, LT, SK, LU, GB, CH, NO, AU, NZ, JP, KR, SG, MY, HK, IL, AE, MA",
+            "case_types": "magnetic, clear",
+            "extra_min": 8,
+            "extra_max": 25
           }
         }
       },
       "block_order": [
         "ordered",
         "dispatch",
-        "door"
+        "door",
+        "zone-ca",
+        "zone-europe",
+        "zone-oceania",
+        "zone-choice-eu",
+        "zone-choice-world"
       ],
       "settings": {
         "kicker": "Estimated",
         "business_days": true,
-        "holidays": "",
+        "holidays": "2026-11-26, 2026-12-25, 2027-01-01",
         "use_cutoff": false,
         "cutoff_hour": 14,
         "cutoff_before": "Order within",
@@ -254,10 +314,12 @@
         "note": "Estimates. Delivery dates depend on the carrier and your address.",
         "tone": "page",
         "padding_top": 24,
-        "padding_bottom": 24
+        "padding_bottom": 24,
+        "dated_countries": "US"
       }
     },
     "clips": {
+      "disabled": true,
       "type": "cv-pdp-ugc",
       "blocks": {
         "c-snap": {
@@ -339,8 +401,8 @@
           "type": "item",
           "settings": {
             "icon": "lollipop",
-            "title": "Est. 1920",
-            "body": "the candy-shop counter, online"
+            "title": "Printed to order",
+            "body": "in the USA, for your exact phone"
           }
         }
       },
@@ -376,8 +438,8 @@
             "icon": "wireless-charge",
             "media_alt": "",
             "tone": "teal",
-            "heading": "MagSafe ready",
-            "text": "<p>Use it with MagSafe chargers and accessories without taking the case off.</p>",
+            "heading": "Wireless charging",
+            "text": "<p>Every case works with wireless chargers. Magnetic cases also hold MagSafe chargers and accessories.</p>",
             "link": "",
             "link_label": ""
           }
@@ -390,7 +452,7 @@
             "media_alt": "",
             "tone": "gold",
             "heading": "Cut for your exact model",
-            "text": "<p>Each case is cut from your phone’s own CAD file: one mould per model, so the fit is exact, not “close enough”.</p>",
+            "text": "<p>Each case is made for one phone model. Pick yours on the product page and the cutouts line up with its buttons, ports and camera.</p>",
             "link": "",
             "link_label": ""
           }
@@ -448,8 +510,8 @@
         "row-2": {
           "type": "row",
           "settings": {
-            "us_text": "MagSafe ready",
-            "them_text": "Check the listing for magnets"
+            "us_text": "Works with wireless chargers",
+            "them_text": "Some block wireless charging"
           }
         },
         "row-3": {
@@ -462,8 +524,8 @@
         "row-4": {
           "type": "row",
           "settings": {
-            "us_text": "30-day returns, prepaid label",
-            "them_text": "Returns often at your own cost"
+            "us_text": "Free replacement if damaged",
+            "them_text": "Damage often at your own cost"
           }
         }
       },
@@ -480,15 +542,16 @@
         "surface": "white",
         "us_label": "Casify",
         "us_product": "",
-        "us_sticker": "30-day returns",
+        "us_sticker": "Damage covered",
         "them_label": "Ordinary cases",
         "note": "Every Casify case ships with the same shop promises.",
         "button_label": "Find my model",
         "button_link": "shopify://collections/all",
-        "button_note": "Free shipping on every order · 30-day returns"
+        "button_note": "Free shipping on every order"
       }
     },
     "before_after": {
+      "disabled": true,
       "type": "cv-pdp-before-after",
       "blocks": {
         "comparison_1": {
@@ -541,10 +604,10 @@
         "s-3": {
           "type": "stop",
           "settings": {
-            "metric": "1-3",
-            "unit": "business days",
-            "title": "Packed at the counter",
-            "body": "Your order leaves the shop within 1 to 3 business days of ordering."
+            "metric": "10",
+            "unit": "business days at most",
+            "title": "Printed for you",
+            "body": "Your case is printed after you order, then shipped with tracking."
           }
         },
         "s-4": {
@@ -560,9 +623,9 @@
           "type": "stop",
           "settings": {
             "metric": "30",
-            "unit": "days to decide",
+            "unit": "days to report damage",
             "title": "At your door",
-            "body": "Not the one? You have 30 days to send it back."
+            "body": "Arrived damaged or misprinted? Tell us within 30 days and we send a new one."
           }
         }
       },
@@ -775,12 +838,12 @@
         "review-3"
       ],
       "settings": {
-        "heading": "Rated on Trustpilot",
+        "heading": "Rated by verified buyers",
         "accent_text": "Straight from our shoppers",
         "intro": "",
         "profile_url": "",
         "trustscore": 0,
-        "link_label": "Read all reviews on Trustpilot",
+        "link_label": "Read all reviews",
         "surface": "white",
         "layout": "carousel"
       }
@@ -878,7 +941,7 @@
           "type": "faq",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders leave us within 1 to 3 business days, and shipping is free.</p>",
+            "answer": "<p>Each case is printed after you order, which takes up to 10 business days. In the United States it then arrives in 2 to 5 business days. Shipping is free.</p>",
             "default_open": true
           }
         },
@@ -886,7 +949,7 @@
           "type": "faq",
           "settings": {
             "question": "Can I send it back?",
-            "answer": "<p>Yes. You have 30 days to return it.</p>",
+            "answer": "<p>Cases are printed for your order, so we don't take returns for a change of mind. If yours arrives damaged, misprinted or wrong, write to us within 30 days and we send a new one or refund you.</p>",
             "default_open": false
           }
         },
@@ -934,16 +997,16 @@
           "type": "promise",
           "settings": {
             "icon": "returns",
-            "title": "30-day returns",
-            "body": "change your mind within 30 days"
+            "title": "Damage covered",
+            "body": "free replacement or refund"
           }
         },
         "g-dispatch": {
           "type": "promise",
           "settings": {
             "icon": "clock",
-            "title": "Ships in 1-3 business days",
-            "body": "counted from the day you order"
+            "title": "Printed to order",
+            "body": "in the USA, shipped with tracking"
           }
         },
         "g-packs": {
@@ -1026,7 +1089,7 @@
         "apply_code": false,
         "button_label": "Choose your pack",
         "link": "",
-        "fine_print": "Free shipping on every order · 30-day returns",
+        "fine_print": "Free shipping on every order",
         "tone": "red",
         "display": "popup",
         "popup_delay": 5,
@@ -1242,7 +1305,7 @@
       "settings": {
         "heading": "Loved by our customers",
         "subheading": "Don't just take our word for it.",
-        "badge": "Rated 4.9/5 from 952 reviews on Google and Trustpilot combined",
+        "badge": "",
         "product_label": "Bought:",
         "per_view": 3,
         "autoplay": false,
@@ -1255,11 +1318,104 @@
         "text": "#111111",
         "star": "#f5a623"
       }
+    },
+    "compare": {
+      "type": "cv-case-compare",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "label": "Build",
+            "tough": "Hard shell, soft TPU lining",
+            "magnetic": "Hard shell, cushioned TPU lining",
+            "clear": "Clear back, soft clear sides"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "label": "MagSafe accessories",
+            "tough": "No",
+            "magnetic": "Yes, built-in magnet",
+            "clear": "No"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "label": "Wireless charging",
+            "tough": "Yes",
+            "magnetic": "Yes",
+            "clear": "Yes"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "label": "Finish",
+            "tough": "Glossy or matte",
+            "magnetic": "Glossy or matte",
+            "clear": "Clear"
+          }
+        },
+        "row-5": {
+          "type": "row",
+          "settings": {
+            "label": "Phones",
+            "tough": "iPhone, Samsung, Pixel",
+            "magnetic": "iPhone, Samsung",
+            "clear": "iPhone, Samsung"
+          }
+        },
+        "row-6": {
+          "type": "row",
+          "settings": {
+            "label": "Ships to",
+            "tough": "Most countries",
+            "magnetic": "Most countries",
+            "clear": "Most countries"
+          }
+        },
+        "row-7": {
+          "type": "row",
+          "settings": {
+            "label": "Price",
+            "tough": "From [price]",
+            "magnetic": "From [price]",
+            "clear": "From [price]"
+          }
+        }
+      },
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
+        "row-5",
+        "row-6",
+        "row-7"
+      ],
+      "settings": {
+        "kicker": "Compare cases",
+        "heading": "Which case is right for you?",
+        "subheading": "Every design comes in these cases. Switch case type at the top of the page.",
+        "current_label": "This case",
+        "feature_label": "Feature",
+        "tough_name": "Tough",
+        "tough_collection": "tough-cases",
+        "magnetic_name": "Magnetic",
+        "magnetic_collection": "magnetic-cases",
+        "clear_name": "Clear",
+        "clear_collection": "clear-cases",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
     "main",
     "delivery",
+    "compare",
     "clips",
     "set",
     "ribbon",

@@ -1,0 +1,345 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-pdp-carousel (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[{"id":43001,"title":"Russet Brown","price":1999,"product_title":"Fixture: Case Charm Strap","product_handle":"fixture-case-charm-strap","image":"../../../../assets/best-case-detail.png","options":["Russet Brown"],"available":true},{"id":43002,"title":"Black","price":1999,"product_title":"Fixture: Case Charm Strap","product_handle":"fixture-case-charm-strap","image":"../../../../assets/best-case-in-hand.png","options":["Black"],"available":true}],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"cv-pdp-carousel":"<div id=\"shopify-section-carousel\" class=\"shopify-section section-cv-pdp-carousel\"><link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-carousel.css\" media=\"all\"><section class=\"cvcr\" id=\"cvcr-carousel\" data-cvcr\n           data-money-format=\"${{amount}}\"\n           aria-labelledby=\"cvcrTitle-carousel\">\n    <div class=\"cvcr__inner\">\n      <header class=\"cvcr__head\" data-cvcr-head>\n        <h2 class=\"cvcr__title\" id=\"cvcrTitle-carousel\" data-cvcr-split>Take your pick of the carousel<\/h2><p class=\"cvcr__lede\">Every colour this case comes in rides past. Tap one or drag to spin, choose your phone, and it’s ready for your bag.<\/p><\/header><div class=\"cvcr__stage\" data-cvcr-stage>\n        <div class=\"cvcr__window\" aria-hidden=\"true\">\n          <span class=\"cvcr__glow\" data-cvcr-glow><\/span>\n          <span class=\"cvcr__floor\"><\/span>\n        <\/div>\n        <div class=\"cvcr__stills\" data-cvcr-stills><figure class=\"cvcr__still\" data-cvcr-still=\"0\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"Russet Brown\" class=\"cvcr__still-img\" loading=\"lazy\" sizes=\"(min-width: 900px) 420px, 70vw\"><figcaption class=\"cvcr__still-name\">Russet Brown<\/figcaption>\n            <\/figure><figure class=\"cvcr__still\" data-cvcr-still=\"1\" hidden><img src=\"../../../../assets/best-case-in-hand.png\" alt=\"Black\" class=\"cvcr__still-img\" loading=\"lazy\" sizes=\"(min-width: 900px) 420px, 70vw\"><figcaption class=\"cvcr__still-name\">Black<\/figcaption>\n            <\/figure><\/div>\n        <div class=\"cvcr__canvas\" data-cvcr-canvas aria-hidden=\"true\"><\/div>\n\n        <p class=\"cvcr__hint\" data-cvcr-hint hidden>\n          <svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M18 3v4h-4M6 21v-4h4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><\/svg>\n          Drag to spin\n        <\/p>\n        <button type=\"button\" class=\"cvcr__pause\" data-cvcr-pause aria-pressed=\"false\" hidden>\n          <span data-cvcr-pause-icon=\"pause\"><span class=\"cv-ico \" style=\"width:16px;height:16px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <rect x=\"7\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n        <rect x=\"13.4\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>\n      <\/svg><\/span><\/span>\n          <span data-cvcr-pause-icon=\"play\" hidden><span class=\"cv-ico \" style=\"width:16px;height:16px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\">\n        <path d=\"M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z\"/>\n      <\/svg><\/span><\/span>\n          <span class=\"cvcr__pause-label\" data-cvcr-pause-label>Pause the ride<\/span>\n        <\/button>\n\n        <div class=\"cvcr__nav\">\n          <button type=\"button\" class=\"cvcr__arrow cvcr__arrow--prev\" data-cvcr-step=\"-1\" aria-controls=\"cvcrChips-carousel\">\n            <span class=\"cvcr__sr\">Previous colour<\/span>\n            <svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M15 5l-7 7 7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><\/svg>\n          <\/button>\n          <p class=\"cvcr__count\" aria-hidden=\"true\"><b data-cvcr-count-now>01<\/b><span>/<\/span>02<\/p>\n          <button type=\"button\" class=\"cvcr__arrow cvcr__arrow--next\" data-cvcr-step=\"1\" aria-controls=\"cvcrChips-carousel\">\n            <span class=\"cvcr__sr\">Next colour<\/span>\n            <svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M9 5l7 7-7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><\/svg>\n          <\/button>\n        <\/div>\n      <\/div>\n\n      <div class=\"cvcr__panel\" data-cvcr-panel>\n        <div class=\"cvcr__ticket\" data-cvcr-ticket>\n          <p class=\"cvcr__ticket-label\">Your colour <span data-cvcr-count>1 of 2<\/span><\/p>\n          <p class=\"cvcr__name\" aria-live=\"polite\"><span data-cvcr-name>Russet Brown<\/span><\/p><p class=\"cvcr__fit\" data-cvcr-fit data-state=\"ok\" hidden>\n            <span class=\"cvcr__fit-dot\" aria-hidden=\"true\"><\/span>\n            <span data-cvcr-fit-text><\/span>\n          <\/p>\n          <p class=\"cvcr__price\">\n            <span class=\"cvcr__now\" data-cvcr-now>$19.99<\/span>\n            <s class=\"cvcr__was\" data-cvcr-was hidden><\/s>\n            <span class=\"cvcr__off\" data-cvcr-off hidden><\/span>\n          <\/p>\n        <\/div>\n\n        <div class=\"cvcr__chips\" id=\"cvcrChips-carousel\" role=\"radiogroup\" aria-label=\"Colour\" data-cvcr-chips>\n          <button type=\"button\" class=\"cvcr__chip\" role=\"radio\"\n                  aria-checked=\"true\" tabindex=\"0\"\n                  data-cvcr-chip=\"0\" data-cvcr-value=\"Russet Brown\"\n                  data-stock=\"\">\n            <span class=\"cvcr__chip-pic\" aria-hidden=\"true\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"48\" height=\"48\" loading=\"lazy\"><\/span>\n            <span class=\"cvcr__chip-name\">Russet Brown<\/span>\n          <\/button><button type=\"button\" class=\"cvcr__chip\" role=\"radio\"\n                  aria-checked=\"false\" tabindex=\"-1\"\n                  data-cvcr-chip=\"1\" data-cvcr-value=\"Black\"\n                  data-stock=\"\">\n            <span class=\"cvcr__chip-pic\" aria-hidden=\"true\"><img src=\"../../../../assets/best-case-in-hand.png\" alt=\"\" width=\"48\" height=\"48\" loading=\"lazy\"><\/span>\n            <span class=\"cvcr__chip-name\">Black<\/span>\n          <\/button>\n        <\/div>\n\n        <div class=\"cvcr__buy\" data-cvcr-buy hidden><div class=\"cvcr__packs\" role=\"radiogroup\" aria-label=\"Pack\" data-cvcr-packs data-cvm-packs hidden>\n              <span class=\"cvcr__packs-hl\" data-cvm-pack-highlight aria-hidden=\"true\"><\/span>\n            <\/div><p class=\"cvcr__pack\" data-cvcr-pack hidden>\n            <span data-cvcr-pack-text><\/span>\n            <button type=\"button\" class=\"cvcr__link\" data-cvcr-pack-change>Change<\/button>\n          <\/p>\n          <button type=\"button\" class=\"cvcr__add\" data-cvcr-add data-cvm-btn>\n            <span class=\"cvcr__add-label\" data-cvcr-add-label data-cvm-label>Add to bag<\/span>\n            <span class=\"cvcr__add-total\" data-cvcr-add-total><\/span>\n            <svg class=\"cvcr__add-tick\" viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" aria-hidden=\"true\" focusable=\"false\" data-cvm-icon><path d=\"M5 12.5l4.2 4.2L19 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-cvcr-tick/><\/svg>\n          <\/button>\n          <button type=\"button\" class=\"cvcr__buy-now\" data-cvcr-buy-now data-cvm-btn hidden>\n            <span class=\"cvcr__buy-now-label\" data-cv-buy-label data-cvm-label data-label-default=\"Buy now\">Buy now<\/span>\n            <svg class=\"cvcr__buy-now-arrow\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M5 12h13M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><\/svg>\n          <\/button>\n          <p class=\"cvcr__status\" id=\"cvcrStatus-carousel\" role=\"status\" aria-live=\"polite\" data-cvcr-status><\/p>\n        <\/div>\n\n        <a class=\"cvcr__back\" href=\"#cvPdp\" data-cvcr-nojs>Choose your phone model<\/a>\n      <\/div>\n    <\/div>\n\n    <script type=\"application/json\" data-cvcr-data>\n      {\n        \"styleIndex\": 0,\n        \"modelIndex\": -1,\n        \"modelCount\": 0,\n        \"confirmed\": true,\n        \"selected\": [\"Russet Brown\"],\n        \"styles\": [{\"value\":\"Russet Brown\",\"img\":\"../../../../assets/best-case-detail.png\",\"ok\":1,\"total\":1,\"k\":false},{\"value\":\"Black\",\"img\":\"../../../../assets/best-case-in-hand.png\",\"ok\":1,\"total\":1,\"k\":false}],\n        \"variants\": [{\"id\":43001,\"o\":[\"Russet Brown\"],\"a\":true,\"k\":false,\"p\":1999,\"c\":0},{\"id\":43002,\"o\":[\"Black\"],\"a\":true,\"k\":false,\"p\":1999,\"c\":0}],\n        \"t\": {\n          \"add\": \"Add to bag\",\n          \"addPack\": \"Add [qty] cases\",\n          \"buy\": \"Buy now\",\n          \"adding\": \"Adding…\",\n          \"added\": \"In your bag\",\n          \"soldOut\": \"Sold out\",\n          \"unavailable\": \"Unavailable\",\n          \"pickModel\": \"Pick your phone model first, so the case fits.\",\n          \"failed\": \"That didn’t go through. Please try again.\",\n          \"count\": \"[i] of [n]\",\n          \"madeFor\": \"Made for [models]\",\n          \"stockAll\": \"In stock for every model\",\n          \"modelsAll\": \"[n] phone models\",\n          \"modelsSome\": \"[ok] of [n] phone models\",\n          \"stockSome\": \"In stock for [ok] of [n] phone models\",\n          \"stock\": \"In stock\",\n          \"fitNone\": \"Sold out in this colour\",\n          \"fitYours\": \"In stock for your [model]\",\n          \"fitYoursOut\": \"Sold out for your [model] in this colour\",\n          \"fitYoursNone\": \"Not made for your [model] in this colour\",\n          \"soldSuffix\": \" (sold out)\",\n          \"noneSuffix\": \" (not in this colour)\",\n          \"pack\": \"Pack of [qty] · [total] · [pct]% off\",\n          \"packPlain\": \"Pack of [qty] · [total]\",\n          \"off\": \"[pct]% off\",\n          \"pause\": \"Pause the ride\",\n          \"play\": \"Start the ride\"\n        }\n      }\n    <\/script>\n  <\/section><\/div>"}};</script>
+<script src="../../tools/stub-fetch.js"></script>
+<script src="../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-carousel" class="shopify-section section-cv-pdp-carousel"><link rel="stylesheet" href="../../../../assets/cv-pdp-carousel.css" media="all"><section class="cvcr" id="cvcr-carousel" data-cvcr
+           data-money-format="${{amount}}"
+           aria-labelledby="cvcrTitle-carousel">
+    <div class="cvcr__inner">
+      <header class="cvcr__head" data-cvcr-head>
+        <h2 class="cvcr__title" id="cvcrTitle-carousel" data-cvcr-split>Take your pick of the carousel</h2><p class="cvcr__lede">Every colour this case comes in rides past. Tap one or drag to spin, choose your phone, and it’s ready for your bag.</p></header><div class="cvcr__stage" data-cvcr-stage>
+        <div class="cvcr__window" aria-hidden="true">
+          <span class="cvcr__glow" data-cvcr-glow></span>
+          <span class="cvcr__floor"></span>
+        </div>
+        <div class="cvcr__stills" data-cvcr-stills><figure class="cvcr__still" data-cvcr-still="0"><img src="../../../../assets/best-case-detail.png" alt="Russet Brown" class="cvcr__still-img" loading="lazy" sizes="(min-width: 900px) 420px, 70vw"><figcaption class="cvcr__still-name">Russet Brown</figcaption>
+            </figure><figure class="cvcr__still" data-cvcr-still="1" hidden><img src="../../../../assets/best-case-in-hand.png" alt="Black" class="cvcr__still-img" loading="lazy" sizes="(min-width: 900px) 420px, 70vw"><figcaption class="cvcr__still-name">Black</figcaption>
+            </figure></div>
+        <div class="cvcr__canvas" data-cvcr-canvas aria-hidden="true"></div>
+
+        <p class="cvcr__hint" data-cvcr-hint hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Drag to spin
+        </p>
+        <button type="button" class="cvcr__pause" data-cvcr-pause aria-pressed="false" hidden>
+          <span data-cvcr-pause-icon="pause"><span class="cv-ico " style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <rect x="7" y="5" width="3.6" height="14" rx="1.2"/>
+        <rect x="13.4" y="5" width="3.6" height="14" rx="1.2"/>
+      </svg></span></span>
+          <span data-cvcr-pause-icon="play" hidden><span class="cv-ico " style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M8.4 5.4a1 1 0 0 1 1.53-.85l8.2 5.15a1.3 1.3 0 0 1 0 2.2l-8.2 5.15a1 1 0 0 1-1.53-.85z"/>
+      </svg></span></span>
+          <span class="cvcr__pause-label" data-cvcr-pause-label>Pause the ride</span>
+        </button>
+
+        <div class="cvcr__nav">
+          <button type="button" class="cvcr__arrow cvcr__arrow--prev" data-cvcr-step="-1" aria-controls="cvcrChips-carousel">
+            <span class="cvcr__sr">Previous colour</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="cvcr__count" aria-hidden="true"><b data-cvcr-count-now>01</b><span>/</span>02</p>
+          <button type="button" class="cvcr__arrow cvcr__arrow--next" data-cvcr-step="1" aria-controls="cvcrChips-carousel">
+            <span class="cvcr__sr">Next colour</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="cvcr__panel" data-cvcr-panel>
+        <div class="cvcr__ticket" data-cvcr-ticket>
+          <p class="cvcr__ticket-label">Your colour <span data-cvcr-count>1 of 2</span></p>
+          <p class="cvcr__name" aria-live="polite"><span data-cvcr-name>Russet Brown</span></p><p class="cvcr__fit" data-cvcr-fit data-state="ok" hidden>
+            <span class="cvcr__fit-dot" aria-hidden="true"></span>
+            <span data-cvcr-fit-text></span>
+          </p>
+          <p class="cvcr__price">
+            <span class="cvcr__now" data-cvcr-now>$19.99</span>
+            <s class="cvcr__was" data-cvcr-was hidden></s>
+            <span class="cvcr__off" data-cvcr-off hidden></span>
+          </p>
+        </div>
+
+        <div class="cvcr__chips" id="cvcrChips-carousel" role="radiogroup" aria-label="Colour" data-cvcr-chips>
+          <button type="button" class="cvcr__chip" role="radio"
+                  aria-checked="true" tabindex="0"
+                  data-cvcr-chip="0" data-cvcr-value="Russet Brown"
+                  data-stock="">
+            <span class="cvcr__chip-pic" aria-hidden="true"><img src="../../../../assets/best-case-detail.png" alt="" width="48" height="48" loading="lazy"></span>
+            <span class="cvcr__chip-name">Russet Brown</span>
+          </button><button type="button" class="cvcr__chip" role="radio"
+                  aria-checked="false" tabindex="-1"
+                  data-cvcr-chip="1" data-cvcr-value="Black"
+                  data-stock="">
+            <span class="cvcr__chip-pic" aria-hidden="true"><img src="../../../../assets/best-case-in-hand.png" alt="" width="48" height="48" loading="lazy"></span>
+            <span class="cvcr__chip-name">Black</span>
+          </button>
+        </div>
+
+        <div class="cvcr__buy" data-cvcr-buy hidden><div class="cvcr__packs" role="radiogroup" aria-label="Pack" data-cvcr-packs data-cvm-packs hidden>
+              <span class="cvcr__packs-hl" data-cvm-pack-highlight aria-hidden="true"></span>
+            </div><p class="cvcr__pack" data-cvcr-pack hidden>
+            <span data-cvcr-pack-text></span>
+            <button type="button" class="cvcr__link" data-cvcr-pack-change>Change</button>
+          </p>
+          <button type="button" class="cvcr__add" data-cvcr-add data-cvm-btn>
+            <span class="cvcr__add-label" data-cvcr-add-label data-cvm-label>Add to bag</span>
+            <span class="cvcr__add-total" data-cvcr-add-total></span>
+            <svg class="cvcr__add-tick" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" data-cvm-icon><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" data-cvcr-tick/></svg>
+          </button>
+          <button type="button" class="cvcr__buy-now" data-cvcr-buy-now data-cvm-btn hidden>
+            <span class="cvcr__buy-now-label" data-cv-buy-label data-cvm-label data-label-default="Buy now">Buy now</span>
+            <svg class="cvcr__buy-now-arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="cvcr__status" id="cvcrStatus-carousel" role="status" aria-live="polite" data-cvcr-status></p>
+        </div>
+
+        <a class="cvcr__back" href="#cvPdp" data-cvcr-nojs>Choose your phone model</a>
+      </div>
+    </div>
+
+    <script type="application/json" data-cvcr-data>
+      {
+        "styleIndex": 0,
+        "modelIndex": -1,
+        "modelCount": 0,
+        "confirmed": true,
+        "selected": ["Russet Brown"],
+        "styles": [{"value":"Russet Brown","img":"../../../../assets/best-case-detail.png","ok":1,"total":1,"k":false},{"value":"Black","img":"../../../../assets/best-case-in-hand.png","ok":1,"total":1,"k":false}],
+        "variants": [{"id":43001,"o":["Russet Brown"],"a":true,"k":false,"p":1999,"c":0},{"id":43002,"o":["Black"],"a":true,"k":false,"p":1999,"c":0}],
+        "t": {
+          "add": "Add to bag",
+          "addPack": "Add [qty] cases",
+          "buy": "Buy now",
+          "adding": "Adding…",
+          "added": "In your bag",
+          "soldOut": "Sold out",
+          "unavailable": "Unavailable",
+          "pickModel": "Pick your phone model first, so the case fits.",
+          "failed": "That didn’t go through. Please try again.",
+          "count": "[i] of [n]",
+          "madeFor": "Made for [models]",
+          "stockAll": "In stock for every model",
+          "modelsAll": "[n] phone models",
+          "modelsSome": "[ok] of [n] phone models",
+          "stockSome": "In stock for [ok] of [n] phone models",
+          "stock": "In stock",
+          "fitNone": "Sold out in this colour",
+          "fitYours": "In stock for your [model]",
+          "fitYoursOut": "Sold out for your [model] in this colour",
+          "fitYoursNone": "Not made for your [model] in this colour",
+          "soldSuffix": " (sold out)",
+          "noneSuffix": " (not in this colour)",
+          "pack": "Pack of [qty] · [total] · [pct]% off",
+          "packPlain": "Pack of [qty] · [total]",
+          "off": "[pct]% off",
+          "pause": "Pause the ride",
+          "play": "Start the ride"
+        }
+      }
+    </script>
+  </section></div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../assets/theme.js" defer></script>
+<script src="../../../../assets/cv-motion.js" defer></script>
+<script src="../../../../assets/cv-product.js" defer></script>
+<script src="../../../../assets/cart.js" defer></script>
+<script src="../../../../assets/cv-commerce-motion.js" defer></script>
+<script type="module" src="../../../../assets/cv-pdp-carousel.js"></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

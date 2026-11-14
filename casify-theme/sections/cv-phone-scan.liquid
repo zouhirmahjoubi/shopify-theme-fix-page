@@ -73,9 +73,18 @@
   assign f1 = 0
   assign f2 = 0
   for product in collections.all.products
-    capture fit
-      render 'cvps-fit-match', product: product
-    endcapture
+    # Speed: a product whose variants all cost the same is counted from its option
+    # values (cvps-fit-quick), without loading its 60 to 100 variants. Mixed prices
+    # still read the variants for the cheapest one per phone.
+    if product.price_varies
+      capture fit
+        render 'cvps-fit-match', product: product
+      endcapture
+    else
+      capture fit
+        render 'cvps-fit-quick', product: product
+      endcapture
+    endif
     assign parts = fit | strip | split: ';'
     for k in (0..2)
       assign pair = parts[k] | split: ','
@@ -126,6 +135,34 @@
     endif
     assign design = product.title | split: ' Phone Case' | first | split: ' Christmas' | first | strip | downcase
     assign design_key = '|' | append: design | append: '|'
+    # Speed: the variants are read only for a product that can still add a card.
+    assign wanted = false
+    if product.price_varies
+      assign wanted = true
+    else
+      capture fitq
+        render 'cvps-fit-quick', product: product
+      endcapture
+      assign qparts = fitq | strip | split: ';'
+      if k0 < 3 and qparts[0] != '0'
+        unless seen0 contains design_key
+          assign wanted = true
+        endunless
+      endif
+      if k1 < 3 and qparts[1] != '0'
+        unless seen1 contains design_key
+          assign wanted = true
+        endunless
+      endif
+      if k2 < 3 and qparts[2] != '0'
+        unless seen2 contains design_key
+          assign wanted = true
+        endunless
+      endif
+    endif
+    unless wanted
+      continue
+    endunless
     capture fit
       render 'cvps-fit-match', product: product
     endcapture

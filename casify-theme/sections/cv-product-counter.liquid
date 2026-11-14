@@ -13,9 +13,9 @@
   ("Pack of 2 cases: 18% off", "Pack of 3 cases: 31% off"), so the page price
   is the checkout price. Buy now adds the same line and goes to checkout.
 
-  Product ratings come only from Shopify's standard review metafields
-  (reviews.rating, reviews.rating_count), which review apps write. Until they
-  exist the row reads "No reviews yet". The store rating tickets and strip show a
+  Product ratings, here and in the Product structured data, come only from this
+  product's Judge.me reviews by verified buyers (snippets/cv-jm-verified.liquid).
+  Until one exists the row reads "No reviews yet". The store rating tickets and strip show a
   merchant-supplied store rating (the combined Google and Trustpilot figure, labelled
   as such) and never feed product review data.
 
@@ -32,9 +32,31 @@
 {%- endcomment -%}
 {{ 'cv-pdp-counter.css' | asset_url | stylesheet_tag }}
 {{ 'cv-pdp-extras.css' | asset_url | stylesheet_tag }}
-{%- comment -%} The first 3D model (Model3d media) becomes the reel's second ticket: assets/cv-pdp-model.js, .css {%- endcomment -%}
+{%- comment -%}
+  The first 3D model (Model3d media) becomes the reel's second ticket: assets/cv-pdp-model.js, .css.
+  Past the plan's cap of 250 videos and 3D models per store, a case's model is a plain file instead:
+  the GLB in product.metafields.casify.model_glb and its still in .model_still (file references set by
+  case_3d/file_models.py). It is not product media, so cards and the media order never see it. It opens
+  in the same viewer, without "View in your space", which needs the USDZ Shopify makes only for Model3d.
+{%- endcomment -%}
 {%- assign model_media = product.media | where: 'media_type', 'model' | first -%}
-{%- if model_media != blank and product.media.size > 1 -%}
+{%- assign model_file = nil -%}
+{%- assign model_still = nil -%}
+{%- if model_media == blank and product.metafields.casify.model_glb.value != blank -%}
+  {%- assign model_file = product.metafields.casify.model_glb.value -%}
+  {%- assign model_still = product.metafields.casify.model_still.value -%}
+{%- endif -%}
+{%- assign has_model = false -%}
+{%- if model_media != blank or model_file != blank -%}{%- assign has_model = true -%}{%- endif -%}
+{%- comment -%}
+  model_alone: a case whose photos have not arrived from Printify yet shows its file model on
+  its own, so the stage is never blank. model_stage: the stage carries a 3D viewer.
+{%- endcomment -%}
+{%- assign model_alone = false -%}
+{%- if model_file != blank and model_still != blank and product.media.size == 0 -%}{%- assign model_alone = true -%}{%- endif -%}
+{%- assign model_stage = model_alone -%}
+{%- if has_model and product.media.size > 1 -%}{%- assign model_stage = true -%}{%- endif -%}
+{%- if model_stage -%}
   <link rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
   {{ 'cv-pdp-model.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
@@ -115,6 +137,80 @@
   assign sticky_label = section.settings.sticky_cta | default: add_label
 
   comment
+    Case type, design name and phone brands, all read from the product itself (tags, title and the
+    model option), so the short title, the feature chips and the case switcher only say what the
+    product is. Magnetic is tested first: some magnetic cases carry the "tough case" tag too.
+    Design name is the title before " Phone Case" ("Mistletoe Christmas"); products of one design
+    share it, which is how the switcher finds the same print as another case type.
+  endcomment
+  assign case_type = ''
+  if is_case
+    assign type_tags = product.tags | join: '|' | downcase
+    assign type_title = product.title | downcase
+    if type_tags contains 'magnetic case' or type_title contains 'magnetic' or type_title contains 'magsafe'
+      assign case_type = 'magnetic'
+    elsif type_tags contains 'clear case' or type_title contains 'clear'
+      assign case_type = 'clear'
+    elsif type_tags contains 'tough case' or type_title contains 'tough'
+      assign case_type = 'tough'
+    endif
+  endif
+  assign case_label = ''
+  if case_type != ''
+    assign case_label = section.settings.case_label | default: '[type] case' | replace: '[type]', case_type | capitalize
+  endif
+
+  assign design_name = product.title | split: ' Phone Case' | first | strip
+  if design_name == product.title
+    assign design_name = product.title | split: ' | ' | first | strip
+  endif
+  assign short_title = false
+  if section.settings.short_title and case_type != '' and design_name != blank and design_name != product.title
+    assign short_title = true
+  endif
+
+  assign brands = ''
+  if model_oi >= 0
+    assign model_list = product.options_with_values[model_oi].values | join: '|' | downcase
+    assign brand_list = ''
+    if model_list contains 'iphone'
+      assign brand_list = brand_list | append: '|iPhone'
+    endif
+    if model_list contains 'galaxy' or model_list contains 'samsung'
+      assign brand_list = brand_list | append: '|Samsung'
+    endif
+    if model_list contains 'pixel'
+      assign brand_list = brand_list | append: '|Pixel'
+    endif
+    assign brand_arr = brand_list | remove_first: '|' | split: '|'
+    case brand_arr.size
+      when 1
+        assign brands = brand_arr.first
+      when 2
+        assign brands = brand_arr | join: ' & '
+      when 3
+        assign brands = brand_arr[0] | append: ', ' | append: brand_arr[1] | append: ' & ' | append: brand_arr[2]
+    endcase
+  endif
+  assign title_sub = section.settings.title_sub | default: 'Phone case for [brands]'
+  if brands == blank
+    assign title_sub = title_sub | split: ' for ' | first
+  else
+    assign title_sub = title_sub | replace: '[brands]', brands
+  endif
+
+  assign chip_text = ''
+  case case_type
+    when 'tough'
+      assign chip_text = section.settings.chips_tough
+    when 'magnetic'
+      assign chip_text = section.settings.chips_magnetic
+    when 'clear'
+      assign chip_text = section.settings.chips_clear
+  endcase
+  assign chips = chip_text | split: ','
+
+  comment
     Each tier's percentage, by block position. Tiers of 2 and 3 cases read the theme settings
     (Packs and shipping: cv_pack_2_pct, cv_pack_3_pct), the one source of truth that must equal
     the automatic discounts in Shopify admin, unless the tier turns "use_theme_pct" off.
@@ -166,7 +262,7 @@
     Shopify takes a percentage discount off the line and rounds to the cent, so the page does too.
   endcomment
   assign active_line = cvar.price | times: active_qty
-  assign active_off = active_line | times: active_pct | divided_by: 100.0 | round
+  assign active_off = active_line | times: active_pct | divided_by: 100.0 | floor
   assign active_total = active_line | minus: active_off
 
   comment
@@ -207,17 +303,22 @@
     assign meter_pct = active_pct | times: 100.0 | divided_by: max_pct | round
   endif
 
-  assign rating = product.metafields.reviews.rating.value
-  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
   comment
+    Ratings: this product's Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
     No reviews, no stars: an empty product shows no star fill (PRODUCT.md:102, STORE-FACTS 7, gate G1).
   endcomment
+  capture jm_stats
+    render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle
+  endcapture
+  assign jm_parts = jm_stats | split: '␟'
+  assign rating_count = jm_parts[0] | plus: 0
+  assign rating_value = 0
   assign star_pct = 0
   assign has_rating = false
-  if rating != blank and rating_count > 0
+  if rating_count > 0
     assign has_rating = true
-    assign r_max = rating.scale_max | default: 5
-    assign star_pct = rating.rating | times: 100.0 | divided_by: r_max | round: 1
+    assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
+    assign star_pct = rating_value | times: 20.0 | round: 1
   endif
 
   comment
@@ -261,11 +362,17 @@
     assign photo_limit = 7
   endif
   comment
+    A file model is not in product.media, so its ticket always takes the 8th photo's place.
+  endcomment
+  if model_file != blank
+    assign photo_limit = 7
+  endif
+  comment
     "Open on the 3D view": the model ticket comes first and the stage opens on the
     viewer. Its preview picture paints first, the live model replaces it once loaded.
   endcomment
-  assign model_main = false
-  if model_media != blank and product.media.size > 1 and section.settings.model_first
+  assign model_main = model_alone
+  if has_model and product.media.size > 1 and section.settings.model_first
     assign model_main = true
   endif
   assign stage_image = hero_image
@@ -273,11 +380,16 @@
   if model_main and model_media.preview_image != blank
     assign stage_image = model_media.preview_image
     assign stage_alt = model_media.alt | default: product.title
+  elsif model_main and model_still != blank
+    assign stage_image = model_still
+    assign stage_alt = model_still.alt | default: product.title
   endif
 -%}
+{%- comment -%} Only the variant fields the scripts read (snippets/cv-variants-json.liquid): 162 KB of HTML down to about 33 KB on a 98-variant case. {%- endcomment -%}
+{%- capture cv_variants -%}{%- render 'cv-variants-json', product: product -%}{%- endcapture -%}
 
 <section class="cvc" id="cvPdp" data-cv-pdp="counter"
-         data-variants="{{ product.variants | json | escape }}"
+         data-variants="{{ cv_variants | strip | escape }}"
          data-current-options="{{ cvar.options | json | escape }}"
          data-money-format="{{ shop.money_format | escape }}"
          data-model-index="{{ model_oi }}"
@@ -343,9 +455,9 @@
               decoding="async"
             >
             {%- assign hero_thumb_index = 1 -%}
-            {%- if model_media != blank -%}
+            {%- if has_model -%}
               {%- if model_main -%}{%- assign model_n = 1 -%}{%- else -%}{%- assign model_n = 2 -%}{%- endif -%}
-              {%- assign mpic = model_media.preview_image -%}
+              {%- assign mpic = model_media.preview_image | default: model_still -%}
               {%- capture model_ticket -%}
                 <button type="button" class="cvc__photo-ticket cvc__photo-ticket--3d" id="cvcThumb-{{ section.id }}-{{ model_n }}" role="tab" data-cv-thumb data-cv-model
                         aria-selected="{{ model_main }}"
@@ -395,7 +507,7 @@
                       <span class="cvc__photo-ticket-no" aria-hidden="true">{{ n }}</span>
                     </span>
                   </button>
-                  {%- if n == 1 and model_media != blank and model_main == false -%}
+                  {%- if n == 1 and has_model and model_main == false -%}
                     {%- assign n = n | plus: 1 -%}
                     {{ model_ticket }}
                   {%- endif -%}
@@ -417,7 +529,7 @@
         <div class="cvc__stage cvc__stage--awning-{{ section.settings.show_awning }}{% if model_main %} is-3d{% endif %}"{% if product.media.size > 1 %} id="cvcMedia-{{ section.id }}" role="tabpanel" aria-labelledby="cvcThumb-{{ section.id }}-{{ hero_thumb_index }}"{% endif %}>
           {%- render 'cv-awning', show: section.settings.show_awning, stripes: section.settings.awning_stripes, tone: section.settings.awning_tone, swipe: section.settings.awning_swipe -%}
           {%- render 'cv-photo-price', show: section.settings.show_photo_price, variant: cvar -%}
-          {%- if hero_media != blank -%}
+          {%- if stage_image != blank -%}
             {{ stage_image | image_url: width: 1400 | image_tag:
                 widths: '600, 900, 1200, 1400',
                 sizes: '(min-width: 1270px) 520px, (min-width: 990px) 44vw, calc(100vw - 32px)',
@@ -429,15 +541,22 @@
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
               <span>{%- if section.settings.zoom_label != blank -%}{{ section.settings.zoom_label | escape }}{%- else -%}{{ 'products.gallery.zoom' | t }}{%- endif -%}</span>
             </button>
-            {%- if model_media != blank and product.media.size > 1 -%}
+            {%- if model_stage -%}
               <div class="cvc__model" data-cvc-model{% unless model_main %} hidden{% endunless %}>
-                {%- comment -%} Neutral lighting keeps pale prints their real colour; the default room light washes them to white. {%- endcomment -%}
-                <template>{{ model_media | model_viewer_tag: image_size: '1400x', reveal: 'auto', camera-orbit: '-25deg 75deg auto', shadow-intensity: '1', environment-image: 'neutral', alt: model_media.alt }}</template>
-                <button type="button" class="cvc__xr" data-shopify-xr data-shopify-model3d-id="{{ model_media.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg>
-                  <span>{{ 'products.gallery.view_in_space' | t }}</span>
-                </button>
-                <script type="application/json" data-cvc-model-json>{{ product.media | where: 'media_type', 'model' | json }}</script>
+                {%- comment -%}
+                  Neutral lighting keeps pale prints their real colour; the default room light washes them to white.
+                  A file model gets the same <model-viewer> that model_viewer_tag prints for Model3d media.
+                {%- endcomment -%}
+                {%- if model_media != blank -%}
+                  <template>{{ model_media | model_viewer_tag: image_size: '1400x', reveal: 'auto', camera-orbit: '-25deg 75deg auto', shadow-intensity: '1', environment-image: 'neutral', alt: model_media.alt }}</template>
+                  <button type="button" class="cvc__xr" data-shopify-xr data-shopify-model3d-id="{{ model_media.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg>
+                    <span>{{ 'products.gallery.view_in_space' | t }}</span>
+                  </button>
+                  <script type="application/json" data-cvc-model-json>{{ product.media | where: 'media_type', 'model' | json }}</script>
+                {%- else -%}
+                  <template><model-viewer reveal="auto" camera-orbit="-25deg 75deg auto" shadow-intensity="1" environment-image="neutral" alt="{{ model_file.alt | default: model_still.alt | default: product.title | escape }}" src="{{ model_file.url }}" camera-controls="true" style="--poster-color: transparent;" data-shopify-feature="1.12"{% if model_still != blank %} poster="{{ model_still | image_url: width: 1400 }}"{% endif %}></model-viewer></template>
+                {%- endif -%}
               </div>
               <script src="{{ 'cv-pdp-model.js' | asset_url }}" defer></script>
             {%- endif -%}
@@ -461,7 +580,9 @@
         <input type="hidden" id="cvVariantId" value="{% unless model_pending %}{{ cvar.id }}{% endunless %}">
         <input type="hidden" name="quantity" id="cvQuantity" value="1">
 
-        {%- if product.vendor != blank -%}
+        {%- if short_title -%}
+          <p class="cvc__vendor">{{ case_label | escape }}</p>
+        {%- elsif product.vendor != blank -%}
           <p class="cvc__vendor">{{ product.vendor | escape }}{% if section.settings.vendor_suffix != blank and is_case %} {{ section.settings.vendor_suffix | escape }}{% endif %}</p>
         {%- endif -%}
 
@@ -487,9 +608,30 @@
         </p>
         {%- endif -%}
 
-        <h1 class="cvc__title">{{ product.title | escape }}</h1>
+        {%- comment -%}
+          Short title: the design name large, what it is in a smaller line under it. Both sit in the
+          h1, so the heading still names the product in full for search; the page title and the
+          product schema keep the full Shopify title.
+        {%- endcomment -%}
+        {%- if short_title -%}
+          <h1 class="cvc__title">{{ design_name | escape }} <span class="cvc__title-sub">{{ title_sub | escape }}</span></h1>
+        {%- else -%}
+          <h1 class="cvc__title">{{ product.title | escape }}</h1>
+        {%- endif -%}
 
         {%- render 'cv-counter-blocks', blocks: section.blocks, type: 'summary', product: product, variant: cvar, settings: section.settings -%}
+
+        {%- comment -%} What this case type is, from the section's chips for that type. Facts true for every case of the type only. {%- endcomment -%}
+        {%- if chips.size > 0 -%}
+          <ul class="cvc__chips" role="list" aria-label="{{ case_label | escape }}">
+            {%- for chip in chips -%}
+              {%- assign chip = chip | strip -%}
+              {%- if chip != blank -%}
+                <li class="cvc__chip"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12.5 10 17.5 19 7"/></svg>{{ chip | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
 
         <p class="cvc__price-saving cvc__price-saving--{{ section.settings.show_price_saving }}" data-cv-price-proof aria-live="polite"{% unless show_compare %} hidden{% endunless %}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13 13 20 4 11V4h7l9 9Z"/><circle cx="8.5" cy="8.5" r="1.25"/></svg>
@@ -539,7 +681,7 @@
             {%- endcomment -%}
             {%- if has_rating -%}
               {%- render 'cv-stars', fill: star_pct, class: 'cvc__stars' -%}
-              {%- assign rating_shown = rating.rating | round: 1 -%}
+              {%- assign rating_shown = rating_value | round: 1 -%}
               <span class="cvc__rating-text" data-cvc-rating-text><span aria-hidden="true">{{ rating_shown }}</span> <span class="cvc__visually-hidden">{{ 'products.rating.out_of' | t: rating: rating_shown }}, </span><span class="cvc__rating-separator" aria-hidden="true">·</span><u>{% if rating_count == 1 %}{{ 'products.rating.reviews_one' | t: count: rating_count }}{% else %}{{ 'products.rating.reviews_other' | t: count: rating_count }}{% endif %}</u></span>
             {%- else -%}
               {%- liquid
@@ -583,6 +725,174 @@
         {%- for block in section.blocks -%}
           {%- if block.type == '@app' -%}<div class="cvc__app">{% render block %}</div>{%- endif -%}
         {%- endfor -%}
+
+        {%- comment -%}
+          ---------- Case switcher: this design as Tough, Magnetic and Clear ----------
+          The other case types are separate products with the same design name, so no product or
+          metafield has to be linked by hand; a design sold as one type only shows no switcher.
+          Found by handle first: every case so far was listed by the same Printify flow, so a
+          design's three handles differ only in their ending, in one of two families (2026-11-09:
+          148 designs end -pixel-tough-case / -magnetic-impact-resistant-case /
+          -clear-impact-resistant-case, 15 end -tough-case / -magsafe-compatible-tough-case /
+          -clear-impact-case). Two all_products lookups load two products, about 0.1 s of server
+          time, where reading the catalogue in one page of 250 (collections.all) took about 2.4 s
+          on every uncached product page and missed designs listed after the 250th product.
+          A product found by handle must pass the same design-name and type checks as the scan.
+          The scan still runs when the handle has neither family's ending or neither lookup finds
+          a sibling, so a case listed some other way keeps its switcher.
+        {%- endcomment -%}
+        {%- if section.settings.show_case_switcher and case_type != '' -%}
+          {%- liquid
+            assign sib_tough = nil
+            assign sib_magnetic = nil
+            assign sib_clear = nil
+            case case_type
+              when 'tough'
+                assign sib_tough = product
+              when 'magnetic'
+                assign sib_magnetic = product
+              when 'clear'
+                assign sib_clear = product
+            endcase
+
+            assign sw_stem = ''
+            assign sw_ends = ''
+            assign sw_endings = '-magnetic-impact-resistant-case|-clear-impact-resistant-case|-pixel-tough-case|-magsafe-compatible-tough-case|-clear-impact-case|-tough-case' | split: '|'
+            for sw_end in sw_endings
+              assign sw_len = sw_end | size
+              assign sw_from = 0 | minus: sw_len
+              assign sw_tail = product.handle | slice: sw_from, sw_len
+              if sw_tail == sw_end
+                assign sw_keep = product.handle | size | minus: sw_len
+                assign sw_stem = product.handle | slice: 0, sw_keep
+                if forloop.index <= 3
+                  assign sw_ends = '-pixel-tough-case|-magnetic-impact-resistant-case|-clear-impact-resistant-case' | split: '|'
+                else
+                  assign sw_ends = '-tough-case|-magsafe-compatible-tough-case|-clear-impact-case' | split: '|'
+                endif
+                break
+              endif
+            endfor
+
+            assign sw_found = 0
+            if sw_stem != ''
+              for sw_end in sw_ends
+                assign sw_handle = sw_stem | append: sw_end
+                if sw_handle == product.handle
+                  continue
+                endif
+                assign p = all_products[sw_handle]
+                if p.id == blank or p.id == product.id
+                  continue
+                endif
+                assign p_name = p.title | split: ' Phone Case' | first | strip
+                if p_name == p.title
+                  assign p_name = p.title | split: ' | ' | first | strip
+                endif
+                if p_name != design_name
+                  continue
+                endif
+                assign p_tags = p.tags | join: '|' | downcase
+                assign p_title = p.title | downcase
+                if p_tags contains 'magnetic case' or p_title contains 'magnetic' or p_title contains 'magsafe'
+                  if sib_magnetic == nil
+                    assign sib_magnetic = p
+                    assign sw_found = sw_found | plus: 1
+                  endif
+                elsif p_tags contains 'clear case' or p_title contains 'clear'
+                  if sib_clear == nil
+                    assign sib_clear = p
+                    assign sw_found = sw_found | plus: 1
+                  endif
+                elsif p_tags contains 'tough case' or p_title contains 'tough'
+                  if sib_tough == nil
+                    assign sib_tough = p
+                    assign sw_found = sw_found | plus: 1
+                  endif
+                endif
+              endfor
+            endif
+          -%}
+          {%- if sw_found == 0 -%}
+          {%- paginate collections.all.products by 250 -%}
+            {%- for p in collections.all.products -%}
+              {%- liquid
+                if p.id == product.id
+                  continue
+                endif
+                assign p_name = p.title | split: ' Phone Case' | first | strip
+                if p_name == p.title
+                  assign p_name = p.title | split: ' | ' | first | strip
+                endif
+                if p_name != design_name
+                  continue
+                endif
+                assign p_tags = p.tags | join: '|' | downcase
+                assign p_title = p.title | downcase
+                if p_tags contains 'magnetic case' or p_title contains 'magnetic' or p_title contains 'magsafe'
+                  if sib_magnetic == nil
+                    assign sib_magnetic = p
+                  endif
+                elsif p_tags contains 'clear case' or p_title contains 'clear'
+                  if sib_clear == nil
+                    assign sib_clear = p
+                  endif
+                elsif p_tags contains 'tough case' or p_title contains 'tough'
+                  if sib_tough == nil
+                    assign sib_tough = p
+                  endif
+                endif
+              -%}
+            {%- endfor -%}
+          {%- endpaginate -%}
+          {%- endif -%}
+          {%- liquid
+            assign type_count = 0
+            if sib_tough
+              assign type_count = type_count | plus: 1
+            endif
+            if sib_magnetic
+              assign type_count = type_count | plus: 1
+            endif
+            if sib_clear
+              assign type_count = type_count | plus: 1
+            endif
+          -%}
+          {%- if type_count > 1 -%}
+            <div class="cvc__opt cvc__opt--types">
+              <p class="cvc__label" id="cvcTypes-{{ section.id }}">{{ section.settings.switcher_label | default: 'Case' | escape }}: <span class="cvc__label-value">{{ case_label | escape }}</span></p>
+              <ul class="cvc__types" role="list" aria-labelledby="cvcTypes-{{ section.id }}" style="--cvc-types: {{ type_count }};">
+                {%- for t in (1..3) -%}
+                  {%- liquid
+                    case t
+                      when 1
+                        assign tp = sib_tough
+                        assign tp_name = 'Tough'
+                      when 2
+                        assign tp = sib_magnetic
+                        assign tp_name = 'Magnetic'
+                      when 3
+                        assign tp = sib_clear
+                        assign tp_name = 'Clear'
+                    endcase
+                  -%}
+                  {%- if tp -%}
+                    <li>
+                      <a class="cvc__type" href="{{ tp.url }}"{% if tp.id == product.id %} aria-current="page"{% endif %}>
+                        <span class="cvc__type-pic">
+                          {%- if tp.featured_image -%}{{ tp.featured_image | image_url: width: 120 | image_tag: width: 44, height: 44, alt: '', loading: 'lazy' }}{%- endif -%}
+                        </span>
+                        <span class="cvc__type-name">{{ tp_name }}</span>
+                        {%- comment -%} Availability is per market: Magnetic and Clear ship to the US and Canada only, so elsewhere they read sold out. {%- endcomment -%}
+                        <span class="cvc__type-price">{% if tp.available %}{{ tp.price_min | money }}{% else %}{{ 'products.buy.sold_out' | t }}{% endif %}</span>
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
 
         {%- comment -%} ---------- The non-model options: swatches when every value has its own photo ---------- {%- endcomment -%}
         {%- for option in product.options_with_values -%}
@@ -718,7 +1028,8 @@
                   assign t_qty = b.settings.qty | at_least: 1
                   assign t_pct = pct_arr[forloop.index0] | plus: 0
                   assign t_line = cvar.price | times: t_qty
-                  assign t_off = t_line | times: t_pct | divided_by: 100.0 | round
+                  assign t_off = t_line | times: t_pct | divided_by: 100.0 | floor
+                  assign t_off_money = t_off | money
                   assign t_each = t_line | minus: t_off | divided_by: t_qty
                   comment
                     Ribbon: the merchant's text ([pct] is filled in), else "Save [pct]%" from the tier's own
@@ -739,6 +1050,9 @@
                   <span class="cvc__pack-name">{{ b.settings.name | escape }}</span>
                   <span class="cvc__pack-each" data-cv-tier-each="small">{{ t_each | money }}{% if t_qty > 1 %}<small>{{ 'products.buy.each' | t }}</small>{% endif %}</span>
                   <s class="cvc__pack-was" data-cv-tier-was{% unless show_compare %} hidden{% endunless %}><span class="cvc__visually-hidden">{{ 'products.price_offer.compare_at' | t }}: </span><span data-cv-tier-was-value>{{ compare_price | money }}</span></s>
+                  {%- comment -%} The pack's whole saving in money, rounded down like checkout (assets/cv-product.js keeps it in step with the chosen case). {%- endcomment -%}
+                  {%- assign t_save_text = section.settings.pack_save_text | default: 'Save [amount]' -%}
+                  <span class="cvc__pack-save" data-cv-tier-save data-template="{{ t_save_text | escape }}"{% if t_off <= 0 %} hidden{% endif %}>{{ t_save_text | replace: '[amount]', t_off_money | escape }}</span>
                 </button>
               {%- endif -%}
             {%- endfor -%}
@@ -759,6 +1073,10 @@
                  data-template-save="{{ section.settings.savings_text | default: '[qty] cases saves you [amount] vs buying singly' | escape }}"
                  data-template-next="{{ section.settings.savings_next_text | default: 'Choose [qty] cases to save [pct]% on each' | escape }}">{{ savings_line | escape }}</p>
             </div>
+            {%- comment -%} True because the store's pack discounts count every case in the bag, whatever the design. {%- endcomment -%}
+            {%- if section.settings.packs_note != blank -%}
+              <p class="cvc__packs-note">{{ section.settings.packs_note | escape }}</p>
+            {%- endif -%}
           {%- endif -%}
 
           {%- comment -%} ---------- Mix-and-match: each case in a pack gets its own colour and phone ---------- {%- endcomment -%}
@@ -801,6 +1119,21 @@
           </p>
         {%- endif -%}
 
+        {%- comment -%} The payment methods checkout really offers, from Shopify's own list of enabled types. {%- endcomment -%}
+        {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+          <div class="cvc__pay">
+            <p class="cvc__pay-label">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+              <span>{{ section.settings.pay_label | default: 'Secure checkout' | escape }}</span>
+            </p>
+            <ul class="cvc__pay-list" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li>{{ type | payment_type_svg_tag: class: 'cvc__pay-icon' }}</li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
         {%- comment -%} "Case feature" blocks this product backs up, as a tile card. Motion: assets/cv-case-features.js. {%- endcomment -%}
         {%- if is_case -%}{%- render 'cv-case-features', blocks: section.blocks, product: product, title: section.settings.features_title -%}{%- endif -%}
 
@@ -810,7 +1143,10 @@
           details_label: section.settings.details_label,
           brand_label: section.settings.brand_label,
           shipping_label: section.settings.shipping_label,
-          shipping_text: section.settings.shipping_text
+          shipping_text: section.settings.shipping_text,
+          fits_label: section.settings.fits_label,
+          damage_label: section.settings.damage_label,
+          damage_text: section.settings.damage_text
         -%}
       </form>
 
@@ -820,18 +1156,36 @@
         A third grid item: on desktop it sits in the photo column under the
         photo (assets/cv-pdp-video-reviews.css), in one column it follows the
         buy box. Renders nothing until this product has a clip.
+
+        Two kinds of clip share the row. Customer clips ("Video review" blocks)
+        show only while "Show customer clips" is ticked. Shop clips ("Shop clip"
+        blocks) are the shop's own: they show without a name, stars or quote,
+        and are matched to this product by its handle, a text compare that
+        loads no product.
       {%- endcomment -%}
       {%- liquid
         assign vr_block = nil
+        assign vr_shop_clips = 0
         for b in section.blocks
           if b.type == 'video_reviews'
-            assign vr_block = b
-            break
+            if vr_block == nil
+              assign vr_block = b
+            endif
+          elsif b.type == 'shop_clip'
+            if b.settings.product_handle == blank or b.settings.product_handle == product.handle
+              if b.settings.video != blank or b.settings.mp4_url != blank or b.settings.mp4_asset != blank or b.settings.poster != blank or b.settings.poster_asset != blank
+                assign vr_shop_clips = vr_shop_clips | plus: 1
+              endif
+            endif
           endif
         endfor
         assign vr_uid = section.id | append: '-vr'
+        assign vr_reviews = false
+        if vr_block.settings.show_clips
+          assign vr_reviews = true
+        endif
       -%}
-      {%- if vr_block.settings.show_clips -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
+      {%- if vr_reviews or vr_shop_clips > 0 -%}{%- render 'cv-video-reviews', blocks: section.blocks, clip_type: 'video_review', shop_type: 'shop_clip', reviews: vr_reviews, settings: vr_block.settings, uid: vr_uid, mode: 'inline', attrs: vr_block.shopify_attributes, product: product -%}{%- endif -%}
     </div>
   </div>
 
@@ -864,13 +1218,17 @@
     </dialog>
   {%- endif -%}
 
-  {%- comment -%} Sticky bar once the Add to bag button scrolls away: both buttons stay in reach. {%- endcomment -%}
-  <div class="cvc-sticky" id="cvSticky" aria-hidden="true">
+  {%- comment -%}
+    Sticky bar whenever the Add to bag button is off screen: both buttons stay in reach. With
+    "sticky_early" on it also shows before the shopper reaches the button (on a phone that is
+    two screens down); off, it waits until the button has scrolled away above.
+  {%- endcomment -%}
+  <div class="cvc-sticky" id="cvSticky" aria-hidden="true"{% if section.settings.sticky_early %} data-sticky-early{% endif %}>
     {%- if hero_media != blank -%}
       <span class="cvc-sticky__pic">{{ hero_image | image_url: width: 120 | image_tag: width: 48, height: 48, alt: '', loading: 'lazy' }}</span>
     {%- endif -%}
     <div class="cvc-sticky__info">
-      <span class="cvc-sticky__name">{{ product.title | escape }}</span>
+      <span class="cvc-sticky__name">{% if short_title %}{{ design_name | escape }}{% else %}{{ product.title | escape }}{% endif %}</span>
       <span class="cvc-sticky__meta"><span class="cvc-sticky__variant"><span data-cv-opt-out-sticky>{{ variant_label | escape }}</span> · </span><b id="cvStickyTotal" data-cvm-price data-cents="{{ active_total }}">{{ active_total | money }}</b></span>
     </div>
     <div class="cvc-sticky__buttons">
@@ -882,7 +1240,7 @@
   </div>
 </section>
 
-{%- render 'cv-product-schema', product: product, has_rating: has_rating, rating: rating, rating_count: rating_count -%}
+{%- render 'cv-product-schema', product: product, has_rating: has_rating, rating_value: rating_value, rating_count: rating_count -%}
 
 {% schema %}
 {
@@ -897,7 +1255,7 @@
     { "type": "text", "id": "compare_price_fallback", "label": "Fallback compare-at price", "info": "Used only when the selected variant has no higher compare-at price, and only for shoppers paying in the shop currency. Use a price the case really sold at." },
     { "type": "header", "content": "Rating" },
     { "type": "checkbox", "id": "show_price_saving", "label": "Show the \"You save\" line", "default": true, "info": "Under the title, when the variant has a real compare-at price. Turn off if the \"Rating, price & pitch\" block already shows the saving." },
-    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Reads Shopify's review metafields, which review apps such as Judge.me write. Turn off if your app adds its own star block here." },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating row", "default": true, "info": "Counts this product's Judge.me reviews from verified buyers only." },
     { "type": "text", "id": "reviews_anchor", "label": "Reviews section anchor", "default": "cvc-reviews" },
     { "type": "header", "content": "Main image awning" },
     { "type": "checkbox", "id": "show_awning", "label": "Hang a shop awning over the main photo", "default": false, "info": "A 3D fabric canopy that unrolls on load and sways in the breeze. Flat for shoppers who prefer reduced motion." },
@@ -919,12 +1277,12 @@
     { "type": "checkbox", "id": "show_customer_proof", "label": "Show the customer proof text", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Off: the row reads No reviews yet." },
     { "type": "text", "id": "empty_rating_text", "label": "Customer proof text", "default": "No reviews yet", "info": "Shown before this product has its own reviews, only while the box above is ticked." },
     { "type": "text", "id": "empty_rating_link", "label": "No reviews link", "default": "Write the first review" },
-    { "type": "header", "content": "Google and Trustpilot ratings" },
-    { "type": "paragraph", "content": "Shown under the price. The store rating is your Google and Trustpilot reviews combined and is labelled that way on the page. The Trustpilot fields are for a Trustpilot-only score and can stay empty. A ticket shows only when its rating is filled in. Update the numbers when they change." },
-    { "type": "checkbox", "id": "show_external_review_badges", "label": "Show Google and Trustpilot ratings", "default": true },
-    { "type": "checkbox", "id": "show_store_rating", "label": "These store ratings match the shop's review pages", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only when the numbers below are the real ones (the documented store rating is 4.9 from 952 reviews on Trustpilot and Google). Off hides the tickets, the Google strip and the store rating under the title." },
-    { "type": "text", "id": "external_review_rating", "label": "Store rating (Google and Trustpilot combined)", "info": "For example 4.9. Shown as \"Google and Trustpilot\". Also used for the stars under the title while a product has no reviews of its own." },
-    { "type": "text", "id": "external_review_count", "label": "Store review count (Google and Trustpilot combined)", "info": "For example 952." },
+    { "type": "header", "content": "Store rating (Judge.me) and Trustpilot" },
+    { "type": "paragraph", "content": "Shown under the price. The store rating and the strip come live from Judge.me verified buyer reviews (all review types: product and store reviews) and are labelled Judge.me on the page. The Trustpilot fields are for an optional Trustpilot-only ticket and can stay empty. A ticket shows only when it has a rating." },
+    { "type": "checkbox", "id": "show_external_review_badges", "label": "Show store rating tickets", "default": true },
+    { "type": "checkbox", "id": "show_store_rating", "label": "Show the Judge.me store rating", "default": false, "info": "On: the tickets, the rating strip and the store rating under the title read live from Judge.me verified reviews. Off hides them all." },
+    { "type": "text", "id": "external_review_rating", "label": "Store rating (no longer used)", "info": "The store rating now comes live from Judge.me verified reviews." },
+    { "type": "text", "id": "external_review_count", "label": "Store review count (no longer used)", "info": "The count now comes live from Judge.me verified reviews." },
     { "type": "url", "id": "google_reviews_url", "label": "Store rating link", "info": "Optional. Opens your reviews page in a new tab." },
     { "type": "text", "id": "trustpilot_rating", "label": "Trustpilot rating", "info": "Your TrustScore, for example 4.5." },
     { "type": "text", "id": "trustpilot_review_count", "label": "Trustpilot review count" },
@@ -948,6 +1306,8 @@
     { "type": "text", "id": "packs_label", "label": "Packs label (screen readers)", "default": "How many cases" },
     { "type": "text", "id": "savings_text", "label": "Savings line", "default": "[qty] cases saves you [amount] vs buying singly", "info": "[qty] and [amount] are filled in from the chosen pack." },
     { "type": "text", "id": "savings_next_text", "label": "Savings line on a single case", "default": "Choose [qty] cases to save [pct]% on each", "info": "[qty] and [pct] come from the next pack up." },
+    { "type": "text", "id": "pack_save_text", "label": "Pack saving pill", "default": "Save [amount]", "info": "On each pack of 2 or more. [amount] is the whole pack's saving, rounded down to the cent like checkout." },
+    { "type": "text", "id": "packs_note", "label": "Note under the packs", "default": "Mix any designs. Every case in your bag counts toward the pack price.", "info": "True only while the store's pack discounts count any cases in the bag. Leave empty to hide." },
     { "type": "header", "content": "Mix-and-match packs" },
     { "type": "checkbox", "id": "mix_packs", "label": "Let each case in a pack have its own colour and phone", "default": true, "info": "Works with the store's pack discounts, which count any cases in the bag." },
     { "type": "text", "id": "mix_heading", "label": "Heading", "default": "Your [qty] cases", "info": "[qty] is the pack size." },
@@ -959,10 +1319,23 @@
     { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy now", "default": true, "info": "Adds the chosen case and pack to the bag and goes straight to checkout." },
     { "type": "text", "id": "buy_label", "label": "Buy now label", "default": "Buy now" },
     { "type": "text", "id": "sticky_cta", "label": "Sticky bar add label", "default": "Add to bag" },
+    { "type": "checkbox", "id": "sticky_early", "label": "Show the sticky bar before Add to bag is reached", "info": "On phones the button sits below the photos and options; this keeps it in reach from the first screen.", "default": true },
+    { "type": "header", "content": "Case type" },
+    { "type": "checkbox", "id": "short_title", "label": "Short title", "info": "The design name large, with the line below under it. Only on cases whose type (Tough, Magnetic or Clear) the product's tags or title name.", "default": true },
+    { "type": "text", "id": "title_sub", "label": "Line under the short title", "default": "Phone case for [brands]", "info": "[brands] comes from the product's phone models: iPhone, Samsung, Pixel." },
+    { "type": "text", "id": "case_label", "label": "Case type label", "default": "[type] case", "info": "Shown above the title. [type] is tough, magnetic or clear." },
+    { "type": "text", "id": "chips_tough", "label": "Tough case chips", "default": "Two layers, Glossy or matte, Wireless charging", "info": "Separate with commas. Only facts true for every Tough case." },
+    { "type": "text", "id": "chips_magnetic", "label": "Magnetic case chips", "default": "MagSafe magnet, Two layers, Glossy or matte", "info": "Separate with commas. Only facts true for every Magnetic case." },
+    { "type": "text", "id": "chips_clear", "label": "Clear case chips", "default": "Slim fit, Soft clear sides, Wireless charging", "info": "Separate with commas. Only facts true for every Clear case." },
+    { "type": "checkbox", "id": "show_case_switcher", "label": "Case switcher", "info": "This design as Tough, Magnetic and Clear: products with the same design name (the title before \" Phone Case\").", "default": true },
+    { "type": "text", "id": "switcher_label", "label": "Case switcher label", "default": "Case" },
     { "type": "header", "content": "Ship-by date" },
     { "type": "range", "id": "dispatch_max", "label": "Latest dispatch, business days", "min": 0, "max": 10, "step": 1, "default": 3, "info": "The date shown is today plus this many business days (Monday to Friday). Set 0 to hide the line." },
     { "type": "text", "id": "ship_by_text", "label": "Ship-by line", "default": "Order today, ships by [date]" },
     { "type": "text", "id": "ship_by_fallback", "label": "Line before the date is worked out", "default": "Ships in 1-3 business days" },
+    { "type": "header", "content": "Payment" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true, "info": "The payment methods enabled in Shopify, under the ship-by line." },
+    { "type": "text", "id": "pay_label", "label": "Payment label", "default": "Secure checkout" },
     { "type": "header", "content": "Case features" },
     { "type": "paragraph", "content": "Add a \"Case feature\" block for each feature. The card under the ship-by line shows up to six, and only the ones this product matches." },
     { "type": "text", "id": "features_title", "label": "Card heading", "default": "Built into this case", "info": "Leave empty for no heading." },
@@ -970,7 +1343,10 @@
     { "type": "text", "id": "details_label", "label": "Details label", "default": "Details" },
     { "type": "text", "id": "brand_label", "label": "Brand label", "default": "Brand" },
     { "type": "text", "id": "shipping_label", "label": "Shipping label", "default": "Shipping & returns" },
-    { "type": "richtext", "id": "shipping_text", "label": "Shipping & returns", "default": "<p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p>", "info": "State only what is true for every order." }
+    { "type": "richtext", "id": "shipping_text", "label": "Shipping & returns", "default": "<p>Free shipping on every order. Each case is printed after you order, which takes up to 10 business days, then ships with tracking.</p>", "info": "State only what is true for every order." },
+    { "type": "text", "id": "fits_label", "label": "Phone list label", "default": "Fits these phones", "info": "Lists every phone model this case is made for. Leave empty to hide." },
+    { "type": "text", "id": "damage_label", "label": "Damage cover label", "default": "Damage cover" },
+    { "type": "richtext", "id": "damage_text", "label": "Damage cover", "info": "Leave empty to hide. State only what the return policy promises." }
   ],
   "blocks": [
     { "type": "@app" },
@@ -1028,21 +1404,21 @@
       "name": "Rating, price & pitch",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Shows under the product title: stars, rating and review count, then price, the variant's real compare-at price and saving, then a one-line pitch." },
+        { "type": "paragraph", "content": "Shows under the product title: stars, rating and review count, then price, the variant's real compare-at price and saving, then a one-line pitch. The stars count only this product's Judge.me reviews from verified buyers." },
         {
           "type": "select",
           "id": "rating_source",
           "label": "Rating",
           "options": [
-            { "value": "auto", "label": "Product reviews, else store rating" },
-            { "value": "product", "label": "Product reviews only" },
-            { "value": "store", "label": "Store rating only" }
+            { "value": "auto", "label": "Verified Judge.me reviews" },
+            { "value": "product", "label": "Verified reviews only" },
+            { "value": "store", "label": "Verified reviews (old store option)" }
           ],
           "default": "auto",
-          "info": "Product reviews are the product's review metafields, else its approved reviews from the Review widget. Store rating is the \"External store rating\" and count set in this section."
+          "info": "Every choice now shows the same thing: this product's Judge.me reviews from verified buyers."
         },
-        { "type": "text", "id": "reviews_article", "label": "Review widget blog post", "default": "customer-reviews/reviews", "info": "The same post as the Review widget. This product's approved reviews there set the stars." },
-        { "type": "text", "id": "empty_label", "label": "Text with no reviews yet", "default": "Be the first to review", "info": "Links to the Review widget and opens its form. Leave empty to hide." },
+        { "type": "text", "id": "reviews_article", "label": "Review widget blog post (no longer used)", "default": "customer-reviews/reviews" },
+        { "type": "text", "id": "empty_label", "label": "Text with no reviews yet", "default": "Be the first to review", "info": "Links to the reviews section. Leave empty to hide." },
         { "type": "checkbox", "id": "show_price", "label": "Show price, compare-at price and saving", "default": true },
         {
           "type": "select",
@@ -1061,14 +1437,14 @@
     },
     {
       "type": "google_rating",
-      "name": "Google rating",
+      "name": "Store rating strip",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Shows under the Add to bag button. Hidden until a rating is entered." },
-        { "type": "text", "id": "rating", "label": "Google rating", "info": "Your current rating from your Google Business Profile, e.g. 4.4." },
-        { "type": "text", "id": "review_count", "label": "Google review count", "info": "Optional." },
-        { "type": "text", "id": "headline", "label": "Short quote", "info": "Optional. A word or phrase taken from a real Google review, e.g. Amazing." },
-        { "type": "url", "id": "reviews_url", "label": "Google reviews link", "info": "Optional. Opens your Google reviews in a new tab." }
+        { "type": "paragraph", "content": "Shows under the Add to bag button. Reads the live Judge.me store rating (verified buyers, all review types); hidden until Judge.me has one and while the section's store rating is off." },
+        { "type": "text", "id": "rating", "label": "Rating (no longer used)", "info": "The strip now reads the live Judge.me rating." },
+        { "type": "text", "id": "review_count", "label": "Review count (no longer used)", "info": "The count now comes from Judge.me." },
+        { "type": "text", "id": "headline", "label": "Short quote", "info": "Optional. A word or phrase taken from a real review, e.g. Amazing." },
+        { "type": "url", "id": "reviews_url", "label": "Reviews link", "info": "Optional. Opens your reviews page in a new tab." }
       ]
     },
     {
@@ -1170,6 +1546,7 @@
       "limit": 1,
       "settings": [
         { "type": "paragraph", "content": "Customer video reviews show under the product photo. Add a \"Video review\" block for each clip; the row appears once this product has one. This block only changes the words." },
+        { "type": "paragraph", "content": "Clips you made yourself go in \"Shop clip\" blocks. They show in the same row with no name, stars or quote, under the \"Shop clips\" words below." },
         { "type": "checkbox", "id": "show_clips", "label": "Show customer clips", "default": false, "info": "Shown only when you can back it. Not in the store's evidence on hand. Tick only for real clips from real buyers: names, stars and quotes must be theirs." },
         { "type": "text", "id": "heading", "label": "Heading", "default": "Case clips" },
         { "type": "text", "id": "lede", "label": "Text", "info": "Optional line under the heading." },
@@ -1179,6 +1556,17 @@
         { "type": "text", "id": "anon_label", "label": "Name when none is given", "default": "Customer" },
         { "type": "text", "id": "submit_label", "label": "Send-a-clip link", "default": "Filmed yours? Send it in" },
         { "type": "url", "id": "submit_url", "label": "Send-a-clip page", "info": "The link shows only when a page is chosen, for example your contact page." },
+        { "type": "header", "content": "Shop clips" },
+        { "type": "paragraph", "content": "Used when the row holds only clips you made yourself. Keep these words true of the clips: nothing that says a customer filmed or said it." },
+        { "type": "text", "id": "shop_heading", "label": "Heading", "default": "See it in hand", "info": "Used when every clip shows the case on the page." },
+        { "type": "text", "id": "shop_heading_all", "label": "Heading with other cases", "default": "Our cases in hand", "info": "Used when the row also shows clips of other cases." },
+        { "type": "text", "id": "shop_lede", "label": "Text", "info": "Optional line under the heading." },
+        { "type": "text", "id": "shop_bought_label", "label": "Label before the phone", "default": "Shown on" },
+        { "type": "text", "id": "ai_label", "label": "Label on AI-made clips", "default": "Made with AI", "info": "Shows on every shop clip ticked \"Made with AI\"." },
+        { "type": "text", "id": "shop_hint", "label": "Hint", "default": "Tap a clip to see it larger" },
+        { "type": "text", "id": "design_label", "label": "Label over a design name", "default": "Design" },
+        { "type": "text", "id": "own_label", "label": "Label on this page's own clip", "default": "This case" },
+        { "type": "text", "id": "see_label", "label": "Link to another case", "default": "See this case" },
         { "type": "header", "content": "Shopping panel" },
         { "type": "text", "id": "model_label", "label": "Phone label", "default": "Your phone" },
         { "type": "text", "id": "model_placeholder", "label": "Phone placeholder", "default": "Select your phone model" },
@@ -1206,6 +1594,29 @@
         { "type": "text", "id": "phone", "label": "Phone", "info": "For example \"iPhone 17 Pro\"." },
         { "type": "text", "id": "colour", "label": "Colour", "info": "Write it exactly as the product's colour option, and the player offers \"Choose this colour\"." },
         { "type": "product", "id": "product", "label": "Only show on", "info": "Leave blank to show this clip on every product that uses this template." }
+      ]
+    },
+    {
+      "type": "shop_clip",
+      "name": "Shop clip",
+      "settings": [
+        { "type": "paragraph", "content": "A clip you made yourself, shown under the product photo with no name, stars or quote. Never use it for a customer's clip: that goes in a \"Video review\" block." },
+        { "type": "video", "id": "video", "label": "Video", "info": "Upright 9:16 works best." },
+        { "type": "text", "id": "mp4_url", "label": "Or a direct MP4 link", "info": "Used when no video is uploaded." },
+        { "type": "image_picker", "id": "poster", "label": "Cover image", "info": "Shown until the clip plays. The clip's own first frame works best." },
+        { "type": "header", "content": "Or files kept in the theme" },
+        { "type": "paragraph", "content": "For clips stored in this theme's assets folder. Used when no video, link or cover image is set above." },
+        { "type": "text", "id": "mp4_asset", "label": "Video file name", "info": "For example \"cv-clip-snow-day-penguin.mp4\"." },
+        { "type": "text", "id": "poster_asset", "label": "Cover image file name", "info": "For example \"cv-clip-snow-day-penguin.jpg\"." },
+        { "type": "header", "content": "About the clip" },
+        { "type": "text", "id": "design", "label": "Design name", "info": "Shown under the clip, for example \"Snow Day Penguin\". Needed when the clip shows on other products too." },
+        { "type": "text", "id": "design_handle", "label": "Product in the clip (handle)", "info": "The last part of that product's web address. On its own page the clip comes first with the buy panel; on other pages the name links to it." },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "One short line under the clip in the shop's own words, for example \"Skating penguin on ice blue.\" Never a customer's words: those go in a \"Video review\" block." },
+        { "type": "text", "id": "alt", "label": "What the clip shows", "info": "Read out by screen readers, for example \"Snow Day Penguin case on an iPhone 18 Pro Max\". Blank uses the product name." },
+        { "type": "text", "id": "phone", "label": "Shown on", "info": "The phone and finish in the clip, for example \"iPhone 18 Pro Max · Glossy\"." },
+        { "type": "checkbox", "id": "ai_made", "label": "Made with AI", "default": false, "info": "Tick when the clip was generated with AI. The clip then carries a \"Made with AI\" label." },
+        { "type": "checkbox", "id": "silent", "label": "No sound", "default": true, "info": "Hides the sound buttons on a clip that has no audio." },
+        { "type": "text", "id": "product_handle", "label": "Only show on (product handle)", "info": "The last part of the product's web address. Blank shows the clip on every product that uses this template." }
       ]
     }
   ],

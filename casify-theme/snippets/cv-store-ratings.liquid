@@ -1,11 +1,12 @@
 {% doc %}
   Store rating tickets, shown under the price in the product counter
-  (sections/cv-product-counter.liquid). The first ticket is the store rating
-  (external_review_*): the owner's combined Google and Trustpilot figure
-  (DECISIONS.md 2026-10-26), so it carries a neutral star mark and both names,
-  never one platform's logo. The second is an optional Trustpilot-only figure
-  (trustpilot_*) with Trustpilot's own look. A ticket renders only when its
-  rating is filled in, and links to the review profile when a link is set.
+  (sections/cv-product-counter.liquid). The first ticket is the store rating,
+  read live from Judge.me through snippets/cv-jm-verified.liquid: verified
+  buyers only, all review types (product and store reviews), so it carries a
+  neutral star mark and the Judge.me name. The typed external_review_* values
+  are no longer used. The second is an optional Trustpilot-only figure
+  (trustpilot_*) with Trustpilot's own look. A ticket renders only when it has
+  a rating, and links to the review page when a link is set.
 
   Styles: assets/cv-pdp-counter.css (.cvrb).
 
@@ -15,9 +16,16 @@
   {% render 'cv-store-ratings', settings: section.settings %}
 {% enddoc %}
 {%- liquid
-  assign g_rating = settings.external_review_rating | strip
-  assign g_value = g_rating | replace: ',', '.' | plus: 0 | at_most: 5
-  assign g_count = settings.external_review_count | strip
+  capture jm_store
+    render 'cv-jm-verified', mode: 'stats', scope: 'all'
+  endcapture
+  assign jm_parts = jm_store | split: '␟'
+  assign g_count = jm_parts[0] | plus: 0
+  assign g_value = 0
+  if g_count > 0
+    assign g_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: g_count | round: 1 | at_most: 5
+  endif
+  assign g_rating = g_value
   assign g_url = settings.google_reviews_url
 
   assign t_rating = settings.trustpilot_rating | strip
@@ -29,7 +37,7 @@
 
   assign show_strip = false
   comment
-    Gate G2 (PLAN.md 4; PRODUCT.md:102): typed store ratings show only while "show_store_rating" is on.
+    Gate G2 (PLAN.md 4; PRODUCT.md:102): the store rating shows only while "show_store_rating" is on.
   endcomment
   if settings.show_external_review_badges and settings.show_store_rating
     if g_value > 0 or t_value > 0

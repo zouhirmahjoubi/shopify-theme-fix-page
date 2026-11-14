@@ -1,0 +1,74 @@
+{
+ "_note": "Fixture for sections/main-best-product.liquid (U1.3). Product data is a fixture modelled on the store's Tech Fabric case (real title, colour names and $49.99 price from tools/fixtures/product-model.json); no phone model option (colour only). Section settings come from templates/product.best.json. Photos are theme assets marked as fixture.",
+ "template": {
+  "file": "templates/product.best.json",
+  "key": "main"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Color"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 42001,
+    "options": [
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "compare_at_price": 5999,
+    "media": 0
+   },
+   {
+    "id": 42002,
+    "options": [
+     "Black"
+    ],
+    "price": 4999,
+    "compare_at_price": 5999,
+    "media": 1
+   },
+   {
+    "id": 42003,
+    "options": [
+     "Blue"
+    ],
+    "price": 4999,
+    "compare_at_price": 5999,
+    "media": 2
+   }
+  ],
+  "metafields": {
+   "reviews": {},
+   "custom": {}
+  }
+ },
+ "harness": {
+  "css": [
+   "cv-commerce-motion.css"
+  ],
+  "js": [
+   "theme.js",
+   "cv-product.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ]
+ }
+}

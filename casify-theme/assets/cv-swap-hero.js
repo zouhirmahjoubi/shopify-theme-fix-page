@@ -18,7 +18,7 @@
  * Re-initialises in the theme editor.
  */
 
-const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const fineQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 const SELECTOR = '[data-cvsw]';
@@ -32,6 +32,7 @@ const fill = (template, values) => String(template || '').replace(/\[(\w+)\]/g, 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
 function webglOk() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'));

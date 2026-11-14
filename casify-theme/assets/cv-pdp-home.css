@@ -8,8 +8,9 @@
    cloche dome + stand, delivery bicycle, parcel, three glass jars, chalkboard,
    honey-oak shelf, brass scale.
    Motion lives in cv-pdp-home-motion.js; this file is the finished state.
+   Caveat is self-hosted in snippets/cv-fonts.liquid (it used to be an
+   @import of Google Fonts here, a chained request to another server).
    ========================================================================= */
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap");
 
 .cvw {
   --cvw-ink: var(--cocoa-700);

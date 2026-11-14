@@ -1,0 +1,184 @@
+{%- comment -%}
+  Casify product page: "Which case is right for you?", Tough, Magnetic and Clear side by side.
+
+  Every cell is the merchant's text from the Row blocks; the defaults are Printify's own specs for
+  each case, so keep them to facts true for every case of that type. The column for this
+  product's case type is marked. [price] in a cell becomes that type's lowest price in its
+  collection, so the table follows the catalogue.
+
+  The case type comes from the product's tags, then its title (Magnetic first, because Printify
+  tags some Magnetic cases "tough case" too). Products that are none of the three render nothing.
+
+  Styles: assets/cv-case-compare.css.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign tag_list = product.tags | join: '|' | downcase
+  assign t = product.title | downcase
+  assign current = ''
+  if tag_list contains 'magnetic case' or t contains 'magnetic' or t contains 'magsafe'
+    assign current = 'magnetic'
+  elsif tag_list contains 'clear case' or t contains 'clear impact'
+    assign current = 'clear'
+  elsif tag_list contains 'tough case' or t contains 'tough case'
+    assign current = 'tough'
+  endif
+
+  assign rows = section.blocks | where: 'type', 'row'
+  assign types = 'tough,magnetic,clear' | split: ','
+
+  comment
+    Each type's price is its collection's first product's lowest price (collections have no
+    price_min of their own). A type with no collection or no products leaves [price] empty.
+    Every case of a type has one price (2026-11-09: Tough 37.99 on all 163, Magnetic 49.99 on
+    all 163, Clear 49.99 on all 159), so one product gives the same figure the old loop did.
+    The old loop read 50 products per type, each with all its variants: about 1.8 s of server
+    time on every uncached product page, against about 0.15 s now. If prices ever vary within
+    a type, [price] shows the first product's price, not the lowest.
+  endcomment
+  assign price_tough = ''
+  assign price_magnetic = ''
+  assign price_clear = ''
+  for type in types
+    case type
+      when 'tough'
+        assign col = st.tough_collection
+      when 'magnetic'
+        assign col = st.magnetic_collection
+      else
+        assign col = st.clear_collection
+    endcase
+    assign low = nil
+    if col != blank
+      for p in col.products limit: 1
+        assign low = p.price_min
+      endfor
+    endif
+    if low != nil
+      case type
+        when 'tough'
+          assign price_tough = low | money
+        when 'magnetic'
+          assign price_magnetic = low | money
+        else
+          assign price_clear = low | money
+      endcase
+    endif
+  endfor
+-%}
+
+{%- if current != blank and rows.size > 0 -%}
+  {{ 'cv-case-compare.css' | asset_url | stylesheet_tag }}
+  <section class="cvcc" aria-labelledby="cvcc-title-{{ section.id }}" style="--cvcc-pt: {{ st.padding_top }}px; --cvcc-pb: {{ st.padding_bottom }}px;">
+    <div class="cvcc__inner">
+      <div class="cvcc__card">
+        <header class="cvcc__hd">
+          {%- if st.kicker != blank -%}<p class="cvcc__kicker">{{ st.kicker | escape }}</p>{%- endif -%}
+          <h2 class="cvcc__title" id="cvcc-title-{{ section.id }}">{{ st.heading | escape }}</h2>
+          {%- if st.subheading != blank -%}<p class="cvcc__sub">{{ st.subheading | escape }}</p>{%- endif -%}
+        </header>
+
+        <div class="cvcc__table" role="table" aria-labelledby="cvcc-title-{{ section.id }}">
+          <div class="cvcc__row cvcc__row--head" role="row">
+            <span class="cvcc__label" role="columnheader"><span class="cvcc__visually-hidden">{{ st.feature_label | escape }}</span></span>
+            {%- for type in types -%}
+              {%- liquid
+                case type
+                  when 'tough'
+                    assign type_name = st.tough_name
+                  when 'magnetic'
+                    assign type_name = st.magnetic_name
+                  else
+                    assign type_name = st.clear_name
+                endcase
+              -%}
+              <span class="cvcc__col{% if type == current %} is-current{% endif %}" role="columnheader"{% if type == current %} aria-current="true"{% endif %}>
+                <b>{{ type_name | escape }}</b>
+                {%- if type == current and st.current_label != blank -%}<small>{{ st.current_label | escape }}</small>{%- endif -%}
+              </span>
+            {%- endfor -%}
+          </div>
+
+          {%- for b in rows -%}
+            <div class="cvcc__row" role="row" {{ b.shopify_attributes }}>
+              <span class="cvcc__label" role="rowheader">{{ b.settings.label | escape }}</span>
+              {%- for type in types -%}
+                {%- liquid
+                  case type
+                    when 'tough'
+                      assign raw_cell = b.settings.tough
+                      assign cell_price = price_tough
+                    when 'magnetic'
+                      assign raw_cell = b.settings.magnetic
+                      assign cell_price = price_magnetic
+                    else
+                      assign raw_cell = b.settings.clear
+                      assign cell_price = price_clear
+                  endcase
+                  assign cell = raw_cell | replace: '[price]', cell_price
+                  if raw_cell contains '[price]' and cell_price == blank
+                    assign cell = ''
+                  endif
+                -%}
+                <span class="cvcc__cell{% if type == current %} is-current{% endif %}" role="cell">{{ cell | escape }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product: case comparison",
+  "tag": "div",
+  "class": "section-cv-case-compare",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "paragraph", "content": "Shows on Tough, Magnetic and Clear cases only, with this product's type marked. Keep every cell true for every case of that type." },
+    { "type": "text", "id": "kicker", "label": "Label", "default": "Compare cases" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Which case is right for you?" },
+    { "type": "text", "id": "subheading", "label": "Text", "default": "Every design comes in these cases. Switch case type at the top of the page." },
+    { "type": "text", "id": "current_label", "label": "Mark on this product's type", "default": "This case" },
+    { "type": "text", "id": "feature_label", "label": "First column name (screen readers)", "default": "Feature" },
+    { "type": "header", "content": "Case types" },
+    { "type": "text", "id": "tough_name", "label": "Tough name", "default": "Tough" },
+    { "type": "collection", "id": "tough_collection", "label": "Tough collection", "info": "Its lowest price fills [price]." },
+    { "type": "text", "id": "magnetic_name", "label": "Magnetic name", "default": "Magnetic" },
+    { "type": "collection", "id": "magnetic_collection", "label": "Magnetic collection", "info": "Its lowest price fills [price]." },
+    { "type": "text", "id": "clear_name", "label": "Clear name", "default": "Clear" },
+    { "type": "collection", "id": "clear_collection", "label": "Clear collection", "info": "Its lowest price fills [price]." },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Top padding", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Bottom padding", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Feature", "default": "Feature" },
+        { "type": "text", "id": "tough", "label": "Tough", "info": "[price] is the Tough collection's lowest price." },
+        { "type": "text", "id": "magnetic", "label": "Magnetic", "info": "[price] is the Magnetic collection's lowest price." },
+        { "type": "text", "id": "clear", "label": "Clear", "info": "[price] is the Clear collection's lowest price." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Case comparison",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Build", "tough": "Hard shell, soft TPU lining", "magnetic": "Hard shell, cushioned TPU lining", "clear": "Clear back, soft clear sides" } },
+        { "type": "row", "settings": { "label": "MagSafe accessories", "tough": "No", "magnetic": "Yes, built-in magnet", "clear": "No" } },
+        { "type": "row", "settings": { "label": "Wireless charging", "tough": "Yes", "magnetic": "Yes", "clear": "Yes" } },
+        { "type": "row", "settings": { "label": "Finish", "tough": "Glossy or matte", "magnetic": "Glossy or matte", "clear": "Clear" } },
+        { "type": "row", "settings": { "label": "Phones", "tough": "iPhone, Samsung, Pixel", "magnetic": "iPhone, Samsung", "clear": "iPhone, Samsung" } },
+        { "type": "row", "settings": { "label": "Ships to", "tough": "Most countries", "magnetic": "Most countries", "clear": "Most countries" } },
+        { "type": "row", "settings": { "label": "Price", "tough": "From [price]", "magnetic": "From [price]", "clear": "From [price]" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

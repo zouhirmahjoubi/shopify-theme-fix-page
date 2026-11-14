@@ -35,14 +35,25 @@
       assign faq_count = faq_count | plus: 1
     endif
   endfor
-  assign rating = guide_product.metafields.reviews.rating.value
-  assign rating_count = guide_product.metafields.reviews.rating_count.value | default: 0 | plus: 0
-  assign rating_max = rating.scale_max | default: 5 | plus: 0
+  comment
+    The rating is the featured product's Judge.me rating from verified buyers
+    only (snippets/cv-jm-verified.liquid). No reviews, no stars.
+  endcomment
+  assign rating_count = 0
+  assign rating_max = 5
   assign has_rating = false
-  if rating != blank and rating_count > 0 and rating_max > 0
-    assign has_rating = true
-    assign rating_value = rating.rating | at_least: 0 | at_most: rating_max
-    assign star_fill = rating_value | times: 100.0 | divided_by: rating_max | round: 1
+  assign rating_value = 0
+  if guide_product != blank and guide_product.handle != blank
+    capture jm_stats
+      render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: guide_product.handle
+    endcapture
+    assign jm_parts = jm_stats | split: '␟'
+    assign rating_count = jm_parts[0] | plus: 0
+    if rating_count > 0
+      assign has_rating = true
+      assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count | round: 1
+      assign star_fill = rating_value | times: 100.0 | divided_by: rating_max | round: 1
+    endif
   endif
 -%}
 

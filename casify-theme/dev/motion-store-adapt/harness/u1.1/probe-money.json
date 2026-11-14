@@ -1,0 +1,696 @@
+{
+  "page": "http://127.0.0.1:57422/dev/motion-store-adapt/harness/u1.1/counter-model.html",
+  "checks": [
+    {
+      "name": "model not pre-selected",
+      "ok": true,
+      "value": ""
+    },
+    {
+      "name": "no-JS variant list selects the placeholder, not a model",
+      "ok": true,
+      "state": {
+        "found": true,
+        "selected": "",
+        "text": "Choose your phone model"
+      }
+    },
+    {
+      "name": "add without model posts nothing",
+      "ok": true,
+      "posts": 0
+    },
+    {
+      "name": "add without model fires cvs:needmodel kind=add",
+      "ok": true,
+      "events": [
+        {
+          "type": "cvs:needmodel",
+          "kind": "add",
+          "qty": null,
+          "items": null,
+          "from": null,
+          "img": false
+        }
+      ]
+    },
+    {
+      "name": "model picker focused after needmodel",
+      "ok": true,
+      "focused": "cvcModel-main",
+      "status": "Choose your phone model first"
+    },
+    {
+      "name": "buy now without model posts nothing",
+      "ok": true,
+      "posts": 0
+    },
+    {
+      "name": "buy now without model fires cvs:needmodel kind=buy",
+      "ok": true,
+      "events": [
+        {
+          "type": "cvs:needmodel",
+          "kind": "add",
+          "qty": null,
+          "items": null,
+          "from": null,
+          "img": false
+        },
+        {
+          "type": "cvs:needmodel",
+          "kind": "buy",
+          "qty": null,
+          "items": null,
+          "from": null,
+          "img": false
+        }
+      ]
+    },
+    {
+      "name": "no navigation without model",
+      "ok": true,
+      "url": "http://127.0.0.1:57422/dev/motion-store-adapt/harness/u1.1/counter-model.html"
+    },
+    {
+      "name": "pack 2: one post",
+      "ok": true,
+      "posts": 1
+    },
+    {
+      "name": "pack 2: posted items equal cv-product.js items",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "computed": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "name": "pack 2: posted items are chosen variant x pack quantity",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "expected": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 2,
+        "id": 41002,
+        "quantityInput": 2
+      }
+    },
+    {
+      "name": "pack 2: form quantity input follows the pack",
+      "ok": true,
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 2,
+        "id": 41002,
+        "quantityInput": 2
+      }
+    },
+    {
+      "name": "pack 2: status 200 and page stays",
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:57422/dev/motion-store-adapt/harness/u1.1/counter-model.html"
+    },
+    {
+      "name": "pack 3: one post",
+      "ok": true,
+      "posts": 1
+    },
+    {
+      "name": "pack 3: posted items equal cv-product.js items",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "computed": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "name": "pack 3: posted items are chosen variant x pack quantity",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "expected": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 3,
+        "id": 41002,
+        "quantityInput": 3
+      }
+    },
+    {
+      "name": "pack 3: form quantity input follows the pack",
+      "ok": true,
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 3,
+        "id": 41002,
+        "quantityInput": 3
+      }
+    },
+    {
+      "name": "pack 3: status 200 and page stays",
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:57422/dev/motion-store-adapt/harness/u1.1/counter-model.html"
+    },
+    {
+      "name": "pack 1: one post",
+      "ok": true,
+      "posts": 1
+    },
+    {
+      "name": "pack 1: posted items equal cv-product.js items",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "computed": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "name": "pack 1: posted items are chosen variant x pack quantity",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "expected": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 1,
+        "id": 41002,
+        "quantityInput": 1
+      }
+    },
+    {
+      "name": "pack 1: form quantity input follows the pack",
+      "ok": true,
+      "state": {
+        "color": "Russet Brown",
+        "model": "iPhone 17 Pro",
+        "qty": 1,
+        "id": 41002,
+        "quantityInput": 1
+      }
+    },
+    {
+      "name": "pack 1: status 200 and page stays",
+      "ok": true,
+      "status": 200,
+      "url": "http://127.0.0.1:57422/dev/motion-store-adapt/harness/u1.1/counter-model.html"
+    },
+    {
+      "name": "cart:added fired once per add",
+      "ok": true,
+      "count": 3
+    },
+    {
+      "name": "cvs:added carries from and img",
+      "ok": true,
+      "events": [
+        {
+          "type": "cvs:added",
+          "kind": null,
+          "qty": 2,
+          "items": [
+            {
+              "id": 41002,
+              "quantity": 2
+            }
+          ],
+          "from": "cvAddBtn",
+          "img": true
+        },
+        {
+          "type": "cvs:added",
+          "kind": null,
+          "qty": 3,
+          "items": [
+            {
+              "id": 41002,
+              "quantity": 3
+            }
+          ],
+          "from": "cvAddBtn",
+          "img": true
+        },
+        {
+          "type": "cvs:added",
+          "kind": null,
+          "qty": 1,
+          "items": [
+            {
+              "id": 41002,
+              "quantity": 1
+            }
+          ],
+          "from": "cvAddBtn",
+          "img": true
+        }
+      ]
+    },
+    {
+      "name": "no further cvs:needmodel after choice",
+      "ok": true,
+      "count": 2
+    },
+    {
+      "name": "one flying case token per add (CasifyMotion.fly)",
+      "ok": true,
+      "tokens": 3
+    },
+    {
+      "name": "failed add: one post answered 422",
+      "ok": true,
+      "posts": 1
+    },
+    {
+      "name": "failed add: is-error and cvs:error kind=add, no cart:added",
+      "ok": true,
+      "events": [
+        {
+          "type": "cvs:error",
+          "kind": "add",
+          "qty": null,
+          "items": null,
+          "from": null,
+          "img": false
+        }
+      ]
+    },
+    {
+      "name": "failed add: status says why, page stays",
+      "ok": true,
+      "status": "fixture: forced failure (?fail=1)"
+    },
+    {
+      "name": "failed add: button recovers (is-error cleared, enabled)",
+      "ok": true
+    },
+    {
+      "name": "buy now: one post before checkout",
+      "ok": true,
+      "posts": 1,
+      "checkout": [
+        {
+          "url": "http://127.0.0.1:57422/checkout",
+          "calls_before": 9
+        }
+      ]
+    },
+    {
+      "name": "buy now: posted items equal cv-product.js items",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41005,
+          "quantity": 2
+        }
+      ],
+      "computed": [
+        {
+          "id": 41005,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "name": "buy now: posted items are chosen variant x 2",
+      "ok": true,
+      "posted": [
+        {
+          "id": 41005,
+          "quantity": 2
+        }
+      ],
+      "state": {
+        "color": "Black",
+        "model": "iPhone 17 Pro",
+        "qty": 2,
+        "id": 41005,
+        "quantityInput": 2
+      }
+    },
+    {
+      "name": "buy now: navigated to /checkout",
+      "ok": true,
+      "url": "http://127.0.0.1:57422/checkout"
+    },
+    {
+      "name": "no console or page errors",
+      "ok": true,
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "calls_log": [
+    {
+      "url": "/cart.js",
+      "path": "/cart.js",
+      "method": "GET",
+      "body": {},
+      "status": 200,
+      "ok": true,
+      "at": 1793043690657
+    },
+    {
+      "url": "/cart/add.js",
+      "path": "/cart/add.js",
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": 41002,
+            "quantity": 2
+          }
+        ]
+      },
+      "status": 200,
+      "ok": true,
+      "at": 1793043696154
+    },
+    {
+      "url": "/cart.js",
+      "path": "/cart.js",
+      "method": "GET",
+      "body": {},
+      "status": 200,
+      "ok": true,
+      "at": 1793043696288
+    },
+    {
+      "url": "/cart/add.js",
+      "path": "/cart/add.js",
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": 41002,
+            "quantity": 3
+          }
+        ]
+      },
+      "status": 200,
+      "ok": true,
+      "at": 1793043699828
+    },
+    {
+      "url": "/cart.js",
+      "path": "/cart.js",
+      "method": "GET",
+      "body": {},
+      "status": 200,
+      "ok": true,
+      "at": 1793043699955
+    },
+    {
+      "url": "/cart/add.js",
+      "path": "/cart/add.js",
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": 41002,
+            "quantity": 1
+          }
+        ]
+      },
+      "status": 200,
+      "ok": true,
+      "at": 1793043703375
+    },
+    {
+      "url": "/cart.js",
+      "path": "/cart.js",
+      "method": "GET",
+      "body": {},
+      "status": 200,
+      "ok": true,
+      "at": 1793043703501
+    },
+    {
+      "url": "/cart/add.js",
+      "path": "/cart/add.js",
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": 41002,
+            "quantity": 1
+          }
+        ]
+      },
+      "status": 422,
+      "ok": false,
+      "at": 1793043706355
+    },
+    {
+      "url": "/cart/add.js",
+      "path": "/cart/add.js",
+      "method": "POST",
+      "body": {
+        "items": [
+          {
+            "id": 41005,
+            "quantity": 2
+          }
+        ]
+      },
+      "status": 200,
+      "ok": true,
+      "at": 1793043710840
+    }
+  ],
+  "events_log": [
+    {
+      "type": "cvs:needmodel",
+      "kind": "add",
+      "qty": null,
+      "items": null,
+      "from": null,
+      "img": false
+    },
+    {
+      "type": "cvs:needmodel",
+      "kind": "buy",
+      "qty": null,
+      "items": null,
+      "from": null,
+      "img": false
+    },
+    {
+      "type": "cvs:adding",
+      "kind": null,
+      "qty": 2,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:added",
+      "kind": null,
+      "qty": 2,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cart:added",
+      "kind": null,
+      "qty": 2,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 2
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:adding",
+      "kind": null,
+      "qty": 3,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:added",
+      "kind": null,
+      "qty": 3,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cart:added",
+      "kind": null,
+      "qty": 3,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 3
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:adding",
+      "kind": null,
+      "qty": 1,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:added",
+      "kind": null,
+      "qty": 1,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cart:added",
+      "kind": null,
+      "qty": 1,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:adding",
+      "kind": null,
+      "qty": 1,
+      "items": [
+        {
+          "id": 41002,
+          "quantity": 1
+        }
+      ],
+      "from": "cvAddBtn",
+      "img": true
+    },
+    {
+      "type": "cvs:error",
+      "kind": "add",
+      "qty": null,
+      "items": null,
+      "from": null,
+      "img": false
+    },
+    {
+      "type": "cvs:buying",
+      "kind": null,
+      "qty": 2,
+      "items": [
+        {
+          "id": 41005,
+          "quantity": 2
+        }
+      ],
+      "from": "cvc__buy is-busy",
+      "img": true
+    }
+  ],
+  "checkout_hits": [
+    {
+      "url": "http://127.0.0.1:57422/checkout",
+      "calls_before": 9
+    }
+  ],
+  "pass": true
+}

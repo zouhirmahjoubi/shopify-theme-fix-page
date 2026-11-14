@@ -249,7 +249,25 @@
     return target.matches && target.matches('[data-cvsu]') ? target : one('[data-cvsu]', target);
   }
 
-  boot(document);
+  /* Speed: on page load the banner's motion is built only once it is about 1.5 screens away
+     (window.cvNear in layout/theme.liquid), in a task of its own, instead of inside the page's
+     start-up task (130-200 ms at 4x CPU on a mid-range phone, 2026-11-09). It is the last
+     section on the page and CSS hides nothing before it runs. A banner whose form was just
+     posted (its id in the URL hash) builds at once, so the thank-you scrolls into view as
+     before; so do the theme editor and section reloads. */
+  function bootLater(scope) {
+    all('[data-cvsu]', scope).forEach(function (root) {
+      var doneMsg = one('.cvsu-done__msg', root);
+      var doneForm = doneMsg && doneMsg.closest('form');
+      var posted = !!(doneForm && doneForm.id && window.location.hash === '#' + doneForm.id);
+      if (posted || (window.Shopify && window.Shopify.designMode) || typeof window.cvNear !== 'function') { init(root); return; }
+      window.cvNear(root, 1.5).then(function () {
+        setTimeout(function () { if (root.isConnected) init(root); }, 0);
+      });
+    });
+  }
+
+  bootLater(document);
 
   window.addEventListener('load', function () {
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();

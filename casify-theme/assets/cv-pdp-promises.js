@@ -22,7 +22,7 @@
  * nothing here runs and the stamps sit still. No WebGL: the stamps are still
  * dealt in, with their SVG icons.
  */
-const CVPR_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVPR_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 // Canvas overhang around the row (px): dust, sparkles and the parcel's loop spill past the stamps.
 const PAD = { t: 26, r: 16, b: 20, l: 16 };
@@ -40,6 +40,7 @@ let cvprThree = null;
 function cvprRelease() { document.documentElement.classList.remove('cvc-promises-pending'); }
 
 function cvprWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl'));

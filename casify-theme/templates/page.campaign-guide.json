@@ -32,8 +32,8 @@
         "service": {
           "type": "reason",
           "settings": {
-            "heading": "Give yourself time to decide",
-            "body": "<p>Free shipping comes with every order. Orders dispatch in 1–3 business days, and you have 30 days to return your case.</p>"
+            "heading": "Covered if something goes wrong",
+            "body": "<p>Free shipping comes with every order. Each case is printed after you order, and if it arrives damaged or misprinted we send a new one or refund you.</p>"
           }
         },
         "model": {
@@ -54,7 +54,7 @@
           "type": "question",
           "settings": {
             "question": "What about shipping and returns?",
-            "answer": "<p>Shipping is free on every order. Orders dispatch within 1–3 business days. You have 30 days to return your case.</p>"
+            "answer": "<p>Shipping is free on every order. Each case is printed after you order, which takes up to 10 business days, then ships with tracking. If it arrives damaged or misprinted, we send a new one or refund you.</p>"
           }
         }
       },

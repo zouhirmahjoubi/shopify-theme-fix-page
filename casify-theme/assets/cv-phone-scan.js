@@ -51,7 +51,7 @@
  * cv-phone-scan.css).
  */
 
-const CVPS_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVPS_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 const MM = 1 / 80; // world units per millimetre
 const BACK = Math.PI; // a phone turned to show its back
@@ -108,6 +108,7 @@ function brandFontsReady() {
 }
 
 function webglWorks() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl'));
@@ -2409,8 +2410,15 @@ function boot(scope) {
   scope.querySelectorAll('[data-cvps]').forEach((root) => {
     if (root.dataset.cvpsReady === '1') return;
     root.dataset.cvpsReady = '1';
-    if (reduceQuery.matches || !webglWorks()) return;
-    mount(root);
+    if (reduceQuery.matches) return;
+    // The scan sits far down the page: build it (three.js, the type, the
+    // prints, the shaders) as the shopper scrolls towards it, not during page
+    // load. mount() was already async and re-sorts and refreshes every
+    // ScrollTrigger once its pin exists, so a later start changes nothing else.
+    const near = window.cvNear ? window.cvNear(root, 2) : Promise.resolve();
+    near.then(() => {
+      if (root.isConnected && root.dataset.cvpsReady === '1' && webglWorks()) mount(root);
+    });
   });
 }
 

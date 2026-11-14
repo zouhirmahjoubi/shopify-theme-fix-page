@@ -273,7 +273,8 @@
       return isNaN(d) || d < 0 ? 0 : Math.min(d, 90);
     }
     /* A pack after its discount: the percentage comes off the whole pack, rounded to the cent. */
-    function discounted(subtotal, pct) { return subtotal - Math.round(subtotal * pct / 100); }
+    /* Shopify rounds a percentage discount down to the cent (75.98 at 18% saves 13.67), so the page does too. */
+    function discounted(subtotal, pct) { return subtotal - Math.floor(subtotal * pct / 100); }
     function eachPrice(price, qty, pct) { return Math.floor(discounted(price * qty, pct) / qty); }
     var maxPct = packs.reduce(function (m, p) { return Math.max(m, packPct(p)); }, 0);
 
@@ -602,6 +603,13 @@
           }
         } else {
           out.textContent = money + (q > 1 ? eachWord : '');
+        }
+        // The pack's whole saving, rounded down to the cent like checkout.
+        var saveOut = $('[data-cv-tier-save]', pack);
+        if (saveOut) {
+          var off = Math.floor(variant.price * q * packPct(pack) / 100);
+          saveOut.hidden = off <= 0;
+          if (off > 0) saveOut.textContent = fill(saveOut.getAttribute('data-template') || 'Save [amount]', { amount: formatMoney(off) });
         }
         // Struck-through compare-at price per case, same rule as the price under the title.
         var was = $('[data-cv-tier-was]', pack);
@@ -955,10 +963,13 @@
 
     /* ---------------------------------------------------------------- sticky bar */
     var stickyVisible = false;
+    /* data-sticky-early: also show while the button is still below the screen, not only once it has
+       scrolled away above (a phone reaches Add to bag two screens down). */
+    var stickyEarly = !!(els.sticky && els.sticky.hasAttribute('data-sticky-early'));
     if (els.sticky && els.addBtn && 'IntersectionObserver' in window) {
       io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          var show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+          var show = !entry.isIntersecting && (stickyEarly || entry.boundingClientRect.top < 0);
           els.sticky.classList.toggle('is-visible', show);
           els.sticky.setAttribute('aria-hidden', show ? 'false' : 'true');
           $$('button', els.sticky).forEach(function (b) { b.tabIndex = show ? 0 : -1; });

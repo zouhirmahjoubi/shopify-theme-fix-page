@@ -1,0 +1,316 @@
+{
+ "1_motion_on": {
+  "st": 8,
+  "canvas": 1,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "0.9724",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "0.4807",
+   "vis": "visible",
+   "top": 211,
+   "bot": 920,
+   "sy": 2810,
+   "ih": 1000,
+   "inl": "translate: none; rotate: none; scale: none; transform: translate3d(0px, 18.6942px, 0px) scale(0.9844, 0.9844); opacity: 0.4807; visibility: inherit;"
+  },
+  "listeners": {
+   "doc": 48,
+   "win": 10
+  },
+  "moving": true
+ },
+ "2_live_reduce": {
+  "st": 0,
+  "canvas": 0,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "1",
+   "vis": "visible",
+   "top": 2997,
+   "bot": 3717,
+   "sy": 0,
+   "ih": 1000,
+   "inl": ""
+  },
+  "listeners": {
+   "doc": 47,
+   "win": 23
+  },
+  "moving": false
+ },
+ "3_back_on": {
+  "st": 8,
+  "canvas": 1,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "1",
+   "vis": "visible",
+   "top": 2997,
+   "bot": 3717,
+   "sy": 0,
+   "ih": 1000,
+   "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;"
+  },
+  "listeners": {
+   "doc": 48,
+   "win": 23
+  },
+  "moving": true
+ },
+ "4_paused_kept": {
+  "st": 8,
+  "canvas": 1,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "hidden",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "0",
+   "vis": "hidden",
+   "top": 3043,
+   "bot": 3742,
+   "sy": 0,
+   "ih": 1000,
+   "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 36px) scale(0.97, 0.97); opacity: 0; visibility: hidden;"
+  },
+  "listeners": {
+   "doc": 48,
+   "win": 23
+  },
+  "moving": "ERR Locator.screenshot: Timeout 29991ms exceeded.\nCall log:\n  - taking element scree",
+  "pressed": "true"
+ },
+ "5_rapid_toggle_ends_reduced": {
+  "st": 0,
+  "canvas": 0,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "1",
+   "vis": "visible",
+   "top": 2997,
+   "bot": 3717,
+   "sy": 0,
+   "ih": 1000,
+   "inl": ""
+  },
+  "listeners": {
+   "doc": 47,
+   "win": 23
+  },
+  "moving": false
+ },
+ "6_editor_cycles": [
+  {
+   "unloaded": {
+    "st": 0,
+    "canvas": 0,
+    "pause": false,
+    "listeners": {
+     "doc": 47,
+     "win": 22
+    }
+   },
+   "loaded": {
+    "st": 8,
+    "canvas": 1,
+    "pause": false,
+    "hint": false,
+    "is3d": false,
+    "stillsOpacity": "1",
+    "stillsVis": "hidden",
+    "ready": true,
+    "buy": true,
+    "stage": {
+     "op": "0",
+     "vis": "hidden",
+     "top": 3043,
+     "bot": 3742,
+     "sy": 0,
+     "ih": 1000,
+     "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 36px) scale(0.97, 0.97); opacity: 0; visibility: hidden;"
+    },
+    "listeners": {
+     "doc": 48,
+     "win": 23
+    }
+   }
+  },
+  {
+   "unloaded": {
+    "st": 0,
+    "canvas": 0,
+    "pause": false,
+    "listeners": {
+     "doc": 47,
+     "win": 22
+    }
+   },
+   "loaded": {
+    "st": 8,
+    "canvas": 1,
+    "pause": false,
+    "hint": false,
+    "is3d": false,
+    "stillsOpacity": "1",
+    "stillsVis": "hidden",
+    "ready": true,
+    "buy": true,
+    "stage": {
+     "op": "0",
+     "vis": "hidden",
+     "top": 3043,
+     "bot": 3742,
+     "sy": 0,
+     "ih": 1000,
+     "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 36px) scale(0.97, 0.97); opacity: 0; visibility: hidden;"
+    },
+    "listeners": {
+     "doc": 48,
+     "win": 23
+    }
+   }
+  },
+  {
+   "unloaded": {
+    "st": 0,
+    "canvas": 0,
+    "pause": false,
+    "listeners": {
+     "doc": 47,
+     "win": 22
+    }
+   },
+   "loaded": {
+    "st": 8,
+    "canvas": 1,
+    "pause": false,
+    "hint": false,
+    "is3d": false,
+    "stillsOpacity": "1",
+    "stillsVis": "hidden",
+    "ready": true,
+    "buy": true,
+    "stage": {
+     "op": "0",
+     "vis": "hidden",
+     "top": 3043,
+     "bot": 3742,
+     "sy": 0,
+     "ih": 1000,
+     "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 36px) scale(0.97, 0.97); opacity: 0; visibility: hidden;"
+    },
+    "listeners": {
+     "doc": 48,
+     "win": 23
+    }
+   }
+  },
+  {
+   "unloaded": {
+    "st": 0,
+    "canvas": 0,
+    "pause": false,
+    "listeners": {
+     "doc": 47,
+     "win": 22
+    }
+   },
+   "loaded": {
+    "st": 8,
+    "canvas": 1,
+    "pause": false,
+    "hint": false,
+    "is3d": false,
+    "stillsOpacity": "1",
+    "stillsVis": "hidden",
+    "ready": true,
+    "buy": true,
+    "stage": {
+     "op": "0",
+     "vis": "hidden",
+     "top": 3043,
+     "bot": 3742,
+     "sy": 0,
+     "ih": 1000,
+     "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 36px) scale(0.97, 0.97); opacity: 0; visibility: hidden;"
+    },
+    "listeners": {
+     "doc": 48,
+     "win": 23
+    }
+   }
+  }
+ ],
+ "errs": [],
+ "7_reduce_at_load": {
+  "st": 0,
+  "canvas": 0,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "1",
+   "vis": "visible",
+   "top": 187,
+   "bot": 907,
+   "sy": 2810,
+   "ih": 1000,
+   "inl": null
+  },
+  "listeners": null,
+  "moving": false,
+  "errs": []
+ },
+ "8_reduce_then_on": {
+  "st": 8,
+  "canvas": 1,
+  "pause": false,
+  "hint": false,
+  "is3d": false,
+  "stillsOpacity": "1",
+  "stillsVis": "visible",
+  "ready": true,
+  "buy": true,
+  "stage": {
+   "op": "1",
+   "vis": "visible",
+   "top": 2997,
+   "bot": 3717,
+   "sy": 0,
+   "ih": 1000,
+   "inl": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;"
+  },
+  "listeners": null,
+  "moving": true
+ }
+}

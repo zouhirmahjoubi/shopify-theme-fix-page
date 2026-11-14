@@ -1,0 +1,334 @@
+/* =========================================================================
+   Press (sections/cv-press.liquid)
+   The base is a plain stack: no JS and reduced motion stop there. .is-live
+   (assets/cv-press.js) turns on the stage: the case stays mid-screen on a
+   sticky rail, big type behind it, the blocks and splats above it. Resting
+   states only; GSAP does every move.
+   ========================================================================= */
+
+/* ds-allow-hardcode:start  theme.css defines colour, shadow and motion tokens only (no spacing,
+   radius or type-size scale, see design-tokens/README.md). Colours below are theme tokens; sizes
+   follow the 8px rhythm in DESIGN.md. rgba() values are cocoa (51,35,26) shadow tints. */
+
+.cvpr {
+  --cvpr-ink: var(--cocoa-700, #33231A);
+  --cvpr-body: var(--cocoa-600, #4A3324);
+  --cvpr-stamp: var(--red-600, #A8231F);
+  --cvpr-paper: var(--cream-50, #FDF9F1);
+  --cvpr-line: var(--border-hairline, rgba(74, 51, 36, .28));
+  --cvpr-focus: var(--focus-ring, #4E7C7B);
+  --cvpr-ratio: .5185; /* the front of the case in the mockup: width over height */
+  --cvpr-case-w: min(21vw, 37vh, 320px);
+  --cvpr-case-h: calc(var(--cvpr-case-w) / var(--cvpr-ratio));
+  --cvpr-gutter: max(16px, 4vw);
+
+  position: relative;
+  display: flex; flex-direction: column;
+  padding: 40px var(--cvpr-gutter) 56px;
+  background: var(--cream-100, #FBF3E4);
+  color: var(--cvpr-ink);
+  overflow: clip;
+}
+.cvpr ul { margin: 0; padding: 0; list-style: none; }
+.cvpr p { margin: 0; }
+
+/* ---------- The case ---------- */
+.cvpr__rail { order: 1; display: flex; justify-content: center; margin: 24px 0; }
+.cvpr__case { position: relative; width: var(--cvpr-case-w); min-width: 180px; aspect-ratio: var(--cvpr-ratio); margin: 0; }
+.cvpr__tilt { position: absolute; inset: 0; display: block; overflow: hidden; }
+/* The photo, cropped to the front of the case. The canvas replaces it once the white is cut out. */
+.cvpr__photo {
+  position: absolute; left: 50%; top: 50%; max-width: none;
+  width: 229.9%; height: auto;
+  transform: translate(-41.3%, -49.6%);
+  mix-blend-mode: multiply; pointer-events: none; user-select: none; -webkit-user-drag: none;
+}
+.cvpr__cut { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.cvpr__case.is-cut .cvpr__photo { opacity: 0; }
+.cvpr__case.is-cut .cvpr__tilt { overflow: visible; }
+.cvpr__case.is-cut .cvpr__cut { filter: drop-shadow(14px 24px 22px rgba(51, 35, 26, .32)); }
+
+/* ---------- Christmas layer (the "Christmas effects" setting) ---------- */
+/* The garland repeats whole: one swag across a phone, more across wider screens. The baubles hang
+   from its low points, which fall at .235 and .705 of a tile. */
+.cvpr { --cvpr-tile: 100vw; --cvpr-tiles: 100%; }
+.cvpr__garland {
+  height: calc(var(--cvpr-tile) * .3137);
+  margin: -40px calc(var(--cvpr-gutter) * -1) 8px;
+  background: var(--cvpr-garland) 0 0 / var(--cvpr-tiles) auto repeat-x;
+  pointer-events: none;
+}
+.cvpr__hang, .cvpr__snowbox, .cvpr__sprig, .cvpr__bow, .cvpr__spark { display: none; }
+.cvpr__note-ico { display: block; width: 30px; height: 30px; margin: 0 auto 2px; filter: brightness(0) invert(1); }
+.cvpr__range-deco { display: inline-block; width: .62em; height: .62em; vertical-align: -.02em; object-fit: contain; }
+.cvpr__range-deco--flip { transform: scaleX(-1); }
+
+/* ---------- Big stamped type ---------- */
+.cvpr__big {
+  display: grid; justify-items: center;
+  margin: 0;
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(50px, 16.5vw, 262px) !important;
+  line-height: .92; letter-spacing: -.02em; text-align: center; text-transform: uppercase;
+  color: var(--cvpr-stamp);
+  -webkit-mask-image: var(--cvpr-speckle); mask-image: var(--cvpr-speckle);
+  -webkit-mask-size: 640px; mask-size: 640px;
+}
+.cvpr__big span { position: relative; display: block; white-space: nowrap; }
+/* Snow lying on the letters: the same word in white, cut to a wavy band along the tops of the capitals. */
+.cvpr__big span[data-text]::before {
+  content: attr(data-text); content: attr(data-text) / "";
+  position: absolute; left: 0; top: 0; color: var(--teal-100, #E4F0EE); pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' preserveAspectRatio='none'%3E%3Cpath d='M0 2h120v13c-5 7-11 8-15 2-3-5-8-6-12 0-5 8-12 9-17 2-4-6-9-7-13-1-5 8-11 7-15 1-4-5-9-5-13 1-5 7-11 6-15 0-5-6-11-6-20 0z'/%3E%3C/svg%3E") 0 .115em / 1.15em .32em repeat-x;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' preserveAspectRatio='none'%3E%3Cpath d='M0 2h120v13c-5 7-11 8-15 2-3-5-8-6-12 0-5 8-12 9-17 2-4-6-9-7-13-1-5 8-11 7-15 1-4-5-9-5-13 1-5 7-11 6-15 0-5-6-11-6-20 0z'/%3E%3C/svg%3E") 0 .115em / 1.15em .32em repeat-x;
+}
+.cvpr__stamp { display: none; width: clamp(64px, 8vw, 112px); height: auto; color: var(--cvpr-ink); opacity: .78; fill: none; }
+.cvpr.is-live .cvpr__stamp { display: block; }
+.cvpr__stamp circle { stroke: currentColor; stroke-width: 1.5; }
+.cvpr__stamp text { fill: currentColor; font-family: var(--font-label); font-size: 13.5px; letter-spacing: .04em; }
+.cvpr__stamp path:not([id]) { fill: currentColor; }
+.cvpr__cue {
+  font-family: var(--font-label); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--cvpr-body);
+  padding-left: 14px; border-left: 1px solid var(--cvpr-stamp);
+}
+.cvpr__act--open { order: 0; position: relative; display: grid; justify-items: center; gap: 18px; }
+.cvpr__act--case, .cvpr__act--fit, .cvpr__act--notes, .cvpr__act--range { order: 2; }
+
+/* ---------- Blocks ---------- */
+.cvpr__act { position: relative; }
+.cvpr__act--case, .cvpr__act--fit { display: grid; gap: 20px; margin-top: 32px; }
+.cvpr__block { position: relative; max-width: 420px; }
+.cvpr__kicker { font-family: var(--font-label); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--cvpr-stamp); }
+.cvpr .cvpr__name { margin: 8px 0 10px; font-family: var(--font-display); font-weight: 900; font-size: clamp(30px, 3.4vw, 50px); line-height: 1.02; letter-spacing: -.02em; text-transform: uppercase; text-wrap: balance; }
+.cvpr__name a { color: inherit; text-decoration: none; }
+.cvpr__name a:hover { color: var(--cvpr-stamp); }
+.cvpr__text { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--cvpr-body); text-wrap: pretty; }
+.cvpr__text--lead { font-size: 17px; }
+.cvpr__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; }
+.cvpr__price { font-family: var(--font-display); font-size: 28px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+.cvpr__btn, .cvpr__link {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px;
+  font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+}
+.cvpr__btn { background: var(--cvpr-ink); color: var(--cvpr-paper); }
+.cvpr__btn:hover { background: var(--cvpr-stamp); }
+.cvpr__link { box-shadow: inset 0 0 0 1.5px var(--cvpr-ink); color: var(--cvpr-ink); }
+.cvpr__link:hover { background: var(--cvpr-ink); color: var(--cvpr-paper); }
+.cvpr__btn:focus-visible, .cvpr__link:focus-visible, .cvpr a:focus-visible { outline: 3px solid var(--cvpr-focus); outline-offset: 3px; }
+
+.cvpr__stats { padding: 14px 18px !important; border: 1px solid var(--cvpr-line); background: var(--cvpr-paper); }
+.cvpr__stat { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--cvpr-line); }
+.cvpr__stat:last-child { border-bottom: 0; }
+.cvpr__stat b { font-family: var(--font-display); font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.cvpr__stat span { font-family: var(--font-body); font-size: 13px; line-height: 1.4; color: var(--cvpr-body); }
+.cvpr__stat strong { display: block; font-family: var(--font-label); font-weight: 400; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--cvpr-ink); }
+
+.cvpr__makes { padding: 8px 18px !important; border: 1px solid var(--cvpr-line); background: var(--cvpr-paper); }
+.cvpr__makes li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--cvpr-line); }
+.cvpr__makes li:last-child { border-bottom: 0; }
+.cvpr__makes span { font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.cvpr__makes b { font-family: var(--font-display); font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.cvpr__big--line { grid-column: 1 / -1; }
+
+/* ---------- Ink splats ---------- */
+.cvpr__act--notes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 32px; }
+.cvpr__note { position: relative; width: min(330px, 80vw); aspect-ratio: 1; color: var(--cvpr-paper); }
+.cvpr__note--1 { --cvpr-note: var(--red-600, #A8231F); }
+.cvpr__note--2 { --cvpr-note: var(--cocoa-700, #33231A); }
+.cvpr__note--3 { --cvpr-note: var(--teal-700, #33605F); }
+.cvpr__ink { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: var(--cvpr-note); }
+.cvpr__note-text {
+  position: absolute; left: 50%; top: 50%; width: 64%; transform: translate(-50%, -50%);
+  display: grid; gap: 4px; text-align: center;
+}
+.cvpr__note-text strong { font-family: var(--font-label); font-weight: 400; font-size: 14px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; }
+.cvpr__note-text span { font-family: var(--font-body); font-size: 12.5px; line-height: 1.35; }
+
+/* ---------- Row of designs ---------- */
+.cvpr__act--range { display: grid; justify-items: center; gap: 22px; margin-top: 40px; text-align: center; }
+.cvpr .cvpr__range-title { margin: 6px 0 0; font-family: var(--font-display); font-weight: 900; font-size: clamp(40px, 7.4vw, 104px); line-height: 1; letter-spacing: -.02em; text-transform: uppercase; }
+.cvpr__range-title em { font-style: normal; color: var(--cvpr-stamp); }
+.cvpr__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; column-gap: 12px; row-gap: 4px; width: min(100%, 1120px); }
+/* Photo, name and price share rows across the slots, so a two-line name cannot push its photo out of line. */
+.cvpr__slot { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+.cvpr__slot a { display: grid; grid-row: span 3; grid-template-rows: subgrid; justify-items: center; gap: 4px; color: inherit; text-decoration: none; }
+.cvpr__slot-photo { position: relative; display: block; width: min(100%, 118px); aspect-ratio: var(--cvpr-ratio); overflow: hidden; margin-bottom: 8px; }
+.cvpr__slot-img { position: absolute; left: 50%; top: 50%; width: 229.9%; max-width: none; height: auto; transform: translate(-41.3%, -49.6%); mix-blend-mode: darken; }
+/* The slots move, which cuts the photo off from the page behind it, so the blend needs cream of its own.
+   Darken, not multiply: white turns cream and the print keeps its colour. Not the middle slot: the row sits
+   above the rail, and a fill there would cover the case when it lands. */
+.cvpr__slot:not(.cvpr__slot--main) .cvpr__slot-photo { background: var(--cream-100, #FBF3E4); }
+.cvpr__slot-name { font-family: var(--font-label); font-size: 12px; line-height: 1.25; letter-spacing: .04em; text-transform: uppercase; }
+.cvpr__slot-price { font-family: var(--font-body); font-size: 13px; color: var(--cvpr-body); font-variant-numeric: tabular-nums; }
+.cvpr__slot--1, .cvpr__slot--4 { display: none; }
+.cvpr__slot--main { order: 2; }
+.cvpr__slot--2 { order: 1; }
+.cvpr__slot--3 { order: 3; }
+
+.cvpr-empty { padding: 40px 20px; text-align: center; font-family: var(--font-label); color: var(--cocoa-500, #6B4229); }
+
+/* ---------- The stage (phone first): the case stays mid-screen, everything else passes it ---------- */
+.cvpr.is-live { --cvpr-case-w: min(44vw, 36vh, 320px); display: block; padding-top: 0; padding-bottom: 72px; }
+.cvpr.is-live .cvpr__rail {
+  position: absolute; z-index: 1; left: 0; right: 0; top: 0; bottom: 0; margin: 0; align-items: flex-start; pointer-events: none;
+}
+.cvpr.is-live .cvpr__case {
+  position: sticky; top: calc(50vh - var(--cvpr-case-h) / 2); top: calc(50svh - var(--cvpr-case-h) / 2);
+  min-width: 0; transform-origin: 50% 100%;
+}
+/* The garland hangs from the top of the section with its baubles. The snow falls on a screen-tall
+   canvas that sticks like the case does, in front of the big type and behind the case. */
+.cvpr.is-live .cvpr__garland { position: absolute; z-index: 2; left: 0; right: 0; top: 0; margin: 0; transform-origin: 50% 0; }
+.cvpr.is-live .cvpr__hang { position: absolute; z-index: 2; left: 0; right: 0; top: 0; display: block; pointer-events: none; }
+.cvpr__bauble {
+  --cvpr-size: clamp(34px, 5.4vw, 72px);
+  position: absolute; left: var(--cvpr-x); top: calc(var(--cvpr-tile) * .13);
+  display: block; width: var(--cvpr-size); margin-left: calc(var(--cvpr-size) / -2); transform-origin: 50% 0;
+}
+.cvpr__bauble::before { content: ""; display: block; width: 1.5px; height: var(--cvpr-drop); margin: 0 auto; background: var(--cocoa-500, #6B4229); }
+.cvpr__bauble img { display: block; width: 100%; height: auto; margin-top: -4%; }
+.cvpr__bauble--1 { --cvpr-x: 23.5%; --cvpr-drop: calc(var(--cvpr-tile) * .12); }
+.cvpr__bauble--2 { --cvpr-x: 33%; --cvpr-drop: calc(var(--cvpr-tile) * .09); }
+.cvpr__bauble--3 { --cvpr-x: 70.5%; --cvpr-drop: calc(var(--cvpr-tile) * .1); }
+.cvpr__bauble--4 { --cvpr-x: 80%; --cvpr-drop: calc(var(--cvpr-tile) * .13); }
+.cvpr.is-live .cvpr__snowbox { position: absolute; inset: 0; z-index: 1; display: block; pointer-events: none; }
+.cvpr__snow { position: sticky; top: 0; display: block; width: 100%; height: 100vh; height: 100svh; }
+
+/* Holly behind the case, a bow on it. */
+.cvpr.is-live .cvpr__sprig { position: absolute; z-index: 0; display: block; width: 62%; height: auto; max-width: none; pointer-events: none; }
+.cvpr__sprig--1 { left: -30%; top: -8%; rotate: -24deg; }
+.cvpr__sprig--2 { right: -32%; top: 28%; rotate: 62deg; }
+.cvpr__sprig--3 { left: -28%; bottom: -6%; rotate: 200deg; }
+.cvpr.is-live .cvpr__bow { position: absolute; z-index: 2; display: block; right: -10%; top: -7%; width: 52%; height: auto; max-width: none; rotate: 14deg; pointer-events: none; filter: drop-shadow(0 6px 6px rgba(51, 35, 26, .28)); }
+.cvpr.is-live .cvpr__tilt { z-index: 1; }
+
+/* The burst when the case lands. */
+.cvpr.is-live .cvpr__slot--main { position: relative; }
+.cvpr.is-live .cvpr__spark {
+  position: absolute; z-index: 3; left: 50%; top: 42%; display: block; width: 18px; height: 18px; margin: -9px 0 0 -9px; pointer-events: none; opacity: 0;
+  clip-path: polygon(50% 0, 62% 36%, 100% 38%, 69% 60%, 80% 96%, 50% 75%, 20% 96%, 31% 60%, 0 38%, 38% 36%);
+}
+.cvpr__spark:nth-child(3n) { background: var(--gold-400, #D2B57C); }
+.cvpr__spark:nth-child(3n+1) { background: var(--red-500, #C4302B); }
+.cvpr__spark:nth-child(3n+2) { background: var(--teal-600, #4E7C7B); }
+
+/* Layers, set part by part so no act makes a stacking context: big type under the case, the rest over it. */
+.cvpr.is-live .cvpr__big { position: relative; z-index: 0; row-gap: calc(var(--cvpr-case-h) * 1.02); } /* on a phone the lines sit above and below the case */
+.cvpr.is-live .cvpr__block,
+.cvpr.is-live .cvpr__note,
+.cvpr.is-live .cvpr__range-head,
+.cvpr.is-live .cvpr__row,
+.cvpr.is-live .cvpr__link,
+.cvpr.is-live .cvpr__stamp,
+.cvpr.is-live .cvpr__cue { position: relative; z-index: 2; }
+
+.cvpr.is-live .cvpr__act--open { min-height: 100vh; min-height: 100svh; align-content: center; }
+.cvpr.is-live .cvpr__stamp { position: absolute; right: 2%; bottom: 4vh; }
+.cvpr.is-live .cvpr__cue { position: absolute; left: 0; bottom: 5vh; }
+
+.cvpr.is-live .cvpr__act--case { display: block; margin: 0; }
+.cvpr.is-live .cvpr__act--case .cvpr__block { width: 66%; padding: 18px; background: var(--cvpr-paper); box-shadow: 0 16px 34px -24px rgba(51, 35, 26, .55); }
+.cvpr.is-live .cvpr__block--left { margin-right: auto; }
+.cvpr.is-live .cvpr__block--right { margin: 26vh 0 0 auto; }
+.cvpr.is-live .cvpr__stats { padding: 6px 16px !important; }
+
+.cvpr.is-live .cvpr__act--fit { display: block; margin: 0; padding-top: 10vh; }
+.cvpr.is-live .cvpr__act--fit .cvpr__block { width: 62%; margin-top: 12vh; }
+.cvpr.is-live .cvpr__act--fit .cvpr__block--right { margin-top: 18vh; padding: 18px; background: var(--cvpr-paper); box-shadow: 0 16px 34px -24px rgba(51, 35, 26, .55); }
+
+.cvpr.is-live .cvpr__act--notes { display: block; margin-top: 12vh; }
+.cvpr.is-live .cvpr__note { width: clamp(280px, 74vw, 340px); }
+.cvpr.is-live .cvpr__note--1 { margin: 0 auto 0 -6vw; }
+.cvpr.is-live .cvpr__note--2 { margin: 6vh -6vw 0 auto; }
+.cvpr.is-live .cvpr__note--3 { margin: 6vh auto 0 -6vw; }
+
+.cvpr.is-live .cvpr__act--range { margin-top: 16vh; align-content: end; }
+.cvpr.is-live .cvpr__slot--main .cvpr__slot-img { visibility: hidden; }
+
+/* ---------- More of the garland as the screen widens ---------- */
+@media (min-width: 560px) {
+  .cvpr { --cvpr-tile: 50vw; --cvpr-tiles: 50%; }
+  .cvpr__bauble--1 { --cvpr-x: 11.75%; }
+  .cvpr__bauble--2 { --cvpr-x: 35.25%; }
+  .cvpr__bauble--3 { --cvpr-x: 61.75%; }
+  .cvpr__bauble--4 { --cvpr-x: 85.25%; }
+}
+@media (min-width: 1100px) {
+  .cvpr { --cvpr-tile: 33.333vw; --cvpr-tiles: 33.333%; }
+  .cvpr__bauble--1 { --cvpr-x: 7.83%; }
+  .cvpr__bauble--2 { --cvpr-x: 23.5%; }
+  .cvpr__bauble--3 { --cvpr-x: 74.5%; }
+  .cvpr__bauble--4 { --cvpr-x: 90.17%; }
+}
+@media (min-width: 1800px) {
+  .cvpr { --cvpr-tile: 25vw; --cvpr-tiles: 25%; }
+  .cvpr__bauble--1 { --cvpr-x: 5.88%; }
+  .cvpr__bauble--2 { --cvpr-x: 17.63%; }
+  .cvpr__bauble--3 { --cvpr-x: 80.88%; }
+  .cvpr__bauble--4 { --cvpr-x: 92.63%; }
+}
+
+/* A short screen has less room above the big type. */
+@media (max-height: 700px) {
+  .cvpr__bauble { --cvpr-size: clamp(28px, 3.6vw, 48px); }
+  .cvpr__bauble--1 { --cvpr-drop: calc(var(--cvpr-tile) * .07); }
+  .cvpr__bauble--2 { --cvpr-drop: calc(var(--cvpr-tile) * .06); }
+  .cvpr__bauble--3 { --cvpr-drop: calc(var(--cvpr-tile) * .065); }
+  .cvpr__bauble--4 { --cvpr-drop: calc(var(--cvpr-tile) * .08); }
+}
+
+/* ---------- Wide: the blocks sit either side of the case, as in the plain columns ---------- */
+@media (min-width: 750px) {
+  .cvpr { padding-left: var(--cvpr-gutter); padding-right: var(--cvpr-gutter); }
+  .cvpr__row { grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 20px; }
+  .cvpr__slot--1, .cvpr__slot--4 { display: grid; }
+  .cvpr__slot-photo { width: min(100%, 150px); }
+  .cvpr__slot--1 { order: 0; }
+  .cvpr__slot--2 { order: 1; }
+  .cvpr__slot--main { order: 2; }
+  .cvpr__slot--3 { order: 3; }
+  .cvpr__slot--4 { order: 4; }
+  .cvpr__act--case, .cvpr__act--fit { grid-template-columns: 1fr 1fr; }
+
+  .cvpr.is-live { --cvpr-case-w: min(23vw, 37vh, 340px); }
+  .cvpr.is-live .cvpr__stamp { right: 3%; bottom: 8vh; }
+  .cvpr.is-live .cvpr__act--case,
+  .cvpr.is-live .cvpr__act--fit {
+    display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--cvpr-case-w) + 40px) minmax(0, 1fr);
+    gap: 0; align-items: center;
+  }
+  /* Wide: the lines stay together behind the case, as in the reference. */
+  .cvpr.is-live .cvpr__big { row-gap: 0; }
+  .cvpr.is-live .cvpr__big--line {
+    display: flex; justify-content: center; column-gap: calc(var(--cvpr-case-w) * .8);
+    font-size: clamp(50px, 9.2vw, 190px) !important;
+  }
+  /* Two words stand either side of the case, each set against it, however long each one is. */
+  .cvpr.is-live .cvpr__big--split {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: calc(var(--cvpr-case-w) + 24px);
+    margin-inline: calc(var(--cvpr-gutter) * -1); /* the speckle mask stops at this box, so it must clear the longest word */
+  }
+  .cvpr.is-live .cvpr__big--split span:first-child { justify-self: end; }
+  .cvpr.is-live .cvpr__big--split span:last-child { justify-self: start; }
+  .cvpr.is-live .cvpr__act--case { min-height: 84vh; }
+  .cvpr.is-live .cvpr__act--case .cvpr__block { width: auto; max-width: 400px; padding: 0; background: none; box-shadow: none; }
+  .cvpr.is-live .cvpr__block--left { grid-column: 1; margin: 0 auto 0 0; }
+  .cvpr.is-live .cvpr__block--right { grid-column: 3; margin: 0 0 0 auto; }
+  .cvpr.is-live .cvpr__act--case .cvpr__stats { padding: 6px 18px !important; background: var(--cvpr-paper); box-shadow: 0 16px 34px -24px rgba(51, 35, 26, .55); }
+
+  .cvpr.is-live .cvpr__act--fit { padding-top: 4vh; row-gap: 8vh; }
+  .cvpr.is-live .cvpr__act--fit .cvpr__block { width: auto; max-width: 340px; margin-top: 0; }
+  .cvpr.is-live .cvpr__act--fit .cvpr__block--right { margin: 0 0 0 auto; padding: 0; background: none; box-shadow: none; }
+
+  .cvpr.is-live .cvpr__act--notes { display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--cvpr-case-w) + 40px) minmax(0, 1fr); margin-top: 6vh; row-gap: 0; }
+  /* 280px keeps the words on one line inside the splat, even where the column is narrower. */
+  .cvpr.is-live .cvpr__note { width: max(280px, min(100%, 360px)); justify-self: center; }
+  .cvpr.is-live .cvpr__note--1 { grid-column: 1; grid-row: 1; margin: 0; }
+  .cvpr.is-live .cvpr__note--2 { grid-column: 3; grid-row: 2; margin: 0; }
+  .cvpr.is-live .cvpr__note--3 { grid-column: 1; grid-row: 3; margin: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cvpr__btn, .cvpr__link { transition: none !important; }
+}
+/* ds-allow-hardcode:end */

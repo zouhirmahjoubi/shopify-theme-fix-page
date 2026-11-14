@@ -1,0 +1,803 @@
+{
+  "page": "http://127.0.0.1:62540/dev/motion-store-adapt/harness/u1.1/counter-model.html",
+  "modes": [
+    {
+      "mode": "sync",
+      "checks": [
+        {
+          "name": "CasifyMotion booted with motion on",
+          "ok": true,
+          "state": {
+            "motion": true,
+            "ready": true
+          }
+        },
+        {
+          "name": "pack 3: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 11,
+          "first": [
+            968
+          ],
+          "last": [
+            1170
+          ]
+        },
+        {
+          "name": "pack 3: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "10348"
+        },
+        {
+          "name": "pack 3: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 79,
+          "distinct": [
+            "$81.98",
+            "$91.08",
+            "$93.08",
+            "$95.87",
+            "$99.45",
+            "$100.14",
+            "...",
+            "$103.47",
+            "$103.48"
+          ]
+        },
+        {
+          "name": "pack 3: total ends on the formatted amount",
+          "ok": true,
+          "text": "$103.48",
+          "expected": "$103.48"
+        },
+        {
+          "name": "pack 2: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 14,
+          "first": [
+            1170
+          ],
+          "last": [
+            968
+          ]
+        },
+        {
+          "name": "pack 2: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: data-cents follows the total",
+          "ok": true,
+          "before": "10348",
+          "after": "8198"
+        },
+        {
+          "name": "pack 2: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 87,
+          "distinct": [
+            "$103.48",
+            "$99.41",
+            "$96.26",
+            "$94.50",
+            "$91.23",
+            "$90.00",
+            "...",
+            "$81.99",
+            "$81.98"
+          ]
+        },
+        {
+          "name": "pack 2: total ends on the formatted amount",
+          "ok": true,
+          "text": "$81.98",
+          "expected": "$81.98"
+        },
+        {
+          "name": "pack 1: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 13,
+          "first": [
+            968
+          ],
+          "last": [
+            766
+          ]
+        },
+        {
+          "name": "pack 1: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "4999"
+        },
+        {
+          "name": "pack 1: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 89,
+          "distinct": [
+            "$81.98",
+            "$49.99",
+            "$79.87",
+            "$76.99",
+            "$74.50",
+            "$63.49",
+            "...",
+            "$50.00",
+            "$49.99"
+          ]
+        },
+        {
+          "name": "pack 1: total ends on the formatted amount",
+          "ok": true,
+          "text": "$49.99",
+          "expected": "$49.99"
+        },
+        {
+          "name": "add 1 (pack 2): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 1 (pack 2): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 2 (pack 1): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "no console or page errors",
+          "ok": true,
+          "errors": []
+        }
+      ],
+      "errors": [],
+      "pass": true
+    },
+    {
+      "mode": "defer",
+      "checks": [
+        {
+          "name": "CasifyMotion booted with motion on",
+          "ok": true,
+          "state": {
+            "motion": true,
+            "ready": true
+          }
+        },
+        {
+          "name": "pack 3: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 11,
+          "first": [
+            968
+          ],
+          "last": [
+            1170
+          ]
+        },
+        {
+          "name": "pack 3: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "10348"
+        },
+        {
+          "name": "pack 3: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 82,
+          "distinct": [
+            "$81.98",
+            "$90.96",
+            "$94.23",
+            "$95.70",
+            "$99.75",
+            "$100.79",
+            "...",
+            "$103.45",
+            "$103.48"
+          ]
+        },
+        {
+          "name": "pack 3: total ends on the formatted amount",
+          "ok": true,
+          "text": "$103.48",
+          "expected": "$103.48"
+        },
+        {
+          "name": "pack 2: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 12,
+          "first": [
+            1170
+          ],
+          "last": [
+            968
+          ]
+        },
+        {
+          "name": "pack 2: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: data-cents follows the total",
+          "ok": true,
+          "before": "10348",
+          "after": "8198"
+        },
+        {
+          "name": "pack 2: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 75,
+          "distinct": [
+            "$103.48",
+            "$99.27",
+            "$96.38",
+            "$94.61",
+            "$88.74",
+            "$87.75",
+            "...",
+            "$81.99",
+            "$81.98"
+          ]
+        },
+        {
+          "name": "pack 2: total ends on the formatted amount",
+          "ok": true,
+          "text": "$81.98",
+          "expected": "$81.98"
+        },
+        {
+          "name": "pack 1: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 12,
+          "first": [
+            968
+          ],
+          "last": [
+            766
+          ]
+        },
+        {
+          "name": "pack 1: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "4999"
+        },
+        {
+          "name": "pack 1: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 79,
+          "distinct": [
+            "$81.98",
+            "$49.99",
+            "$80.56",
+            "$75.72",
+            "$72.54",
+            "$59.83",
+            "...",
+            "$50.00",
+            "$49.99"
+          ]
+        },
+        {
+          "name": "pack 1: total ends on the formatted amount",
+          "ok": true,
+          "text": "$49.99",
+          "expected": "$49.99"
+        },
+        {
+          "name": "add 1 (pack 2): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 1 (pack 2): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 2 (pack 1): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "no console or page errors",
+          "ok": true,
+          "errors": []
+        }
+      ],
+      "errors": [],
+      "deferred_scripts": 25,
+      "pass": true
+    },
+    {
+      "mode": "slow",
+      "checks": [
+        {
+          "name": "CasifyMotion booted with motion on",
+          "ok": true,
+          "state": {
+            "motion": true,
+            "ready": true
+          }
+        },
+        {
+          "name": "pack 3: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 8,
+          "first": [
+            968
+          ],
+          "last": [
+            1170
+          ]
+        },
+        {
+          "name": "pack 3: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "10348",
+            "text": "$103.48",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 3: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "10348"
+        },
+        {
+          "name": "pack 3: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 70,
+          "distinct": [
+            "$81.98",
+            "$92.37",
+            "$96.57",
+            "$100.00",
+            "$102.65",
+            "$102.94",
+            "...",
+            "$103.47",
+            "$103.48"
+          ]
+        },
+        {
+          "name": "pack 3: total ends on the formatted amount",
+          "ok": true,
+          "text": "$103.48",
+          "expected": "$103.48"
+        },
+        {
+          "name": "pack 2: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 12,
+          "first": [
+            1170
+          ],
+          "last": [
+            968
+          ]
+        },
+        {
+          "name": "pack 2: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "8198",
+            "text": "$81.98",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 2: data-cents follows the total",
+          "ok": true,
+          "before": "10348",
+          "after": "8198"
+        },
+        {
+          "name": "pack 2: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 84,
+          "distinct": [
+            "$103.48",
+            "$99.55",
+            "$97.78",
+            "$96.38",
+            "$90.96",
+            "$89.68",
+            "...",
+            "$81.99",
+            "$81.98"
+          ]
+        },
+        {
+          "name": "pack 2: total ends on the formatted amount",
+          "ok": true,
+          "text": "$81.98",
+          "expected": "$81.98"
+        },
+        {
+          "name": "pack 1: highlight present and visible",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: highlight travels (intermediate frames)",
+          "ok": true,
+          "distinct_lefts": 11,
+          "first": [
+            968
+          ],
+          "last": [
+            766
+          ]
+        },
+        {
+          "name": "pack 1: highlight lands on the checked tier",
+          "ok": true,
+          "land": {
+            "checkedIsPack": true,
+            "hlVisible": true,
+            "dc": 0,
+            "dw": 14,
+            "dh": 14,
+            "cents": "4999",
+            "text": "$49.99",
+            "roll": false
+          }
+        },
+        {
+          "name": "pack 1: data-cents follows the total",
+          "ok": true,
+          "before": "8198",
+          "after": "4999"
+        },
+        {
+          "name": "pack 1: total rolls through intermediate amounts",
+          "ok": true,
+          "frames": 84,
+          "distinct": [
+            "$81.98",
+            "$77.20",
+            "$74.30",
+            "$71.42",
+            "$60.05",
+            "$58.67",
+            "...",
+            "$50.00",
+            "$49.99"
+          ]
+        },
+        {
+          "name": "pack 1: total ends on the formatted amount",
+          "ok": true,
+          "text": "$49.99",
+          "expected": "$49.99"
+        },
+        {
+          "name": "add 1 (pack 2): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 1 (pack 2): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 1 (pack 2): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): cart:added once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): exactly one .cvm-token",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "add 2 (pack 1): no other flyer on body, token removed",
+          "ok": true,
+          "stray": [],
+          "body_added": [],
+          "left": 0
+        },
+        {
+          "name": "add 2 (pack 1): CasifyBag.receive once",
+          "ok": true,
+          "delta": 1
+        },
+        {
+          "name": "no console or page errors",
+          "ok": true,
+          "errors": []
+        }
+      ],
+      "errors": [],
+      "deferred_scripts": 25,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

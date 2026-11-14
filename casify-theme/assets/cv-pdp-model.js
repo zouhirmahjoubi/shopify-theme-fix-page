@@ -13,6 +13,36 @@
 (function () {
   'use strict';
 
+  /* Sharper 3D on ordinary screens. Shopify's model-viewer (v1.12) sizes its drawing to the
+     screen's devicePixelRatio, re-read on every frame, and drops to half of that whenever
+     frames run slow. On a 1x laptop screen the print came out soft, and at half scale (the
+     page's other 3D animations slow its frames) blurry with stepped edges. The viewer's own
+     code, and only it, is told 2 on screens below 2x: it draws at double size for the
+     browser to scale down, and its slow-frame fallback now stops at the screen's own 1x.
+     Every other script still reads the real value. */
+  (function sharperViewer() {
+    var own = Object.getOwnPropertyDescriptor(window, 'devicePixelRatio');
+    var desc = own && own.get ? own : Object.getOwnPropertyDescriptor(Window.prototype, 'devicePixelRatio');
+    if (!desc || !desc.get) return;
+    var real = desc.get;
+    try {
+      Object.defineProperty(window, 'devicePixelRatio', {
+        configurable: true,
+        enumerable: true,
+        get: function () {
+          var dpr = real.call(window);
+          if (dpr >= 2) return dpr;
+          var stack = new Error().stack || '';
+          return stack.indexOf('/shopifycloud/model-viewer/') === -1 ? dpr : 2;
+        },
+        // devicePixelRatio is replaceable: a script that assigns it gets a plain value, as before.
+        set: function (value) {
+          Object.defineProperty(window, 'devicePixelRatio', { value: value, writable: true, configurable: true, enumerable: true });
+        }
+      });
+    } catch (e) { /* the browser keeps its own value */ }
+  })();
+
   /* Theme editor: a reloaded section is a fresh root, so it is set up again; the old
      root's listeners go with its element. */
   function init(root) {
@@ -88,10 +118,12 @@
     }
   }
 
-  /* A new variant swaps the stage photo, so the photo should be what shows. */
+  /* A new variant swaps the stage photo, so the photo should be what shows. A variant
+     with no photo swaps nothing (a case whose photos have not arrived), so the model stays. */
   root.addEventListener('cvs:change', function (e) {
-    var id = e.detail && e.detail.variant ? e.detail.variant.id : null;
-    if (variantId !== null && id !== variantId && !wrap.hidden) show(false);
+    var v = e.detail ? e.detail.variant : null;
+    var id = v ? v.id : null;
+    if (variantId !== null && id !== variantId && !wrap.hidden && v && v.featured_image) show(false);
     variantId = id;
   });
   }

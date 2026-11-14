@@ -25,7 +25,10 @@ def form_args(target, path):
 
 
 def curl_cmd(target, path):
-    return ['curl', '-s', '-o', os.devnull, '-w', '%{http_code}', '-X', 'POST'] + form_args(target, path) + [target['url']]
+    """No "Expect: 100-continue": on 2026-11-09 Google Storage reset the connection right after its 100 Continue
+    (curl exit 55, every file, after 47 had gone through), while the same POST without the header answered 201."""
+    return (['curl', '-s', '-o', os.devnull, '-w', '%{http_code}', '-H', 'Expect:', '-X', 'POST'] +
+            form_args(target, path) + [target['url']])
 
 
 def upload(target, path):

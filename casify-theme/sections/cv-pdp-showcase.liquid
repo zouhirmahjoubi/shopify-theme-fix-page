@@ -38,6 +38,8 @@
 
       <ul class="cvw-showcase__cards" role="list">
         {%- assign dealt = 0 -%}
+        {%- comment -%} Stars: verified Judge.me reviews only (snippets/cv-jm-verified.liquid), read once. {%- endcomment -%}
+        {%- capture jm_map -%}{%- render 'cv-jm-verified', mode: 'map' -%}{%- endcapture -%}
         {%- comment -%}
           Three cards, plus up to three hidden spares: assets/cv-pdp-story.js hides a product
           already shown higher on the page and brings a spare in so the counter still holds three.
@@ -67,8 +69,21 @@
                 endif
               endfor
 
-              assign i_rating = item.metafields.reviews.rating.value
-              assign i_count = item.metafields.reviews.rating_count.value | default: 0
+              assign i_count = 0
+              assign i_sum = 0
+              assign jm_key = '|' | append: item.handle | append: ':'
+              if jm_map contains jm_key
+                assign jm_bits = jm_map | split: jm_key
+                for bit in jm_bits offset: 1
+                  assign bit_r = bit | slice: 0 | plus: 0
+                  assign i_count = i_count | plus: 1
+                  assign i_sum = i_sum | plus: bit_r
+                endfor
+              endif
+              assign i_avg = 0
+              if i_count > 0
+                assign i_avg = i_sum | times: 1.0 | divided_by: i_count
+              endif
             -%}
             <li class="cvw-card cvw-card--{{ tone }}" data-cvw-card{% if dealt > 3 %} data-cvw-spare hidden{% endif %}>
               <a class="cvw-card__link" href="{{ item.url }}">
@@ -82,11 +97,11 @@
                   {%- endif -%}
                 </span>
                 <span class="cvw-card__body">
-                  {%- if i_rating != blank and i_count > 0 -%}
-                    {%- assign i_pct = i_rating.rating | times: 100.0 | divided_by: i_rating.scale_max | round: 1 -%}
+                  {%- if i_count > 0 -%}
+                    {%- assign i_pct = i_avg | times: 20.0 | round: 1 -%}
                     <span class="cvw-card__rating">
                       {%- render 'cv-stars', fill: i_pct, class: 'cvw-card__stars' -%}
-                      <span>{{ i_rating.rating | round: 1 }} <span class="cvw-sr">out of {{ i_rating.scale_max }} stars,</span>({{ i_count }})</span>
+                      <span>{{ i_avg | round: 1 }} <span class="cvw-sr">out of 5 stars,</span>({{ i_count }})</span>
                     </span>
                   {%- endif -%}
                   <span class="cvw-card__title">{{ item.title | escape }}</span>

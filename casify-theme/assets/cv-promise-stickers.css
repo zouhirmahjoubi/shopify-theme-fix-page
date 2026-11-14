@@ -1,0 +1,154 @@
+/* =========================================================================
+   Casify: promise stickers beside the collection sign
+   (snippets/cv-promise-stickers.liquid, motion in cv-promise-stickers.js)
+   Three die-cut stickers: a white cut edge, a soft colour each, a slight tilt,
+   and a little character in a round window. This file is the finished state:
+   everything reads correctly without the script.
+   ========================================================================= */
+
+/* ds-allow-hardcode:start  theme.css defines colour, shadow and motion tokens only (no spacing,
+   radius or type-size scale, see design-tokens/README.md). Sizes here are the stickers' own
+   measures; rgba() values are cocoa-700 and cream-50 tints of the theme tokens. */
+
+.cvsk { position: relative; justify-self: end; width: 100%; max-width: 470px; padding-bottom: 6px; }
+
+.cvsk__title {
+  margin: 0 0 14px 4px;
+  font-family: var(--font-label); font-weight: 400; font-size: 12px; line-height: 1.3;
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--cocoa-600);
+}
+
+.cvsk__list { display: grid; justify-items: start; gap: 12px; margin: 0; padding: 0; list-style: none; }
+
+.cvsk__item {
+  --sk-tilt: -1.6deg;
+  --sk-shift: 0px;
+  --sk-face: var(--teal-100);
+  --sk-ring: var(--teal-300);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 12px;
+  max-width: calc(100% - var(--sk-shift));
+  min-height: 70px;
+  margin: 0 0 0 var(--sk-shift);
+  padding: 5px 22px 5px 5px;
+  border: 4px solid var(--cream-50);
+  border-radius: 999px;
+  background: var(--sk-face);
+  box-shadow: 0 1px 1px rgba(51, 35, 26, .1), 0 14px 22px -16px rgba(51, 35, 26, .6);
+  rotate: var(--sk-tilt);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none; user-select: none;
+}
+.cvsk__item--care {
+  --sk-tilt: 1.3deg;
+  --sk-shift: 18px;
+  --sk-face: var(--cream-100);
+  --sk-face: color-mix(in srgb, var(--red-300) 26%, var(--cream-50));
+  --sk-ring: var(--red-300);
+}
+.cvsk__item--ship {
+  --sk-tilt: -.8deg;
+  --sk-shift: 6px;
+  --sk-face: var(--gold-200);
+  --sk-ring: var(--gold-400);
+}
+
+/* Gloss: a strip of light that crosses the sticker on hover (cv-promise-stickers.js adds the lift). */
+.cvsk__item::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 42%, rgba(253, 249, 241, .38) 50%, transparent 58%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  opacity: 0;
+}
+
+.cvsk__badge {
+  flex: none; position: relative;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: var(--cream-50);
+  box-shadow: inset 0 0 0 2px var(--sk-ring);
+}
+
+.cvsk__text {
+  min-width: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: 17.5px; line-height: 1.15; letter-spacing: -.005em;
+  color: var(--cocoa-700);
+  text-wrap: balance;
+}
+
+/* Pieces of the characters. Colours come from theme tokens; the ink outline is cocoa-700. */
+.cvsk__art { display: block; width: 100%; height: 100%; }
+.cvsk__art .sk-ink { stroke: var(--cocoa-700); stroke-width: 2.2; stroke-linejoin: round; }
+.cvsk__art .sk-thin { stroke: var(--cocoa-700); stroke-width: 1.3; stroke-linejoin: round; }
+.cvsk__art .sk-none { fill: none; }
+.cvsk__art .sk-line { fill: none; stroke: var(--cocoa-700); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cvsk__art .sk-gloss { fill: none; stroke: var(--cream-50); stroke-width: 1.8; stroke-linecap: round; opacity: .85; }
+.cvsk__art .sk-arrow { fill: none; stroke: var(--teal-600); stroke-width: 3.4; stroke-linecap: round; }
+.cvsk__art .sk-red { fill: var(--red-500); }
+.cvsk__art .sk-cream { fill: var(--cream-50); }
+.cvsk__art .sk-teal { fill: var(--teal-300); }
+.cvsk__art .sk-tealdk { fill: var(--teal-600); }
+.cvsk__art .sk-navy { fill: var(--teal-700); }
+.cvsk__art .sk-gold { fill: var(--gold-400); }
+.cvsk__art .sk-kraft { fill: var(--gold-300); }
+.cvsk__art .sk-lamp { fill: var(--gold-200); }
+.cvsk__art .sk-glass { fill: var(--teal-100); }
+.cvsk__art .sk-cocoa { fill: var(--cocoa-700); }
+.cvsk__art .sk-blush { fill: var(--red-300); opacity: .55; }
+.cvsk__art .sk-blush--on-red { opacity: .95; }
+.cvsk__art .sk-shade { fill: var(--cocoa-700); opacity: .13; }
+.cvsk__art .sk-dash { fill: var(--cocoa-300); opacity: .5; }
+.cvsk__art .sk-puff { fill: var(--cream-50); stroke: var(--cocoa-700); stroke-width: 1.1; opacity: 0; }
+.cvsk__art .sk-off { opacity: 0; }
+
+/* Until the script has set the start state (inline guard in the snippet, capped at 1.5 s). */
+.cvsk-pending .cvsk__item { opacity: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+  .cvsk__item { transition: box-shadow 260ms var(--ease-standard); }
+  .cvsk__item:hover { box-shadow: 0 1px 1px rgba(51, 35, 26, .1), 0 22px 30px -18px rgba(51, 35, 26, .62); }
+  .cvsk__item:hover::after {
+    opacity: 1; background-position: -30% 0;
+    transition: background-position 750ms var(--ease-standard), opacity 120ms linear;
+  }
+}
+
+@media (min-width: 990px) {
+  .cvsk__list { gap: 14px; }
+  .cvsk__item { min-height: 80px; padding-right: 28px; gap: 14px; }
+  .cvsk__item--care { --sk-shift: 26px; }
+  .cvsk__item--ship { --sk-shift: 10px; }
+  .cvsk__badge { width: 68px; height: 68px; }
+  .cvsk__text { font-size: 19.5px; }
+}
+@media (max-width: 989px) {
+  .cvsk { justify-self: stretch; max-width: 560px; }
+}
+
+/* Alone (no sign beside them, sections/cv-collection.liquid): one row on wide screens, a stack below.
+   The collection header's no-sign layout lives here too, since the stickers are what fills it. */
+.cvl__hd--nosign { display: block; margin: 8px 0 26px; }
+.cvl__hd--nosign .cvl__desc { margin: 0 0 18px; }
+.cvsk--row { justify-self: stretch; }
+@media (min-width: 990px) {
+  .cvsk--row { max-width: none; padding-bottom: 4px; }
+  .cvsk--row .cvsk__list { display: flex; flex-wrap: nowrap; align-items: center; gap: 18px; }
+  .cvsk--row .cvsk__item { --sk-shift: 0px; flex: none; }
+}
+@media (min-width: 990px) and (max-width: 1099px) {
+  .cvsk--row .cvsk__list { gap: 12px; }
+  .cvsk--row .cvsk__item { min-height: 74px; padding-right: 20px; gap: 11px; }
+  .cvsk--row .cvsk__badge { width: 60px; height: 60px; }
+  .cvsk--row .cvsk__text { font-size: 18px; }
+}
+@media (max-width: 420px) {
+  /* theme.css forces every h2 to phone sizes with !important at this width; this one is a label */
+  .cvsk .cvsk__title { font-size: 11.5px !important; line-height: 1.3 !important; }
+  .cvsk__item { gap: 10px; padding-right: 18px; }
+  .cvsk__badge { width: 54px; height: 54px; }
+  .cvsk__text { font-size: 16.5px; }
+}
+
+/* ds-allow-hardcode:end */

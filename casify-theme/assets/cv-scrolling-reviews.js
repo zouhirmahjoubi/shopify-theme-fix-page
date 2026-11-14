@@ -14,6 +14,11 @@
  * Entrance: heading rises word by word, rows slide in from opposite sides,
  * tickets pop onto the belt and their stars light up in sequence.
  *
+ * Random order (data-cvsr-shuffle, the section's "Random order" setting): the
+ * tickets are shuffled and dealt across the rows again once per page view,
+ * before any loop is built, with or without motion. Shopify caches the
+ * rendered page, so the order has to be picked here, not in Liquid.
+ *
  * Without JS or with prefers-reduced-motion the rows stay as plain,
  * horizontally scrollable lists (the CSS default).
  */
@@ -27,9 +32,41 @@
     if (root && typeof root._cvsrDestroy === 'function') root._cvsrDestroy();
   }
 
+  // Fisher-Yates over every original ticket, then deal them round-robin
+  // across the rows like the Liquid does. Avatar colours follow the new
+  // places (row + place, mod 3) so neighbours never share a colour.
+  function shuffleOnce(root) {
+    if (root._cvsrShuffled || !root.hasAttribute('data-cvsr-shuffle')) return;
+    root._cvsrShuffled = true;
+    var tracks = all('[data-cvsr-track]', root);
+    var cards = [];
+    tracks.forEach(function (track) {
+      Array.prototype.forEach.call(track.children, function (card) {
+        if (card.hasAttribute('data-cvsr-card') && !card.hasAttribute('data-cvsr-clone')) cards.push(card);
+      });
+    });
+    if (cards.length < 2 || !tracks.length) return;
+    for (var i = cards.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var held = cards[i]; cards[i] = cards[j]; cards[j] = held;
+    }
+    var places = tracks.map(function () { return 0; });
+    cards.forEach(function (card, k) {
+      var t = k % tracks.length;
+      tracks[t].appendChild(card);
+      var avatar = one('.cvsr-card__avatar', card);
+      if (avatar) {
+        avatar.classList.remove('cvsr-card__avatar--0', 'cvsr-card__avatar--1', 'cvsr-card__avatar--2');
+        avatar.classList.add('cvsr-card__avatar--' + ((places[t] + t) % 3));
+      }
+      places[t]++;
+    });
+  }
+
   function init(root) {
     if (!root) return;
     destroy(root);
+    shuffleOnce(root);
 
     var gsap = window.gsap;
     var ScrollTrigger = window.ScrollTrigger;
@@ -65,6 +102,14 @@
     var onScreen = !ScrollTrigger;
     var scrollSign = 1;
     var boost = 0;
+    // Speed: the speed ticker below runs only while a row is moving. Added for good, it kept
+    // GSAP's ticker asking for a frame on every frame of the visit, rows paused or off screen.
+    var ticking = false;
+    function setTicking(on) {
+      if (on === ticking) return;
+      ticking = on;
+      if (on) gsap.ticker.add(tick); else gsap.ticker.remove(tick);
+    }
     var intro = null;
     var split = null;
     var context = null;
@@ -126,12 +171,15 @@
     }
 
     function syncPlayState() {
+      var anyRun = false;
       rows.forEach(function (row) {
         if (!row.loop) return;
         var run = !userPaused && onScreen && !row.parked;
+        if (run) anyRun = true;
         if (run && row.loop.paused()) row.loop.play();
         else if (!run && !row.loop.paused()) row.loop.pause();
       });
+      setTicking(anyRun);
     }
 
     // ---- one ticker drives every row's speed ------------------------------
@@ -145,8 +193,8 @@
         row.loop.timeScale(Math.abs(ts) < 0.02 ? 0.02 * scrollSign : ts);
       });
     }
-    gsap.ticker.add(tick);
-    cleanups.push(function () { gsap.ticker.remove(tick); });
+    syncPlayState();
+    cleanups.push(function () { setTicking(false); });
 
     if (ScrollTrigger) {
       var st = ScrollTrigger.create({

@@ -1,9 +1,11 @@
 {%- comment -%}
   Casify: collection page, "The aisle".
 
-  A candy-shop aisle sign (KIE plate) hangs over the collection's own title
-  and description. Beside it the pack meter shows what the bag's case count
-  earns from the store's pack discounts. Below: Shopify's own storefront
+  A candy-shop aisle sign (KIE plate) can hang over the collection's own title
+  and description (setting show_sign, off since 2026-11-09: the title is then a
+  visually hidden h1). Beside it, or alone in one row, three promise stickers with little animated
+  characters (snippets/cv-promise-stickers.liquid, GSAP + Motion); with the
+  stickers off, the pack meter can take their place. Below: Shopify's own storefront
   filters in a drawer with live counts and removable chips, real sort, the
   product grid and pagination. Filters, sort and pages update in place
   through the Section Rendering API, with ordinary links and a submit button
@@ -63,6 +65,25 @@
     endif
   endif
   comment
+    The promise stickers take the column beside the sign; the pack meter shows there only with them off.
+  endcomment
+  assign show_promises = false
+  if section.settings.show_promises
+    if section.settings.promise_1 != blank or section.settings.promise_2 != blank or section.settings.promise_3 != blank
+      assign show_promises = true
+    endif
+  endif
+  assign show_aside = false
+  if show_promises or show_packs
+    assign show_aside = true
+  endif
+  comment
+    The hanging sign is off unless the setting turns it on. Without it the collection title stays
+    the page's h1 for search engines and screen readers, visually hidden (the breadcrumb shows it),
+    and the promise stickers run in one row on wide screens.
+  endcomment
+  assign show_sign = section.settings.show_sign
+  comment
     The phone model filter goes first and opens first: shoppers here pick a phone before anything else.
   endcomment
   assign model_re = 'model,phone,device,compatib,applicable' | split: ','
@@ -78,8 +99,9 @@
     <span class="is-current" aria-current="page">{{ collection.title | escape }}</span>
   </nav>
 
-  {%- comment -%} ---------- The aisle sign + pack meter ---------- {%- endcomment -%}
-  <header class="cvl__hd{% unless show_packs %} cvl__hd--solo{% endunless %}">
+  {%- comment -%} ---------- The aisle sign + promise stickers (or the pack meter) ---------- {%- endcomment -%}
+  <header class="cvl__hd{% unless show_sign %} cvl__hd--nosign{% endunless %}{% unless show_aside %} cvl__hd--solo{% endunless %}">
+    {%- if show_sign -%}
     <div class="cvl__sign-wrap">
       <div class="cvl__sign" data-cv-sign>
         <img class="cvl__sign-plate" src="{{ 'pages-aisle-sign.webp' | asset_url }}" width="900" height="655" alt="" fetchpriority="high">
@@ -89,7 +111,28 @@
         <div class="cvl__desc rte">{{ collection.description }}</div>
       {%- endif -%}
     </div>
-    {%- if show_packs -%}
+    {%- else -%}
+      <h1 class="cvl__vh">{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="cvl__desc rte">{{ collection.description }}</div>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if show_promises -%}
+      {%- liquid
+        assign sticker_row = true
+        if show_sign
+          assign sticker_row = false
+        endif
+      -%}
+      {%- render 'cv-promise-stickers',
+        sid: section.id,
+        heading: section.settings.promise_heading,
+        p1: section.settings.promise_1,
+        p2: section.settings.promise_2,
+        p3: section.settings.promise_3,
+        row: sticker_row
+      -%}
+    {%- elsif show_packs -%}
       {%- render 'cv-pack-meter', sid: section.id, pack2: pack2, pack3: pack3, heading: section.settings.pack_heading -%}
     {%- endif -%}
   </header>
@@ -250,6 +293,8 @@
   </div>
 
   {%- comment -%} ---------- The grid ---------- {%- endcomment -%}
+  {%- comment -%} Stars on the cards: verified Judge.me reviews only, read once for every card. {%- endcomment -%}
+  {%- capture jm_map -%}{%- render 'cv-jm-verified', mode: 'map' -%}{%- endcapture -%}
   <div class="cvl__results" data-cvl-swap="results">
     {%- if collection.products.size > 0 -%}
       {%- liquid
@@ -263,7 +308,7 @@
       <ul class="cvl__grid cvl__grid--showcase" role="list">
         {%- for product in collection.products -%}
           <li class="cvl__cell" data-cvl-cell="{{ product.id }}">
-            {%- render 'cv-showcase-card', item: product, index: forloop.index0, sid: section.id, wrapper: 'article', pick: section.settings.quick_pick, reveal: false, cta_label: shop_now, sale_badge: sale_badge, new_badge: new_badge -%}
+            {%- render 'cv-showcase-card', item: product, index: forloop.index0, sid: section.id, wrapper: 'article', pick: section.settings.quick_pick, reveal: false, cta_label: shop_now, sale_badge: sale_badge, new_badge: new_badge, jm_map: jm_map -%}
           </li>
         {%- endfor -%}
       </ul>
@@ -322,8 +367,16 @@
     { "type": "checkbox", "id": "quick_pick", "label": "Quick pick on cards", "default": true, "info": "Cards with more than one variant ask for colour and phone before adding, instead of adding the first variant." },
     { "type": "text", "id": "noun_one", "label": "Count word, one", "default": "product" },
     { "type": "text", "id": "noun_many", "label": "Count word, many", "default": "products" },
+    { "type": "header", "content": "Sign" },
+    { "type": "checkbox", "id": "show_sign", "label": "Show the hanging sign", "default": false, "info": "Off: the collection title stays on the page for Google and screen readers, out of sight, and the stickers sit in one row on wide screens." },
+    { "type": "header", "content": "Promise stickers" },
+    { "type": "checkbox", "id": "show_promises", "label": "Show the promise stickers", "default": true, "info": "Three stickers beside the sign, each with a little animated character: a printer, a parcel, a van." },
+    { "type": "text", "id": "promise_heading", "label": "Heading", "default": "Good to know" },
+    { "type": "text", "id": "promise_1", "label": "Sticker 1 (printer)", "default": "Printed to order in the USA", "info": "Only promises that are true for every order." },
+    { "type": "text", "id": "promise_2", "label": "Sticker 2 (parcel)", "default": "Free replacement if damaged" },
+    { "type": "text", "id": "promise_3", "label": "Sticker 3 (van)", "default": "Free shipping" },
     { "type": "header", "content": "Pack meter" },
-    { "type": "checkbox", "id": "show_packs", "label": "Show the pack meter", "default": true },
+    { "type": "checkbox", "id": "show_packs", "label": "Show the pack meter", "default": true, "info": "Shows only when the promise stickers are off." },
     { "type": "text", "id": "pack_heading", "label": "Heading", "default": "Mix a pack" },
     { "type": "range", "id": "pack_2_pct", "label": "2 cases: discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 18, "info": "Must match the automatic discount in Shopify admin > Discounts." },
     { "type": "range", "id": "pack_3_pct", "label": "3 cases: discount", "min": 0, "max": 60, "step": 1, "unit": "%", "default": 31, "info": "Must match the automatic discount in Shopify admin > Discounts." },

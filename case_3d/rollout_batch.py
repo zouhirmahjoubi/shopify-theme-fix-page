@@ -13,6 +13,10 @@ usage: python rollout_batch.py stage  <n>                  # variables for stage
 Batches (28 products each) are fixed in out/batches.json the first time; batch state is out/batch-<n>.json.
 Every store step refuses a batch holding a product already in rollout-log.json, so an old plan is never re-run:
 delete out/batches.json to plan the products still pending.
+
+New Printify products get their photos hours after they appear, so their models are uploaded and created per batch
+but attached only once printify_ready.py lists them: give `ready` instead of <n> to detach-query, detach-map,
+detach, attach and log, and they run on every product in out/ready.json that has a model and is not logged yet.
 """
 import json
 import sys
@@ -73,8 +77,8 @@ def pair_models(batch, files):
 
 
 def detach_query(batch):
-    """The last 10 media of every full product in the batch, to find the spare photo's MediaImage id."""
-    return '{ ' + ' '.join('p%d: product(id: "%s") { media(first: 10, reverse: true) { nodes { id ... on MediaImage '
+    """The last 3 media of every full product in the batch (the spare photo is the last), for its MediaImage id."""
+    return '{ ' + ' '.join('p%d: product(id: "%s") { media(first: 3, reverse: true) { nodes { id ... on MediaImage '
                            '{ image { url } } } } }' % (r['id'], r['gid']) for r in batch if r.get('detach_src')) + ' }'
 
 
@@ -99,10 +103,23 @@ def detach_vars(batch, dmap):
     return {'files': [{'id': dmap[r['gid']]['media'], 'referencesToRemove': [r['gid']]} for r in batch if r['gid'] in dmap]}
 
 
+def ready_rows(rows, plan, states, ready, log):
+    """Products out/ready.json says Printify has finished, that have a model and are not logged yet, from every
+    batch, with the batch states merged so detach, attach and log can run on them together."""
+    done = {p['product'] for p in log['products']}
+    where = {g: n for n, b in enumerate(plan, 1) for g in b}
+    state = {'urls': {}, 'models': {}}
+    for s in states.values():
+        state['urls'].update(s['urls'])
+        state['models'].update(s['models'])
+    batch = [dict(rows[g], batch=where[g]) for g in ready if g in where and g not in done and g in state['models']]
+    return batch, state
+
+
 def log_rows(batch, state, attached, dmap, log, n):
     """Rows for rollout-log.json: only products whose model fileUpdate confirmed and that are not logged yet."""
     done = {p['product'] for p in log['products']}
-    return [{'date': date.today().isoformat(), 'batch': n, 'product': r['gid'], 'handle': r['handle'],
+    return [{'date': date.today().isoformat(), 'batch': r.get('batch', n), 'product': r['gid'], 'handle': r['handle'],
              'family': r['family'], 'print': r['print'], 'model': state['models'][r['gid']],
              'detached': dmap.get(r['gid'], {}).get('media'), 'preview': r['still']}
             for r in batch if state['models'].get(r['gid']) in attached and r['gid'] not in done]
@@ -133,11 +150,21 @@ def batch_rows(n):
 
 
 if __name__ == '__main__':
-    cmd, n = sys.argv[1], int(sys.argv[2])
-    batch, state_name = batch_rows(n), 'batch-%d.json' % n
-    state = load(state_name, {'urls': {}, 'models': {}})
+    cmd, target = sys.argv[1], sys.argv[2]
     log_path = HERE / 'rollout-log.json'
     log = json.loads(log_path.read_text(encoding='utf-8'))
+    if target == 'ready':
+        if cmd not in ('detach-query', 'detach-map', 'detach', 'attach', 'log'):
+            sys.exit('%s runs per batch; the ready set only detaches, attaches and logs' % cmd)
+        plan = load('batches.json')
+        states = {k: load('batch-%d.json' % k, {'urls': {}, 'models': {}}) for k in range(1, len(plan) + 1)}
+        catalog = {r['gid']: r for r in json.loads((HERE / 'catalog-3d.json').read_text(encoding='utf-8'))}
+        n = None
+        batch, state = ready_rows(catalog, plan, states, load('ready.json')['ready'], log)
+    else:
+        n = int(target)
+        batch, state_name = batch_rows(n), 'batch-%d.json' % n
+        state = load(state_name, {'urls': {}, 'models': {}})
     if cmd != 'log' and already_logged(batch, log):
         sys.exit('batch %d holds %d products already in rollout-log.json; delete out/batches.json to plan again'
                  % (n, len(already_logged(batch, log))))

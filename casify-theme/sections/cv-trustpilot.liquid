@@ -8,8 +8,9 @@
   Honest data only — nothing is pre-filled:
     - the rating comes either from the merchant's review profile (score and
       count typed in from it, and linked so shoppers can check), or from
-      Shopify's standard reviews.rating / reviews.rating_count metafields
-      (weighted average, same method as sections/cv-social-proof.liquid);
+      Judge.me verified buyer reviews through snippets/cv-jm-verified.liquid
+      (all review types: product and store reviews, same method as
+      sections/cv-social-proof.liquid);
     - with no rating, the summary and the band are not rendered;
     - review blocks ship empty and never render until they have text and a
       name; there are no invented timestamps, and "Verified" is opt-in;
@@ -44,20 +45,19 @@
   if st.rating_source == 'profile'
     assign score = st.score | plus: 0
     assign total = st.total_reviews | plus: 0
-  elsif st.rating_source == 'shopify'
-    assign weighted_sum = 0
-    for item in collections.all.products
-      assign item_count = item.metafields.reviews.rating_count.value | default: 0
-      assign item_rating = item.metafields.reviews.rating.value
-      if item_count > 0 and item_rating != blank
-        assign scale = item_rating.scale_max | default: 5
-        assign item_weighted = item_rating.rating | times: item_count
-        assign weighted_sum = weighted_sum | plus: item_weighted
-        assign total = total | plus: item_count
-      endif
-    endfor
+  elsif st.rating_source == 'shopify' or st.rating_source == 'judge'
+    comment
+      Judge.me verified buyer reviews, all review types (product and store),
+      through snippets/cv-jm-verified.liquid. 'shopify' stays accepted so
+      saved templates keep working; it now reads Judge.me too.
+    endcomment
+    capture jm_stats
+      render 'cv-jm-verified', mode: 'stats', scope: 'all'
+    endcapture
+    assign jm_parts = jm_stats | split: '␟'
+    assign total = jm_parts[0] | plus: 0
     if total > 0
-      assign score = weighted_sum | divided_by: total | round: 1
+      assign score = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: total | round: 1
     endif
   endif
   assign score_fill = score | times: 100.0 | divided_by: scale | round: 1
@@ -192,7 +192,7 @@
     <div class="cvtr-band" data-cvtr-band>
       <p class="cvtr-band__text">
         Based on <span class="cvtr-band__num" data-value="{{ total }}">{{ total }}</span>
-        {%- if st.rating_source == 'profile' %} reviews{% if st.source_name != blank %} on {{ st.source_name | escape }}{% endif %}{% else %} published reviews{% endif -%}
+        {%- if st.rating_source == 'profile' %} reviews{% if st.source_name != blank %} on {{ st.source_name | escape }}{% endif %}{% else %} verified buyer reviews{% endif -%}
       </p>
       {%- if profile != blank and st.link_label != blank -%}
         <a class="cvtr-band__link" href="{{ profile | escape }}" target="_blank" rel="noopener noreferrer" data-cvtr-link>
@@ -220,13 +220,13 @@
     { "type": "text", "id": "subheading", "label": "Sub-heading", "default": "We read every review." },
     { "type": "header", "content": "Rating summary" },
     {
-      "type": "select", "id": "rating_source", "label": "Rating comes from", "default": "none",
+      "type": "select", "id": "rating_source", "label": "Rating comes from", "default": "judge",
       "options": [
         { "value": "none", "label": "Don't show a rating" },
-        { "value": "profile", "label": "My review profile (enter below)" },
-        { "value": "shopify", "label": "Shopify product review data" }
+        { "value": "judge", "label": "Judge.me verified reviews (all review types)" },
+        { "value": "profile", "label": "My review profile (enter below)" }
       ],
-      "info": "\"Shopify product review data\" averages the standard review metafields your reviews app publishes."
+      "info": "\"Judge.me verified reviews\" averages every verified buyer review (product and store reviews) from Judge.me."
     },
     { "type": "text", "id": "source_name", "label": "Review platform name", "info": "E.g. the site your reviews live on. Used as \"… reviews on [name]\".", "default": "Trustpilot" },
     { "type": "url", "id": "profile_url", "label": "Public review profile URL", "info": "Links the rating so shoppers can check it." },

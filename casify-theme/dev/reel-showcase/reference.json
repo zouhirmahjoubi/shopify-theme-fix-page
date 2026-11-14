@@ -1,0 +1,84 @@
+{
+  "sourceVideo": "C:\\Users\\LENOVO\\Downloads\\AQPbzkAGqUQ8aOb-m8xvy3kf_vpJ1cTSSyE2Y-ex5RwWgn0JkbhA1qrKtePAHY0Hy56uSoQFyPIkMVW4-ItAg_ESQwfa2izjfiluxOOG4w.mp4",
+  "intent": "Adapt the reference reel into a Casify storefront concept: oversized design names, centered original product photography, changing colored line artwork, a four-design picker and concise shopping guidance.",
+  "imagePolicy": "Original local catalog photographs embedded byte-for-byte as base64; no generation, recoloring, retouching or background removal.",
+  "productDataset": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\og\\products.json",
+  "themeAssets": [
+    "assets/cv-reel-showcase.css",
+    "assets/cv-reel-showcase.js"
+  ],
+  "offline": "CSS, JavaScript and original product images are embedded. Optional Google fonts use local serif fallbacks when unavailable. Product and bag links open the real store.",
+  "tokens": {
+    "paper": "#FDF9F1",
+    "cocoa": "#33231A",
+    "brandRed": "#A8231F",
+    "display": "Playfair Display, Georgia, serif",
+    "body": "Libre Baskerville, Georgia, serif"
+  },
+  "designs": [
+    {
+      "name": "Silver",
+      "title": "The Space Case",
+      "copy": "A silver finish, a magnetic mount and a built-in kickstand. Meet the Two-in-One Space Case.",
+      "description": "Silver finish. Magnetic mount & kickstand.",
+      "productTitle": "Two-in-One Space Case with Magnetic Mount & Kickstand for iPhone",
+      "handle": "two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max",
+      "photo": "p1.jpg",
+      "width": 1600,
+      "height": 1600,
+      "background": "#DFE8D0",
+      "ink": "#273C2B",
+      "pattern": "contour",
+      "sourcePath": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\og\\photos\\p1.jpg",
+      "url": "https://casiffy.myshopify.com/products/two-in-one-space-case-with-magnetic-mount-for-iphone-18-pro-max"
+    },
+    {
+      "name": "Clear",
+      "title": "Clearly yours",
+      "copy": "A transparent magnetic case for iPhone. Let your phone take the spotlight.",
+      "description": "Transparent design. Magnetic case for iPhone.",
+      "productTitle": "Transparent Magnetic Phone Case for iPhone",
+      "handle": "transparent-magnetic-phone-case-for-iphone",
+      "photo": "p7.jpg",
+      "width": 1500,
+      "height": 1500,
+      "background": "#DCEBEA",
+      "ink": "#173F46",
+      "pattern": "wave",
+      "sourcePath": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\og\\photos\\p7.jpg",
+      "url": "https://casiffy.myshopify.com/products/transparent-magnetic-phone-case-for-iphone"
+    },
+    {
+      "name": "Glitter",
+      "title": "A little sparkle",
+      "copy": "A glitter finish with a magnetic stand. A little shine for your everyday carry.",
+      "description": "Glitter design. Four-corner airbag case with stand.",
+      "productTitle": "Four-Corner Airbag Phone Case with Magnetic Stand and Glitter Design",
+      "handle": "four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design",
+      "photo": "p6.jpg",
+      "width": 800,
+      "height": 800,
+      "background": "#F0D8BF",
+      "ink": "#67351B",
+      "pattern": "flame",
+      "sourcePath": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\og\\photos\\p6.jpg",
+      "url": "https://casiffy.myshopify.com/products/four-corner-airbag-phone-case-with-magnetic-stand-and-glitter-design"
+    },
+    {
+      "name": "Rose",
+      "title": "A rosy outlook",
+      "copy": "A clear look with rose-toned details. Explore the Apple phone case and choose your exact model.",
+      "description": "Clear look. Rose-toned ring and camera details.",
+      "productTitle": "Mobile phone case - Apple",
+      "handle": "mobile-phone-case-apple",
+      "photo": "p10.jpg",
+      "width": 800,
+      "height": 800,
+      "background": "#F0D8DE",
+      "ink": "#642F45",
+      "pattern": "petal",
+      "sourcePath": "D:\\Shopify Theme Fix & Page\\casify-theme\\dev\\og\\photos\\p10.jpg",
+      "url": "https://casiffy.myshopify.com/products/mobile-phone-case-apple"
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{%- comment -%}
+  Casify: "Press" (adapted from the Vesper scroll story).
+
+  One case stays in the middle of the screen while the page scrolls past it: big stamped type
+  behind it, the case's facts either side, ink splats with what every order gets, then it shrinks
+  into the middle of a row of designs. It starts tilted and straightens up as the story begins.
+
+  Christmas layer (the "Christmas effects" setting): a pine garland with baubles that swing as you
+  scroll, snow that the scroll blows about, snow on the big letters, holly behind the case, a bow
+  that lands on it, and a burst of stars when it drops into the row.
+
+  Everything is real data: the case's photo, name, description and price, its phone model counts
+  (the option whose values name phones, as in cv-is-case) and finishes, the collection's count.
+  Pick a case on the usual front-and-side Tough mockup: the crop below assumes that shot.
+
+  Script: assets/cv-press.js. It cuts the white studio background out of the photo on a canvas, so
+  the type shows behind the case, and adds .is-live, which turns on the stage: the sticky case and
+  the layers. Without it (no JS, reduced motion, no GSAP) this is a plain stack of the same content.
+
+  Art: assets/cv-press-speckle.webp and snippets/cv-press-splat.liquid, from dev/press/make_art.py;
+  the Christmas pieces, assets/cv-press-*.svg, are two KIE images traced by dev/press/kie.
+{%- endcomment -%}
+{{ 'cv-press.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign coll = st.collection | default: collections.all
+  # Speed: the collection is read one product at a time and only as far as needed
+  # (the old `where: 'featured_image'` loaded all 50 products to show four).
+  assign p = st.product
+  if p == blank or p.featured_image == blank
+    assign p = nil
+    for item in coll.products
+      if item.featured_image != blank
+        assign p = item
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if p != blank and p.featured_image != blank -%}
+{%- liquid
+  assign short = p.title | split: ' Phone Case' | first | strip
+  assign tail = short | slice: -10, 10
+  if tail == ' Christmas'
+    assign cut = short.size | minus: 10
+    assign short = short | slice: 0, cut
+  endif
+  if st.name != blank
+    assign short = st.name
+  endif
+
+  assign models = 0
+  assign finishes = 0
+  assign finish_text = ''
+  assign iphones = 0
+  assign galaxies = 0
+  assign pixels = 0
+  for option in p.options_with_values
+    assign oname = option.name | downcase
+    assign fv = option.values.first | downcase
+    if oname contains 'surface' or oname contains 'finish'
+      assign finishes = option.values.size
+      assign finish_text = option.values | join: ' or '
+    elsif models == 0
+      if oname contains 'model' or oname contains 'phone' or oname contains 'device' or fv contains 'iphone' or fv contains 'galaxy' or fv contains 'pixel' or fv contains 'samsung'
+        assign models = option.values.size
+        for v in option.values
+          if v contains 'iPhone'
+            assign iphones = iphones | plus: 1
+          elsif v contains 'Pixel'
+            assign pixels = pixels | plus: 1
+          elsif v contains 'Galaxy' or v contains 'Samsung'
+            assign galaxies = galaxies | plus: 1
+          endif
+        endfor
+      endif
+    endif
+  endfor
+
+  assign desc = p.description | replace: '<br/>', '<br>' | replace: '<br />', '<br>'
+  if desc contains '</strong>'
+    assign lead = desc | split: '</strong>' | first
+    assign lead_text = lead | strip_html | strip
+    if lead_text.size < 70
+      assign desc = desc | remove_first: lead | remove_first: '</strong>'
+    endif
+  endif
+  assign blurb = desc | split: '<br><br>' | first | split: '</p>' | first | strip_html | strip | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&nbsp;', ' '
+  assign sentence = blurb | split: '. ' | first
+  assign kept = sentence | split: ', ' | first
+  assign kept_words = kept | split: ' ' | size
+  if kept_words > 24
+    assign blurb = kept | truncatewords: 20, '...'
+  else
+    assign end_char = kept | slice: -1, 1
+    assign blurb = kept
+    unless end_char == '.' or end_char == '!' or end_char == '?'
+      assign blurb = kept | append: '.'
+    endunless
+  endif
+
+  assign design_count = coll.products_count
+  if design_count == blank
+    assign design_count = 0
+    for item in coll.products
+      if item.featured_image != blank
+        assign design_count = design_count | plus: 1
+      endif
+    endfor
+  endif
+  assign photo = p.featured_image | image_url: width: 1200
+-%}
+<section class="cvpr" id="cvpr-{{ section.id }}" data-cvpr data-photo="{{ photo }}" style="--cvpr-speckle: url('{{ 'cv-press-speckle.webp' | asset_url }}');" aria-labelledby="cvpr-title-{{ section.id }}">
+
+  {%- if st.christmas -%}
+    <div class="cvpr__hang" aria-hidden="true">
+      <span class="cvpr__bauble cvpr__bauble--1" data-cvpr-bauble><img src="{{ 'cv-press-bauble-red.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false"></span>
+      <span class="cvpr__bauble cvpr__bauble--2" data-cvpr-bauble><img src="{{ 'cv-press-star.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false"></span>
+      <span class="cvpr__bauble cvpr__bauble--3" data-cvpr-bauble><img src="{{ 'cv-press-bell.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false"></span>
+      <span class="cvpr__bauble cvpr__bauble--4" data-cvpr-bauble><img src="{{ 'cv-press-bauble-teal.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false"></span>
+    </div>
+    <div class="cvpr__garland" data-cvpr-garland aria-hidden="true" style="--cvpr-garland: url('{{ 'cv-press-garland.svg' | asset_url }}');"></div>
+    <div class="cvpr__snowbox" aria-hidden="true"><canvas class="cvpr__snow" data-cvpr-snow></canvas></div>
+  {%- endif -%}
+
+  <div class="cvpr__rail" data-cvpr-rail>
+    <figure class="cvpr__case" data-cvpr-case>
+      {%- if st.christmas -%}
+        <img class="cvpr__sprig cvpr__sprig--1" data-cvpr-sprig src="{{ 'cv-press-holly.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false">
+        <img class="cvpr__sprig cvpr__sprig--2" data-cvpr-sprig src="{{ 'cv-press-pine.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false">
+        <img class="cvpr__sprig cvpr__sprig--3" data-cvpr-sprig src="{{ 'cv-press-holly.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false">
+        <img class="cvpr__bow" data-cvpr-bow src="{{ 'cv-press-bow.svg' | asset_url }}" alt="" width="120" height="120" loading="lazy" draggable="false">
+      {%- endif -%}
+      <span class="cvpr__tilt" data-cvpr-tilt>
+        <img class="cvpr__photo" src="{{ photo }}" width="{{ p.featured_image.width }}" height="{{ p.featured_image.height }}" alt="{{ p.featured_image.alt | default: p.title | escape }}" loading="lazy" draggable="false" data-cvpr-photo>
+      </span>
+    </figure>
+  </div>
+
+  <div class="cvpr__act cvpr__act--open" data-cvpr-open>
+    <h2 class="cvpr__big" id="cvpr-title-{{ section.id }}" data-cvpr-big>
+      {%- if st.big_1 != blank -%}<span{% if st.christmas %} data-text="{{ st.big_1 | escape }}"{% endif %}>{{ st.big_1 | escape }}</span>{%- endif -%}
+      {%- if st.big_2 != blank -%}<span{% if st.christmas %} data-text="{{ st.big_2 | escape }}"{% endif %}>{{ st.big_2 | escape }}</span>{%- endif -%}
+    </h2>
+    {%- if st.stamp != blank -%}
+      <svg class="cvpr__stamp" data-cvpr-stamp viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+        <defs><path id="cvpr-arc-{{ section.id }}" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs>
+        <circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="33"/>
+        <text><textPath href="#cvpr-arc-{{ section.id }}" textLength="268">{{ st.stamp | escape }}</textPath></text>
+        <path d="M60 44l4.6 10.6 11.4 1-8.7 7.5 2.7 11.2L60 68.4l-10 5.9 2.7-11.2-8.7-7.5 11.4-1z"/>
+      </svg>
+    {%- endif -%}
+    {%- if st.cue != blank -%}<p class="cvpr__cue" data-cvpr-cue>{{ st.cue | escape }}</p>{%- endif -%}
+  </div>
+
+  <div class="cvpr__act cvpr__act--case">
+    <div class="cvpr__block cvpr__block--left" data-cvpr-rise>
+      {%- if st.kicker != blank -%}<p class="cvpr__kicker">{{ st.kicker | escape }}</p>{%- endif -%}
+      <h3 class="cvpr__name"><a href="{{ p.url }}">{{ short | escape }}</a></h3>
+      {%- if blurb != blank -%}<p class="cvpr__text">{{ blurb | escape }}</p>{%- endif -%}
+      <div class="cvpr__buy">
+        <p class="cvpr__price">{% if p.price_varies %}{{ st.from_label | escape }} {% endif %}{{ p.price | money }}</p>
+        <a class="cvpr__btn cv-eyes-host" href="{{ p.url }}"{% if p.available %} data-cvqp-open{% endif %} data-handle="{{ p.handle }}" data-url="{{ p.url }}">{% if p.available %}{{ st.bag_label | escape }}{% else %}{{ st.sold_label | escape }}{% endif %}{%- render 'cv-eyes' -%}</a>
+      </div>
+    </div>
+    <ul class="cvpr__block cvpr__block--right cvpr__stats" role="list" data-cvpr-rise>
+      {%- if models > 1 -%}
+        <li class="cvpr__stat"><b>{{ models }}</b><span><strong>{{ st.models_label | escape }}</strong>{{ st.models_note | escape }}</span></li>
+      {%- endif -%}
+      {%- if finishes > 1 -%}
+        <li class="cvpr__stat"><b>{{ finishes }}</b><span><strong>{{ st.finishes_label | escape }}</strong>{{ finish_text | escape }}</span></li>
+      {%- endif -%}
+      {%- if settings.cv_pack_2_pct > 0 -%}
+        <li class="cvpr__stat"><b>{{ settings.cv_pack_2_pct }}%</b><span><strong>{{ st.pack_label | escape }}</strong>{{ st.pack_note | escape }}</span></li>
+      {%- endif -%}
+    </ul>
+  </div>
+
+  <div class="cvpr__act cvpr__act--fit">
+    {%- if st.big_3 != blank -%}
+      {%- assign big_words = st.big_3 | split: ' ' -%}
+      <p class="cvpr__big cvpr__big--line{% if big_words.size == 2 %} cvpr__big--split{% endif %}" data-cvpr-big2>{%- for word in big_words -%}<span{% if st.christmas %} data-text="{{ word | escape }}"{% endif %}>{{ word | escape }}</span>{%- endfor -%}</p>
+    {%- endif -%}
+    {%- if iphones > 0 or galaxies > 0 or pixels > 0 -%}
+      <ul class="cvpr__block cvpr__block--left cvpr__makes" role="list" data-cvpr-rise>
+        {%- if iphones > 0 -%}<li><span>iPhone</span><b>{{ iphones }}</b></li>{%- endif -%}
+        {%- if galaxies > 0 -%}<li><span>Samsung</span><b>{{ galaxies }}</b></li>{%- endif -%}
+        {%- if pixels > 0 -%}<li><span>Pixel</span><b>{{ pixels }}</b></li>{%- endif -%}
+      </ul>
+    {%- endif -%}
+    {%- if st.fit_text != blank -%}<p class="cvpr__block cvpr__block--right cvpr__text cvpr__text--lead" data-cvpr-rise>{{ st.fit_text | escape }}</p>{%- endif -%}
+  </div>
+
+  <div class="cvpr__act cvpr__act--notes">
+    {%- for n in (1..3) -%}
+      {%- liquid
+        assign note_title = st.note_1_title
+        assign note_text = st.note_1_text
+        if n == 2
+          assign note_title = st.note_2_title
+          assign note_text = st.note_2_text
+        elsif n == 3
+          assign note_title = st.note_3_title
+          assign note_text = st.note_3_text
+        endif
+        assign show_note = true
+        if note_title == blank
+          assign show_note = false
+        endif
+        if n == 2 and settings.cv_free_shipping_all != true
+          assign show_note = false
+        endif
+      -%}
+      {%- if show_note -%}
+        <div class="cvpr__note cvpr__note--{{ n }}" data-cvpr-note>
+          {%- render 'cv-press-splat', n: n -%}
+          {%- assign note_icon = 'cv-press-star.svg' -%}
+          {%- if n == 2 -%}{%- assign note_icon = 'cv-press-bell.svg' -%}{%- elsif n == 3 -%}{%- assign note_icon = 'cv-press-holly.svg' -%}{%- endif -%}
+          <p class="cvpr__note-text" data-cvpr-note-text>{%- if st.christmas -%}<img class="cvpr__note-ico" src="{{ note_icon | asset_url }}" alt="" width="30" height="30" loading="lazy">{%- endif -%}<strong>{{ note_title | escape }}</strong>{%- if note_text != blank -%}<span>{{ note_text | escape }}</span>{%- endif -%}</p>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="cvpr__act cvpr__act--range">
+    <div class="cvpr__range-head" data-cvpr-rise>
+      {%- if st.range_kicker != blank -%}<p class="cvpr__kicker">{{ st.range_kicker | escape }}</p>{%- endif -%}
+      <h3 class="cvpr__range-title">
+        {%- if st.christmas -%}<img class="cvpr__range-deco" src="{{ 'cv-press-cane.svg' | asset_url }}" alt="" width="80" height="80" loading="lazy">{%- endif -%}
+        {{ design_count }} <em>{{ st.range_word | escape }}</em>
+        {%- if st.christmas -%}<img class="cvpr__range-deco cvpr__range-deco--flip" src="{{ 'cv-press-cane.svg' | asset_url }}" alt="" width="80" height="80" loading="lazy">{%- endif -%}
+      </h3>
+    </div>
+    {%- assign row_left = '' -%}
+    {%- assign row_right = '' -%}
+      {%- assign seen = 0 -%}
+      {%- for item in coll.products -%}
+        {%- if seen >= 4 -%}{%- break -%}{%- endif -%}
+        {%- if item.id == p.id -%}{%- continue -%}{%- endif -%}
+        {%- if item.featured_image == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign seen = seen | plus: 1 -%}
+        {%- capture cell -%}
+          {%- assign item_short = item.title | split: ' Phone Case' | first | strip -%}
+          {%- assign item_tail = item_short | slice: -10, 10 -%}
+          {%- if item_tail == ' Christmas' -%}{%- assign item_cut = item_short.size | minus: 10 -%}{%- assign item_short = item_short | slice: 0, item_cut -%}{%- endif -%}
+          <li class="cvpr__slot cvpr__slot--{{ seen }}" data-cvpr-item>
+            <a href="{{ item.url }}">
+              <span class="cvpr__slot-photo">{{ item.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: '', class: 'cvpr__slot-img', sizes: '200px', widths: '300, 500' }}</span>
+              <span class="cvpr__slot-name">{{ item_short | escape }}</span>
+              <span class="cvpr__slot-price">{{ item.price | money }}</span>
+            </a>
+          </li>
+        {%- endcapture -%}
+        {%- if seen <= 2 -%}{%- assign row_left = row_left | append: cell -%}{%- else -%}{%- assign row_right = row_right | append: cell -%}{%- endif -%}
+      {%- endfor -%}
+    <ul class="cvpr__row" role="list">
+      {{ row_left }}
+      <li class="cvpr__slot cvpr__slot--main" data-cvpr-main>
+        <a href="{{ p.url }}">
+          <span class="cvpr__slot-photo" data-cvpr-slot>{{ p.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: '', class: 'cvpr__slot-img', sizes: '200px', widths: '300, 500' }}</span>
+          <span class="cvpr__slot-name">{{ short | escape }}</span>
+          <span class="cvpr__slot-price">{{ p.price | money }}</span>
+        </a>
+      </li>
+      {{ row_right }}
+    </ul>
+    {%- if st.range_link != blank -%}<a class="cvpr__link" href="{{ coll.url }}">{{ st.range_link | escape }}</a>{%- endif -%}
+  </div>
+</section>
+<script src="{{ 'cv-press.js' | asset_url }}" defer></script>
+{%- elsif request.design_mode -%}
+  <p class="cvpr-empty">Press: pick a case with a photo.</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Press",
+  "tag": "div",
+  "class": "section-cv-press",
+  "settings": [
+    { "type": "paragraph", "content": "One case stays on screen while the page scrolls past it, then lands in a row of designs. Pick a case on the usual front-and-side Tough mockup." },
+    { "type": "product", "id": "product", "label": "The case" },
+    { "type": "text", "id": "name", "label": "Short name (optional)", "info": "Empty uses the product title before \"Phone Case\"." },
+    { "type": "collection", "id": "collection", "label": "Collection for the row of designs" },
+    { "type": "checkbox", "id": "christmas", "label": "Christmas effects", "default": true, "info": "Garland, baubles, snow, holly, bow and stars. Turn off after the season." },
+    { "type": "header", "content": "Opening" },
+    { "type": "text", "id": "big_1", "label": "Big type, first line", "default": "Printed" },
+    { "type": "text", "id": "big_2", "label": "Big type, second line", "default": "To order" },
+    { "type": "text", "id": "stamp", "label": "Round stamp text", "default": "CASIFY * PRINTED IN THE USA * ", "info": "Leave empty to hide the stamp." },
+    { "type": "text", "id": "cue", "label": "Scroll cue", "default": "Keep scrolling" },
+    { "type": "header", "content": "The case" },
+    { "type": "text", "id": "kicker", "label": "Line above the name", "default": "On the press" },
+    { "type": "text", "id": "from_label", "label": "Label before a price that varies", "default": "From" },
+    { "type": "text", "id": "bag_label", "label": "Add to bag button", "default": "Add to bag" },
+    { "type": "text", "id": "sold_label", "label": "Sold out label", "default": "Sold out" },
+    { "type": "text", "id": "models_label", "label": "Models label", "default": "Phone models" },
+    { "type": "text", "id": "models_note", "label": "Models note", "default": "iPhone, Samsung and Pixel" },
+    { "type": "text", "id": "finishes_label", "label": "Finishes label", "default": "Finishes" },
+    { "type": "text", "id": "pack_label", "label": "Pack label", "default": "Off two cases", "info": "Uses the pack saving in Theme settings." },
+    { "type": "text", "id": "pack_note", "label": "Pack note", "default": "Comes off at checkout" },
+    { "type": "header", "content": "The fit" },
+    { "type": "text", "id": "big_3", "label": "Big type", "default": "Your phone" },
+    { "type": "textarea", "id": "fit_text", "label": "Text", "default": "Each case is printed after you order it and made for your exact phone model." },
+    { "type": "header", "content": "Ink splats" },
+    { "type": "text", "id": "note_1_title", "label": "First, title", "default": "Printed in the USA" },
+    { "type": "text", "id": "note_1_text", "label": "First, text", "default": "Shipped with tracking" },
+    { "type": "text", "id": "note_2_title", "label": "Second, title", "default": "Free shipping", "info": "Shown only when Free shipping on every order is on in Theme settings." },
+    { "type": "text", "id": "note_2_text", "label": "Second, text", "default": "On every order" },
+    { "type": "text", "id": "note_3_title", "label": "Third, title", "default": "Damage covered" },
+    { "type": "text", "id": "note_3_text", "label": "Third, text", "default": "Free replacement or refund" },
+    { "type": "header", "content": "Row of designs" },
+    { "type": "text", "id": "range_kicker", "label": "Line above the heading", "default": "Fresh off the press" },
+    { "type": "text", "id": "range_word", "label": "Word after the count", "default": "designs" },
+    { "type": "text", "id": "range_link", "label": "Link", "default": "See every case" }
+  ],
+  "presets": [{ "name": "Press" }]
+}
+{% endschema %}

@@ -1,36 +1,61 @@
 {% doc %}
   Renders Product structured data for the shop counter.
 
-  @param {product} product - The product shown by the section.
-  @param {boolean} has_rating - Whether verified product rating data is available.
-  @param {object} rating - The product rating metafield value.
-  @param {number} rating_count - The verified rating count.
-{% enddoc %}
+  Google's merchant listings need an Offer with one price; an AggregateOffer
+  only counts for product snippets. The Offer describes the variant the page
+  opens on: the one in a ?variant= link, else the first one for sale. Each
+  Casify case has one price across its phone models, so that is the price the
+  page shows. The brand is the shop's name, because every Printify publish
+  resets the vendor field to "Printify". The description is the page's meta
+  description from snippets/cv-product-meta-description.liquid (this snippet
+  needs that file); when that comes back empty, it is the product text with a
+  space kept where a heading or paragraph ends.
 
+  @param {product} product - The product shown by the section.
+  @param {boolean} has_rating - Whether the product has Judge.me reviews from verified buyers.
+  @param {number} rating_value - Their average, 1 to 5 (snippets/cv-jm-verified.liquid).
+  @param {number} rating_count - How many there are.
+{% enddoc %}
+{%- liquid
+  assign schema_variant = product.selected_or_first_available_variant
+  assign schema_offer_url = canonical_url
+  if product.selected_variant
+    assign schema_offer_url = shop.url | append: product.selected_variant.url
+  endif
+  capture schema_description
+    render 'cv-product-meta-description', product: product
+  endcapture
+  assign schema_description = schema_description | strip
+  if schema_description == blank
+    assign schema_description = product.description | replace: '</', ' </' | replace: '<br', ' <br' | strip_html | split: ' ' | join: ' ' | truncate: 300
+  endif
+-%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Product",
   "name": {{ product.title | json }},
+  "url": {{ canonical_url | json }},
   {%- if product.featured_image %}"image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
-  {%- if product.description != blank %}"description": {{ product.description | strip_html | truncate: 300 | json }},{% endif %}
-  "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+  {%- if schema_description != blank %}"description": {{ schema_description | json }},{% endif %}
+  {%- if schema_variant.sku != blank %}"sku": {{ schema_variant.sku | json }},{% endif %}
+  "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
   {%- if has_rating %}
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": {{ rating.rating | json }},
-    "bestRating": {{ rating.scale_max | json }},
-    "worstRating": {{ rating.scale_min | json }},
+    "ratingValue": {{ rating_value | round: 1 | json }},
+    "bestRating": 5,
+    "worstRating": 1,
     "ratingCount": {{ rating_count | json }}
   },
   {%- endif %}
   "offers": {
-    "@type": "AggregateOffer",
+    "@type": "Offer",
+    "url": {{ schema_offer_url | json }},
+    "price": {{ schema_variant.price | divided_by: 100.0 | json }},
     "priceCurrency": {{ cart.currency.iso_code | json }},
-    "lowPrice": {{ product.price_min | divided_by: 100.0 | json }},
-    "highPrice": {{ product.price_max | divided_by: 100.0 | json }},
-    "offerCount": {{ product.variants.size }},
-    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+    "availability": "{% if schema_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "itemCondition": "https://schema.org/NewCondition"
   }
 }
 </script>

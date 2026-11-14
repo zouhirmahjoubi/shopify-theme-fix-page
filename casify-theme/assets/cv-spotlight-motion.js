@@ -211,8 +211,23 @@
     all(selector, scope).forEach(init);
   }
 
+  /* Speed: on page load the spotlight's motion is built only once it is about 1.5 screens away
+     (window.cvNear in layout/theme.liquid), in a task of its own, instead of inside the page's
+     start-up task (80-140 ms at 4x CPU on a mid-range phone, 2026-11-09). cvsp-motion goes on at
+     once, as init would, because it sets the marquee's layout; cvsp-pending ends on its own
+     1.6 s timer (sections/cv-spotlight.liquid). Reduced motion, the theme editor and section
+     reloads go through init at once, as before. */
   function start() {
-    initAll(document);
+    all(selector, document).forEach(function (root) {
+      if (root._cvspCleanup) return;
+      var later = typeof window.cvNear === 'function' && !(window.Shopify && window.Shopify.designMode) &&
+        !(reduceMotion && reduceMotion.matches) && window.gsap && window.ScrollTrigger;
+      if (!later) { init(root); return; }
+      root.classList.add('cvsp-motion');
+      window.cvNear(root, 1.5).then(function () {
+        setTimeout(function () { if (root.isConnected) init(root); }, 0);
+      });
+    });
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();
   }
 

@@ -19,7 +19,7 @@
  * nothing here runs. No WebGL: the numbers still roll, and the dot and the
  * SVG rocket stay as they are.
  */
-const CVSN_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVSN_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 // Canvas overhang around the notes (px): embers rise above, exhaust trails off down-left.
 const PAD = { t: 30, r: 10, b: 16, l: 22 };
@@ -36,6 +36,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
 let cvsnThree = null;
 
 function cvsnWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl'));

@@ -1,0 +1,304 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U1.4 bag page (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"cv-cart":"<div id=\"shopify-section-main\" class=\"shopify-section\"><link rel=\"stylesheet\" href=\"../../../../../assets/cv-cart-page.css\" media=\"all\">\n<script src=\"../../../../../assets/cv-cart-page.js\" defer><\/script><div class=\"cv-page-root cv-cart\" data-cv-cart-page data-section-id=\"main\" data-count=\"1\"\n  data-i18n-change-error=\"Could not update your bag\">\n  <header class=\"cv-cart__hd\">\n    <span class=\"cv-eyebrow\">Your bag<\/span>\n    <h1 data-cv-split>Ready when you are<\/h1>\n  <\/header><form action=\"/cart\" method=\"post\" novalidate class=\"cv-cart__grid\"><div class=\"cv-lines\" data-cart-self data-cvcp-lines><div class=\"cv-line\" data-cvcp-line data-key=\"43002:fixture\" data-qty=\"1\">\n            <a class=\"cv-line__media\" href=\"/products/tech-fabric?variant=43002\" tabindex=\"-1\" aria-hidden=\"true\"><img src=\"/products/tech-fabric?variant=43002\"\n                     alt=\"\"\n                     width=\"110\" height=\"110\" loading=\"lazy\" decoding=\"async\"><\/a>\n\n            <div class=\"cv-line__body\">\n              <a class=\"cv-line__title\" href=\"/products/tech-fabric?variant=43002\">Case care cloth (fixture, single variant)<\/a><div class=\"cv-line__ctl\">\n                <div class=\"qty cv-qty\">\n                  <button type=\"button\" data-qty-decrease aria-label=\"Decrease quantity of Case care cloth (fixture, single variant)\">&minus;<\/button>\n                  <input type=\"number\"\n                         name=\"updates[]\"\n                         data-cart-line-qty=\"43002:fixture\"\n                         value=\"1\"\n                         min=\"0\"\n                         inputmode=\"numeric\"\n                         aria-label=\"Quantity of Case care cloth (fixture, single variant)\">\n                  <button type=\"button\" data-qty-increase aria-label=\"Increase quantity of Case care cloth (fixture, single variant)\">+<\/button>\n                <\/div>\n                <a class=\"cv-line__rm\" href=\"/cart/change?line=1&quantity=0\" data-cart-remove=\"43002:fixture\" aria-label=\"Remove Case care cloth (fixture, single variant)\"><span class=\"cv-ico \" style=\"width:12px;height:12px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\">\n        <path d=\"M6.4 6.4l11.2 11.2M17.6 6.4L6.4 17.6\"/>\n      <\/svg><\/span><span>Remove<\/span>\n                <\/a>\n              <\/div>\n            <\/div>\n\n            <div class=\"cv-line__money\">\n              <span class=\"cv-line__total\">$14.99<\/span><\/div>\n          <\/div><noscript>\n          <button type=\"submit\" name=\"update\" class=\"cv-cart__update\">translation missing: en.general.cart.update<\/button>\n        <\/noscript>\n      <\/div><aside class=\"cv-sum\" data-cvcp-sum>\n        <h2 class=\"cv-sum__hd\">Order summary<\/h2>\n\n        <div class=\"cv-sum__rows\" data-cvcp-rows>\n          <div class=\"cv-sum__row\">\n            <span>Subtotal<\/span>\n            <b>$14.99<\/b>\n          <\/div><div class=\"cv-sum__row is-muted\">\n            <span>Shipping<\/span>\n            <b>Calculated at checkout<\/b>\n          <\/div><p class=\"cv-cart__nudge\" data-cvm-stamp data-cvcp-nudge><span class=\"cv-ico \" style=\"width:14px;height:14px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M4.6 7.6h14.8l-1.1 12.8H5.7z\"/>\n        <path d=\"M9 7.6V5.8a3 3 0 0 1 6 0v1.8\"/>\n      <\/svg><\/span><span>Add 1 more case: 18% off both.<\/span><\/p><\/div>\n\n        <div class=\"cv-sum__total\">\n          <span>Total<\/span>\n          <b data-cvcp-total data-cvm-price data-cents=\"1499\" aria-live=\"polite\">$14.99<\/b>\n        <\/div>\n        <p class=\"cv-sum__tax\" data-cvcp-tax>Taxes and shipping are calculated at checkout.<\/p><details class=\"cv-acc cv-sum__note\">\n            <summary class=\"cv-acc__sum\">\n              Add a note<span class=\"cv-ico cv-acc__chev\" style=\"width:16px;height:16px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M6 9.4l6 6 6-6\"/>\n      <\/svg><\/span><\/summary>\n            <div class=\"cv-acc__panel\">\n              <textarea name=\"note\" rows=\"3\" placeholder=\"Add a note to your order\"><\/textarea>\n            <\/div>\n          <\/details><button type=\"submit\" name=\"checkout\" class=\"cv-cta\" data-cvcp-checkout>\n          <span class=\"cv-cta__shine\" aria-hidden=\"true\"><\/span><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <rect x=\"4.6\" y=\"10.2\" width=\"14.8\" height=\"10.4\" rx=\"2.4\"/>\n        <path d=\"M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6\"/>\n        <circle cx=\"12\" cy=\"15.4\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>\n      <\/svg><\/span><span class=\"cv-cta__label\">Secure checkout<\/span>\n          <span class=\"cv-cta__total\" data-cvcp-cta-total data-cvm-price data-cents=\"1499\">$14.99<\/span>\n        <\/button>\n\n        <a class=\"cv-sum__back\" href=\"/collections/all\">Continue shopping<\/a><ul class=\"cv-trust cv-sum__trust\"><li class=\"cv-trust__item\" data-fixture-block=\"t-0\"><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <rect x=\"4.6\" y=\"10.2\" width=\"14.8\" height=\"10.4\" rx=\"2.4\"/>\n        <path d=\"M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6\"/>\n        <circle cx=\"12\" cy=\"15.4\" r=\"1.4\" fill=\"currentColor\" stroke=\"none\"/>\n      <\/svg><\/span><span>Encrypted, secure checkout<\/span>\n                <\/li><li class=\"cv-trust__item\" data-fixture-block=\"t-1\"><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M2.6 6.6h10.8v9.2H2.6z\"/>\n        <path d=\"M13.4 9.8h3.8l3.2 3.2v2.8h-7z\"/>\n        <circle cx=\"7\" cy=\"18.4\" r=\"1.7\"/><circle cx=\"17\" cy=\"18.4\" r=\"1.7\"/>\n        <path class=\"cv-ico__pulse\" d=\"M.8 9.4h3M.8 12.4h2\"/>\n      <\/svg><\/span><span>Free shipping<\/span>\n                <\/li><li class=\"cv-trust__item\" data-fixture-block=\"t-2\"><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path class=\"cv-ico__draw\" d=\"M3.6 11.4a8.4 8.4 0 0 1 14.6-5.2\"/>\n        <path d=\"M18.4 3.4v3.4h-3.4\"/>\n        <path class=\"cv-ico__draw\" d=\"M20.4 12.6a8.4 8.4 0 0 1-14.6 5.2\"/>\n        <path d=\"M5.6 20.6v-3.4H9\"/>\n      <\/svg><\/span><span>30-day returns<\/span>\n                <\/li><li class=\"cv-trust__item\" data-fixture-block=\"t-3\"><span class=\"cv-ico \" style=\"width:18px;height:18px;color:currentColor\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <circle cx=\"12\" cy=\"12\" r=\"8.6\"/>\n        <path class=\"cv-ico__pulse\" d=\"M12 7.4V12l3.4 2.2\"/>\n      <\/svg><\/span><span>Ships in 1-3 business days<\/span>\n                <\/li><\/ul><\/aside>\n    <\/form><\/div>\n\n\n<\/div>"}};</script>
+<script src="../../../tools/stub-fetch.js"></script>
+<script src="../../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-main" class="shopify-section"><link rel="stylesheet" href="../../../../../assets/cv-cart-page.css" media="all">
+<script src="../../../../../assets/cv-cart-page.js" defer></script><div class="cv-page-root cv-cart" data-cv-cart-page data-section-id="main" data-count="1"
+  data-i18n-change-error="Could not update your bag">
+  <header class="cv-cart__hd">
+    <span class="cv-eyebrow">Your bag</span>
+    <h1 data-cv-split>Ready when you are</h1>
+  </header><form action="/cart" method="post" novalidate class="cv-cart__grid"><div class="cv-lines" data-cart-self data-cvcp-lines><div class="cv-line" data-cvcp-line data-key="43002:fixture" data-qty="1">
+            <a class="cv-line__media" href="/products/tech-fabric?variant=43002" tabindex="-1" aria-hidden="true"><img src="/products/tech-fabric?variant=43002"
+                     alt=""
+                     width="110" height="110" loading="lazy" decoding="async"></a>
+
+            <div class="cv-line__body">
+              <a class="cv-line__title" href="/products/tech-fabric?variant=43002">Case care cloth (fixture, single variant)</a><div class="cv-line__ctl">
+                <div class="qty cv-qty">
+                  <button type="button" data-qty-decrease aria-label="Decrease quantity of Case care cloth (fixture, single variant)">&minus;</button>
+                  <input type="number"
+                         name="updates[]"
+                         data-cart-line-qty="43002:fixture"
+                         value="1"
+                         min="0"
+                         inputmode="numeric"
+                         aria-label="Quantity of Case care cloth (fixture, single variant)">
+                  <button type="button" data-qty-increase aria-label="Increase quantity of Case care cloth (fixture, single variant)">+</button>
+                </div>
+                <a class="cv-line__rm" href="/cart/change?line=1&quantity=0" data-cart-remove="43002:fixture" aria-label="Remove Case care cloth (fixture, single variant)"><span class="cv-ico " style="width:12px;height:12px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M6.4 6.4l11.2 11.2M17.6 6.4L6.4 17.6"/>
+      </svg></span><span>Remove</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="cv-line__money">
+              <span class="cv-line__total">$14.99</span></div>
+          </div><noscript>
+          <button type="submit" name="update" class="cv-cart__update">translation missing: en.general.cart.update</button>
+        </noscript>
+      </div><aside class="cv-sum" data-cvcp-sum>
+        <h2 class="cv-sum__hd">Order summary</h2>
+
+        <div class="cv-sum__rows" data-cvcp-rows>
+          <div class="cv-sum__row">
+            <span>Subtotal</span>
+            <b>$14.99</b>
+          </div><div class="cv-sum__row is-muted">
+            <span>Shipping</span>
+            <b>Calculated at checkout</b>
+          </div><p class="cv-cart__nudge" data-cvm-stamp data-cvcp-nudge><span class="cv-ico " style="width:14px;height:14px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.6 7.6h14.8l-1.1 12.8H5.7z"/>
+        <path d="M9 7.6V5.8a3 3 0 0 1 6 0v1.8"/>
+      </svg></span><span>Add 1 more case: 18% off both.</span></p></div>
+
+        <div class="cv-sum__total">
+          <span>Total</span>
+          <b data-cvcp-total data-cvm-price data-cents="1499" aria-live="polite">$14.99</b>
+        </div>
+        <p class="cv-sum__tax" data-cvcp-tax>Taxes and shipping are calculated at checkout.</p><details class="cv-acc cv-sum__note">
+            <summary class="cv-acc__sum">
+              Add a note<span class="cv-ico cv-acc__chev" style="width:16px;height:16px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9.4l6 6 6-6"/>
+      </svg></span></summary>
+            <div class="cv-acc__panel">
+              <textarea name="note" rows="3" placeholder="Add a note to your order"></textarea>
+            </div>
+          </details><button type="submit" name="checkout" class="cv-cta" data-cvcp-checkout>
+          <span class="cv-cta__shine" aria-hidden="true"></span><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4.6" y="10.2" width="14.8" height="10.4" rx="2.4"/>
+        <path d="M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6"/>
+        <circle cx="12" cy="15.4" r="1.4" fill="currentColor" stroke="none"/>
+      </svg></span><span class="cv-cta__label">Secure checkout</span>
+          <span class="cv-cta__total" data-cvcp-cta-total data-cvm-price data-cents="1499">$14.99</span>
+        </button>
+
+        <a class="cv-sum__back" href="/collections/all">Continue shopping</a><ul class="cv-trust cv-sum__trust"><li class="cv-trust__item" data-fixture-block="t-0"><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4.6" y="10.2" width="14.8" height="10.4" rx="2.4"/>
+        <path d="M8.2 10.2V7.6a3.8 3.8 0 0 1 7.6 0v2.6"/>
+        <circle cx="12" cy="15.4" r="1.4" fill="currentColor" stroke="none"/>
+      </svg></span><span>Encrypted, secure checkout</span>
+                </li><li class="cv-trust__item" data-fixture-block="t-1"><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.6 6.6h10.8v9.2H2.6z"/>
+        <path d="M13.4 9.8h3.8l3.2 3.2v2.8h-7z"/>
+        <circle cx="7" cy="18.4" r="1.7"/><circle cx="17" cy="18.4" r="1.7"/>
+        <path class="cv-ico__pulse" d="M.8 9.4h3M.8 12.4h2"/>
+      </svg></span><span>Free shipping</span>
+                </li><li class="cv-trust__item" data-fixture-block="t-2"><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path class="cv-ico__draw" d="M3.6 11.4a8.4 8.4 0 0 1 14.6-5.2"/>
+        <path d="M18.4 3.4v3.4h-3.4"/>
+        <path class="cv-ico__draw" d="M20.4 12.6a8.4 8.4 0 0 1-14.6 5.2"/>
+        <path d="M5.6 20.6v-3.4H9"/>
+      </svg></span><span>30-day returns</span>
+                </li><li class="cv-trust__item" data-fixture-block="t-3"><span class="cv-ico " style="width:18px;height:18px;color:currentColor" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8.6"/>
+        <path class="cv-ico__pulse" d="M12 7.4V12l3.4 2.2"/>
+      </svg></span><span>Ships in 1-3 business days</span>
+                </li></ul></aside>
+    </form></div>
+
+
+</div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../../assets/theme.js" defer></script>
+<script src="../../../../../assets/cart.js" defer></script>
+<script src="../../../../../assets/cv-commerce-motion.js" defer></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

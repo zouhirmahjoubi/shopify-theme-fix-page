@@ -1,0 +1,17 @@
+{
+ "A_carousel_live": {
+  "before": 2810,
+  "st": 8,
+  "after": 2810
+ },
+ "B_carousel_destroyed": {
+  "before": 2810,
+  "st": 0,
+  "after": 2810
+ },
+ "C_scrolled_below_carousel": {
+  "before": 3410,
+  "st": 5,
+  "after": 3410
+ }
+}

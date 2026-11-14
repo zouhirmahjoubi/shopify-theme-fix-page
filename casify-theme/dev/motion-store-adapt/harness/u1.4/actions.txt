@@ -1,0 +1,133 @@
+adams queue: waiting, place 1 (running now: C:/Program Files/Git/usr/bin/timeout.exe 420 python -I shoot.py ../harness/u1.1/)
+adams queue: your turn after 24 s
+{
+ "checks": [
+  {
+   "check": "no data-cv-reveal in the cart section",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "lines wrapper carries data-cart-self",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "phone model printed first",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "pack nudge shown at 2 cases (31% from settings)",
+   "pass": true,
+   "info": "Add 1 more case: 31% off all three."
+  },
+  {
+   "check": "qty inputs post as updates[]",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "remove link names the product",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "total is aria-live",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "stepper + posts /cart/change.js once with the line key and qty 2",
+   "pass": true,
+   "info": "[{\"id\": \"41001:fixture\", \"quantity\": 2, \"sections\": \"main\"}]"
+  },
+  {
+   "check": "no reload after change",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "cart:refresh dispatched",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "total data-cents updated in place",
+   "pass": true,
+   "info": "8198 -> 10348"
+  },
+  {
+   "check": "discount row now the 3 case pack",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "nudge gone at 3 cases",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "typed qty + Enter updates in place, no submit",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "remove collapses the line and leaves one",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "nudge back at 1 case (18% from settings)",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "last remove shows the empty state",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "no page or console errors (motion run)",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "only fixture image URLs 404 (no theme asset missing)",
+   "pass": true,
+   "info": "http://127.0.0.1:54715/products/tech-fabric?variant=41001; http://127.0.0.1:54715/products/tech-fabric?variant=41002"
+  },
+  {
+   "check": "failed change restores qty and clears busy",
+   "pass": true,
+   "info": "value=1 busy=0"
+  },
+  {
+   "check": "failed change shows the error toast",
+   "pass": true,
+   "info": "COULD NOT UPDATE YOUR BAG"
+  },
+  {
+   "check": "reduced motion: no start states set",
+   "pass": true,
+   "info": "[\"\", \"\", \"\"]"
+  },
+  {
+   "check": "reduced motion: remove swaps at once",
+   "pass": true,
+   "info": ""
+  },
+  {
+   "check": "no-JS: lines, summary, checkout, Update bag and total visible",
+   "pass": true,
+   "info": "[true, true, true, true, true, true]"
+  },
+  {
+   "check": "no-JS: remove is a real link",
+   "pass": true,
+   "info": "/cart/change?line=1&quantity=0"
+  }
+ ],
+ "failed": 0
+}
+actions exit 0

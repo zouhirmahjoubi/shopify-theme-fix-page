@@ -1,0 +1,49 @@
+adams queue: waiting, place 2 (running now: C:/Program Files/Git/usr/bin/timeout.exe 420 python -I actions.py)
+adams queue: waiting, place 1 (running now: C:/Program Files/Git/usr/bin/timeout.exe 420 python -I shoot.py ../harness/u1.4/)
+adams queue: your turn after 45 s
+  default  375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  default  768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  default 1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+  rm       375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  rm       768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+  rm      1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  nojs     375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  nojs     768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+  nojs    1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43001
+      ! net: 404 http://127.0.0.1:56433/products/tech-fabric?variant=43002
+shoot: 9 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\harness\u1.4\shots\cart-no-model; console.json written; FAIL

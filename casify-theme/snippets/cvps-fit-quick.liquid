@@ -1,0 +1,49 @@
+{%- comment -%}
+  Which iPhone 18 bodies one product is listed for, read from its option values alone
+  (no variants are loaded), for "3D phone scan" (sections/cv-phone-scan.liquid).
+
+  Prints "price;price;price" for iPhone 18, iPhone 18 Pro and iPhone 18 Pro Max in that
+  order: the product's lowest price when one of its phone-model option values names that
+  phone and the product is available, or 0 when it does not. Same value matching as
+  snippets/cvps-fit-match.liquid; keep the two in step.
+
+  Only for products whose variants all cost the same (product.price_varies is false).
+  With mixed prices, call cvps-fit-match instead: it reads the variants and returns the
+  cheapest available one for each phone.
+
+  Usage: {%- render 'cvps-fit-quick', product: product -%}
+{%- endcomment -%}
+{%- liquid
+  assign q0 = 0
+  assign q1 = 0
+  assign q2 = 0
+  if product.available
+    for option in product.options_with_values
+      assign oname = option.name | downcase
+      unless oname contains 'model' or oname contains 'phone' or oname contains 'device' or oname contains 'compatib' or oname contains 'size'
+        continue
+      endunless
+      for value in option.values
+        unless value contains '18'
+          continue
+        endunless
+        assign v = value | downcase | remove: ' ' | remove: '-' | remove: '_' | remove: '2018'
+        unless v contains 'iphone'
+          continue
+        endunless
+        if v contains '18promax'
+          assign q2 = product.price
+        endif
+        assign rest = v | remove: '18promax'
+        if rest contains '18pro'
+          assign q1 = product.price
+        endif
+        assign rest = rest | remove: '18pro' | remove: '18plus' | remove: '18air' | remove: '18e'
+        if rest contains '18'
+          assign q0 = product.price
+        endif
+      endfor
+    endfor
+  endif
+  echo q0 | append: ';' | append: q1 | append: ';' | append: q2
+-%}

@@ -4,8 +4,90 @@
     {
       "name": "casify-theme-dev",
       "runtimeExecutable": "shopify",
-      "runtimeArgs": ["theme", "dev", "--path", "casify-theme", "--store", "casiffy.myshopify.com", "--port", "9292", "--live-reload", "off", "--no-color"],
+      "runtimeArgs": [
+        "theme",
+        "dev",
+        "--path",
+        "casify-theme",
+        "--store",
+        "spycpc-g0.myshopify.com",
+        "--port",
+        "9292",
+        "--live-reload",
+        "off",
+        "--no-color"
+      ],
       "port": 9292
+    },
+    {
+      "name": "casify-dev-qbq",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": [
+        "theme",
+        "dev",
+        "--path",
+        "casify-theme",
+        "--store",
+        "qbq4bz-3d.myshopify.com",
+        "--port",
+        "9292",
+        "--live-reload",
+        "off",
+        "--no-color"
+      ],
+      "port": 9292
+    },
+    {
+      "name": "casify-theme-static",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8791",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "casify-theme"
+      ],
+      "port": 8791
+    },
+    {
+      "name": "christmas-candles-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8787",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "christmas candles"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "christmas-candles-store",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": [
+        "theme",
+        "dev",
+        "--path",
+        "christmas candles",
+        "--store",
+        "qbq4bz-3d.myshopify.com",
+        "--port",
+        "9393",
+        "--live-reload",
+        "off",
+        "--no-color"
+      ],
+      "port": 9393
+    },
+    {
+      "name": "threeui",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "E:/threeui", "run", "dev"],
+      "port": 5173
     }
   ]
 }

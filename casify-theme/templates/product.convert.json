@@ -13,8 +13,8 @@
         "empty_rating_link": "Write the first review",
         "show_external_review_badges": true,
         "show_store_rating": true,
-        "external_review_rating": "4.9",
-        "external_review_count": "952",
+        "external_review_rating": "",
+        "external_review_count": "",
         "option_label": "Style",
         "model_label": "Model",
         "packs_label": "How many cases",
@@ -24,13 +24,13 @@
         "show_buy_now": true,
         "buy_label": "Buy now",
         "sticky_cta": "Add to bag",
-        "dispatch_max": 3,
+        "dispatch_max": 10,
         "ship_by_text": "Order today, ships by [date]",
-        "ship_by_fallback": "Ships in 1-3 business days",
+        "ship_by_fallback": "Printed to order, then shipped with tracking",
         "details_label": "Details",
         "brand_label": "Brand",
         "shipping_label": "Shipping & returns",
-        "shipping_text": "<p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p>"
+        "shipping_text": "<p>Free shipping on every order. Each case is printed after you order, which takes up to 10 business days. If it arrives damaged or misprinted, we send a new one or refund you.</p>"
       },
       "blocks": {
         "tier-1": {
@@ -77,17 +77,17 @@
           "type": "service",
           "settings": {
             "icon": "returns",
-            "text": "30-day returns"
+            "text": "Free replacement if damaged"
           }
         },
         "svc-dispatch": {
           "type": "service",
           "settings": {
             "icon": "box",
-            "text": "Ships in 1-3 business days"
+            "text": "Printed to order in the USA"
           }
         },
-        "google-rating": {
+        "google-rating": {"disabled": true, 
           "type": "google_rating",
           "settings": {}
         },
@@ -114,7 +114,7 @@
         "sales-note"
       ]
     },
-    "clips": {
+    "clips": {"disabled": true, 
       "type": "cv-pdp-ugc",
       "settings": {
         "heading": "Three clips from the counter",
@@ -219,8 +219,8 @@
           "type": "item",
           "settings": {
             "icon": "lollipop",
-            "title": "Est. 1920",
-            "body": "the candy-shop counter, online"
+            "title": "Printed to order",
+            "body": "in the USA, for your exact phone"
           }
         }
       },
@@ -338,10 +338,10 @@
         "s-3": {
           "type": "stop",
           "settings": {
-            "metric": "1-3",
-            "unit": "business days",
-            "title": "Packed at the counter",
-            "body": "Your order leaves the shop within 1 to 3 business days of ordering."
+            "metric": "10",
+            "unit": "business days at most",
+            "title": "Printed for you",
+            "body": "Your case is printed after you order, then shipped with tracking."
           }
         },
         "s-4": {
@@ -357,9 +357,9 @@
           "type": "stop",
           "settings": {
             "metric": "30",
-            "unit": "days to decide",
+            "unit": "days to report damage",
             "title": "At your door",
-            "body": "Not the one? You have 30 days to send it back."
+            "body": "Arrived damaged or misprinted? Tell us within 30 days and we send a new one."
           }
         }
       },
@@ -418,16 +418,16 @@
           "type": "promise",
           "settings": {
             "icon": "returns",
-            "title": "30-day returns",
-            "body": "change your mind within 30 days"
+            "title": "Damage covered",
+            "body": "free replacement or refund"
           }
         },
         "g-dispatch": {
           "type": "promise",
           "settings": {
             "icon": "clock",
-            "title": "Ships in 1-3 business days",
-            "body": "counted from the day you order"
+            "title": "Printed to order",
+            "body": "in the USA, shipped with tracking"
           }
         },
         "g-packs": {
@@ -442,7 +442,7 @@
           "type": "faq",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders leave us within 1 to 3 business days, and shipping is free.</p>",
+            "answer": "<p>Each case is printed after you order, which takes up to 10 business days. In the United States it then arrives in 2 to 5 business days. Shipping is free.</p>",
             "default_open": true
           }
         },
@@ -450,7 +450,7 @@
           "type": "faq",
           "settings": {
             "question": "Can I send it back?",
-            "answer": "<p>Yes. You have 30 days to return it.</p>",
+            "answer": "<p>Cases are printed for your order, so we don't take returns for a change of mind. If yours arrives damaged, misprinted or wrong, write to us within 30 days and we send a new one or refund you.</p>",
             "default_open": false
           }
         },
@@ -518,7 +518,7 @@
             "title": "Leaves our shop",
             "icon": "shop",
             "min_days": 1,
-            "max_days": 3
+            "max_days": 10
           }
         },
         "door": {
@@ -536,7 +536,7 @@
       ],
       "settings": {}
     },
-    "before_after": {
+    "before_after": {"disabled": true, 
       "type": "cv-pdp-before-after",
       "blocks": {
         "comparison_1": {

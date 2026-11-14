@@ -1,0 +1,46 @@
+{
+ "penguin": {
+  "best": [
+   23.64603614807129,
+   "cropH",
+   38,
+   2676
+  ],
+  "base": "cv-clip-snow-day-penguin",
+  "vid": "raw/penguin-a2.mp4",
+  "frame": "frames/penguin-frame-a1.jpg"
+ },
+ "beary": {
+  "best": [
+   45.44677734375,
+   "cropH",
+   20,
+   1881
+  ],
+  "base": "cv-clip-beary-christmas",
+  "vid": "raw/beary-a2.mp4",
+  "frame": "frames/beary-frame-a1-crop.jpg"
+ },
+ "mistletoe": {
+  "best": [
+   58.4661865234375,
+   "cropH",
+   18,
+   1881
+  ],
+  "base": "cv-clip-kissing-mistletoe",
+  "vid": "raw/mistletoe-a1.mp4",
+  "frame": "frames/mistletoe-frame-a1-camfix-crop.jpg"
+ },
+ "humbug": {
+  "best": [
+   23.15454864501953,
+   "cropH",
+   38,
+   2676
+  ],
+  "base": "cv-clip-bah-humbug",
+  "vid": "raw/humbug-a1.mp4",
+  "frame": "frames/humbug-frame-a2.jpg"
+ }
+}

@@ -1,0 +1,192 @@
+{
+ "_note": "Empty case for cv-pdp-set: only the current product and a sold out item, so no card is eligible and no heading may render.",
+ "template": {
+  "file": "templates/product.convert.json",
+  "key": "set"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Color",
+   "Model"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 41001,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41002,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41003,
+    "options": [
+     "Russet Brown",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41004,
+    "options": [
+     "Black",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41005,
+    "options": [
+     "Black",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41006,
+    "options": [
+     "Black",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "available": false,
+    "media": 1
+   },
+   {
+    "id": 41007,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 2
+   },
+   {
+    "id": 41008,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 2
+   },
+   {
+    "id": 41009,
+    "options": [
+     "Blue",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 2
+   }
+  ],
+  "metafields": {
+   "reviews": {},
+   "custom": {}
+  }
+ },
+ "settings": {
+  "cv_pack_2_pct": 18,
+  "cv_pack_3_pct": 31
+ },
+ "globals": {
+  "recommendations": {
+   "performed?": true,
+   "products_count": 4,
+   "intent": "complementary",
+   "products": [
+    {
+     "id": 7000,
+     "title": "Same product (filtered)",
+     "url": "/products/self",
+     "available": true,
+     "featured_image": {
+      "src": "../../../../assets/best-case-detail.png",
+      "url": "../../../../assets/best-case-detail.png",
+      "alt": "",
+      "width": 1000,
+      "height": 1000
+     },
+     "price_min": 4999,
+     "price_varies": false,
+     "compare_at_price_min": 0,
+     "options_with_values": [],
+     "variants": [
+      {
+       "id": 1,
+       "options": [
+        "Default Title"
+       ],
+       "available": true
+      }
+     ]
+    },
+    {
+     "id": 54,
+     "title": "Sold out strap (filtered)",
+     "url": "/products/strap",
+     "available": false,
+     "featured_image": null,
+     "price_min": 1999,
+     "price_varies": false,
+     "compare_at_price_min": 0,
+     "options_with_values": [],
+     "variants": []
+    }
+   ]
+  }
+ },
+ "harness": {
+  "js": [
+   "theme.js",
+   "cv-motion.js",
+   "cv-product.js",
+   "cv-pack-motion.js",
+   "cv-pdp-story.js",
+   "cv-pdp-slip-motion.js",
+   "cv-pdp-counter.js",
+   "cv-pdp-counter-motion.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ],
+  "module_js": [
+   "cv-pdp-sales.js",
+   "cv-pdp-promises.js",
+   "cv-case-features.js"
+  ],
+  "css": [
+   "cv-commerce-motion.css"
+  ]
+ }
+}

@@ -1,0 +1,177 @@
+{
+ "_note": "Fixture for sections/main-best-product.liquid (U1.3). Product data is a fixture modelled on the store's Tech Fabric case (real title, colour names and $49.99 price from tools/fixtures/product-model.json); model names are fixture values. Section settings come from templates/product.best.json. Photos are theme assets marked as fixture.",
+ "template": {
+  "file": "templates/product.best.json",
+  "key": "main"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Model",
+   "Color"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 41001,
+    "options": [
+     "iPhone 17 Pro Max",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41002,
+    "options": [
+     "iPhone 17 Pro Max",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41003,
+    "options": [
+     "iPhone 17 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41004,
+    "options": [
+     "iPhone 17 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41005,
+    "options": [
+     "iPhone 17",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41006,
+    "options": [
+     "iPhone 17",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1,
+    "available": false
+   },
+   {
+    "id": 41007,
+    "options": [
+     "iPhone 16 Pro Max",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41008,
+    "options": [
+     "iPhone 16 Pro Max",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41009,
+    "options": [
+     "iPhone 16 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41010,
+    "options": [
+     "iPhone 16 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41011,
+    "options": [
+     "Galaxy S25 Ultra",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41012,
+    "options": [
+     "Galaxy S25 Ultra",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41013,
+    "options": [
+     "Pixel 10 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0,
+    "available": false
+   },
+   {
+    "id": 41014,
+    "options": [
+     "Pixel 10 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1,
+    "available": false
+   }
+  ],
+  "metafields": {
+   "reviews": {},
+   "custom": {}
+  }
+ },
+ "harness": {
+  "css": [
+   "cv-commerce-motion.css"
+  ],
+  "js": [
+   "theme.js",
+   "cv-product.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ]
+ }
+}

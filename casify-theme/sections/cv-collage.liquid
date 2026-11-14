@@ -129,8 +129,17 @@
               assign kicker = s.kicker
             when 'collection'
               assign c = s.collection
-              assign c_pictured = c.products | where: 'featured_image'
-              assign c_img = c.featured_image | default: c_pictured.first.featured_image
+              # Speed: the collection's own image, else its first product photo, read one
+              # product at a time (the old `where: 'featured_image'` loaded all 50 products).
+              assign c_img = c.featured_image
+              if c_img == blank
+                for c_item in c.products
+                  if c_item.featured_image != blank
+                    assign c_img = c_item.featured_image
+                    break
+                  endif
+                endfor
+              endif
               if c != blank
                 assign img_alt = c_img.alt | default: c.title
                 assign href = c.url

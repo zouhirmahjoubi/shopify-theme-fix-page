@@ -1,0 +1,47 @@
+{%- comment -%}
+  Meta description for a product page with no SEO description of its own
+  (metafield global.description_tag), used by layout/theme.liquid.
+  Shopify's default strips the description's HTML with no spaces
+  ("Lettering CaseA plush bunny"), cuts it mid-word and gives a design's
+  Clear, Magnetic and Tough cases the same text. This one is the case type
+  and phones from the title, then the description's first paragraph that
+  isn't a <strong> heading, whole:
+  "Clear impact-resistant phone case for iPhone and Samsung. A plush bunny
+  with patchwork fabric letters on soft blush-pink linen fabric. It reads
+  “STAY COZY”."
+  Google trims long ones to fit; no word is cut here. Outputs plain text
+  (the layout escapes it), or nothing when no paragraph is found, which
+  keeps Shopify's own text.
+
+  Accepts:
+  - product: {Object} the product
+{%- endcomment -%}
+{%- liquid
+  assign desc_html = product.description | replace: '<br/>', '<br>' | replace: '<br />', '<br>' | replace: '</p>', '<br>' | replace: '<p>', '<br>'
+  assign desc_paragraphs = desc_html | split: '<br>'
+  assign desc_art = ''
+  for desc_paragraph in desc_paragraphs
+    assign desc_text = desc_paragraph | strip_html | strip
+    if desc_text == blank or desc_paragraph contains '<strong>'
+      continue
+    endif
+    assign desc_art = desc_text | replace: '&amp;', '&' | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'"
+    break
+  endfor
+  if desc_art != blank
+    assign desc_title = product.title | split: ' | '
+    assign desc_lead = ''
+    if desc_title.size > 1
+      assign desc_lead = desc_title.last | downcase | capitalize | replace: 'Magsafe', 'MagSafe' | replace: 'magsafe', 'MagSafe'
+      unless desc_lead contains ' phone case'
+        assign desc_lead = desc_lead | replace: ' case', ' phone case'
+      endunless
+      if desc_title.first contains 'Phone Case for '
+        assign desc_devices = desc_title.first | split: 'Phone Case for ' | last | replace: ' & ', ' and '
+        assign desc_lead = desc_lead | append: ' for ' | append: desc_devices
+      endif
+      assign desc_lead = desc_lead | append: '. '
+    endif
+    echo desc_lead | append: desc_art
+  endif
+-%}

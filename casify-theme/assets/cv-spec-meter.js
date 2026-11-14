@@ -24,7 +24,7 @@
  * three.js fails to load: everything else runs and the impact meter ripples
  * instead of the drop.
  */
-const CVM_THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const CVM_THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 // Canvas overhang around the impact meter (px): the phone falls from above it.
 const PAD = { t: 82, r: 18, b: 14, l: 18 };
@@ -47,6 +47,7 @@ let cvmWiggle = null;
 function release() { html.classList.remove('cvm-pending'); }
 
 function cvmWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl'));

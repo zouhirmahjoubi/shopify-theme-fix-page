@@ -1,11 +1,40 @@
 {%- comment -%}
-  Casify brand fonts (Google Fonts). Render in <head> before theme.css.
+  Casify brand fonts, self-hosted. Render in <head> before theme.css.
 
-  Linked from the document instead of an @import at the top of theme.css:
-  an @import can only start once the whole stylesheet has downloaded, which
-  chained a second render-blocking request behind it. Preconnecting and
-  linking here fetches the font CSS in parallel with theme.css.
+  The files are assets/cv-f-*.woff2, taken unchanged from Google Fonts (Playfair Display,
+  Libre Baskerville, Parisienne and Caveat are OFL; Special Elite is Apache 2.0). The rules
+  below are Google's css2 rules for the same families, weights and display=swap, latin and
+  latin-ext subsets only. A browser downloads a file only when the page has text in that
+  file's unicode-range, so unused faces cost nothing.
+
+  They used to come from fonts.googleapis.com: a render-blocking stylesheet on another
+  server, so a first visit opened two extra connections (fonts.googleapis.com, then
+  fonts.gstatic.com) before the page could paint. Inline rules need no request, and the
+  font files arrive over the connection the page already has open to the store's CDN.
+  Caveat was pulled in by an @import at the top of cv-pdp-home.css and cv-pdp-slip.css,
+  which chained the same two connections behind those stylesheets on product pages.
 {%- endcomment -%}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Parisienne&family=Special+Elite&display=swap">
+<style>
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:700;font-display:swap;src:url({{ 'cv-f-playfair-italic-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:700;font-display:swap;src:url({{ 'cv-f-playfair-italic-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-playfair-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-playfair-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:800;font-display:swap;src:url({{ 'cv-f-playfair-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:800;font-display:swap;src:url({{ 'cv-f-playfair-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:900;font-display:swap;src:url({{ 'cv-f-playfair-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:900;font-display:swap;src:url({{ 'cv-f-playfair-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:italic;font-weight:400;font-display:swap;src:url({{ 'cv-f-baskerville-italic-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:italic;font-weight:400;font-display:swap;src:url({{ 'cv-f-baskerville-italic-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-baskerville-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-baskerville-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-baskerville-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Libre Baskerville';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-baskerville-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Parisienne';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-parisienne-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Parisienne';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-parisienne-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Special Elite';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-special-elite-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Special Elite';font-style:normal;font-weight:400;font-display:swap;src:url({{ 'cv-f-special-elite-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url({{ 'cv-f-caveat-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url({{ 'cv-f-caveat-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-caveat-latin.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url({{ 'cv-f-caveat-latin-ext.woff2' | asset_url }}) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>

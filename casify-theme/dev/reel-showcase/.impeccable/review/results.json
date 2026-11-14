@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "states": [
+    "Silver",
+    "Clear",
+    "Glitter",
+    "Rose"
+  ],
+  "lifecycle": {
+    "cleaned": true,
+    "newIndex": 1,
+    "count": 1,
+    "previous": 2
+  },
+  "overflow": [
+    {
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "four real product images",
+    "synchronized palette/art/title/link",
+    "button and keyboard navigation",
+    "wraparound",
+    "rapid transition cancellation",
+    "custom element cleanup and reconnect",
+    "mobile reduced motion",
+    "no horizontal overflow",
+    "no browser errors"
+  ]
+}

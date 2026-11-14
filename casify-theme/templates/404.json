@@ -9,7 +9,7 @@
       },
       "blocks": {
         "l-0": { "type": "link", "settings": { "icon": "bag", "label": "Shop all cases", "url": "/collections/all" } },
-        "l-1": { "type": "link", "settings": { "icon": "drop-shield", "label": "How the drop test works", "url": "/" } },
+        "l-1": { "type": "link", "settings": { "icon": "quote", "label": "Questions and answers", "url": "/pages/faqs" } },
         "l-2": { "type": "link", "settings": { "icon": "returns", "label": "Returns and refunds", "url": "/pages/return-policy" } },
         "l-3": { "type": "link", "settings": { "icon": "truck-fast", "label": "Shipping times", "url": "/pages/shipping-policy" } }
       },

@@ -70,7 +70,7 @@
                 {%- liquid
                   assign q = b.settings.qty | at_least: 1
                   assign line = cvar.price | times: q
-                  assign o = line | times: b.settings.pct | divided_by: 100.0 | round
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
                   assign each = line | minus: o | divided_by: q
                 -%}
                 <td class="cvw-compare__num{% if b.settings.highlight %} is-highlight{% endif %}"><b>{{ each | money }}</b></td>
@@ -82,7 +82,7 @@
                 {%- liquid
                   assign q = b.settings.qty | at_least: 1
                   assign line = cvar.price | times: q
-                  assign o = line | times: b.settings.pct | divided_by: 100.0 | round
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
                 -%}
                 <td class="cvw-compare__num{% if b.settings.highlight %} is-highlight{% endif %}">{{ line | minus: o | money }}</td>
               {%- endfor -%}
@@ -93,7 +93,7 @@
                 {%- liquid
                   assign q = b.settings.qty | at_least: 1
                   assign line = cvar.price | times: q
-                  assign o = line | times: b.settings.pct | divided_by: 100.0 | round
+                  assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
                 -%}
                 <td class="cvw-compare__num cvw-compare__save{% if b.settings.highlight %} is-highlight{% endif %}">
                   {%- if o > 0 -%}<span class="cvw-compare__chip">{{ o | money }}</span>{%- else -%}<span class="cvw-compare__none">{{ section.settings.none_label | escape }}</span>{%- endif -%}
@@ -131,7 +131,7 @@
           {%- liquid
             assign q = b.settings.qty | at_least: 1
             assign line = cvar.price | times: q
-            assign o = line | times: b.settings.pct | divided_by: 100.0 | round
+            assign o = line | times: b.settings.pct | divided_by: 100.0 | floor
             assign each = line | minus: o | divided_by: q
             case b.settings.jar
               when 'large'

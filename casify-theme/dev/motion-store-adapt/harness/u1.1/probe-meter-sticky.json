@@ -1,0 +1,376 @@
+{
+ "runs": [
+  {
+   "name": "default",
+   "width": 375,
+   "load": {
+    "motion": true,
+    "pack": 0,
+    "acc": 0,
+    "fillPx": 0,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 5
+   },
+   "packs_seen": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 198.9375,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 5
+   },
+   "meter_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 329.328125,
+    "fillTarget": "96.0151%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 5
+   },
+   "meter_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 5
+   },
+   "sticky_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate3d(0px, 5.6989px, 0px);",
+    "stickyTy": 6,
+    "triggers": 5
+   },
+   "sticky_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 5
+   },
+   "hide_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate3d(0px, 31.8136px, 0px);",
+    "stickyTy": 32,
+    "triggers": 5
+   },
+   "hide_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 5
+   },
+   "errors": []
+  },
+  {
+   "name": "rm",
+   "width": 375,
+   "load": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 198.9375,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "packs_seen": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 198.9375,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "meter_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "meter_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "sticky_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 0
+   },
+   "sticky_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 0
+   },
+   "hide_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "hide_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 343,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 86,
+    "triggers": 0
+   },
+   "errors": []
+  },
+  {
+   "name": "default",
+   "width": 1280,
+   "load": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 151.24365234375,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 4
+   },
+   "packs_seen": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 153.921875,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 4
+   },
+   "meter_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 261.984375,
+    "fillTarget": "98.7137%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 4
+   },
+   "meter_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 4
+   },
+   "sticky_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate3d(0px, 0.8005px, 0px);",
+    "stickyTy": 1,
+    "triggers": 4
+   },
+   "sticky_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 4
+   },
+   "hide_mid": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "translate: none; rotate: none; scale: none; transform: translate(-50%, 0%) translate3d(0px, 15.6392px, 0px);",
+    "stickyTy": 16,
+    "triggers": 4
+   },
+   "hide_end": {
+    "motion": true,
+    "pack": 1,
+    "acc": 0,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 4
+   },
+   "errors": []
+  },
+  {
+   "name": "rm",
+   "width": 1280,
+   "load": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 153.921875,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "packs_seen": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 153.921875,
+    "fillTarget": "58%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "meter_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "meter_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "sticky_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 0
+   },
+   "sticky_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": true,
+    "stickyInline": "",
+    "stickyTy": 0,
+    "triggers": 0
+   },
+   "hide_mid": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "hide_end": {
+    "motion": false,
+    "pack": 1,
+    "acc": 1,
+    "fillPx": 265.40625,
+    "fillTarget": "100%",
+    "stickyVisible": false,
+    "stickyInline": "",
+    "stickyTy": 94,
+    "triggers": 0
+   },
+   "errors": []
+  }
+ ]
+}

@@ -1,0 +1,64 @@
+{
+ "default": {
+  "events": null,
+  "snaps": [
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 60
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 250
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 700
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 2400
+   }
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:63844/cart/add"
+ },
+ "rm": {
+  "events": null,
+  "snaps": [
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 60
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 250
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 700
+   },
+   {
+    "cls": null,
+    "label": null,
+    "fly": 0,
+    "at": 2400
+   }
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:63844/cart/add"
+ }
+}

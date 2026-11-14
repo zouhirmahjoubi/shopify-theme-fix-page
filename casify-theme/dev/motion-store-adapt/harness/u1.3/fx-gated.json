@@ -1,0 +1,209 @@
+{
+ "_note": "Fixture for sections/main-best-product.liquid (U1.3). Product data is a fixture modelled on the store's Tech Fabric case (real title, colour names and $49.99 price from tools/fixtures/product-model.json); model names are fixture values. Section settings come from templates/product.best.json. Photos are theme assets marked as fixture. Gated variant: the product carries fixture tags that the fixture section settings name, so every G20 line shows. Rating metafields use the store's documented rating (4.9 from 952, PRODUCT.md Evidence on Hand) only to prove the clipped star bar.",
+ "template": {
+  "file": "templates/product.best.json",
+  "key": "main"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Model",
+   "Color"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 41001,
+    "options": [
+     "iPhone 17 Pro Max",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41002,
+    "options": [
+     "iPhone 17 Pro Max",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41003,
+    "options": [
+     "iPhone 17 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41004,
+    "options": [
+     "iPhone 17 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41005,
+    "options": [
+     "iPhone 17",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41006,
+    "options": [
+     "iPhone 17",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1,
+    "available": false
+   },
+   {
+    "id": 41007,
+    "options": [
+     "iPhone 16 Pro Max",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41008,
+    "options": [
+     "iPhone 16 Pro Max",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41009,
+    "options": [
+     "iPhone 16 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41010,
+    "options": [
+     "iPhone 16 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41011,
+    "options": [
+     "Galaxy S25 Ultra",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41012,
+    "options": [
+     "Galaxy S25 Ultra",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41013,
+    "options": [
+     "Pixel 10 Pro",
+     "Russet Brown"
+    ],
+    "price": 4999,
+    "media": 0,
+    "available": false
+   },
+   {
+    "id": 41014,
+    "options": [
+     "Pixel 10 Pro",
+     "Black"
+    ],
+    "price": 4999,
+    "media": 1,
+    "available": false
+   }
+  ],
+  "metafields": {
+   "reviews": {
+    "rating": {
+     "value": {
+      "rating": 4.9,
+      "scale_max": 5
+     }
+    },
+    "rating_count": {
+     "value": 952
+    }
+   },
+   "custom": {}
+  },
+  "tags": [
+   "fixture-best",
+   "fixture-magnetic",
+   "fixture-fabric",
+   "fixture-fit",
+   "fixture-protect"
+  ]
+ },
+ "harness": {
+  "css": [
+   "cv-commerce-motion.css"
+  ],
+  "js": [
+   "theme.js",
+   "cv-product.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ]
+ },
+ "section": {
+  "settings": {
+   "best_seller_tag": "fixture-best",
+   "magnetic_tag": "fixture-magnetic",
+   "fabric_tag": "fixture-fabric",
+   "fit_tag": "fixture-fit",
+   "protection_tag": "fixture-protect",
+   "benefit_one": "Fixture magnetic benefit",
+   "benefit_one_copy": "Fixture copy.",
+   "benefit_two": "Fixture fabric benefit",
+   "benefit_two_copy": "Fixture copy.",
+   "benefit_three": "Fixture protection benefit",
+   "benefit_three_copy": "Fixture copy."
+  }
+ }
+}

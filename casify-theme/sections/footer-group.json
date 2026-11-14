@@ -4,7 +4,7 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "settings": {},
+      "settings": {"blurb": "Printed phone cases for iPhone, Samsung and Pixel. Each case is printed after you order, and shipping is free."},
       "blocks": {
         "shop": {
           "type": "link_list",

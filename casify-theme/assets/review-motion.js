@@ -31,7 +31,7 @@
   if (window.CasifyReviewMotion) return;
   window.CasifyReviewMotion = true;
 
-  const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+  const THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const compactQuery = window.matchMedia('(max-width: 989px)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -42,6 +42,7 @@
   // Probed once: every probe would otherwise hold a WebGL context until garbage collection.
   let webglSupport = null;
   function webglOk() {
+    if (window.cvWebGL) return window.cvWebGL();
     if (webglSupport === null) {
       try {
         const canvas = document.createElement('canvas');

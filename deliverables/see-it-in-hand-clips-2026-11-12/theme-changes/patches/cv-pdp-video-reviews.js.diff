@@ -1,0 +1,89 @@
+--- live-base/assets/cv-pdp-video-reviews.js	2026-11-12 03:56:20.848280700 +0100
++++ push/assets/cv-pdp-video-reviews.js	2026-11-12 03:56:21.063288100 +0100
+@@ -1,4 +1,4 @@
+-/* Casify: product page video reviews — sections/cv-pdp-video-reviews.liquid.
++/* Casify: product page video reviews: sections/cv-pdp-video-reviews.liquid.
+  *
+  *   - rail: a clip plays muted while most of it is on screen and pauses when
+  *     it leaves; one clip has sound at a time; "Pause clips" stops them all
+@@ -193,17 +193,22 @@
+     const soundBtn = $('[data-cvvr-lb-sound]', lb);
+     const stepBtns = $$('[data-cvvr-lb-step]', lb);
+     const out = {
++      rateRow: $('[data-cvvr-lb-rate-row]', lb),
+       stars: $('[data-cvvr-lb-stars] .cv-stars', lb),
+       rate: $('[data-cvvr-lb-rate]', lb),
+       title: $('[data-cvvr-lb-title]', lb),
++      tag: $('[data-cvvr-lb-tag]', lb),
+       body: $('[data-cvvr-lb-body]', lb),
+       more: $('[data-cvvr-more]', lb),
++      by: $('[data-cvvr-lb-by]', lb),
+       name: $('[data-cvvr-lb-name]', lb),
+       verified: $('[data-cvvr-lb-verified]', lb),
+       date: $('[data-cvvr-lb-date]', lb),
+       bought: $('[data-cvvr-lb-bought]', lb),
++      boughtLabel: $('[data-cvvr-lb-bought-label]', lb),
+       boughtText: $('[data-cvvr-lb-bought-text]', lb)
+     };
++    const boughtLabelText = out.boughtLabel ? out.boughtLabel.textContent : '';
+     let current = -1;
+     let lbVideo = null;
+     let lbMuted = false;
+@@ -274,6 +279,8 @@
+       if (i < 0 || i >= reviews.length) return;
+       current = i;
+       const r = reviews[i];
++      // A shop clip (the shop's own, not a customer's): no stars, no reviewer line.
++      const shop = r.kind === 'shop';
+       stopVideo();
+       media.textContent = '';
+       media.style.setProperty('--cvvr-cover', r.poster ? 'url("' + String(r.poster).replace(/"/g, '%22') + '")' : 'none');
+@@ -285,8 +292,8 @@
+         v.playsInline = true;
+         v.preload = 'auto';
+         if (r.poster) v.poster = r.poster;
+-        v.muted = lbMuted;
+-        v.setAttribute('aria-label', fill('Video review by [name]', { name: r.name || '' }));
++        v.muted = r.silent ? true : lbMuted; // a clip with no sound never asks the browser for it
++        v.setAttribute('aria-label', shop ? (r.label || '') : fill('Video review by [name]', { name: r.name || '' }));
+         v.src = r.src;
+         on(v, 'loadedmetadata', () => { if (lbVideo === v) learnShape(i, v.videoWidth, v.videoHeight); });
+         if (!r.poster) {
+@@ -313,6 +320,7 @@
+         if (p && p.catch) {
+           p.catch(() => {
+             // Sound refused by the browser: play muted and let the button turn it on.
++            // (A clip with no sound is already muted and stops here.)
+             if (lbVideo !== v || v.muted) return;
+             v.muted = true;
+             lbMuted = true;
+@@ -329,7 +337,7 @@
+         media.appendChild(img);
+       }
+       playBtn.hidden = !r.src;
+-      soundBtn.hidden = !r.src;
++      soundBtn.hidden = !r.src || !!r.silent;
+       syncPlay();
+       syncSound();
+ 
+@@ -339,15 +347,19 @@
+       });
+ 
+       const stars = Math.max(0, Math.min(5, Number(r.stars) || 0));
++      if (out.rateRow) out.rateRow.hidden = shop;
+       if (out.stars) out.stars.style.setProperty('--fill', stars * 20 + '%');
+-      out.rate.textContent = fill(t.rate || '[n] out of 5', { n: stars });
++      out.rate.textContent = shop ? '' : fill(t.rate || '[n] out of 5', { n: stars });
+       out.title.textContent = r.title || '';
++      if (out.tag) out.tag.hidden = !(shop && r.ai);
+       out.body.textContent = r.body || '';
++      if (out.by) out.by.hidden = shop;
+       out.name.textContent = r.name || '';
+       out.verified.hidden = !r.verified;
+       out.date.textContent = r.date || '';
+       const bought = [r.phone, r.colour].filter(Boolean).join(' · ');
+       out.bought.hidden = !bought;
++      if (out.boughtLabel) out.boughtLabel.textContent = r.boughtLabel || boughtLabelText;
+       out.boughtText.textContent = bought;
+ 
+       // Long reviews fold to three lines on phones (CSS); offer the rest.

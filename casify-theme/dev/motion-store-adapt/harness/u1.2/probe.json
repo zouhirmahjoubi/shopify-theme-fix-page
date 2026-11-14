@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "C:\Users\LENOVO\AppData\Local\Temp\claude\E--Shopify-Theme-Fix---Page\d3107a58-dff2-4f72-8278-b97fb300fa8a\scratchpad\U1.2\probe.py", line 45, in <module>
+    pg.click('.cvcr__pack-pill >> nth=1')
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\sync_api\_generated.py", line 10783, in click
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.click(
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_page.py", line 878, in click
+    return await self._main_frame._click(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_frame.py", line 569, in _click
+    await self._channel.send("click", self._timeout, locals_to_params(locals()))
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\LENOVO\AppData\Local\Programs\Python\Python314\Lib\site-packages\playwright\_impl\_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(".cvcr__pack-pill").nth(1)
+    - locator resolved to <button role="radio" data-qty="2" tabindex="0" type="button" aria-checked="true" class="cvcr__pack-pill">…</button>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+

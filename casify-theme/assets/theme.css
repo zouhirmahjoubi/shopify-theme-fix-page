@@ -1401,7 +1401,10 @@ footer ul a:hover { color: var(--cream-50); text-decoration: underline; }
   background: linear-gradient(100deg, transparent, rgba(255,253,248,.34), transparent);
   transform: skewX(-18deg); animation: cv-shine 4.4s var(--ease-standard) infinite;
 }
-@keyframes cv-shine { 0% { left: -40%; } 55%, 100% { left: 130%; } }
+/* The same sweep as left: -40% to 130%, moved by transform so the browser runs it without a
+   layout and repaint every frame (it ran on every button with a shine, on screen or not).
+   translateX() percentages are of the shine's own width (30%): 170% / 30% = 566.667%. */
+@keyframes cv-shine { 0% { transform: translateX(0) skewX(-18deg); } 55%, 100% { transform: translateX(566.667%) skewX(-18deg); } }
 .cv-cta.is-busy { opacity: .82; }
 .cv-cta.is-done { background: var(--teal-600); box-shadow: 0 3px 0 var(--teal-600); }
 .cv-cta.is-error { background: var(--red-700); box-shadow: 0 3px 0 var(--red-700); }

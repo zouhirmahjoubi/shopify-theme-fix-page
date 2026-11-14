@@ -350,6 +350,19 @@ a.cvp-proof__source-chip:focus-visible { outline: 3px solid var(--gold-400, #c89
 .cvp-proof__note svg { flex: 0 0 1.1rem; width: 1.1rem; fill: none; stroke: var(--cvp-teal); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .cvp-proof__note span { min-width: 0; overflow-wrap: anywhere; }
 
+/* Customer ledger: the newest Judge.me reviews from verified buyers.
+   Sizes follow this file's rem scale: the theme has no size tokens. */
+/* ds-allow-hardcode:start */
+.cvp-proof__notes { display: grid; align-content: start; gap: 1.1rem; margin: 0; padding: 0; list-style: none; }
+.cvp-proof__notes li { display: grid; gap: .4rem; padding-bottom: 1.1rem; border-bottom: 1px solid rgba(74, 51, 36, .14); }
+.cvp-proof__notes li:last-child { padding-bottom: 0; border-bottom: 0; }
+.cvp-proof__note-stars { line-height: 0; }
+.cvp-proof__note-stars .cv-stars { font-size: .95rem; }
+.cvp-proof__notes blockquote { margin: 0; }
+.cvp-proof__notes blockquote p { margin: 0; color: var(--cocoa-800, #3f2b22); font-family: var(--font-display); font-size: clamp(1.02rem, 1.6vw, 1.2rem); line-height: 1.35; overflow-wrap: anywhere; }
+.cvp-proof__note-by { margin: 0; color: var(--cocoa-500, #755a49); font-size: .84rem; line-height: 1.45; }
+/* ds-allow-hardcode:end */
+
 .cvp-proof__thanks {
   display: flex;
   align-items: center;

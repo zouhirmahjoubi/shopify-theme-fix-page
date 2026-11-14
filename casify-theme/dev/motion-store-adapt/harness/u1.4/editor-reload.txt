@@ -1,0 +1,42 @@
+{
+ "cycles": [
+  {
+   "listeners": 52,
+   "st": 0,
+   "tweens": 1,
+   "motion": true,
+   "lines": 2
+  },
+  {
+   "listeners": 52,
+   "st": 0,
+   "tweens": 1,
+   "motion": true,
+   "lines": 2
+  },
+  {
+   "listeners": 52,
+   "st": 0,
+   "tweens": 1,
+   "motion": true,
+   "lines": 2
+  },
+  {
+   "listeners": 52,
+   "st": 0,
+   "tweens": 1,
+   "motion": true,
+   "lines": 2
+  }
+ ],
+ "start": {
+  "listeners": 52,
+  "st": 0,
+  "tweens": 1,
+  "motion": true,
+  "lines": 2
+ },
+ "change_requests_after_cycles": 1,
+ "errors": [],
+ "pass": true
+}

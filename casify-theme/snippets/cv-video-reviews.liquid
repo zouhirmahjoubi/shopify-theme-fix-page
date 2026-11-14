@@ -36,6 +36,20 @@
   clips will go. A clip can be limited to one product, so the default template
   can carry clips for every case.
 
+  Shop clips (the Shop Counter's "Shop clip" blocks, shop_type): clips the shop
+  made itself. They share the row and the player, and say nothing a customer
+  could have said: no name, no stars, no quote, no score, no "verified". A row
+  of shop clips only has its own heading ("See it in hand"), a "Shown on" stub
+  in place of "Filmed on", and a "Made with AI" label on every clip ticked as
+  AI-made. A shop clip is matched to its product by handle, a plain text
+  compare, so the default template can carry many without loading a product.
+
+  A shop clip can also show on every product. It then names the design it
+  shows under the clip, so nobody takes it for the case on the page: the row's
+  heading turns to "Our cases in hand", the page's own clip (if it has one)
+  comes first, and in the player a clip of another case links to that case
+  ("See this case") where this page's buy panel would be.
+
   Behaviour and motion: assets/cv-pdp-video-reviews.js (loaded by the layout
   when this markup is on the page). Static state: assets/cv-pdp-video-reviews.css.
 {%- endcomment -%}
@@ -44,6 +58,8 @@
 
   @param {object[]} blocks - Blocks to read clips from.
   @param {string} clip_type - Block type of a clip.
+  @param {string} [shop_type] - Block type of a shop-made clip: shown with no name, stars, quote or score.
+  @param {boolean} [reviews] - False leaves the customer clips (clip_type) out and shows shop clips only. Default true.
   @param {object} [settings] - Text settings (a section's or a block's); defaults when absent.
   @param {string} uid - Unique id used in element ids.
   @param {string} [mode] - 'inline' for the compact row under the product photo.
@@ -60,44 +76,98 @@
     assign show_commerce = false
   endif
 
-  comment
-    First pass: which clips belong on this product, and the totals for the score.
-  endcomment
-  assign shown = 0
-  assign star_sum = 0
-  assign verified_count = 0
-  for b in blocks
-    if b.type != clip_type
-      continue
-    endif
-    if b.settings.product != blank and b.settings.product.id != product.id
-      continue
-    endif
-    if b.settings.video == blank and b.settings.mp4_url == blank and b.settings.poster == blank
-      continue
-    endif
-    assign shown = shown | plus: 1
-    assign star_sum = star_sum | plus: b.settings.stars
-    if b.settings.verified
-      assign verified_count = verified_count | plus: 1
-    endif
-  endfor
-
-  assign clip_avg = 0
-  if shown > 0
-    assign clip_avg = star_sum | times: 1.0 | divided_by: shown | round: 1
+  assign show_reviews = true
+  if reviews == false
+    assign show_reviews = false
   endif
 
   comment
-    The product's own rating, when a review app has written one.
+    First pass: which clips belong on this product, and the totals for the score.
+    Only customer clips count towards the score; shop clips have no rating.
   endcomment
-  assign p_rating = product.metafields.reviews.rating.value
-  assign p_count = product.metafields.reviews.rating_count.value | default: 0
+  assign shown = 0
+  assign review_shown = 0
+  assign other_shown = 0
+  assign star_sum = 0
+  assign verified_count = 0
+  for b in blocks
+    assign kind = ''
+    if b.type == clip_type
+      if show_reviews
+        assign kind = 'review'
+      endif
+    elsif shop_type != blank and b.type == shop_type
+      assign kind = 'shop'
+    endif
+    if kind == ''
+      continue
+    endif
+    if kind == 'shop'
+      if b.settings.product_handle != blank and b.settings.product_handle != product.handle
+        continue
+      endif
+    elsif b.settings.product != blank and b.settings.product.id != product.id
+      continue
+    endif
+    if b.settings.video == blank and b.settings.mp4_url == blank and b.settings.mp4_asset == blank and b.settings.poster == blank and b.settings.poster_asset == blank
+      continue
+    endif
+    assign shown = shown | plus: 1
+    assign last_phone = b.settings.phone
+    assign last_caption = b.settings.caption
+    if kind == 'shop'
+      comment
+        Whose clip: the product it names ("Product in the clip"), or, when it
+        names none, the product it is limited to ("Only show on").
+      endcomment
+      assign clip_of = b.settings.design_handle | default: b.settings.product_handle
+      if clip_of != product.handle
+        assign other_shown = other_shown | plus: 1
+      endif
+    endif
+    if kind == 'review'
+      assign review_shown = review_shown | plus: 1
+      assign star_sum = star_sum | plus: b.settings.stars
+      if b.settings.verified
+        assign verified_count = verified_count | plus: 1
+      endif
+    endif
+  endfor
+
+  comment
+    A row of shop clips only: its own heading and labels, and no score.
+  endcomment
+  assign only_shop = false
+  if shown > 0 and review_shown == 0
+    assign only_shop = true
+  endif
+
+  comment
+    One shop clip under the photo: the clip sits on the left with its words
+    beside it, so a single card is not left alone in a row built for several.
+  endcomment
+  assign solo = false
+  if only_shop and shown == 1 and mode == 'inline'
+    assign solo = true
+  endif
+
+  assign clip_avg = 0
+  if review_shown > 0
+    assign clip_avg = star_sum | times: 1.0 | divided_by: review_shown | round: 1
+  endif
+
+  comment
+    The product's own rating: its Judge.me reviews by verified buyers only (snippets/cv-jm-verified.liquid).
+  endcomment
+  capture jm_stats
+    render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle
+  endcapture
+  assign jm_parts = jm_stats | split: '␟'
+  assign p_count = jm_parts[0] | plus: 0
   assign use_product = false
-  if p_rating != blank and p_count > 0
+  if p_count > 0
     assign use_product = true
-    assign r_max = p_rating.scale_max | default: 5
-    assign score = p_rating.rating | times: 5.0 | divided_by: r_max | round: 1
+    assign score = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: p_count | round: 1
   else
     assign score = clip_avg
   endif
@@ -141,15 +211,45 @@
     (the main product section without a "Video reviews: text" block).
   endcomment
   assign vr = settings
-  assign vr_heading = vr.heading | default: 'Filmed by the people who bought it'
-  if vr == blank
-    if mode == 'inline'
-      assign vr_lede = ''
+  assign shop_heading = vr.shop_heading | default: 'See it in hand'
+  assign design_label = vr.design_label | default: 'Design'
+  assign own_label = vr.own_label | default: 'This case'
+  if only_shop
+    comment
+      "See it in hand" is only true of the case on the page: a row that also
+      shows other cases takes the wider heading.
+    endcomment
+    if other_shown > 0
+      assign vr_heading = vr.shop_heading_all | default: 'Our cases in hand'
     else
-      assign vr_lede = 'Short clips from customers with this case on their own phone. Tap one for sound and the full review.'
+      assign vr_heading = shop_heading
     endif
+    assign vr_lede = vr.shop_lede
+    assign rail_label = vr.shop_rail_label | default: 'Case clips'
+    assign hint_text = vr.shop_hint | default: 'Tap a clip to see it larger'
   else
-    assign vr_lede = vr.lede
+    assign vr_heading = vr.heading | default: 'Filmed by the people who bought it'
+    if vr == blank
+      if mode == 'inline'
+        assign vr_lede = ''
+      else
+        assign vr_lede = 'Short clips from customers with this case on their own phone. Tap one for sound and the full review.'
+      endif
+    else
+      assign vr_lede = vr.lede
+    endif
+    assign rail_label = vr.rail_label | default: 'Customer video reviews'
+    assign hint_text = vr.hint | default: 'Tap a clip for sound and the full review'
+  endif
+  assign review_bought_label = vr.bought_label | default: 'Filmed on'
+  assign shop_bought_label = vr.shop_bought_label | default: 'Shown on'
+  assign ai_label = vr.ai_label | default: 'Made with AI'
+  if shown == 1
+    assign pause_label = vr.pause_label | default: 'Pause clip'
+    assign play_label = vr.play_label | default: 'Play clip'
+  else
+    assign pause_label = vr.pause_label | default: 'Pause clips'
+    assign play_label = vr.play_label | default: 'Play clips'
   endif
 
   assign cta = vr.cta_label | default: 'Add to bag'
@@ -166,7 +266,7 @@
 {%- endif -%}
 
 {%- if shown > 0 -%}
-  <section class="cvvr{% if mode == 'inline' %} cvvr--inline{% endif %}" id="cvvr-{{ uid }}" data-cvvr {{ attrs }}
+  <section class="cvvr{% if mode == 'inline' %} cvvr--inline{% endif %}{% if solo %} cvvr--solo{% endif %}" id="cvvr-{{ uid }}" data-cvvr {{ attrs }}
            data-money-format="{{ shop.money_format | escape }}"
            aria-labelledby="cvvrTitle-{{ uid }}">
     <div class="cvvr__inner">
@@ -176,21 +276,36 @@
           {%- if vr_lede != blank -%}
             <p class="cvvr__lede">{{ vr_lede | escape }}</p>
           {%- endif -%}
+          {%- comment -%} One shop clip: its caption (the shop's own line) and what it is shown on read beside the clip, in place of the stub under it. {%- endcomment -%}
+          {%- if solo and last_caption != blank -%}
+            <p class="cvvr__lede">{{ last_caption | escape }}</p>
+          {%- endif -%}
+          {%- if solo and last_phone != blank -%}
+            {%- assign shown_parts = last_phone | split: ' · ' -%}
+            <p class="cvvr__shown">
+              <span class="cvvr__shown-label">{{ shop_bought_label | escape }}</span>
+              {%- for part in shown_parts -%}
+                <span class="cvvr__shown-value">{{ part | escape }}</span>
+              {%- endfor -%}
+            </p>
+          {%- endif -%}
         </div>
 
+        {%- comment -%} The score is the customers' own: a row of shop clips has none. {%- endcomment -%}
+        {%- if review_shown > 0 -%}
         {%- liquid
           if use_product
             assign score_label = vr.product_score_label | default: '[count] reviews of this case' | replace: '[count]', p_count
-            if shown == 1
+            if review_shown == 1
               assign score_sub = '1 on video below'
             else
-              assign score_sub = shown | append: ' on video below'
+              assign score_sub = review_shown | append: ' on video below'
             endif
           else
-            if shown == 1
+            if review_shown == 1
               assign score_label = vr.clip_score_label_one | default: 'From 1 video review'
             else
-              assign score_label = vr.clip_score_label | default: 'Average of [count] video reviews' | replace: '[count]', shown
+              assign score_label = vr.clip_score_label | default: 'Average of [count] video reviews' | replace: '[count]', review_shown
             endif
             assign score_sub = ''
           endif
@@ -218,20 +333,49 @@
             {%- endif -%}
           </span>
         </div>
+        {%- endif -%}
       </header>
 
       <div class="cvvr__wrap">
-        <ul class="cvvr__rail" id="cvvrRail-{{ uid }}" data-cvvr-rail aria-label="{{ vr.rail_label | default: 'Customer video reviews' | escape }}">
+        <ul class="cvvr__rail" id="cvvrRail-{{ uid }}" data-cvvr-rail aria-label="{{ rail_label | escape }}">
           {%- assign n = 0 -%}
+          {%- comment -%} Two passes: the clips of the case on the page first, then the clips of other cases. {%- endcomment -%}
+          {%- for pass in (1..2) -%}
           {%- for b in blocks -%}
             {%- liquid
-              if b.type != clip_type
+              assign kind = ''
+              if b.type == clip_type
+                if show_reviews
+                  assign kind = 'review'
+                endif
+              elsif shop_type != blank and b.type == shop_type
+                assign kind = 'shop'
+              endif
+              if kind == ''
                 continue
               endif
-              if b.settings.product != blank and b.settings.product.id != product.id
+              if kind == 'shop'
+                if b.settings.product_handle != blank and b.settings.product_handle != product.handle
+                  continue
+                endif
+              elsif b.settings.product != blank and b.settings.product.id != product.id
                 continue
               endif
-              if b.settings.video == blank and b.settings.mp4_url == blank and b.settings.poster == blank
+              if b.settings.video == blank and b.settings.mp4_url == blank and b.settings.mp4_asset == blank and b.settings.poster == blank and b.settings.poster_asset == blank
+                continue
+              endif
+
+              assign clip_own = true
+              if kind == 'shop'
+                assign clip_of = b.settings.design_handle | default: b.settings.product_handle
+                if clip_of != product.handle
+                  assign clip_own = false
+                endif
+              endif
+              if pass == 1 and clip_own == false
+                continue
+              endif
+              if pass == 2 and clip_own
                 continue
               endif
 
@@ -271,6 +415,13 @@
               elsif b.settings.mp4_url != blank
                 assign src_sm = b.settings.mp4_url
                 assign src_lg = b.settings.mp4_url
+              elsif b.settings.mp4_asset != blank
+                comment
+                  A clip kept in the theme's own assets: it travels with the
+                  theme, so a preview copy and the live theme each serve theirs.
+                endcomment
+                assign src_sm = b.settings.mp4_asset | asset_url
+                assign src_lg = src_sm
               endif
 
               assign poster_sm = ''
@@ -281,10 +432,11 @@
               elsif vid != blank and vid.preview_image != blank
                 assign poster_sm = vid.preview_image | image_url: width: 540
                 assign poster_lg = vid.preview_image | image_url: width: 1080
+              elsif b.settings.poster_asset != blank
+                assign poster_sm = b.settings.poster_asset | asset_img_url: '540x'
+                assign poster_lg = b.settings.poster_asset | asset_img_url: '1080x'
               endif
 
-              assign who = b.settings.name | default: vr.anon_label | default: 'Customer'
-              assign fill = b.settings.stars | times: 20
               assign bought = ''
               if b.settings.phone != blank
                 assign bought = b.settings.phone
@@ -295,42 +447,88 @@
                 endif
                 assign bought = bought | append: b.settings.colour
               endif
+
+              comment
+                A shop clip carries nothing a customer could have said: no name,
+                stars or quote. Its words are what it shows and how it was made.
+              endcomment
+              assign is_shop = false
+              assign clip_silent = false
+              assign clip_ai = false
+              assign clip_design = ''
+              assign clip_url = ''
+              assign clip_title = ''
+              assign clip_caption = ''
+              if kind == 'shop'
+                assign is_shop = true
+                assign who = ''
+                assign clip_caption = b.settings.caption
+                assign clip_design = b.settings.design
+                assign clip_title = clip_design | default: shop_heading
+                assign clip_label = b.settings.alt | default: clip_design | default: product.title
+                assign bought_label = shop_bought_label
+                if clip_own == false and b.settings.design_handle != blank
+                  assign clip_url = routes.root_url | append: '/products/' | append: b.settings.design_handle | replace: '//', '/'
+                endif
+                if b.settings.silent
+                  assign clip_silent = true
+                endif
+                if b.settings.ai_made
+                  assign clip_ai = true
+                endif
+              else
+                assign who = b.settings.name | default: vr.anon_label | default: 'Customer'
+                assign fill = b.settings.stars | times: 20
+                assign clip_label = ''
+                assign bought_label = review_bought_label
+              endif
             -%}
             {%- comment -%}
               A clip with no cover (an MP4 link, no cover image) loads its
               metadata and shows its own first frame (#t=0.1 makes iOS paint
               it), so the card is never a blank square before it plays.
             {%- endcomment -%}
-            <li class="cvvr__card{% if poster_sm == blank and src_sm != blank %} cvvr__card--bare{% endif %}" data-cvvr-card="{{ n }}" style="--i: {{ n }}" {{ b.shopify_attributes }}>
+            <li class="cvvr__card{% if is_shop %} cvvr__card--shop{% endif %}{% if poster_sm == blank and src_sm != blank %} cvvr__card--bare{% endif %}" data-cvvr-card="{{ n }}" style="--i: {{ n }}" {{ b.shopify_attributes }}>
               <div class="cvvr__frame">
                 {%- if poster_sm != blank -%}
                   <img class="cvvr__poster" src="{{ poster_sm }}" alt="" width="540" height="960" loading="lazy" decoding="async">
                 {%- else -%}
                   <span class="cvvr__poster cvvr__poster--empty" aria-hidden="true">{%- render 'cv-icon', name: 'video', size: 40 -%}</span>
                 {%- endif -%}
+                {%- comment -%}
+                  No poster attribute on the clip: its cover is the lazy image
+                  above, which loads only as the row comes near. A video poster
+                  is fetched with the page however far down the row sits.
+                {%- endcomment -%}
                 {%- if src_sm != blank -%}
                   <video class="cvvr__video" data-cvvr-video muted playsinline loop
-                         {% if poster_sm != blank %}preload="none" poster="{{ poster_sm }}"{% else %}preload="metadata"{% endif %} aria-hidden="true" tabindex="-1">
+                         {% if poster_sm != blank %}preload="none"{% else %}preload="metadata"{% endif %} aria-hidden="true" tabindex="-1">
                     <source src="{{ src_sm }}{% if poster_sm == blank %}#t=0.1{% endif %}" type="video/mp4">
                   </video>
                 {%- endif -%}
                 <span class="cvvr__scrim" aria-hidden="true"></span>
 
-                <span class="cvvr__rate" aria-hidden="true">
-                  {%- render 'cv-stars', fill: fill, class: 'cvvr__card-stars' -%}
-                </span>
-
-                <span class="cvvr__meta" aria-hidden="true">
-                  {%- if b.settings.title != blank -%}
-                    <span class="cvvr__quote">{{ b.settings.title | escape }}</span>
+                {%- if is_shop -%}
+                  {%- if clip_ai -%}
+                    <span class="cvvr__tag">{{ ai_label | escape }}</span>
                   {%- endif -%}
-                  <span class="cvvr__who">
-                    <b>{{ who | escape }}</b>
-                    {%- if b.settings.verified -%}
-                      <span class="cvvr__verified">{%- render 'cv-icon', name: 'user-check', size: 11 -%} {{ vr.verified_label | default: 'Verified buyer' | escape }}</span>
-                    {%- endif -%}
+                {%- else -%}
+                  <span class="cvvr__rate" aria-hidden="true">
+                    {%- render 'cv-stars', fill: fill, class: 'cvvr__card-stars' -%}
                   </span>
-                </span>
+
+                  <span class="cvvr__meta" aria-hidden="true">
+                    {%- if b.settings.title != blank -%}
+                      <span class="cvvr__quote">{{ b.settings.title | escape }}</span>
+                    {%- endif -%}
+                    <span class="cvvr__who">
+                      <b>{{ who | escape }}</b>
+                      {%- if b.settings.verified -%}
+                        <span class="cvvr__verified">{%- render 'cv-icon', name: 'user-check', size: 11 -%} {{ vr.verified_label | default: 'Verified buyer' | escape }}</span>
+                      {%- endif -%}
+                    </span>
+                  </span>
+                {%- endif -%}
 
                 {%- if src_sm != blank -%}
                   <span class="cvvr__bar" aria-hidden="true"><i data-cvvr-progress></i></span>
@@ -338,38 +536,82 @@
 
                 <button type="button" class="cvvr__open" data-cvvr-open aria-haspopup="dialog">
                   <span class="cvvr__sr">
-                    {%- if src_sm != blank -%}Watch{%- else -%}Open{%- endif %} {{ who | escape }}’s review, {{ b.settings.stars }} out of 5 stars
-                    {%- if b.settings.title != blank -%}: {{ b.settings.title | escape }}{%- endif -%}
+                    {%- if is_shop -%}
+                      {%- if src_sm != blank -%}Watch the clip{%- else -%}Open the photo{%- endif -%}: {{ clip_label | escape }}
+                    {%- else -%}
+                      {%- if src_sm != blank -%}Watch{%- else -%}Open{%- endif %} {{ who | escape }}’s review, {{ b.settings.stars }} out of 5 stars
+                      {%- if b.settings.title != blank -%}: {{ b.settings.title | escape }}{%- endif -%}
+                    {%- endif -%}
                   </span>
                   <span class="cvvr__play" aria-hidden="true">{%- render 'cv-icon', name: 'play', size: 20 -%}</span>
                 </button>
 
-                {%- if src_sm != blank -%}
+                {%- if src_sm != blank and clip_silent == false -%}
                   <button type="button" class="cvvr__sound" data-cvvr-sound aria-pressed="false">
-                    <span class="cvvr__sr">Sound for {{ who | escape }}’s clip</span>
+                    <span class="cvvr__sr">{% if is_shop %}Sound for this clip{% else %}Sound for {{ who | escape }}’s clip{% endif %}</span>
                     <span class="cvvr__sound-off" aria-hidden="true">{%- render 'cv-icon', name: 'sound-off', size: 16 -%}</span>
                     <span class="cvvr__sound-on" aria-hidden="true">{%- render 'cv-icon', name: 'sound-on', size: 16 -%}</span>
                   </button>
                 {%- endif -%}
               </div>
 
-              {%- if bought != blank -%}
+              {%- comment -%}
+                Under a shop clip that names its design: the design, as a link to
+                that case when it is not the one on the page. Otherwise the phone
+                (and colour) the clip was filmed or shown on. A shop clip's
+                caption, the shop's own line and never a customer's, closes the stub.
+              {%- endcomment -%}
+              {%- if is_shop and clip_design != blank and solo == false -%}
                 <p class="cvvr__stub">
-                  <span class="cvvr__stub-label">{{ vr.bought_label | default: 'Filmed on' | escape }}</span>
+                  <span class="cvvr__stub-label">{% if clip_own %}{{ own_label | escape }}{% else %}{{ design_label | escape }}{% endif %}</span>
+                  {%- if clip_url != blank -%}
+                    <a class="cvvr__stub-value cvvr__stub-link" href="{{ clip_url }}">{{ clip_design | escape }}</a>
+                  {%- else -%}
+                    <span class="cvvr__stub-value">{{ clip_design | escape }}</span>
+                  {%- endif -%}
+                  {%- if clip_caption != blank -%}
+                    <span class="cvvr__stub-note">{{ clip_caption | escape }}</span>
+                  {%- endif -%}
+                </p>
+              {%- elsif bought != blank and solo == false -%}
+                <p class="cvvr__stub">
+                  <span class="cvvr__stub-label">{{ bought_label | escape }}</span>
                   <span class="cvvr__stub-value">{{ bought | escape }}</span>
+                  {%- if clip_caption != blank -%}
+                    <span class="cvvr__stub-note">{{ clip_caption | escape }}</span>
+                  {%- endif -%}
+                </p>
+              {%- elsif clip_caption != blank and solo == false -%}
+                <p class="cvvr__stub">
+                  <span class="cvvr__stub-note">{{ clip_caption | escape }}</span>
                 </p>
               {%- endif -%}
 
               <script type="application/json" data-cvvr-review>
                 {
+                  "kind": {{ kind | json }},
                   "name": {{ who | json }},
+                  {%- if is_shop %}
+                  "stars": 0,
+                  "title": {{ clip_title | json }},
+                  "own": {{ clip_own | json }},
+                  "url": {{ clip_url | json }},
+                  "body": {{ clip_caption | json }},
+                  "verified": false,
+                  "date": "",
+                  "label": {{ clip_label | json }},
+                  "ai": {{ clip_ai | json }},
+                  "silent": {{ clip_silent | json }},
+                  {%- else %}
                   "stars": {{ b.settings.stars | json }},
                   "title": {{ b.settings.title | json }},
                   "body": {{ b.settings.body | json }},
                   "verified": {{ b.settings.verified | json }},
+                  "date": {{ b.settings.date | json }},
+                  {%- endif %}
                   "phone": {{ b.settings.phone | json }},
                   "colour": {{ b.settings.colour | json }},
-                  "date": {{ b.settings.date | json }},
+                  "boughtLabel": {{ bought_label | json }},
                   "src": {{ src_lg | json }},
                   "poster": {{ poster_lg | json }},
                   "ar": {{ clip_ar | json }}
@@ -378,19 +620,24 @@
             </li>
             {%- assign n = n | plus: 1 -%}
           {%- endfor -%}
+          {%- endfor -%}
         </ul>
       </div>
 
       <div class="cvvr__foot">
         <p class="cvvr__hint">
-          {%- render 'cv-icon', name: 'sound-on', size: 15 -%}
-          <span>{{ vr.hint | default: 'Tap a clip for sound and the full review' | escape }}</span>
+          {%- if only_shop -%}
+            {%- render 'cv-icon', name: 'video', size: 15 -%}
+          {%- else -%}
+            {%- render 'cv-icon', name: 'sound-on', size: 15 -%}
+          {%- endif -%}
+          <span>{{ hint_text | escape }}</span>
         </p>
         <div class="cvvr__controls">
           <button type="button" class="cvvr__pause" data-cvvr-pause aria-pressed="false">
             <span data-cvvr-pause-icon="pause">{%- render 'cv-icon', name: 'pause', size: 15 -%}</span>
             <span data-cvvr-pause-icon="play" hidden>{%- render 'cv-icon', name: 'play', size: 15 -%}</span>
-            <span data-cvvr-pause-label>{{ vr.pause_label | default: 'Pause clips' | escape }}</span>
+            <span data-cvvr-pause-label>{{ pause_label | escape }}</span>
           </button>
           <button type="button" class="cvvr__arrow" data-cvvr-step="-1" aria-controls="cvvrRail-{{ uid }}">
             <span class="cvvr__sr">Previous clips</span>
@@ -426,11 +673,11 @@
             </button>
           </div>
           <button type="button" class="cvvr-lb__step cvvr-lb__step--prev" data-cvvr-lb-step="-1">
-            <span class="cvvr__sr">Previous review</span>
+            <span class="cvvr__sr">{% if only_shop %}Previous clip{% else %}Previous review{% endif %}</span>
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <button type="button" class="cvvr-lb__step cvvr-lb__step--next" data-cvvr-lb-step="1">
-            <span class="cvvr__sr">Next review</span>
+            <span class="cvvr__sr">{% if only_shop %}Next clip{% else %}Next review{% endif %}</span>
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
@@ -438,21 +685,27 @@
         <div class="cvvr-lb__panel">
           <div class="cvvr-lb__scroll" data-cvvr-lb-scroll>
             <article class="cvvr-lb__review" aria-live="polite">
-              <p class="cvvr-lb__rate">
+              {%- comment -%} The stars, the reviewer line and the "Made with AI" label are switched per clip by the script: a shop clip has no stars and no reviewer. {%- endcomment -%}
+              <p class="cvvr-lb__rate" data-cvvr-lb-rate-row>
                 <span class="cvvr-lb__stars" data-cvvr-lb-stars>{%- render 'cv-stars', fill: 100 -%}</span>
                 <span class="cvvr-lb__rate-text" data-cvvr-lb-rate></span>
               </p>
               <h3 class="cvvr-lb__title" id="cvvrLbTitle-{{ uid }}" data-cvvr-lb-title></h3>
+              <p class="cvvr-lb__tagline" data-cvvr-lb-tag hidden><span class="cvvr__tag cvvr__tag--ink">{{ ai_label | escape }}</span></p>
               <p class="cvvr-lb__body" id="cvvrLbBody-{{ uid }}" data-cvvr-lb-body></p>
-              <button type="button" class="cvvr-lb__link cvvr-lb__more" data-cvvr-more aria-expanded="false" aria-controls="cvvrLbBody-{{ uid }}" hidden>Read the whole review</button>
-              <p class="cvvr-lb__by">
+              <button type="button" class="cvvr-lb__link cvvr-lb__more" data-cvvr-more aria-expanded="false" aria-controls="cvvrLbBody-{{ uid }}" hidden>{% if only_shop %}Read more{% else %}Read the whole review{% endif %}</button>
+              <p class="cvvr-lb__by" data-cvvr-lb-by>
                 <b data-cvvr-lb-name></b>
                 <span class="cvvr__verified cvvr__verified--ink" data-cvvr-lb-verified hidden>{%- render 'cv-icon', name: 'user-check', size: 12 -%} {{ vr.verified_label | default: 'Verified buyer' | escape }}</span>
                 <span class="cvvr-lb__date" data-cvvr-lb-date></span>
               </p>
               <p class="cvvr-lb__bought" data-cvvr-lb-bought hidden>
-                <span>{{ vr.bought_label | default: 'Filmed on' | escape }}</span>
+                <span data-cvvr-lb-bought-label>{{ review_bought_label | escape }}</span>
                 <b data-cvvr-lb-bought-text></b>
+              </p>
+              {%- comment -%} Shown by the script under a shop clip of another case, where this page's buy panel would mislead. {%- endcomment -%}
+              <p class="cvvr-lb__see-row" data-cvvr-lb-see-row hidden>
+                <a class="cvvr-lb__bag cvvr-lb__see" data-cvvr-lb-see href="{{ routes.all_products_collection_url }}">{{ vr.see_label | default: 'See this case' | escape }}</a>
               </p>
             </article>
 
@@ -551,8 +804,8 @@
           "match": {{ vr.match_text | default: 'This clip shows [colour].' | json }},
           "matchPick": {{ vr.match_pick_label | default: 'Choose [colour]' | json }},
           "matchSame": {{ vr.match_same_text | default: 'Same colour as this clip: [colour].' | json }},
-          "pause": {{ vr.pause_label | default: 'Pause clips' | json }},
-          "play": {{ vr.play_label | default: 'Play clips' | json }},
+          "pause": {{ pause_label | json }},
+          "play": {{ play_label | json }},
           "lbPause": "Pause",
           "lbPlay": "Play"
         }

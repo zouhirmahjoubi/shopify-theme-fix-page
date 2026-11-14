@@ -52,6 +52,14 @@
   .cvsw__bag { --cv-eye: 25px; }
 }
 
+/* Press's Add to bag: a pill like the others, the eye shut when the case is sold out. */
+.cvpr__btn.cv-eyes-host {
+  --cv-eye: 36px;
+  min-height: 48px; border-radius: 999px;
+  padding-right: calc(var(--cv-eye-inset) + var(--cv-eye) + 8px);
+}
+.cvpr__btn:not([data-cvqp-open]) .cv-eye { transform: scaleY(.16); }
+
 /* "To checkout…" needs the whole pill, and the page is about to leave. */
 .cvc .cvc__buy.is-busy { padding-right: 12px; }
 .cvc__buy.is-busy > .cv-eyes { display: none; }

@@ -32,10 +32,16 @@
 {%- endcomment -%}
 {%- liquid
   assign coll = section.settings.collection | default: collections.frontpage
-  assign pictured = coll.products | where: 'featured_image'
+  # Speed: the collection is read one product at a time and only as far as needed
+  # (the old `where: 'featured_image'` loaded all 50 products to show six).
   assign has_products = false
-  if coll != blank and pictured.size > 0
-    assign has_products = true
+  if coll != blank
+    for product in coll.products
+      if product.featured_image != blank
+        assign has_products = true
+        break
+      endif
+    endfor
   endif
 -%}
 {%- if has_products or request.design_mode -%}
@@ -84,8 +90,12 @@
       <div class="cvorbit__stage" data-cvorbit-stage>
         <div class="cvorbit__fallback" data-cvorbit-fallback>
           <div class="cv-grid cv-grid--row">
-            {%- for product in pictured limit: limit -%}
-              {%- render 'cv-card', product: product, index: forloop.index0, quick_pick: true -%}
+            {%- assign shown = 0 -%}
+            {%- for product in coll.products -%}
+              {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+              {%- if product.featured_image == blank -%}{%- continue -%}{%- endif -%}
+              {%- render 'cv-card', product: product, index: shown, quick_pick: true -%}
+              {%- assign shown = shown | plus: 1 -%}
             {%- endfor -%}
           </div>
         </div>
@@ -124,7 +134,12 @@
 
     <script type="application/json" data-cvorbit-data>
       [
-        {%- for product in pictured limit: limit -%}
+        {%- assign shown = 0 -%}
+        {%- for product in coll.products -%}
+          {%- if shown >= limit -%}{%- break -%}{%- endif -%}
+          {%- if product.featured_image == blank -%}{%- continue -%}{%- endif -%}
+          {%- if shown > 0 -%},{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
           {%- liquid
             assign models = 0
             assign styles = 0
@@ -172,7 +187,7 @@
             "styles": {{ styles }},
             "available": {{ product.available | json }},
             "features": {{ feats | split: '|' | json }}
-          }{%- unless forloop.last -%},{%- endunless -%}
+          }
         {%- endfor -%}
       ]
     </script>

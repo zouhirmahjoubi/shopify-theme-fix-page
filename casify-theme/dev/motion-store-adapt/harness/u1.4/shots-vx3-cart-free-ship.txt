@@ -1,0 +1,46 @@
+  default  375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+  default  768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+  default 1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+  rm       375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+  rm       768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+  rm      1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 1
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+  nojs     375px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+  nojs     768px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+  nojs    1440px  page errors 0  console errors 2  net errors 2  failed expects 0  allowed 0  calls 0
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! console: Failed to load resource: the server responded with a status of 404 (File not found)
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41001
+      ! net: 404 http://127.0.0.1:50716/products/tech-fabric?variant=41002
+shoot: 9 screenshots in E:\Shopify Theme Fix & Page\casify-theme\dev\motion-store-adapt\harness\u1.4\shots-vx3\cart-free-ship; console.json written; FAIL

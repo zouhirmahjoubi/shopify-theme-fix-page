@@ -1,0 +1,63 @@
+{
+ "_note": "Fixture: a product with no phone-model option (Color only), to prove the counter renders without a model picker. Settings and blocks from templates/product.convert.json.",
+ "template": {
+  "file": "templates/product.convert.json",
+  "key": "main"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Fixture: Case Charm Strap",
+  "handle": "fixture-case-charm-strap",
+  "vendor": "Casify",
+  "options": [
+   "Color"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo"
+   }
+  ],
+  "variants": [
+   {
+    "id": 43001,
+    "options": [
+     "Russet Brown"
+    ],
+    "price": 1999,
+    "media": 0
+   },
+   {
+    "id": 43002,
+    "options": [
+     "Black"
+    ],
+    "price": 1999,
+    "media": 1
+   }
+  ]
+ },
+ "harness": {
+  "js": [
+   "theme.js",
+   "cv-motion.js",
+   "cv-product.js",
+   "cv-pack-motion.js",
+   "cv-pdp-counter.js",
+   "cv-pdp-counter-motion.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ],
+  "css": [
+   "cv-commerce-motion.css"
+  ]
+ },
+ "settings": {
+  "cv_pack_2_pct": 18,
+  "cv_pack_3_pct": 31
+ }
+}

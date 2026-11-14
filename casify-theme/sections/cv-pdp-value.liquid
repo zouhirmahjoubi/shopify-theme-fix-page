@@ -26,7 +26,7 @@
 
   assign qty = section.settings.scale_qty | at_least: 2
   assign singles = cvar.price | times: qty
-  assign off = singles | times: section.settings.scale_pct | divided_by: 100.0 | round
+  assign off = singles | times: section.settings.scale_pct | divided_by: 100.0 | floor
   assign pack_total = singles | minus: off
   assign tilt = section.settings.scale_pct | times: 0.35 | at_most: 14
 -%}

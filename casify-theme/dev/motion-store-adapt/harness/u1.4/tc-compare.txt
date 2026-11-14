@@ -1,0 +1,94 @@
+adams queue: waiting, place 2 (running now: C:/Program Files/Git/usr/bin/timeout.exe 420 python -I shoot.py ../harness/u1.4/)
+adams queue: waiting, place 1 (running now: C:/Program Files/Git/usr/bin/timeout.exe 420 python -I shoot.py ../harness/u1.4/)
+adams queue: your turn after 61 s
+tc-compare: theme check on a clean copy of layout, sections, snippets, templates, locales, config, blocks, assets
+  current: 74 errors, 10 warnings, 84 offenses
+  baseline: 0 errors, 8 warnings
+  known (in baseline): 8
+    = sections/amazon-styled-reviews.liquid:471 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:873 ExcessiveSettingsCount (warning)
+    = sections/cv-product-counter.liquid:575 LiquidComplexity (warning)
+    = sections/review-widget.liquid:477 ExcessiveSettingsCount (warning)
+    = snippets/cv-fonts.liquid:9 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:10 RemoteAsset (warning)
+    = snippets/cv-fonts.liquid:11 RemoteAsset (warning)
+    = snippets/cv-showcase-card.liquid:404 UnclosedHTMLElement (warning)
+  pending locale keys (requested, expected until LOC runs): 74
+    ~ sections/cv-cart.liquid:49 TranslationKeyExists: 'general.cart.heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:51 TranslationKeyExists: 'general.cart.empty_body' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:53 TranslationKeyExists: 'general.cart.summary_title' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:54 TranslationKeyExists: 'general.cart.note_label' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:55 TranslationKeyExists: 'general.cart.secure_checkout' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:103 TranslationKeyExists: 'general.cart.free_shipping_remaining' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:199 TranslationKeyExists: 'general.cart.update' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-cart.liquid:231 TranslationKeyExists: 'general.cart.taxes_only_note' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/cv-product-counter.liquid:298 TranslationKeyExists: 'general.breadcrumbs.home' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:124 TranslationKeyExists: 'products.best.your_phone' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:158 TranslationKeyExists: 'products.best.fabric_note_html' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:159 TranslationKeyExists: 'products.best.best_seller_html' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:162 TranslationKeyExists: 'products.best.magnetic_ready' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:163 TranslationKeyExists: 'products.best.raised_camera_edge' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:164 TranslationKeyExists: 'products.best.woven_texture' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:235 TranslationKeyExists: 'products.best.packs_label' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:237 TranslationKeyExists: 'products.best.pack_one' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:238 TranslationKeyExists: 'products.best.pack_many' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:239 TranslationKeyExists: 'products.best.pack_many' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:310 TranslationKeyExists: 'products.best.pack_one' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:316 TranslationKeyExists: 'products.best.pack_many' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:323 TranslationKeyExists: 'products.best.pack_many' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:307 TranslationKeyExists: 'products.best.packs_label' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:337 TranslationKeyExists: 'products.best.free_shipping' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:338 TranslationKeyExists: 'products.best.returns' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:339 TranslationKeyExists: 'products.best.ships' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:340 TranslationKeyExists: 'products.best.secure_checkout' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:343 TranslationKeyExists: 'products.best.everyday' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:346 TranslationKeyExists: 'products.best.real_details' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:374 TranslationKeyExists: 'products.best.love_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:384 TranslationKeyExists: 'products.best.fit_copy' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:385 TranslationKeyExists: 'products.best.raised_camera_edge' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:385 TranslationKeyExists: 'products.best.responsive_buttons' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:385 TranslationKeyExists: 'products.best.soft_touch_finish' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:390 TranslationKeyExists: 'products.best.magnetic_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:390 TranslationKeyExists: 'products.best.magnetic_copy' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:391 TranslationKeyExists: 'products.best.accessory_charger' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:391 TranslationKeyExists: 'products.best.accessory_wallet' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:391 TranslationKeyExists: 'products.best.accessory_mount' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:391 TranslationKeyExists: 'products.best.accessory_power_bank' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:397 TranslationKeyExists: 'products.best.protection_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:397 TranslationKeyExists: 'products.best.protection_copy' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:398 TranslationKeyExists: 'products.best.material_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:398 TranslationKeyExists: 'products.best.material_copy' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:403 TranslationKeyExists: 'products.best.colors_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:403 TranslationKeyExists: 'products.best.colors_copy' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:421 TranslationKeyExists: 'products.best.compare_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.woven_texture' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.magnetic_design' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.raised_camera_edge' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.multiple_styles' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.listed_by_model' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.returns' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_1' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_2' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_3' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_4' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:422 TranslationKeyExists: 'products.best.check_5' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_heading' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_q1' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_a1' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_q2' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_a2' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_q3' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_a3' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_q4' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_a4' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_q5' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:426 TranslationKeyExists: 'products.best.faq_a5' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:427 TranslationKeyExists: 'products.best.endcap_heading_html' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:427 TranslationKeyExists: 'products.best.choose_yours' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:427 TranslationKeyExists: 'products.best.endcap_assurance' does not have a matching entry in 'locales/en.default.json'
+    ~ sections/main-best-product.liquid:150 TranslationKeyExists: 'products.best.show_fewer_models' does not have a matching entry in 'locales/en.default.json'
+  NEW / UNEXPECTED: 2
+    ! sections/main-best-product.liquid:348 LiquidComplexity (warning): Liquid complexity is 155, which exceeds the maximum of 120. The decision at line 348 pushed it over the limit. Consider simplifying conditional logic, or moving self-contained decision logic into snippets with the render tag.
+    ! snippets/cv-showcase-card.liquid:453 LiquidComplexity (warning): Liquid complexity is 126, which exceeds the maximum of 120. The decision at line 453 pushed it over the limit. Consider simplifying conditional logic, or moving self-contained decision logic into snippets with the render tag.
+tc-compare: FAIL

@@ -1,0 +1,83 @@
+--- live-base/assets/cv-pdp-video-reviews.css	2026-11-12 03:56:20.839963000 +0100
++++ push/assets/cv-pdp-video-reviews.css	2026-11-12 04:00:29.849440800 +0100
+@@ -1,4 +1,4 @@
+-/* Product: video reviews — sections/cv-pdp-video-reviews.liquid.
++/* Product: video reviews: sections/cv-pdp-video-reviews.liquid.
+  * This file is the finished, static state: the score ticket, the rail of
+  * 9:16 clips with their stubs, and the big player (a native <dialog>).
+  * assets/cv-pdp-video-reviews.js plays the clips, runs the player and its
+@@ -142,6 +142,30 @@
+ }
+ .cvvr__card-stars { font-size: .86rem; }
+ 
++/* A shop clip (the shop's own, not a customer's): no stars, name or quote sit
++   on it, so the scrim only darkens the foot for the progress bar and the print
++   keeps its true colours. A clip made with AI says so, where the stars would be. */
++/* ds-allow-hardcode:start: no spacing or radius scale in this theme; sizes copy the star badge (.cvvr__rate) the label stands in for */
++.cvvr__card--shop .cvvr__scrim {
++  background: linear-gradient(180deg, rgba(36, 24, 18, 0) 78%, rgba(36, 24, 18, .4) 100%);
++}
++.cvvr__tag {
++  position: absolute; top: 9px; left: 9px; z-index: 1;
++  display: inline-flex; align-items: center;
++  padding: 6px 9px;
++  border-radius: 6px;
++  background: rgba(253, 249, 241, .95);
++  color: var(--cocoa-700);
++  font: 700 .7rem/1 var(--font-label);
++  letter-spacing: .08em;
++  text-transform: uppercase;
++  white-space: nowrap;
++  box-shadow: var(--shadow-sm);
++  pointer-events: none;
++}
++.cvvr__tag--ink { position: static; background: var(--teal-100); color: var(--teal-700); box-shadow: none; }
++/* ds-allow-hardcode:end */
++
+ .cvvr__meta {
+   position: absolute; left: 14px; right: 14px; bottom: 20px; z-index: 1;
+   display: grid; gap: 8px;
+@@ -390,6 +414,7 @@
+ .cvvr-lb__rate-text { color: var(--cocoa-500); font: 700 .74rem/1 var(--font-label); letter-spacing: .1em; text-transform: uppercase; }
+ .cvvr-lb__title { margin: 0; color: var(--cvvr-ink); font: 800 1.45rem/1.18 var(--font-display); letter-spacing: -.015em; text-wrap: balance; }
+ .cvvr-lb__title:empty { display: none; }
++.cvvr-lb__tagline { display: flex; margin: 0; }
+ .cvvr-lb__body { margin: 0; color: var(--cocoa-600); font: .97rem/1.65 var(--font-body); white-space: pre-line; }
+ .cvvr-lb__body:empty { display: none; }
+ .cvvr-lb__by { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 2px 0 0; font: .9rem/1.3 var(--font-body); }
+@@ -652,6 +677,7 @@
+ .cvvr--inline .cvvr__frame { border-width: 4px; border-radius: 12px; }
+ .cvvr--inline .cvvr__open { border-radius: 8px; }
+ .cvvr--inline .cvvr__rate { top: 7px; left: 7px; padding: 5px 6px; }
++.cvvr--inline .cvvr__tag:not(.cvvr__tag--ink) { top: 7px; left: 7px; padding: 5px 7px; } /* ds-allow-hardcode: same inset as the star badge on the line above */
+ .cvvr--inline .cvvr__card-stars { font-size: .72rem; }
+ .cvvr--inline .cvvr__meta { left: 10px; right: 10px; bottom: 16px; gap: 6px; }
+ .cvvr--inline .cvvr__quote { font-size: .92rem; line-height: 1.22; }
+@@ -667,6 +693,27 @@
+ .cvvr--inline .cvvr__hint { font-size: .84rem; }
+ .cvvr--inline .cvvr__empty { max-width: none; padding: 18px 16px; font-size: .86rem; }
+ 
++/* One shop clip under the photo (.cvvr--solo): the clip on the left, its words
++   beside it with the top and bottom edges level, so a single card is not left
++   alone in a row built for several. What it is shown on reads beside the clip. */
++/* ds-allow-hardcode:start: no spacing scale in this theme; the clip keeps the width it has in the phone rail (46%) and the gaps follow the inline row above */
++.cvvr--inline.cvvr--solo .cvvr__inner {
++  display: grid;
++  grid-template-columns: minmax(0, min(46%, 220px)) minmax(0, 1fr);
++  grid-template-rows: auto 1fr auto;
++  column-gap: 16px;
++}
++.cvvr--inline.cvvr--solo .cvvr__wrap { grid-column: 1; grid-row: 1 / -1; }
++.cvvr--inline.cvvr--solo .cvvr__head { grid-column: 2; grid-row: 1; margin-bottom: 0; }
++.cvvr--inline.cvvr--solo .cvvr__foot { grid-column: 2; grid-row: 3; margin-top: 0; flex-direction: column; align-items: flex-start; gap: 10px; }
++.cvvr--inline.cvvr--solo .cvvr__controls { margin-left: 0; }
++/* Two classes, so the rail's own widths in the media queries below do not win. */
++.cvvr--inline.cvvr--solo .cvvr__rail { grid-auto-columns: 100%; margin: 0; padding: 0; overflow: visible; }
++.cvvr__shown { display: grid; gap: 3px; margin: 14px 0 0; }
++/* ds-allow-hardcode:end */
++.cvvr__shown-label { color: var(--cocoa-400); font: 700 .7rem/1.2 var(--font-label); letter-spacing: .1em; text-transform: uppercase; }
++.cvvr__shown-value { color: var(--cocoa-700); font: .86rem/1.35 var(--font-body); }
++
+ @media (min-width: 600px) and (max-width: 989px) {
+   /* Tablets, one column: the row is the full column wide, so more clips across. */
+   .cvvr--inline .cvvr__rail { grid-auto-columns: calc((100% - 3 * var(--cvvr-gap)) / 3.4); }

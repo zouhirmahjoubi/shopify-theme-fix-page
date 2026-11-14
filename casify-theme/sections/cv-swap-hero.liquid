@@ -34,16 +34,24 @@
 {%- liquid
   assign st = section.settings
   assign coll = st.collection | default: collections.all
-  assign pictured = coll.products | where: 'featured_image'
+  # Speed: the collection is read one product at a time and only as far as needed.
+  # `coll.products | where: 'featured_image'` loaded all 50 products and their photos
+  # on every uncached render to use three or four of them.
   assign pa = st.product_a
   if pa == blank or pa.featured_image == blank
-    assign pa = pictured[0]
+    assign pa = nil
+    for p in coll.products
+      if p.featured_image != blank
+        assign pa = p
+        break
+      endif
+    endfor
   endif
   assign pb = st.product_b
   if pb == blank or pb.featured_image == blank or pb.id == pa.id
     assign pb = nil
-    for p in pictured
-      if p.id != pa.id
+    for p in coll.products
+      if p.featured_image != blank and p.id != pa.id
         assign pb = p
         break
       endif
@@ -267,7 +275,13 @@
       <div class="cvsw__photos" data-cvsw-photos>
         <img class="cvsw__photo cvsw__photo--top" src="{{ pa.featured_image | image_url: width: 1400 }}" width="{{ pa.featured_image.width }}" height="{{ pa.featured_image.height }}" alt="{{ pa.featured_image.alt | default: pa.title | escape }}" fetchpriority="high" draggable="false" data-cvsw-top>
         {%- if pnext != blank -%}
-          <img class="cvsw__photo cvsw__photo--under" src="{{ pnext.featured_image | image_url: width: 1400 }}" width="{{ pnext.featured_image.width }}" height="{{ pnext.featured_image.height }}" alt="" loading="lazy" draggable="false" data-cvsw-under aria-hidden="true">
+          {%- comment -%}
+            The next look's photo is hidden (cv-swap-hero.css shows it only under .is-maskable,
+            which cv-swap-hero.js sets), and the script gives it its src when it starts
+            (setPhotos). Shipping a blank pixel here keeps that 1400px photo from downloading
+            next to the top photo, the page's largest paint.
+          {%- endcomment -%}
+          <img class="cvsw__photo cvsw__photo--under" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ pnext.featured_image.width }}" height="{{ pnext.featured_image.height }}" alt="" loading="lazy" draggable="false" data-cvsw-under aria-hidden="true">
         {%- endif -%}
       </div>
       <div class="cvsw__gl" data-cvsw-gl aria-hidden="true"></div>
@@ -327,9 +341,10 @@
       {%- if st.show_more -%}
         {%- capture more_items -%}
           {%- assign more = 0 -%}
-          {%- for p in pictured -%}
-            {%- if p.id == pa.id or p.id == pb.id or p.id == pc.id or p.id == pd.id -%}{%- continue -%}{%- endif -%}
+          {%- for p in coll.products -%}
             {%- if more >= 3 -%}{%- break -%}{%- endif -%}
+            {%- if p.id == pa.id or p.id == pb.id or p.id == pc.id or p.id == pd.id -%}{%- continue -%}{%- endif -%}
+            {%- if p.featured_image == blank -%}{%- continue -%}{%- endif -%}
             {%- assign more = more | plus: 1 -%}
             <li class="cvsw__more-item">
               <a class="cvsw__more-link" href="{{ p.url }}" aria-label="{{ p.title | escape }}, {{ p.price | money | strip_html | escape }}">

@@ -1,89 +1,15 @@
-{%- if block.settings.reviewer_name != blank and block.settings.review_text != blank -%}
-  {%- liquid
-    assign photos = ''
-    if block.settings.review_image != blank
-      assign photos = photos | append: 'review_image,'
-    endif
-    if block.settings.review_image_2 != blank
-      assign photos = photos | append: 'review_image_2,'
-    endif
-    if block.settings.review_image_3 != blank
-      assign photos = photos | append: 'review_image_3,'
-    endif
-    if block.settings.review_image_4 != blank
-      assign photos = photos | append: 'review_image_4,'
-    endif
-    assign photo_keys = photos | split: ','
-    assign country = block.settings.review_country | strip
-    assign date = block.settings.review_date | strip
-  -%}
-  <article class="csp-review" data-csp-item {{ block.shopify_attributes }}>
-    <div class="csp-review__header">
-      <span class="csp-review__avatar" aria-hidden="true">
-        {%- if block.settings.avatar != blank -%}
-          {{ block.settings.avatar | image_url: width: 96, height: 96, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
-        {%- else -%}
-          {{ block.settings.reviewer_name | slice: 0, 1 | upcase | escape }}
-        {%- endif -%}
-      </span>
-      <div class="csp-review__person">
-        <h3 class="csp-review__name">{{ block.settings.reviewer_name | escape }}</h3>
-        {%- if country != blank -%}
-          <span class="csp-review__date">{{ 'blocks.customer_review.reviewed_in' | t: country: country }}{% if date != blank %} · {{ date | escape }}{% endif %}</span>
-        {%- elsif date != blank -%}
-          <span class="csp-review__date">{{ date | escape }}</span>
-        {%- endif -%}
-      </div>
-    </div>
-
-    {%- assign rating_value = block.settings.rating | plus: 0 -%}
-    {%- if rating_value > 0 or block.settings.verified -%}
-      <div class="csp-review__meta">
-        {%- if rating_value > 0 -%}
-          {%- assign star_fill = rating_value | times: 20 -%}
-          <div class="csp-review__stars" role="img" aria-label="Rating: {{ rating_value }} out of 5 stars">
-            {%- render 'cv-stars', fill: star_fill -%}
-          </div>
-        {%- endif -%}
-        {%- if block.settings.verified -%}
-          <span class="csp-review__verified">
-            {%- render 'cv-icon', name: 'check', size: 13 -%}
-            {{ 'blocks.customer_review.verified' | t }}
-          </span>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    {%- if block.settings.review_title != blank -%}
-      <p class="csp-review__title">{{ block.settings.review_title | escape }}</p>
-    {%- endif -%}
-
-    <div class="csp-review__body rte">{{ block.settings.review_text }}</div>
-
-    {%- if photo_keys.size == 1 -%}
-      {%- assign photo_alt = block.settings.image_alt | default: block.settings.reviewer_name -%}
-      {%- assign only_key = photo_keys.first -%}
-      {%- assign only_photo = block.settings[only_key] -%}
-      <div class="csp-review__photo csp-review__photo--{{ block.settings.image_ratio }}">
-        {{ only_photo | image_url: width: 900 | image_tag: loading: 'lazy', alt: photo_alt, widths: '360, 540, 720, 900', sizes: '(max-width: 700px) 100vw, 360px' }}
-      </div>
-    {%- elsif photo_keys.size > 1 -%}
-      <ul class="csp-review__photos csp-review__photos--{{ block.settings.image_ratio }}" role="list">
-        {%- for key in photo_keys -%}
-          {%- assign photo = block.settings[key] -%}
-          {%- capture photo_alt -%}{{ block.settings.image_alt | default: block.settings.reviewer_name }} ({{ forloop.index }}/{{ forloop.length }}){%- endcapture -%}
-          <li>{{ photo | image_url: width: 400 | image_tag: loading: 'lazy', alt: photo_alt, widths: '200, 300, 400', sizes: '(max-width: 700px) 24vw, 90px' }}</li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  </article>
-{%- elsif request.design_mode -%}
-  <div class="csp-placeholder" {{ block.shopify_attributes }}>Add a real customer name and review to show this card.</div>
+{%- comment -%}
+  Typed-in reviews are no longer shown: every review on the site is a Judge.me
+  review from a verified buyer (snippets/cv-jm-verified.liquid, listed by
+  sections/review-widget.liquid). The block stays so saved templates still load.
+{%- endcomment -%}
+{%- if request.design_mode -%}
+  <div class="csp-placeholder" {{ block.shopify_attributes }}>Typed-in reviews are no longer shown. Reviews come from verified Judge.me buyers. You can delete this block.</div>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Customer review",
+  "name": "Old review (hidden)",
   "settings": [
     { "type": "text", "id": "reviewer_name", "label": "Customer name" },
     { "type": "image_picker", "id": "avatar", "label": "Optional customer photo" },
@@ -123,7 +49,6 @@
       ],
       "default": "natural"
     }
-  ],
-  "presets": [{ "name": "Customer review" }]
+  ]
 }
 {% endschema %}

@@ -28,6 +28,12 @@
     endunless
     assign option_key = 'option' | append: option.position
     for value in option.values
+      # Speed: a value without "18" in it can never match below, so it skips the ten string
+      # filters. Most of a case's 40 to 50 phone values are other models; the home page ran
+      # about 27,000 of these filters per uncached render (2026-11-09 Liquid profile).
+      unless value contains '18'
+        continue
+      endunless
       assign v = value | downcase | remove: ' ' | remove: '-' | remove: '_' | remove: '2018'
       unless v contains 'iphone'
         continue

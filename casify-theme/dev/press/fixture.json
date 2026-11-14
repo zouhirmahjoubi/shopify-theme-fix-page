@@ -1,0 +1,1081 @@
+{
+ "_note": "Press preview: the swap hero's real Tough cases.",
+ "settings": {
+  "cv_free_shipping_all": true,
+  "cv_pack_2_pct": 18,
+  "cv_pack_3_pct": 31
+ },
+ "globals": {
+  "collections": {
+   "all": {
+    "title": "Tough cases",
+    "handle": "tough-cases",
+    "url": "/collections/tough-cases",
+    "products": [
+     {
+      "id": 300,
+      "title": "Snow Day Penguin Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Penguin on Ice Skates</strong><br>A little penguin on old-fashioned white ice skates, in a cherry-red bobble hat and a red and white striped scarf, stands above “Snow Day” in rounded navy letters, on icy powder-blue wrapping paper with tiny snowflakes and silver dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-1.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Snow Day Penguin Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-1.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 301,
+      "title": "Hot Cocoa Season Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Mug of Hot Chocolate &amp; Candy Cane</strong><br>A red enamel mug of hot chocolate piled with whipped cream, mini marshmallows and chocolate shavings, with a candy cane hooked over the rim and cinnamon sticks and holly at its foot. “Hot Cocoa” and “SEASON” sit below on chocolate-brown wrapping paper with snowflakes, peppermint swirls and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-2.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Hot Cocoa Season Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-2.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 302,
+      "title": "Santa's Nice List Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "santas-nice-list-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/santas-nice-list-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Vintage Santa with His Sack</strong><br>A jolly old-fashioned Santa Claus in his red suit, rosy-cheeked and white-bearded, carries a sack of wrapped presents over his shoulder. “Santa's” in red script sits over “NICE LIST” in green capitals, on cream wrapping paper with tiny red and green stars and gold dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-3.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Santa's Nice List Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-3.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 303,
+      "title": "All Is Calm Lantern Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "all-is-calm-lantern-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/all-is-calm-lantern-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Glowing Brass Candle Lantern</strong><br>An antique brass lantern glows with a candle behind amber panes, wrapped at its base in pine sprigs, pinecones and red berries. “All is Calm” is set in gold italic below it, on deep plum wrapping paper with gold snowflakes, stars and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-4.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "All Is Calm Lantern Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-4.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 304,
+      "title": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Polar Bear Cub with a Present</strong><br>A fluffy white polar bear cub in a green and cream striped scarf hugs a green present tied with a gold bow. “Beary” in bold white letters sits over “Christmas” in script, on candy-red wrapping paper with tiny snowflakes and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-5.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-5.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     }
+    ],
+    "products_count": 5
+   }
+  }
+ },
+ "harness": {
+  "stub": false
+ },
+ "section": {
+  "id": "press",
+  "settings": {
+   "collection": {
+    "title": "Tough cases",
+    "handle": "tough-cases",
+    "url": "/collections/tough-cases",
+    "products": [
+     {
+      "id": 300,
+      "title": "Snow Day Penguin Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/snow-day-penguin-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Penguin on Ice Skates</strong><br>A little penguin on old-fashioned white ice skates, in a cherry-red bobble hat and a red and white striped scarf, stands above “Snow Day” in rounded navy letters, on icy powder-blue wrapping paper with tiny snowflakes and silver dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-1.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Snow Day Penguin Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-1.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 301,
+      "title": "Hot Cocoa Season Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/hot-cocoa-season-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Mug of Hot Chocolate &amp; Candy Cane</strong><br>A red enamel mug of hot chocolate piled with whipped cream, mini marshmallows and chocolate shavings, with a candy cane hooked over the rim and cinnamon sticks and holly at its foot. “Hot Cocoa” and “SEASON” sit below on chocolate-brown wrapping paper with snowflakes, peppermint swirls and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-2.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Hot Cocoa Season Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-2.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 302,
+      "title": "Santa's Nice List Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "santas-nice-list-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/santas-nice-list-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Vintage Santa with His Sack</strong><br>A jolly old-fashioned Santa Claus in his red suit, rosy-cheeked and white-bearded, carries a sack of wrapped presents over his shoulder. “Santa's” in red script sits over “NICE LIST” in green capitals, on cream wrapping paper with tiny red and green stars and gold dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-3.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Santa's Nice List Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-3.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 303,
+      "title": "All Is Calm Lantern Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "all-is-calm-lantern-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/all-is-calm-lantern-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Glowing Brass Candle Lantern</strong><br>An antique brass lantern glows with a candle behind amber panes, wrapped at its base in pine sprigs, pinecones and red berries. “All is Calm” is set in gold italic below it, on deep plum wrapping paper with gold snowflakes, stars and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-4.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "All Is Calm Lantern Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-4.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 304,
+      "title": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/beary-christmas-polar-bear-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Polar Bear Cub with a Present</strong><br>A fluffy white polar bear cub in a green and cream striped scarf hugs a green present tied with a gold bow. “Beary” in bold white letters sits over “Christmas” in script, on candy-red wrapping paper with tiny snowflakes and dots.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-5.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-5.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     },
+     {
+      "id": 15448945295437,
+      "title": "Merry & Bright Fox Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+      "handle": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "url": "/products/merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+      "price": 3799,
+      "price_varies": false,
+      "compare_at_price": 0,
+      "available": true,
+      "description": "<strong>Cozy Fox in a Knitted Scarf</strong><br>A little red fox sits upright with its fluffy tail curled around its paws, wrapped in a chunky cream and cranberry striped knitted scarf with a sprig of holly by one ear. “Merry” in cream script and “&amp; BRIGHT” in spaced capitals sit beneath it on deep spruce-teal wrapping paper scattered with tiny snowflakes, gold dots and cranberries.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+      "featured_image": {
+       "src": "../swap-hero/img/case-6.jpg",
+       "width": 1400,
+       "height": 1400,
+       "alt": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case"
+      },
+      "images": [
+       {
+        "src": "../swap-hero/img/case-6.jpg",
+        "width": 1400,
+        "height": 1400
+       }
+      ],
+      "options_with_values": [
+       {
+        "name": "Size",
+        "values": [
+         "iPhone 18 Pro Max",
+         "iPhone 18 Pro",
+         "iPhone 17e",
+         "iPhone 17 Air",
+         "iPhone 17 Pro Max",
+         "iPhone 17 Pro",
+         "iPhone 17",
+         "iPhone 16e",
+         "iPhone 16 Pro Max",
+         "iPhone 16 Pro",
+         "iPhone 16 Plus",
+         "iPhone 16",
+         "iPhone 15 Pro Max",
+         "iPhone 15 Pro",
+         "iPhone 15 Plus",
+         "iPhone 15",
+         "iPhone 14 Pro Max",
+         "iPhone 14 Pro",
+         "iPhone 14 Plus",
+         "iPhone 14",
+         "iPhone 13 Pro Max",
+         "iPhone 13 Pro",
+         "iPhone 13",
+         "iPhone 13 Mini",
+         "iPhone 12 Pro Max",
+         "iPhone 12 Pro",
+         "iPhone 12",
+         "iPhone 12 Mini",
+         "iPhone 11",
+         "Google Pixel 9 Pro XL",
+         "Google Pixel 9 Pro",
+         "Google Pixel 9",
+         "Google Pixel 8 Pro",
+         "Google Pixel 8",
+         "Samsung Galaxy S26 Ultra",
+         "Samsung Galaxy S26 Plus",
+         "Samsung Galaxy S26",
+         "Samsung Galaxy S25 Ultra",
+         "Samsung Galaxy S25 Plus",
+         "Samsung Galaxy S25",
+         "Samsung Galaxy S24 Ultra",
+         "Samsung Galaxy S24 Plus",
+         "Samsung Galaxy S24",
+         "Samsung Galaxy S23 Ultra",
+         "Samsung Galaxy S23 Plus",
+         "Samsung Galaxy S23",
+         "Samsung Galaxy S22 Ultra",
+         "Samsung Galaxy S22 Plus",
+         "Samsung Galaxy S22"
+        ]
+       },
+       {
+        "name": "Surface",
+        "values": [
+         "Glossy",
+         "Matte"
+        ]
+       }
+      ]
+     }
+    ],
+    "products_count": 49
+   },
+   "product": {
+    "id": 15448945295437,
+    "title": "Merry & Bright Fox Christmas Phone Case for iPhone, Samsung & Pixel | Tough Case",
+    "handle": "merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+    "url": "/products/merry-bright-fox-christmas-phone-case-for-iphone-samsung-pixel-tough-case",
+    "price": 3799,
+    "price_varies": false,
+    "compare_at_price": 0,
+    "available": true,
+    "description": "<strong>Cozy Fox in a Knitted Scarf</strong><br>A little red fox sits upright with its fluffy tail curled around its paws, wrapped in a chunky cream and cranberry striped knitted scarf with a sprig of holly by one ear. “Merry” in cream script and “&amp; BRIGHT” in spaced capitals sit beneath it on deep spruce-teal wrapping paper scattered with tiny snowflakes, gold dots and cranberries.<br><br>Part of the Christmas Hearthside collection: ten cases, each a small lit window on a winter evening, with one warm subject on quietly patterned wrapping paper. The paper texture and glow are part of the printed artwork; the case itself has a smooth finish. A polycarbonate shell over a TPU lining resists daily impacts, and clear, open ports keep charging easy. Made for iPhone, Samsung Galaxy and Google Pixel, in glossy or matte.<br><br>Product features<br>- Dual-layer case: 100% polycarbonate shell, 100% TPU lining<br>- Glossy or matte finish<br>- Clear, open ports for charging and connectivity<br>- Supports wireless charging (not MagSafe compatible)<br>- Blank case sourced from South Korea<br><br>Care instructions<br>- Clean with a soft, damp cotton or microfiber cloth. Avoid chemicals.<br>",
+    "featured_image": {
+     "src": "../swap-hero/img/case-6.jpg",
+     "width": 1400,
+     "height": 1400,
+     "alt": "Beary Christmas Polar Bear Phone Case for iPhone, Samsung & Pixel | Tough Case"
+    },
+    "images": [
+     {
+      "src": "../swap-hero/img/case-6.jpg",
+      "width": 1400,
+      "height": 1400
+     }
+    ],
+    "options_with_values": [
+     {
+      "name": "Size",
+      "values": [
+       "iPhone 18 Pro Max",
+       "iPhone 18 Pro",
+       "iPhone 17e",
+       "iPhone 17 Air",
+       "iPhone 17 Pro Max",
+       "iPhone 17 Pro",
+       "iPhone 17",
+       "iPhone 16e",
+       "iPhone 16 Pro Max",
+       "iPhone 16 Pro",
+       "iPhone 16 Plus",
+       "iPhone 16",
+       "iPhone 15 Pro Max",
+       "iPhone 15 Pro",
+       "iPhone 15 Plus",
+       "iPhone 15",
+       "iPhone 14 Pro Max",
+       "iPhone 14 Pro",
+       "iPhone 14 Plus",
+       "iPhone 14",
+       "iPhone 13 Pro Max",
+       "iPhone 13 Pro",
+       "iPhone 13",
+       "iPhone 13 Mini",
+       "iPhone 12 Pro Max",
+       "iPhone 12 Pro",
+       "iPhone 12",
+       "iPhone 12 Mini",
+       "iPhone 11",
+       "Google Pixel 9 Pro XL",
+       "Google Pixel 9 Pro",
+       "Google Pixel 9",
+       "Google Pixel 8 Pro",
+       "Google Pixel 8",
+       "Samsung Galaxy S26 Ultra",
+       "Samsung Galaxy S26 Plus",
+       "Samsung Galaxy S26",
+       "Samsung Galaxy S25 Ultra",
+       "Samsung Galaxy S25 Plus",
+       "Samsung Galaxy S25",
+       "Samsung Galaxy S24 Ultra",
+       "Samsung Galaxy S24 Plus",
+       "Samsung Galaxy S24",
+       "Samsung Galaxy S23 Ultra",
+       "Samsung Galaxy S23 Plus",
+       "Samsung Galaxy S23",
+       "Samsung Galaxy S22 Ultra",
+       "Samsung Galaxy S22 Plus",
+       "Samsung Galaxy S22"
+      ]
+     },
+     {
+      "name": "Surface",
+      "values": [
+       "Glossy",
+       "Matte"
+      ]
+     }
+    ]
+   },
+   "name": "Merry & Bright Fox"
+  }
+ }
+}

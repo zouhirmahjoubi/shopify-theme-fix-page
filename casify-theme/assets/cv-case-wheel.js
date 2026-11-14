@@ -25,7 +25,7 @@
  * Reduced motion: the needle jumps straight to the case; nothing spins or deals in.
  */
 
-const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const fineQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
 const mod = (n, m) => ((n % m) + m) % m;
@@ -35,6 +35,7 @@ let threeImport = null;
 const loadThree = () => threeImport || (threeImport = import(THREE_URL));
 
 function webglOk() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');

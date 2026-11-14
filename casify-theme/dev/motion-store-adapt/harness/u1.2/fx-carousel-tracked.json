@@ -1,0 +1,158 @@
+{
+ "_note": "U1.2 fixture: same product with tracked inventory that stops at zero (inventory_management shopify, policy deny). Black / iPhone 17 is sold out.",
+ "template": {
+  "file": "templates/product.json",
+  "key": "carousel"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Color",
+   "Model"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 41001,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 0,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41002,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 0,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41003,
+    "options": [
+     "Russet Brown",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 0,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41004,
+    "options": [
+     "Black",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 1,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41005,
+    "options": [
+     "Black",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 1,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41006,
+    "options": [
+     "Black",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "available": false,
+    "media": 1,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 0
+   },
+   {
+    "id": 41007,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 2,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41008,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 2,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   },
+   {
+    "id": 41009,
+    "options": [
+     "Blue",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 2,
+    "inventory_management": "shopify",
+    "inventory_policy": "deny",
+    "inventory_quantity": 5
+   }
+  ],
+  "metafields": {
+   "reviews": {},
+   "custom": {}
+  }
+ },
+ "harness": {
+  "js": [
+   "theme.js",
+   "cv-motion.js",
+   "cv-product.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ],
+  "module_js": [
+   "cv-pdp-carousel.js"
+  ]
+ }
+}

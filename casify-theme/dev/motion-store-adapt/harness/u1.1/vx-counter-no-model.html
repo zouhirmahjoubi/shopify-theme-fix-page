@@ -1,0 +1,521 @@
+<!doctype html>
+<!-- built by tools/render-section.mjs from tools/harness-template.html -->
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>cv-product-counter (fixture)</title>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    function on(k) { return q.has(k) && q.get(k) !== '0' && q.get(k) !== 'false'; }
+    var H = window.__harness = { rm: on('rm'), nojs: on('nojs'), editor: on('editor') ? (Number(q.get('editor')) || 2) : 0, errors: [], listeners: {} };
+    if (H.nojs) {
+      document.write('<meta http-equiv="Content-Security-Policy" content="script-src \'none\'">');
+      return;
+    }
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    window.addEventListener('error', function (e) { H.errors.push(String(e.message || e)); });
+    if (H.rm && window.matchMedia) {
+      /* Rewrite each prefers-reduced-motion feature to a width feature with a fixed answer, then let
+         the real matchMedia evaluate the whole query. So "(prefers-reduced-motion: no-preference)"
+         is false, "(prefers-reduced-motion: reduce)" and the bare "(prefers-reduced-motion)" are
+         true, and compound queries ("(min-width: 768px) and (prefers-reduced-motion:
+         no-preference)", "not ...", comma lists) keep their logic and real listeners.
+         The old stub tested /reduce/ on the whole query, which also matched "reduced-motion:
+         no-preference", so gsap.matchMedia ran the no-preference branch under ?rm=1. */
+      var real = window.matchMedia.bind(window);
+      var ALWAYS = '(min-width: 0px)', NEVER = '(min-width: 99999px)';
+      H.rmQuery = function (query) {
+        return String(query)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/gi, NEVER)
+          .replace(/\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/gi, ALWAYS)
+          .replace(/\(\s*prefers-reduced-motion\s*\)/gi, ALWAYS);
+      };
+      window.matchMedia = function (query) {
+        return real(/prefers-reduced-motion/i.test(query) ? H.rmQuery(query) : query);
+      };
+    }
+    /* Count window/document listeners so ?editor=1 can prove init/destroy leaves one set.
+       ?trace=1 also records, per add/remove on window/document, the caller frame (file:line). */
+    var add = EventTarget.prototype.addEventListener, rem = EventTarget.prototype.removeEventListener;
+    var sets = new Map();
+    H.trace = on('trace') ? [] : null;
+    var t0 = performance.now();
+    function key(t, type, opts) { return (t === window ? 'window' : 'document') + ':' + type + ':' + (opts === true || (opts && opts.capture) ? 'c' : 'b'); }
+    function track(t) { return t === window || t === document; }
+    function caller() {
+      var lines = String(new Error().stack || '').split('\n');
+      /* [0] "Error", [1] caller(), [2] log(), [3] the add/remove wrapper, [4] whoever called it */
+      return (lines[4] || '').trim().split(location.origin).join('');
+    }
+    function log(op, k) {
+      if (!H.trace || H.trace.length >= 400) return;
+      H.trace.push({ op: op, key: k, ms: Math.round(performance.now() - t0), phase: H.phase || 'boot', at: caller() });
+    }
+    EventTarget.prototype.addEventListener = function (type, fn, opts) {
+      if (track(this) && fn) {
+        var k = key(this, type, opts);
+        var o = opts && typeof opts === 'object' ? opts : null;
+        var sig = o && o.signal;
+        /* A listener whose signal is already aborted is never registered by the browser. */
+        if (!(sig && sig.aborted)) {
+          if (!sets.has(k)) sets.set(k, new Set());
+          if (!sets.get(k).has(fn)) log('add', k);
+          sets.get(k).add(fn);
+          var drop = function () {
+            if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); }
+          };
+          /* AbortController cleanup and {once: true} remove the listener without
+             removeEventListener, so mirror both or correct code reads as a leak. */
+          if (sig) sig.addEventListener('abort', drop, { once: true });
+          if (o && o.once) add.call(this, type, drop, { once: true, capture: !!o.capture });
+        }
+      }
+      return add.apply(this, arguments);
+    };
+    EventTarget.prototype.removeEventListener = function (type, fn, opts) {
+      if (track(this) && fn) { var k = key(this, type, opts); if (sets.has(k) && sets.get(k).has(fn)) { log('remove', k); sets.get(k).delete(fn); } }
+      return rem.apply(this, arguments);
+    };
+    H.countListeners = function () { var o = {}; sets.forEach(function (s, k) { if (s.size) o[k] = s.size; }); return o; };
+  })();
+</script>
+<link rel="stylesheet" href="../../../../assets/theme.css">
+<script>window.themeMoneyFormat = "${{amount}}"; window.Shopify = window.Shopify || { routes: { root: '/' }, currency: { active: 'USD', rate: '1.0' }, locale: 'en', designMode: false };</script>
+<link rel="stylesheet" href="../../../../assets/cv-commerce-motion.css">
+<script>window.__STUB_FIXTURE = {"currency":"USD","variants":[{"id":43001,"title":"Russet Brown","price":1999,"product_title":"Fixture: Case Charm Strap","product_handle":"fixture-case-charm-strap","image":"../../../../assets/best-case-detail.png","options":["Russet Brown"],"available":true},{"id":43002,"title":"Black","price":1999,"product_title":"Fixture: Case Charm Strap","product_handle":"fixture-case-charm-strap","image":"../../../../assets/best-case-in-hand.png","options":["Black"],"available":true}],"cart":{"token":"fixture-cart","item_count":0,"total_price":0,"items_subtotal_price":0,"original_total_price":0,"total_discount":0,"cart_level_discount_applications":[],"currency":"USD","requires_shipping":false,"items":[]},"sections":{"cv-product-counter":"<div id=\"shopify-section-main\" class=\"shopify-section\"><link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-counter.css\" media=\"all\">\n<link rel=\"stylesheet\" href=\"../../../../assets/cv-pdp-extras.css\" media=\"all\"><script>\n  /* Hide the tag, photo tickets and meter until cv-pdp-counter-motion.js has set their start\n     states, and the promise stamps until cv-pdp-promises.js has. Never under reduced motion,\n     and never for long. */\n  (function (root) {\n    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;\n    root.classList.add('cvc-pending', 'cvc-promises-pending');\n    setTimeout(function () { root.classList.remove('cvc-pending', 'cvc-promises-pending'); }, 1400);\n  })(document.documentElement);\n<\/script><section class=\"cvc\" id=\"cvPdp\" data-cv-pdp=\"counter\"\n         data-variants=\"[{&#34;id&#34;:43001,&#34;title&#34;:&#34;Russet Brown&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:null,&#34;option3&#34;:null,&#34;price&#34;:1999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Fixture: Case Charm Strap - Russet Brown&#34;,&#34;public_title&#34;:&#34;Russet Brown&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/fixture-case-charm-strap?variant=43001&#34;},{&#34;id&#34;:43002,&#34;title&#34;:&#34;Black&#34;,&#34;options&#34;:[&#34;Black&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:null,&#34;option3&#34;:null,&#34;price&#34;:1999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Fixture: Case Charm Strap - Black&#34;,&#34;public_title&#34;:&#34;Black&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/fixture-case-charm-strap?variant=43002&#34;}]\"\n         data-current-options=\"[&#34;Russet Brown&#34;]\"\n         data-money-format=\"${{amount}}\"\n         data-model-index=\"-1\"\n         data-max-pct=\"31\"\n         data-compare-at-fallback=\"5999\"\n         data-cv-model-confirmed=\"true\"\n         data-i18n-adding=\"Adding…\"\n         data-i18n-added=\"In your bag\"\n         data-i18n-try-again=\"Try again\"\n         data-i18n-to-checkout=\"To checkout…\"\n         data-i18n-checkout-redirect=\"Taking you to checkout.\"\n         data-i18n-unavailable=\"Unavailable\"\n         data-i18n-each=\" each\"\n         data-i18n-sold-out=\"Sold out\"\n         data-i18n-error=\"That didn’t go through. Please try again.\"\n         data-i18n-choose-model=\"Choose your phone model first\"\n         data-i18n-model-placeholder=\"Choose your phone model\"\n         data-i18n-added-one=\"[qty] case added to your bag.\"\n         data-i18n-added-many=\"[qty] cases added to your bag.\"\n         data-i18n-mixed=\"[qty] cases, mixed\"\n         data-i18n-add-to-bag=\"Add to bag\"\n         data-i18n-buy-now=\"Buy now\"\n         style=\"--cvc-box: url('../../../../assets/pdp-counter-box.webp'); --cvc-box-teal: url('../../../../assets/pdp-counter-box-teal.webp');\">\n  <div class=\"cvc__inner\">\n    <nav class=\"cvc__crumbs\" aria-label=\"Breadcrumb\">\n      <a href=\"/\">translation missing: en.general.breadcrumbs.home<\/a>\n      <span aria-hidden=\"true\">/<\/span><a href=\"/collections/all\">Cases<\/a><span aria-hidden=\"true\">/<\/span>\n      <span aria-current=\"page\">Fixture: Case Charm Strap<\/span>\n    <\/nav>\n\n    <div class=\"cvc__grid\"><div class=\"cvc__gallery\"><div class=\"cvc__photo-reel-shell\">\n            <span class=\"cvc__photo-reel-track cvc__photo-reel-track--vertical\" aria-hidden=\"true\">\n              <svg viewBox=\"0 0 24 320\" preserveAspectRatio=\"none\" focusable=\"false\">\n                <path class=\"cvc__photo-reel-shadow\" d=\"M12 7V313\"/>\n                <path class=\"cvc__photo-reel-cream\" d=\"M12 7V313\"/>\n                <path class=\"cvc__photo-reel-stripe\" data-cvc-reel-path d=\"M12 7V313\"/>\n              <\/svg>\n            <\/span>\n            <span class=\"cvc__photo-reel-track cvc__photo-reel-track--horizontal\" aria-hidden=\"true\">\n              <svg viewBox=\"0 0 320 24\" preserveAspectRatio=\"none\" focusable=\"false\">\n                <path class=\"cvc__photo-reel-shadow\" d=\"M7 12H313\"/>\n                <path class=\"cvc__photo-reel-cream\" d=\"M7 12H313\"/>\n                <path class=\"cvc__photo-reel-stripe\" data-cvc-reel-path d=\"M7 12H313\"/>\n              <\/svg>\n            <\/span>\n            <img\n              class=\"cvc__photo-reel-sweet cvc__photo-reel-sweet--start\"\n              src=\"../../../../assets/hero-sweet-wrapped-red.webp\"\n              width=\"440\"\n              height=\"212\"\n              alt=\"\"\n              loading=\"eager\"\n              decoding=\"async\"\n            ><div class=\"cvc__photo-reel\" role=\"tablist\" aria-label=\"Product photos\"><button type=\"button\" class=\"cvc__photo-ticket\" id=\"cvcThumb-main-1\" role=\"tab\" data-cv-thumb\n                          aria-selected=\"true\"\n                          aria-controls=\"cvcMedia-main\"\n                          tabindex=\"0\"\n                          aria-label=\"Photo 1 of 2\"\n                          data-cv-full=\"../../../../assets/best-case-detail.png\"\n                          data-cv-zoom=\"../../../../assets/best-case-detail.png\">\n                    <span class=\"cvc__photo-ticket-card\">\n                      <svg class=\"cvc__photo-ticket-frame\" viewBox=\"0 0 96 108\" aria-hidden=\"true\" focusable=\"false\">\n                        <path class=\"cvc__photo-ticket-paper\" d=\"M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z\"/>\n                        <path class=\"cvc__photo-ticket-outline\" d=\"M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z\"/>\n                        <path class=\"cvc__photo-ticket-perf\" d=\"M13 86H83\"/>\n                      <\/svg>\n                      <span class=\"cvc__photo-ticket-image\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"160\" height=\"160\" loading=\"lazy\"><\/span>\n                      <span class=\"cvc__photo-ticket-no\" aria-hidden=\"true\">1<\/span>\n                    <\/span>\n                  <\/button><button type=\"button\" class=\"cvc__photo-ticket\" id=\"cvcThumb-main-2\" role=\"tab\" data-cv-thumb\n                          aria-selected=\"false\"\n                          aria-controls=\"cvcMedia-main\"\n                          tabindex=\"-1\"\n                          aria-label=\"Photo 2 of 2\"\n                          data-cv-full=\"../../../../assets/best-case-in-hand.png\"\n                          data-cv-zoom=\"../../../../assets/best-case-in-hand.png\">\n                    <span class=\"cvc__photo-ticket-card\">\n                      <svg class=\"cvc__photo-ticket-frame\" viewBox=\"0 0 96 108\" aria-hidden=\"true\" focusable=\"false\">\n                        <path class=\"cvc__photo-ticket-paper\" d=\"M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z\"/>\n                        <path class=\"cvc__photo-ticket-outline\" d=\"M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z\"/>\n                        <path class=\"cvc__photo-ticket-perf\" d=\"M13 86H83\"/>\n                      <\/svg>\n                      <span class=\"cvc__photo-ticket-image\"><img src=\"../../../../assets/best-case-in-hand.png\" alt=\"\" width=\"160\" height=\"160\" loading=\"lazy\"><\/span>\n                      <span class=\"cvc__photo-ticket-no\" aria-hidden=\"true\">2<\/span>\n                    <\/span>\n                  <\/button><\/div>\n            <img\n              class=\"cvc__photo-reel-sweet cvc__photo-reel-sweet--end\"\n              src=\"../../../../assets/hero-sweet-wrapped-teal.webp\"\n              width=\"440\"\n              height=\"164\"\n              alt=\"\"\n              loading=\"lazy\"\n              decoding=\"async\"\n            >\n          <\/div><div class=\"cvc__stage cvc__stage--awning-false\" id=\"cvcMedia-main\" role=\"tabpanel\" aria-labelledby=\"cvcThumb-main-1\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"Fixture photo\" class=\"cvc__photo\" id=\"cvMainImage\" loading=\"eager\" sizes=\"(min-width: 1270px) 520px, (min-width: 990px) 44vw, calc(100vw - 32px)\" fetchpriority=\"high\">\n            <button type=\"button\" class=\"cvc__zoom\" data-cvc-zoom-open aria-haspopup=\"dialog\" aria-controls=\"cvcZoom-main\"\n                    data-cv-zoom=\"../../../../assets/best-case-detail.png\">\n              <svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"M15.4 15.4 21 21\"/><\/svg>\n              <span>Tap to zoom<\/span>\n            <\/button><\/div>\n      <\/div><form class=\"cvc__box\" id=\"cvAddForm\" method=\"post\" action=\"/cart/add\"><input type=\"hidden\" id=\"cvVariantId\" value=\"43001\">\n        <input type=\"hidden\" name=\"quantity\" id=\"cvQuantity\" value=\"2\"><p class=\"cvc__vendor\">Casify Cases<\/p><p class=\"cvc__tag\">\n          <img class=\"cvc__tag-plate\" src=\"../../../../assets/pdp-counter-tag.webp\" width=\"360\" height=\"414\" alt=\"\" loading=\"eager\">\n          <span class=\"cvc__tag-price\" aria-live=\"polite\">\n            <span id=\"cvPriceNow\"><span class=\"cvc__visually-hidden\">Now: <\/span>$19.99<\/span>\n            <s id=\"cvPriceWas\"><span class=\"cvc__visually-hidden\">Compare at: <\/span>$59.99<\/s>\n          <\/span>\n          <span class=\"cvc__tag-sale\" data-cv-tag-sale aria-hidden=\"true\">\n            <svg viewBox=\"0 0 100 100\" focusable=\"false\">\n              <path d=\"M50 3 59 12 72 8 77 21 91 23 88 37 98 47 89 58 93 72 79 77 76 91 62 88 51 98 41 89 27 93 22 79 8 76 12 62 2 51 11 41 7 27 21 22 24 8 38 12Z\"/>\n              <circle cx=\"50\" cy=\"50\" r=\"34\"/>\n            <\/svg>\n            <span class=\"cvc__tag-sale-copy\"><strong data-cv-discount-pct>67%<\/strong><small>off<\/small><\/span>\n          <\/span>\n        <\/p><h1 class=\"cvc__title\">Fixture: Case Charm Strap<\/h1><p class=\"cvc__price-saving cvc__price-saving--true\" data-cv-price-proof aria-live=\"polite\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 13 13 20 4 11V4h7l9 9Z\"/><circle cx=\"8.5\" cy=\"8.5\" r=\"1.25\"/><\/svg>\n          <span>You save<\/span>\n          <strong data-cv-price-save>$40.00<\/strong>\n        <\/p><div class=\"cvc__promises\" data-cvc-promises>\n            <ul class=\"cvc__promises-list\" role=\"list\"><li class=\"cvc__promise cvc__promise--truck\" data-cvc-promise=\"truck\" data-fixture-block=\"svc-ship\">\n                    <span class=\"cvc__promise-art\" data-cvc-promise-art aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" focusable=\"false\"><path d=\"M2.5 6.5h10.5v9H2.5z\"/><path d=\"M13 9.5h4.2l3.3 3.4v2.6H13z\"/><circle cx=\"6.5\" cy=\"17.5\" r=\"1.9\"/><circle cx=\"17\" cy=\"17.5\" r=\"1.9\"/><\/svg><\/span>\n                    <span class=\"cvc__promise-text\">Free shipping<\/span>\n                  <\/li><li class=\"cvc__promise cvc__promise--returns\" data-cvc-promise=\"returns\" data-fixture-block=\"svc-returns\">\n                    <span class=\"cvc__promise-art\" data-cvc-promise-art aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" focusable=\"false\"><path d=\"M4 11a8 8 0 0 1 14-5\"/><path d=\"M18 3v3.5h-3.5\"/><path d=\"M20 13a8 8 0 0 1-14 5\"/><path d=\"M6 21v-3.5h3.5\"/><\/svg><\/span>\n                    <span class=\"cvc__promise-text\">30-day returns<\/span>\n                  <\/li><li class=\"cvc__promise cvc__promise--box\" data-cvc-promise=\"box\" data-fixture-block=\"svc-dispatch\">\n                    <span class=\"cvc__promise-art\" data-cvc-promise-art aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" focusable=\"false\"><path d=\"M12 2.8 20 7v10l-8 4.2L4 17V7z\"/><path d=\"m4 7 8 4.2L20 7\"/><path d=\"M12 11.2v10\"/><path d=\"m8 4.9 8 4.2\"/><\/svg><\/span>\n                    <span class=\"cvc__promise-text\">Ships in 1-3 business days<\/span>\n                  <\/li><\/ul>\n          <\/div><a class=\"cvc__rating\" href=\"#cvc-reviews\" data-cvc-rating><span class=\"cvc__rating-text\" data-cvc-rating-text>No reviews yet<span class=\"cvc__rating-separator\" aria-hidden=\"true\">·<\/span><u>Write the first<\/u><\/span><\/a><p class=\"cvc__stock cvc__stock--pill\" data-cvc-stock role=\"status\" aria-atomic=\"true\"\n           data-threshold=\"10\"\n           data-template=\"Only [qty] left in this style\"\n           hidden>\n          <span class=\"cvc__stock-dot\" aria-hidden=\"true\"><\/span><span data-cvc-stock-text>Only 0 left in this style<\/span>\n        <\/p><div class=\"cvc__opt\">\n              <p class=\"cvc__label\" id=\"cvcOpt0-main\">Style: <span class=\"cvc__label-value\" data-cv-opt-out=\"0\">Russet Brown<\/span><\/p>\n              <div class=\"cvc__swatches\" role=\"radiogroup\" aria-labelledby=\"cvcOpt0-main\"><button type=\"button\" class=\"cvc__swatch\" role=\"radio\"\n                          aria-checked=\"true\"\n                          tabindex=\"0\"\n                          aria-label=\"Russet Brown\" title=\"Russet Brown\"\n                          data-cv-option-index=\"0\"\n                          data-cv-value=\"Russet Brown\"\n                          data-cv-stock=\"\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"70\" height=\"70\" loading=\"lazy\"><\/button><button type=\"button\" class=\"cvc__swatch\" role=\"radio\"\n                          aria-checked=\"false\"\n                          tabindex=\"-1\"\n                          aria-label=\"Black\" title=\"Black\"\n                          data-cv-option-index=\"0\"\n                          data-cv-value=\"Black\"\n                          data-cv-stock=\"\"><img src=\"../../../../assets/best-case-in-hand.png\" alt=\"\" width=\"70\" height=\"70\" loading=\"lazy\"><\/button><\/div>\n            <\/div><noscript><div class=\"cvc__opt cvc__opt--noscript\">\n              <label class=\"cvc__label\" for=\"cvcVariant-main\">Color<\/label>\n              <span class=\"cvc__select\">\n                <select id=\"cvcVariant-main\" name=\"id\" required><option value=\"43001\" selected>Russet Brown<\/option><option value=\"43002\">Black<\/option><\/select>\n              <\/span>\n            <\/div><\/noscript><div class=\"cvc__packs\" role=\"radiogroup\" aria-label=\"How many cases\" data-cvm-packs>\n            <span class=\"cvc__pack-highlight\" data-cvm-pack-highlight aria-hidden=\"true\"><\/span><button type=\"button\" class=\"cvc__pack\" role=\"radio\" data-cv-pack\n                        aria-checked=\"false\"\n                        tabindex=\"-1\"\n                        data-cv-qty=\"1\"\n                        data-cv-discount=\"0\"\n                        data-fixture-block=\"tier-1\"><span class=\"cvc__pack-name\">1 case<\/span>\n                  <span class=\"cvc__pack-each\" data-cv-tier-each=\"small\">$19.99<\/span>\n                  <s class=\"cvc__pack-was\" data-cv-tier-was><span class=\"cvc__visually-hidden\">Compare at: <\/span><span data-cv-tier-was-value>$59.99<\/span><\/s>\n                <\/button><button type=\"button\" class=\"cvc__pack\" role=\"radio\" data-cv-pack\n                        aria-checked=\"true\"\n                        tabindex=\"0\"\n                        data-cv-qty=\"2\"\n                        data-cv-discount=\"18\"\n                        data-fixture-block=\"tier-2\"><span class=\"cvc__flag\">Save 18%<\/span><span class=\"cvc__pack-name\">2 cases<\/span>\n                  <span class=\"cvc__pack-each\" data-cv-tier-each=\"small\">$16.39<small> each<\/small><\/span>\n                  <s class=\"cvc__pack-was\" data-cv-tier-was><span class=\"cvc__visually-hidden\">Compare at: <\/span><span data-cv-tier-was-value>$59.99<\/span><\/s>\n                <\/button><button type=\"button\" class=\"cvc__pack cvc__pack--teal\" role=\"radio\" data-cv-pack\n                        aria-checked=\"false\"\n                        tabindex=\"-1\"\n                        data-cv-qty=\"3\"\n                        data-cv-discount=\"31\"\n                        data-fixture-block=\"tier-3\"><span class=\"cvc__flag\">Best value<\/span><span class=\"cvc__pack-name\">3 cases<\/span>\n                  <span class=\"cvc__pack-each\" data-cv-tier-each=\"small\">$13.79<small> each<\/small><\/span>\n                  <s class=\"cvc__pack-was\" data-cv-tier-was><span class=\"cvc__visually-hidden\">Compare at: <\/span><span data-cv-tier-was-value>$59.99<\/span><\/s>\n                <\/button><\/div><div class=\"cvc__savings\">\n              <span class=\"cvc__meter\" aria-hidden=\"true\"><span class=\"cvc__meter-fill\" data-cv-savings-fill style=\"width: 58%;\"><\/span><\/span>\n              <p class=\"cvc__savings-text\" data-cv-savings aria-live=\"polite\"\n                 data-template-save=\"[qty] cases saves you [amount] vs buying singly\"\n                 data-template-next=\"Choose [qty] cases to save [pct]% on each\">2 cases saves you $7.20 vs buying singly<\/p>\n            <\/div><link rel=\"stylesheet\" href=\"../../../../assets/cv-pack-slots.css\" media=\"all\">\n<div class=\"cvpk cvpk--counter\" data-cv-slots\n     data-fallback-img=\"../../../../assets/best-case-detail.png\"\n     data-template-legend=\"Your [qty] cases\"\n     data-template-bad=\"Case [n] is sold out in that choice\"\n     data-sold-suffix=\" (sold out)\" data-missing-suffix=\" (unavailable)\">\n  <div class=\"cvpk__tray\" aria-hidden=\"true\">\n    <ul class=\"cvpk__cases\" data-cv-slots-tray><li class=\"cvpk__case\" data-cv-slot-case=\"0\">\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">1<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><li class=\"cvpk__case\" data-cv-slot-case=\"1\">\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">2<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><li class=\"cvpk__case\" data-cv-slot-case=\"2\" hidden>\n          <span class=\"cvpk__photo\" data-cv-slot-photo><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"120\" height=\"120\" loading=\"lazy\" data-cv-slot-img><span class=\"cvpk__num\">3<\/span>\n          <\/span>\n          <img class=\"cvpk__front\" src=\"../../../../assets/pack-box-wall.webp\" alt=\"\" width=\"860\" height=\"313\" loading=\"lazy\">\n          <img class=\"cvpk__lid\" src=\"../../../../assets/pack-box-lid.webp\" alt=\"\" width=\"520\" height=\"313\" loading=\"lazy\" data-cv-slot-lid>\n        <\/li><\/ul>\n  <\/div>\n\n  <fieldset class=\"cvpk__rows\">\n    <legend class=\"cvpk__legend\" data-cv-slots-legend>Your 2 cases<\/legend><p class=\"cvpk__hint\">Pick a colour and phone for each case. Mix them however you like.<\/p><div class=\"cvpk__row\" data-cv-slot=\"0\">\n        <span class=\"cvpk__name\" id=\"cvpkName0-main\">Case 1<\/span><p class=\"cvpk__first\">\n            <span data-cv-slot-summary>Russet Brown<\/span><small>chosen above<\/small><\/p><\/div><div class=\"cvpk__row\" data-cv-slot=\"1\">\n        <span class=\"cvpk__name\" id=\"cvpkName1-main\">Case 2<\/span><div class=\"cvpk__fields\" role=\"group\" aria-labelledby=\"cvpkName1-main\"><span class=\"cvpk__select\"><select data-cv-slot-option=\"0\" aria-label=\"Case : Color\"><option value=\"Russet Brown\" selected>Russet Brown<\/option><option value=\"Black\">Black<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><\/div>\n          <button type=\"button\" class=\"cvpk__same\" data-cv-slot-same hidden>Same as case 1<\/button><\/div><div class=\"cvpk__row\" data-cv-slot=\"2\" hidden>\n        <span class=\"cvpk__name\" id=\"cvpkName2-main\">Case 3<\/span><div class=\"cvpk__fields\" role=\"group\" aria-labelledby=\"cvpkName2-main\"><span class=\"cvpk__select\"><select data-cv-slot-option=\"0\" aria-label=\"Case : Color\"><option value=\"Russet Brown\" selected>Russet Brown<\/option><option value=\"Black\">Black<\/option><\/select>\n                <svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"/><\/svg>\n              <\/span><\/div>\n          <button type=\"button\" class=\"cvpk__same\" data-cv-slot-same hidden>Same as case 1<\/button><\/div><\/fieldset>\n<\/div><div class=\"cvc__buttons\"><button type=\"submit\" class=\"cvc__add\" id=\"cvAddBtn\" data-cvm-btn>\n            <svg class=\"cvc__add-bag\" viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6a3 3 0 0 1 6 0v2\"/><\/svg>\n            <svg class=\"cvc__add-check\" data-cvm-icon viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12.5 10 17.5 19 7\"/><\/svg>\n            <span id=\"cvCtaLabel\" data-cvm-label data-label-default=\"Add to bag\">Add to bag<\/span>\n            <span class=\"cvc__add-total\"><span aria-hidden=\"true\">·<\/span> <span id=\"cvTotal\" data-cvm-price data-cents=\"3278\">$32.78<\/span><\/span>\n          <\/button><button type=\"button\" class=\"cvc__buy\" data-cv-buy-now data-cvm-btn>\n              <span data-cv-buy-label data-cvm-label data-label-default=\"Buy now\">Buy now<\/span>\n              <svg class=\"cvc__buy-arrow\" viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h15\"/><path d=\"m13 6 6 6-6 6\"/><\/svg>\n            <\/button><\/div>\n        <p class=\"cvc__status\" id=\"cvStatus\" role=\"status\" aria-live=\"polite\"><\/p><p class=\"cvc__shipby\" data-cvc-ship-by data-max-days=\"3\"\n             data-template=\"Order today, ships by [date]\">\n            <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.6\"/><path d=\"M12 7.3V12l3 1.9\"/><\/svg>\n            <span data-cvc-ship-by-text>Ships in 1-3 business days<\/span>\n          <\/p><div class=\"cvc__accs\">\n  <details class=\"cvc__acc\">\n    <summary class=\"cvc__acc-q\">\n      <span>Details<\/span>\n      <span class=\"cvc__acc-mark\" aria-hidden=\"true\"><\/span>\n    <\/summary>\n    <div class=\"cvc__acc-a\"><ul class=\"cvc__facts\" role=\"list\"><li>\n              <b>Color:<\/b>Russet Brown, Black<\/li><li><b>Brand:<\/b> Casify<\/li><\/ul><\/div>\n  <\/details><details class=\"cvc__acc\">\n      <summary class=\"cvc__acc-q\">\n        <span>Shipping &amp; returns<\/span>\n        <span class=\"cvc__acc-mark\" aria-hidden=\"true\"><\/span>\n      <\/summary>\n      <div class=\"cvc__acc-a\"><p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.<\/p><\/div>\n    <\/details><\/div>\n<\/form><\/div>\n  <\/div><dialog class=\"cvc-zoom\" id=\"cvcZoom-main\" aria-label=\"Fixture: Case Charm Strap: Product photos\" data-cvc-zoom>\n      <div class=\"cvc-zoom__frame\" data-cvc-zoom-frame>\n        <img\n          class=\"cvc-zoom__img\"\n          src=\"../../../../assets/best-case-detail.png\"\n          alt=\"Fixture photo\"\n          width=\"1000\"\n          height=\"1000\"\n          loading=\"lazy\"\n          data-cvc-zoom-img\n        >\n      <\/div>\n      <button type=\"button\" class=\"cvc-zoom__btn cvc-zoom__btn--close\" data-cvc-zoom-close aria-label=\"Close\">\n        <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6 6 18\"/><\/svg>\n      <\/button><button type=\"button\" class=\"cvc-zoom__btn cvc-zoom__btn--prev\" data-cvc-zoom-step=\"-1\" aria-label=\"Previous photo\">\n          <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m15 5-7 7 7 7\"/><\/svg>\n        <\/button>\n        <button type=\"button\" class=\"cvc-zoom__btn cvc-zoom__btn--next\" data-cvc-zoom-step=\"1\" aria-label=\"Next photo\">\n          <svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\"/><\/svg>\n        <\/button><p class=\"cvc-zoom__count\" data-cvc-zoom-count aria-live=\"polite\"><\/p>\n    <\/dialog><div class=\"cvc-sticky\" id=\"cvSticky\" aria-hidden=\"true\"><span class=\"cvc-sticky__pic\"><img src=\"../../../../assets/best-case-detail.png\" alt=\"\" width=\"48\" height=\"48\" loading=\"lazy\"><\/span><div class=\"cvc-sticky__info\">\n      <span class=\"cvc-sticky__name\">Fixture: Case Charm Strap<\/span>\n      <span class=\"cvc-sticky__meta\"><span data-cv-opt-out-sticky>Russet Brown<\/span> · <b id=\"cvStickyTotal\" data-cvm-price data-cents=\"3278\">$32.78<\/b><\/span>\n    <\/div>\n    <div class=\"cvc-sticky__buttons\">\n      <button type=\"button\" class=\"cvc-sticky__add\" id=\"cvStickyBtn\" data-cvm-btn tabindex=\"-1\">Add to bag<\/button><button type=\"button\" class=\"cvc-sticky__buy\" data-cv-buy-now data-cvm-btn tabindex=\"-1\">Buy now<\/button><\/div>\n  <\/div>\n<\/section>\n\n<script type=\"application/ld+json\">\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Product\",\n  \"name\": \"Fixture: Case Charm Strap\",\"image\": \"https:../../../../assets/best-case-detail.png\",\n  \"brand\": { \"@type\": \"Brand\", \"name\": \"Casify\" },\n  \"offers\": {\n    \"@type\": \"AggregateOffer\",\n    \"priceCurrency\": \"USD\",\n    \"lowPrice\": 19.99,\n    \"highPrice\": 19.99,\n    \"offerCount\": 2,\n    \"availability\": \"https://schema.org/InStock\"\n  }\n}\n<\/script>\n<\/div>"}};</script>
+<script src="../../tools/stub-fetch.js"></script>
+<script src="../../../../assets/gsap.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomEase.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomBounce.min.js" defer></script>
+<script src="../../../../assets/gsap-CustomWiggle.min.js" defer></script>
+<script src="../../../../assets/gsap-DrawSVGPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-InertiaPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-Draggable.min.js" defer></script>
+<script src="../../../../assets/gsap-Flip.min.js" defer></script>
+<script src="../../../../assets/gsap-MotionPathPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrambleTextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-TextPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollTrigger.min.js" defer></script>
+<script src="../../../../assets/gsap-ScrollToPlugin.min.js" defer></script>
+<script src="../../../../assets/gsap-SplitText.min.js" defer></script>
+<script src="../../../../assets/gsap-init.js" defer></script>
+</head>
+<body class="harness">
+<main id="MainContent" class="content-for-layout" role="main">
+<div id="shopify-section-main" class="shopify-section"><link rel="stylesheet" href="../../../../assets/cv-pdp-counter.css" media="all">
+<link rel="stylesheet" href="../../../../assets/cv-pdp-extras.css" media="all"><script>
+  /* Hide the tag, photo tickets and meter until cv-pdp-counter-motion.js has set their start
+     states, and the promise stamps until cv-pdp-promises.js has. Never under reduced motion,
+     and never for long. */
+  (function (root) {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('cvc-pending', 'cvc-promises-pending');
+    setTimeout(function () { root.classList.remove('cvc-pending', 'cvc-promises-pending'); }, 1400);
+  })(document.documentElement);
+</script><section class="cvc" id="cvPdp" data-cv-pdp="counter"
+         data-variants="[{&#34;id&#34;:43001,&#34;title&#34;:&#34;Russet Brown&#34;,&#34;options&#34;:[&#34;Russet Brown&#34;],&#34;option1&#34;:&#34;Russet Brown&#34;,&#34;option2&#34;:null,&#34;option3&#34;:null,&#34;price&#34;:1999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:1,&#34;preview_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9100,&#34;src&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-detail.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Fixture: Case Charm Strap - Russet Brown&#34;,&#34;public_title&#34;:&#34;Russet Brown&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/fixture-case-charm-strap?variant=43001&#34;},{&#34;id&#34;:43002,&#34;title&#34;:&#34;Black&#34;,&#34;options&#34;:[&#34;Black&#34;],&#34;option1&#34;:&#34;Black&#34;,&#34;option2&#34;:null,&#34;option3&#34;:null,&#34;price&#34;:1999,&#34;compare_at_price&#34;:null,&#34;available&#34;:true,&#34;sku&#34;:&#34;&#34;,&#34;requires_shipping&#34;:true,&#34;inventory_management&#34;:null,&#34;inventory_policy&#34;:&#34;deny&#34;,&#34;inventory_quantity&#34;:0,&#34;featured_media&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;,&#34;position&#34;:2,&#34;preview_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;}},&#34;featured_image&#34;:{&#34;id&#34;:9101,&#34;src&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;url&#34;:&#34;../../../../assets/best-case-in-hand.png&#34;,&#34;alt&#34;:&#34;Fixture photo&#34;,&#34;width&#34;:1000,&#34;height&#34;:1000,&#34;aspect_ratio&#34;:1,&#34;media_type&#34;:&#34;image&#34;},&#34;name&#34;:&#34;Fixture: Case Charm Strap - Black&#34;,&#34;public_title&#34;:&#34;Black&#34;,&#34;weight&#34;:0,&#34;url&#34;:&#34;/products/fixture-case-charm-strap?variant=43002&#34;}]"
+         data-current-options="[&#34;Russet Brown&#34;]"
+         data-money-format="${{amount}}"
+         data-model-index="-1"
+         data-max-pct="31"
+         data-compare-at-fallback="5999"
+         data-cv-model-confirmed="true"
+         data-i18n-adding="Adding…"
+         data-i18n-added="In your bag"
+         data-i18n-try-again="Try again"
+         data-i18n-to-checkout="To checkout…"
+         data-i18n-checkout-redirect="Taking you to checkout."
+         data-i18n-unavailable="Unavailable"
+         data-i18n-each=" each"
+         data-i18n-sold-out="Sold out"
+         data-i18n-error="That didn’t go through. Please try again."
+         data-i18n-choose-model="Choose your phone model first"
+         data-i18n-model-placeholder="Choose your phone model"
+         data-i18n-added-one="[qty] case added to your bag."
+         data-i18n-added-many="[qty] cases added to your bag."
+         data-i18n-mixed="[qty] cases, mixed"
+         data-i18n-add-to-bag="Add to bag"
+         data-i18n-buy-now="Buy now"
+         style="--cvc-box: url('../../../../assets/pdp-counter-box.webp'); --cvc-box-teal: url('../../../../assets/pdp-counter-box-teal.webp');">
+  <div class="cvc__inner">
+    <nav class="cvc__crumbs" aria-label="Breadcrumb">
+      <a href="/">translation missing: en.general.breadcrumbs.home</a>
+      <span aria-hidden="true">/</span><a href="/collections/all">Cases</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Fixture: Case Charm Strap</span>
+    </nav>
+
+    <div class="cvc__grid"><div class="cvc__gallery"><div class="cvc__photo-reel-shell">
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--vertical" aria-hidden="true">
+              <svg viewBox="0 0 24 320" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M12 7V313"/>
+                <path class="cvc__photo-reel-cream" d="M12 7V313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M12 7V313"/>
+              </svg>
+            </span>
+            <span class="cvc__photo-reel-track cvc__photo-reel-track--horizontal" aria-hidden="true">
+              <svg viewBox="0 0 320 24" preserveAspectRatio="none" focusable="false">
+                <path class="cvc__photo-reel-shadow" d="M7 12H313"/>
+                <path class="cvc__photo-reel-cream" d="M7 12H313"/>
+                <path class="cvc__photo-reel-stripe" data-cvc-reel-path d="M7 12H313"/>
+              </svg>
+            </span>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--start"
+              src="../../../../assets/hero-sweet-wrapped-red.webp"
+              width="440"
+              height="212"
+              alt=""
+              loading="eager"
+              decoding="async"
+            ><div class="cvc__photo-reel" role="tablist" aria-label="Product photos"><button type="button" class="cvc__photo-ticket" id="cvcThumb-main-1" role="tab" data-cv-thumb
+                          aria-selected="true"
+                          aria-controls="cvcMedia-main"
+                          tabindex="0"
+                          aria-label="Photo 1 of 2"
+                          data-cv-full="../../../../assets/best-case-detail.png"
+                          data-cv-zoom="../../../../assets/best-case-detail.png">
+                    <span class="cvc__photo-ticket-card">
+                      <svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true" focusable="false">
+                        <path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-perf" d="M13 86H83"/>
+                      </svg>
+                      <span class="cvc__photo-ticket-image"><img src="../../../../assets/best-case-detail.png" alt="" width="160" height="160" loading="lazy"></span>
+                      <span class="cvc__photo-ticket-no" aria-hidden="true">1</span>
+                    </span>
+                  </button><button type="button" class="cvc__photo-ticket" id="cvcThumb-main-2" role="tab" data-cv-thumb
+                          aria-selected="false"
+                          aria-controls="cvcMedia-main"
+                          tabindex="-1"
+                          aria-label="Photo 2 of 2"
+                          data-cv-full="../../../../assets/best-case-in-hand.png"
+                          data-cv-zoom="../../../../assets/best-case-in-hand.png">
+                    <span class="cvc__photo-ticket-card">
+                      <svg class="cvc__photo-ticket-frame" viewBox="0 0 96 108" aria-hidden="true" focusable="false">
+                        <path class="cvc__photo-ticket-paper" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-outline" d="M13 3H83C83 8 87 12 93 12V96C87 96 83 100 83 105H13C13 100 9 96 3 96V12C9 12 13 8 13 3Z"/>
+                        <path class="cvc__photo-ticket-perf" d="M13 86H83"/>
+                      </svg>
+                      <span class="cvc__photo-ticket-image"><img src="../../../../assets/best-case-in-hand.png" alt="" width="160" height="160" loading="lazy"></span>
+                      <span class="cvc__photo-ticket-no" aria-hidden="true">2</span>
+                    </span>
+                  </button></div>
+            <img
+              class="cvc__photo-reel-sweet cvc__photo-reel-sweet--end"
+              src="../../../../assets/hero-sweet-wrapped-teal.webp"
+              width="440"
+              height="164"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            >
+          </div><div class="cvc__stage cvc__stage--awning-false" id="cvcMedia-main" role="tabpanel" aria-labelledby="cvcThumb-main-1"><img src="../../../../assets/best-case-detail.png" alt="Fixture photo" class="cvc__photo" id="cvMainImage" loading="eager" sizes="(min-width: 1270px) 520px, (min-width: 990px) 44vw, calc(100vw - 32px)" fetchpriority="high">
+            <button type="button" class="cvc__zoom" data-cvc-zoom-open aria-haspopup="dialog" aria-controls="cvcZoom-main"
+                    data-cv-zoom="../../../../assets/best-case-detail.png">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 21 21"/></svg>
+              <span>Tap to zoom</span>
+            </button></div>
+      </div><form class="cvc__box" id="cvAddForm" method="post" action="/cart/add"><input type="hidden" id="cvVariantId" value="43001">
+        <input type="hidden" name="quantity" id="cvQuantity" value="2"><p class="cvc__vendor">Casify Cases</p><p class="cvc__tag">
+          <img class="cvc__tag-plate" src="../../../../assets/pdp-counter-tag.webp" width="360" height="414" alt="" loading="eager">
+          <span class="cvc__tag-price" aria-live="polite">
+            <span id="cvPriceNow"><span class="cvc__visually-hidden">Now: </span>$19.99</span>
+            <s id="cvPriceWas"><span class="cvc__visually-hidden">Compare at: </span>$59.99</s>
+          </span>
+          <span class="cvc__tag-sale" data-cv-tag-sale aria-hidden="true">
+            <svg viewBox="0 0 100 100" focusable="false">
+              <path d="M50 3 59 12 72 8 77 21 91 23 88 37 98 47 89 58 93 72 79 77 76 91 62 88 51 98 41 89 27 93 22 79 8 76 12 62 2 51 11 41 7 27 21 22 24 8 38 12Z"/>
+              <circle cx="50" cy="50" r="34"/>
+            </svg>
+            <span class="cvc__tag-sale-copy"><strong data-cv-discount-pct>67%</strong><small>off</small></span>
+          </span>
+        </p><h1 class="cvc__title">Fixture: Case Charm Strap</h1><p class="cvc__price-saving cvc__price-saving--true" data-cv-price-proof aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13 13 20 4 11V4h7l9 9Z"/><circle cx="8.5" cy="8.5" r="1.25"/></svg>
+          <span>You save</span>
+          <strong data-cv-price-save>$40.00</strong>
+        </p><div class="cvc__promises" data-cvc-promises>
+            <ul class="cvc__promises-list" role="list"><li class="cvc__promise cvc__promise--truck" data-cvc-promise="truck" data-fixture-block="svc-ship">
+                    <span class="cvc__promise-art" data-cvc-promise-art aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M2.5 6.5h10.5v9H2.5z"/><path d="M13 9.5h4.2l3.3 3.4v2.6H13z"/><circle cx="6.5" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></svg></span>
+                    <span class="cvc__promise-text">Free shipping</span>
+                  </li><li class="cvc__promise cvc__promise--returns" data-cvc-promise="returns" data-fixture-block="svc-returns">
+                    <span class="cvc__promise-art" data-cvc-promise-art aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 11a8 8 0 0 1 14-5"/><path d="M18 3v3.5h-3.5"/><path d="M20 13a8 8 0 0 1-14 5"/><path d="M6 21v-3.5h3.5"/></svg></span>
+                    <span class="cvc__promise-text">30-day returns</span>
+                  </li><li class="cvc__promise cvc__promise--box" data-cvc-promise="box" data-fixture-block="svc-dispatch">
+                    <span class="cvc__promise-art" data-cvc-promise-art aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7z"/><path d="m4 7 8 4.2L20 7"/><path d="M12 11.2v10"/><path d="m8 4.9 8 4.2"/></svg></span>
+                    <span class="cvc__promise-text">Ships in 1-3 business days</span>
+                  </li></ul>
+          </div><a class="cvc__rating" href="#cvc-reviews" data-cvc-rating><span class="cvc__rating-text" data-cvc-rating-text>No reviews yet<span class="cvc__rating-separator" aria-hidden="true">·</span><u>Write the first</u></span></a><p class="cvc__stock cvc__stock--pill" data-cvc-stock role="status" aria-atomic="true"
+           data-threshold="10"
+           data-template="Only [qty] left in this style"
+           hidden>
+          <span class="cvc__stock-dot" aria-hidden="true"></span><span data-cvc-stock-text>Only 0 left in this style</span>
+        </p><div class="cvc__opt">
+              <p class="cvc__label" id="cvcOpt0-main">Style: <span class="cvc__label-value" data-cv-opt-out="0">Russet Brown</span></p>
+              <div class="cvc__swatches" role="radiogroup" aria-labelledby="cvcOpt0-main"><button type="button" class="cvc__swatch" role="radio"
+                          aria-checked="true"
+                          tabindex="0"
+                          aria-label="Russet Brown" title="Russet Brown"
+                          data-cv-option-index="0"
+                          data-cv-value="Russet Brown"
+                          data-cv-stock=""><img src="../../../../assets/best-case-detail.png" alt="" width="70" height="70" loading="lazy"></button><button type="button" class="cvc__swatch" role="radio"
+                          aria-checked="false"
+                          tabindex="-1"
+                          aria-label="Black" title="Black"
+                          data-cv-option-index="0"
+                          data-cv-value="Black"
+                          data-cv-stock=""><img src="../../../../assets/best-case-in-hand.png" alt="" width="70" height="70" loading="lazy"></button></div>
+            </div><noscript><div class="cvc__opt cvc__opt--noscript">
+              <label class="cvc__label" for="cvcVariant-main">Color</label>
+              <span class="cvc__select">
+                <select id="cvcVariant-main" name="id" required><option value="43001" selected>Russet Brown</option><option value="43002">Black</option></select>
+              </span>
+            </div></noscript><div class="cvc__packs" role="radiogroup" aria-label="How many cases" data-cvm-packs>
+            <span class="cvc__pack-highlight" data-cvm-pack-highlight aria-hidden="true"></span><button type="button" class="cvc__pack" role="radio" data-cv-pack
+                        aria-checked="false"
+                        tabindex="-1"
+                        data-cv-qty="1"
+                        data-cv-discount="0"
+                        data-fixture-block="tier-1"><span class="cvc__pack-name">1 case</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$19.99</span>
+                  <s class="cvc__pack-was" data-cv-tier-was><span class="cvc__visually-hidden">Compare at: </span><span data-cv-tier-was-value>$59.99</span></s>
+                </button><button type="button" class="cvc__pack" role="radio" data-cv-pack
+                        aria-checked="true"
+                        tabindex="0"
+                        data-cv-qty="2"
+                        data-cv-discount="18"
+                        data-fixture-block="tier-2"><span class="cvc__flag">Save 18%</span><span class="cvc__pack-name">2 cases</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$16.39<small> each</small></span>
+                  <s class="cvc__pack-was" data-cv-tier-was><span class="cvc__visually-hidden">Compare at: </span><span data-cv-tier-was-value>$59.99</span></s>
+                </button><button type="button" class="cvc__pack cvc__pack--teal" role="radio" data-cv-pack
+                        aria-checked="false"
+                        tabindex="-1"
+                        data-cv-qty="3"
+                        data-cv-discount="31"
+                        data-fixture-block="tier-3"><span class="cvc__flag">Best value</span><span class="cvc__pack-name">3 cases</span>
+                  <span class="cvc__pack-each" data-cv-tier-each="small">$13.79<small> each</small></span>
+                  <s class="cvc__pack-was" data-cv-tier-was><span class="cvc__visually-hidden">Compare at: </span><span data-cv-tier-was-value>$59.99</span></s>
+                </button></div><div class="cvc__savings">
+              <span class="cvc__meter" aria-hidden="true"><span class="cvc__meter-fill" data-cv-savings-fill style="width: 58%;"></span></span>
+              <p class="cvc__savings-text" data-cv-savings aria-live="polite"
+                 data-template-save="[qty] cases saves you [amount] vs buying singly"
+                 data-template-next="Choose [qty] cases to save [pct]% on each">2 cases saves you $7.20 vs buying singly</p>
+            </div><link rel="stylesheet" href="../../../../assets/cv-pack-slots.css" media="all">
+<div class="cvpk cvpk--counter" data-cv-slots
+     data-fallback-img="../../../../assets/best-case-detail.png"
+     data-template-legend="Your [qty] cases"
+     data-template-bad="Case [n] is sold out in that choice"
+     data-sold-suffix=" (sold out)" data-missing-suffix=" (unavailable)">
+  <div class="cvpk__tray" aria-hidden="true">
+    <ul class="cvpk__cases" data-cv-slots-tray><li class="cvpk__case" data-cv-slot-case="0">
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">1</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li><li class="cvpk__case" data-cv-slot-case="1">
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">2</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li><li class="cvpk__case" data-cv-slot-case="2" hidden>
+          <span class="cvpk__photo" data-cv-slot-photo><img src="../../../../assets/best-case-detail.png" alt="" width="120" height="120" loading="lazy" data-cv-slot-img><span class="cvpk__num">3</span>
+          </span>
+          <img class="cvpk__front" src="../../../../assets/pack-box-wall.webp" alt="" width="860" height="313" loading="lazy">
+          <img class="cvpk__lid" src="../../../../assets/pack-box-lid.webp" alt="" width="520" height="313" loading="lazy" data-cv-slot-lid>
+        </li></ul>
+  </div>
+
+  <fieldset class="cvpk__rows">
+    <legend class="cvpk__legend" data-cv-slots-legend>Your 2 cases</legend><p class="cvpk__hint">Pick a colour and phone for each case. Mix them however you like.</p><div class="cvpk__row" data-cv-slot="0">
+        <span class="cvpk__name" id="cvpkName0-main">Case 1</span><p class="cvpk__first">
+            <span data-cv-slot-summary>Russet Brown</span><small>chosen above</small></p></div><div class="cvpk__row" data-cv-slot="1">
+        <span class="cvpk__name" id="cvpkName1-main">Case 2</span><div class="cvpk__fields" role="group" aria-labelledby="cvpkName1-main"><span class="cvpk__select"><select data-cv-slot-option="0" aria-label="Case : Color"><option value="Russet Brown" selected>Russet Brown</option><option value="Black">Black</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span></div>
+          <button type="button" class="cvpk__same" data-cv-slot-same hidden>Same as case 1</button></div><div class="cvpk__row" data-cv-slot="2" hidden>
+        <span class="cvpk__name" id="cvpkName2-main">Case 3</span><div class="cvpk__fields" role="group" aria-labelledby="cvpkName2-main"><span class="cvpk__select"><select data-cv-slot-option="0" aria-label="Case : Color"><option value="Russet Brown" selected>Russet Brown</option><option value="Black">Black</option></select>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </span></div>
+          <button type="button" class="cvpk__same" data-cv-slot-same hidden>Same as case 1</button></div></fieldset>
+</div><div class="cvc__buttons"><button type="submit" class="cvc__add" id="cvAddBtn" data-cvm-btn>
+            <svg class="cvc__add-bag" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <svg class="cvc__add-check" data-cvm-icon viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg>
+            <span id="cvCtaLabel" data-cvm-label data-label-default="Add to bag">Add to bag</span>
+            <span class="cvc__add-total"><span aria-hidden="true">·</span> <span id="cvTotal" data-cvm-price data-cents="3278">$32.78</span></span>
+          </button><button type="button" class="cvc__buy" data-cv-buy-now data-cvm-btn>
+              <span data-cv-buy-label data-cvm-label data-label-default="Buy now">Buy now</span>
+              <svg class="cvc__buy-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+            </button></div>
+        <p class="cvc__status" id="cvStatus" role="status" aria-live="polite"></p><p class="cvc__shipby" data-cvc-ship-by data-max-days="3"
+             data-template="Order today, ships by [date]">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.3V12l3 1.9"/></svg>
+            <span data-cvc-ship-by-text>Ships in 1-3 business days</span>
+          </p><div class="cvc__accs">
+  <details class="cvc__acc">
+    <summary class="cvc__acc-q">
+      <span>Details</span>
+      <span class="cvc__acc-mark" aria-hidden="true"></span>
+    </summary>
+    <div class="cvc__acc-a"><ul class="cvc__facts" role="list"><li>
+              <b>Color:</b>Russet Brown, Black</li><li><b>Brand:</b> Casify</li></ul></div>
+  </details><details class="cvc__acc">
+      <summary class="cvc__acc-q">
+        <span>Shipping &amp; returns</span>
+        <span class="cvc__acc-mark" aria-hidden="true"></span>
+      </summary>
+      <div class="cvc__acc-a"><p>Free shipping on every order. Orders leave us within 1 to 3 business days, and you have 30 days to return it.</p></div>
+    </details></div>
+</form></div>
+  </div><dialog class="cvc-zoom" id="cvcZoom-main" aria-label="Fixture: Case Charm Strap: Product photos" data-cvc-zoom>
+      <div class="cvc-zoom__frame" data-cvc-zoom-frame>
+        <img
+          class="cvc-zoom__img"
+          src="../../../../assets/best-case-detail.png"
+          alt="Fixture photo"
+          width="1000"
+          height="1000"
+          loading="lazy"
+          data-cvc-zoom-img
+        >
+      </div>
+      <button type="button" class="cvc-zoom__btn cvc-zoom__btn--close" data-cvc-zoom-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button><button type="button" class="cvc-zoom__btn cvc-zoom__btn--prev" data-cvc-zoom-step="-1" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="cvc-zoom__btn cvc-zoom__btn--next" data-cvc-zoom-step="1" aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button><p class="cvc-zoom__count" data-cvc-zoom-count aria-live="polite"></p>
+    </dialog><div class="cvc-sticky" id="cvSticky" aria-hidden="true"><span class="cvc-sticky__pic"><img src="../../../../assets/best-case-detail.png" alt="" width="48" height="48" loading="lazy"></span><div class="cvc-sticky__info">
+      <span class="cvc-sticky__name">Fixture: Case Charm Strap</span>
+      <span class="cvc-sticky__meta"><span data-cv-opt-out-sticky>Russet Brown</span> · <b id="cvStickyTotal" data-cvm-price data-cents="3278">$32.78</b></span>
+    </div>
+    <div class="cvc-sticky__buttons">
+      <button type="button" class="cvc-sticky__add" id="cvStickyBtn" data-cvm-btn tabindex="-1">Add to bag</button><button type="button" class="cvc-sticky__buy" data-cv-buy-now data-cvm-btn tabindex="-1">Buy now</button></div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Fixture: Case Charm Strap","image": "https:../../../../assets/best-case-detail.png",
+  "brand": { "@type": "Brand", "name": "Casify" },
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": 19.99,
+    "highPrice": 19.99,
+    "offerCount": 2,
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+</div>
+</main>
+<script>
+  /* Pristine copies of each section, taken before any deferred script runs (what Shopify re-sends). */
+  (function () {
+    var H = window.__harness; if (!H) return;
+    H.pristine = {};
+    document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) { H.pristine[s.id] = s.innerHTML; });
+  })();
+</script>
+<script src="../../../../assets/theme.js" defer></script>
+<script src="../../../../assets/cv-motion.js" defer></script>
+<script src="../../../../assets/cv-product.js" defer></script>
+<script src="../../../../assets/cv-pack-motion.js" defer></script>
+<script src="../../../../assets/cv-pdp-counter.js" defer></script>
+<script src="../../../../assets/cv-pdp-counter-motion.js" defer></script>
+<script src="../../../../assets/cart.js" defer></script>
+<script src="../../../../assets/cv-commerce-motion.js" defer></script>
+<script>
+  (function () {
+    var H = window.__harness; if (!H || !H.editor) return;
+    /* GSAP instances leak the same way listeners do: a ScrollTrigger or Observer that unload
+       never kills is recreated by every load. Count them beside the listeners so the same
+       cycle-1 to cycle-N growth rule (and shoot.py --allow-leak) covers them. */
+    var countRaw = H.countListeners;
+    H.countListeners = function () {
+      var o = countRaw();
+      if (window.ScrollTrigger && window.ScrollTrigger.getAll) {
+        var st = window.ScrollTrigger.getAll().length; if (st) o['gsap:ScrollTrigger'] = st;
+      }
+      if (window.Observer && window.Observer.getAll) {
+        var ob = window.Observer.getAll().length; if (ob) o['gsap:Observer'] = ob;
+      }
+      return o;
+    };
+    function fire(el, name, detail) { el.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail })); }
+    function cycle() {
+      document.querySelectorAll('#MainContent > .shopify-section').forEach(function (s) {
+        var id = s.id.replace(/^shopify-section-/, '');
+        fire(s, 'shopify:section:unload', { sectionId: id, load: false });
+        s.innerHTML = H.pristine[s.id];
+        fire(s, 'shopify:section:load', { sectionId: id, load: true });
+        fire(s, 'shopify:section:select', { sectionId: id, load: true });
+      });
+    }
+    function stuck() {
+      var out = [];
+      document.querySelectorAll('#MainContent .shopify-section *').forEach(function (el) {
+        var cs = getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || el.closest('[hidden],[aria-hidden="true"],template,dialog:not([open])')) return;
+        var r = el.getBoundingClientRect();
+        if (r.width < 4 || r.height < 4) return;
+        if (Number(cs.opacity) < 0.05 && (el.textContent || '').trim()) {
+          out.push((el.tagName.toLowerCase()) + (el.id ? '#' + el.id : '') + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''));
+        }
+      });
+      return out;
+    }
+    /* Leak rule. The baseline is the count AFTER cycle 1 has settled, not the count at load:
+       a library that registers once lazily (ScrollTrigger) or a scene that boots after an async
+       import registers after load, so a load-time baseline reads every such page as "grew".
+       A per-load leak adds one set per cycle, so only growth from cycle 1 to cycle N is flagged.
+       That needs two cycles: ?editor=1 (the PLAN switch) runs 2, ?editor=N runs max(N, 2).
+       The load -> cycle 1 delta is kept as "firstRegistration" (information, never a leak).
+       ?editorSettle=MS (default 1700) is the wait after cycle 1 and after the last cycle. */
+    var SETTLE = Number(new URLSearchParams(location.search).get('editorSettle')) || 1700;
+    var GAP = 500;
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var atLoad = H.countListeners();
+        var total = Math.max(H.editor, 2);
+        var series = [];
+        var n = 0;
+        function diff(a, b) {
+          var out = [];
+          Object.keys(Object.assign({}, a, b)).sort().forEach(function (k) {
+            if ((b[k] || 0) > (a[k] || 0)) out.push(k + ' ' + (a[k] || 0) + ' -> ' + b[k]);
+          });
+          return out;
+        }
+        (function next() {
+          n++; H.phase = 'cycle ' + n; cycle();
+          setTimeout(function () {
+            series.push(H.countListeners());
+            if (n < total) return next();
+            var base = series[0], last = series[series.length - 1];
+            var grew = diff(base, last).map(function (s) {
+              var k = s.split(' ')[0];
+              return s + ' (per cycle: ' + series.map(function (c) { return c[k] || 0; }).join(', ') + ')';
+            });
+            H.phase = 'done';
+            H.editorResult = {
+              requested: H.editor, cycles: n, baseline: 'after cycle 1',
+              listenersAtLoad: atLoad, listenersBefore: base, listenersAfter: last, perCycle: series,
+              firstRegistration: diff(atLoad, base), grew: grew, stuck: stuck(),
+              trace: H.trace
+            };
+            document.documentElement.setAttribute('data-harness-editor', 'done');
+          }, (n === 1 || n >= total) ? SETTLE : GAP);
+        })();
+      }, 800);
+    });
+  })();
+</script>
+</body>
+</html>

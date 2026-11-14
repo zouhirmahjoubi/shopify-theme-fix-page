@@ -21,7 +21,7 @@
  * stays as the experience.
  */
 
-const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
+const THREE_URL = window.CV_THREE_URL || 'https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js';
 const TAU = Math.PI * 2;
 const mod = (n, m) => ((n % m) + m) % m;
 const pad = (n) => String(n).padStart(2, '0');
@@ -30,6 +30,7 @@ const reduceQuery = window.matchMedia && window.matchMedia('(prefers-reduced-mot
 const fineQuery = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)');
 
 function supportsWebGL() {
+  if (window.cvWebGL) return window.cvWebGL();
   try {
     const c = document.createElement('canvas');
     return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
@@ -572,7 +573,12 @@ function boot(scope) {
     root.dataset.cvorbitReady = '1';
     if (reduceQuery && reduceQuery.matches) return;
     animatePerks(root, gsap);
-    if (supportsWebGL()) mount(root);
+    // three.js and the turntable start as the shopper scrolls towards the
+    // section, not during page load (mount() was already async).
+    const near = window.cvNear ? window.cvNear(root, 2) : Promise.resolve();
+    near.then(() => {
+      if (root.isConnected && root.dataset.cvorbitReady === '1' && supportsWebGL()) mount(root);
+    });
   });
 }
 

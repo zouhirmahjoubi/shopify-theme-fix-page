@@ -3,31 +3,25 @@
 
   - "Load more" reveals the review cards a page at a time.
   - "Write a review" opens the form: a 1-5 star picker, title, review, name, email.
-  - Sending: the review is posted as a comment on the reviews blog post, whose blog
-    holds comments for the merchant to approve, and a copy is emailed to the
-    merchant through the contact form. Both are real Shopify forms and pass
-    Shopify's own spam check (see handOver) before fetch sends them, so the
-    shopper stays on the page.
-  - If Shopify still wants a human check, the review is posted again as a normal
-    page post so the shopper can answer it; the reviews page then thanks them and
-    links back to the product (sessionStorage "rw-return").
+  - Sending: the review goes to Judge.me the way Judge.me's own review form sends it,
+    a multipart POST to {API host}/api/v1/reviews with the shop domain and no API
+    token. On a product page it is a review of that product (Shopify product id);
+    anywhere else it is a store review (id 0, source "store-review-collection").
+    Judge.me then emails the reviewer a link to confirm it, and the section shows
+    the review once Judge.me has matched it to an order (verified buyer).
+  - Judge.me answers a refused review with 422 and {"message": "..."}; that message
+    is shown under the form.
+  - Nothing is sent from the theme editor, or when the hidden "leave this empty"
+    field is filled in (spam bots).
 */
 (() => {
-  const SEP = '§';
-  const RETURN_KEY = 'rw-return';
-  const BIND_WAIT_MS = 8000;
-  const WAIT_HINT_MS = 6000;
-  const CHECK_STALL_MS = 10000;
-  const POST_TIMEOUT_MS = 45000;
+  const SEND_TIMEOUT_MS = 20000;
+  const STORE_REVIEW_ID = '0';
+  const STORE_REVIEW_SOURCE = 'store-review-collection';
+  const JUDGE_ME_HOST = /^https:\/\/([a-z0-9-]+\.)*judge\.me\/?$/i;
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const designMode = () => Boolean(window.Shopify && window.Shopify.designMode);
-
-  const session = {
-    get(key) { try { return window.sessionStorage.getItem(key); } catch (e) { return null; } },
-    set(key, value) { try { window.sessionStorage.setItem(key, value); } catch (e) { /* private mode */ } },
-    remove(key) { try { window.sessionStorage.removeItem(key); } catch (e) { /* private mode */ } },
-  };
 
   /* ---------- Load more ---------- */
   function setupMore(root) {
@@ -50,129 +44,58 @@
     render();
   }
 
-  /* ---------- Sending through Shopify's spam check ---------- */
-  // Shopify binds its check (hCaptcha) to a protected form on the form's first
-  // focusin or change event. Binding keeps the form's own submit() and replaces it
-  // with one that runs the check, writes the token into the form, then calls the
-  // kept submit(). handOver() gives the form a submit() of ours before that happens,
-  // so the checked form comes back to us and we send it with fetch. (Storefront
-  // pages refuse to load in frames, so the reply can't be read any other way.)
-  // With hook.native set, the checked form is posted as a normal page instead.
-  function handOver(form) {
-    const hook = { onChecked: null, native: false };
-    form.submit = function submitChecked() {
-      if (hook.native) HTMLFormElement.prototype.submit.call(form);
-      else if (hook.onChecked) hook.onChecked();
-    };
-    return hook;
+  /* ---------- Sending to Judge.me ---------- */
+  // Judge.me's storefront script names its API host (window.jdgm.API_HOST); the form
+  // carries the same default for pages where that script hasn't loaded.
+  function apiHost(form) {
+    const live = window.jdgm && typeof window.jdgm.API_HOST === 'string' ? window.jdgm.API_HOST : '';
+    const host = JUDGE_ME_HOST.test(live) ? live : form.dataset.rwApi || 'https://api.judge.me';
+    return host.replace(/\/$/, '');
   }
 
-  function prime(form) {
-    const field = form.querySelector('input[type="hidden"], textarea');
-    if (field) field.dispatchEvent(new Event('change', { bubbles: true }));
-  }
+  // Resolves { ok: true } once Judge.me has the review, or { ok: false, message }.
+  function sendReview(form, review) {
+    const shop = form.dataset.rwShop || '';
+    const productId = form.dataset.rwProduct || '';
+    const body = new FormData();
+    body.append('url', shop);
+    body.append('shop_domain', shop);
+    body.append('platform', 'shopify');
+    body.append('rating', String(review.rating));
+    body.append('name', review.name);
+    body.append('email', review.email);
+    if (review.title) body.append('title', review.title);
+    body.append('body', review.text);
+    if (productId) {
+      body.append('id', productId);
+    } else {
+      body.append('id', STORE_REVIEW_ID);
+      body.append('judgeme_review_source', STORE_REVIEW_SOURCE);
+    }
 
-  // Resolves once Shopify has bound the form, or straight away when the store has
-  // no check. If binding never happens, sending goes ahead and Shopify answers with
-  // its own check page.
-  function whenBound(form) {
-    prime(form);
-    if (!(window.Shopify && window.Shopify.ce_forms)) return Promise.resolve();
-    const started = Date.now();
-    return new Promise((resolve) => {
-      const tick = () => {
-        if (form.hasAttribute('data-hcaptcha-bound') || Date.now() - started > BIND_WAIT_MS) resolve();
-        else window.setTimeout(tick, 100);
-      };
-      tick();
-    });
-  }
-
-  // hCaptcha's puzzle frame, while it is on screen.
-  function puzzleOpen() {
-    return Array.from(document.querySelectorAll('iframe[title="hCaptcha challenge"]')).some((frame) => {
-      const box = frame.getBoundingClientRect();
-      return box.width > 0 && box.height > 0 && window.getComputedStyle(frame).visibility === 'visible';
-    });
-  }
-
-  // Runs Shopify's check on a handed-over form, then posts it with fetch.
-  // Returns { done, kick }: done settles with read()'s verdict on the reply;
-  // kick() re-runs the check if the shopper closed its puzzle. A puzzle being
-  // solved is never timed; a check that stalls with no puzzle on screen (hCaptcha
-  // blocked, offline) is skipped, and Shopify then replies with its check page.
-  function send(form, hook, read, options) {
-    const opts = options || {};
-    let posted = false;
-    let settled = false;
-    let kickedAt = 0;
-    let puzzleSeenAt = 0;
-    let watch = 0;
-    let hint = 0;
-    let resolveDone;
-    const done = new Promise((resolve) => { resolveDone = resolve; });
-
-    const finish = (result) => {
-      if (settled) return;
-      settled = true;
-      window.clearInterval(watch);
-      window.clearTimeout(hint);
-      hook.onChecked = null;
-      resolveDone(result);
-    };
-
-    const post = () => {
-      if (posted || settled) return;
-      posted = true;
-      window.clearTimeout(hint);
-      const abort = new AbortController();
-      const timer = window.setTimeout(() => abort.abort(), POST_TIMEOUT_MS);
-      fetch(form.action, {
-        method: 'POST',
-        // Encoded the way a normal form post is, so Shopify's check finds its token.
-        body: new URLSearchParams(new FormData(form)),
-        credentials: 'same-origin',
-        redirect: opts.followRedirect ? 'follow' : 'manual',
-        headers: { Accept: 'text/html' },
-        signal: abort.signal,
+    const abort = new AbortController();
+    const timer = window.setTimeout(() => abort.abort(), SEND_TIMEOUT_MS);
+    return fetch(`${apiHost(form)}/api/v1/reviews`, {
+      method: 'POST',
+      body,
+      credentials: 'omit',
+      headers: { Accept: 'application/json' },
+      signal: abort.signal,
+    })
+      .then((response) => {
+        if (response.ok) return { ok: true };
+        return response.json()
+          .catch(() => ({}))
+          .then((data) => {
+            const message = data && typeof data.message === 'string' ? data.message.trim() : '';
+            return { ok: false, message: message.length > 0 && message.length < 200 ? message : '' };
+          });
       })
-        .then((response) => {
-          if (response.type === 'opaqueredirect') return { state: 'sent' };
-          if (/\/challenge(\/|$)/.test(new URL(response.url, window.location.href).pathname)) return { state: 'challenge', url: response.url };
-          if (!response.ok) return { state: 'error' };
-          return response.text().then((html) => read(html, response));
-        })
-        .catch(() => ({ state: 'error' }))
-        .then((result) => {
-          window.clearTimeout(timer);
-          finish(result);
-        });
-    };
-    hook.onChecked = post;
-
-    const kick = () => {
-      if (posted || settled) return;
-      kickedAt = Date.now();
-      form.submit();
-    };
-
-    watch = window.setInterval(() => {
-      if (!kickedAt || posted || settled) return;
-      if (puzzleOpen()) puzzleSeenAt = Date.now();
-      else if (Date.now() - Math.max(kickedAt, puzzleSeenAt) > CHECK_STALL_MS) post();
-    }, 250);
-    if (opts.onWaiting) hint = window.setTimeout(() => { if (!posted && !settled) opts.onWaiting(); }, WAIT_HINT_MS);
-    whenBound(form).then(kick);
-    return { done, kick };
-  }
-
-  // The reviews page marks the comment form's outcome with [data-rw-result].
-  function readReview(html) {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const mark = doc.querySelector('[data-rw-result]');
-    if (!mark) return { state: 'unknown' };
-    if (mark.getAttribute('data-rw-result') === 'posted') return { state: 'posted' };
-    return { state: 'error', message: (mark.textContent || '').replace(/\s+/g, ' ').trim() };
+      .catch(() => ({ ok: false, message: '' }))
+      .then((result) => {
+        window.clearTimeout(timer);
+        return result;
+      });
   }
 
   /* ---------- Write a review ---------- */
@@ -187,20 +110,15 @@
     const submit = form.querySelector('[data-rw-submit]');
     const cancel = form.querySelector('[data-rw-cancel]');
     const done = form.querySelector('[data-rw-done]');
-    const doneTitle = form.querySelector('[data-rw-done] [data-rw-done-title]');
+    const doneTitle = form.querySelector('[data-rw-done-title]');
+    const previewNote = form.querySelector('[data-rw-preview-note]');
     const rate = form.querySelector('[data-rw-rate]');
     const rateWord = form.querySelector('[data-rw-rate-word]');
     const errorText = (form.querySelector('[data-rw-error-text]') || {}).textContent || '';
-    const waitText = (form.querySelector('[data-rw-wait-text]') || {}).textContent || '';
-    const alertForm = panel.querySelector('[data-rw-alert]');
     const words = ((rate && rate.dataset.words) || '').split('|');
     const submitLabel = submit ? submit.textContent : '';
     let lastOpener = openers[0] || null;
     let sending = false;
-    let pending = [];
-    // Before anything focuses them, so Shopify's check hands the forms back to us.
-    const reviewHook = handOver(form);
-    const alertHook = alertForm ? handOver(alertForm) : null;
 
     const setOpen = (open, opener) => {
       panel.hidden = !open;
@@ -211,11 +129,8 @@
         void panel.offsetWidth;
         panel.classList.add('is-opening');
         panel.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
-        const firstStar = form.querySelector('input[name="rw-rating"]:checked') || form.querySelector('input[name="rw-rating"]');
+        const firstStar = form.querySelector('input[name="rating"]:checked') || form.querySelector('input[name="rating"]');
         if (firstStar && fields && !fields.hidden) firstStar.focus({ preventScroll: true });
-        // Bind Shopify's spam check now, so it's ready by the time they press Send.
-        prime(form);
-        if (alertForm) prime(alertForm);
       } else if (lastOpener) {
         lastOpener.focus();
       }
@@ -224,12 +139,16 @@
     openers.forEach((button) => {
       button.addEventListener('click', () => setOpen(panel.hidden, button));
     });
-    // "Be the first to review" under the product title (data-rw-write) opens the form.
+
+    // Links to this section open the form while it has no reviews to show
+    // ("Be the first to review" under the product title), and always when they
+    // carry data-rw-write. With reviews on show, links only scroll to them.
     const anchorId = root.dataset.rwAnchor;
     if (anchorId) {
       document.addEventListener('click', (event) => {
-        const link = event.target.closest && event.target.closest('a[data-rw-write]');
-        if (!link || link.getAttribute('href') !== '#' + anchorId) return;
+        const link = event.target.closest && event.target.closest('a[href^="#"]');
+        if (!link || link.getAttribute('href') !== `#${anchorId}`) return;
+        if (!link.hasAttribute('data-rw-write') && !root.querySelector('.rw-empty')) return;
         event.preventDefault();
         if (panel.hidden) setOpen(true, null);
         else panel.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -242,7 +161,7 @@
 
     if (rate && rateWord) {
       rate.addEventListener('change', () => {
-        const checked = form.querySelector('input[name="rw-rating"]:checked');
+        const checked = form.querySelector('input[name="rating"]:checked');
         const value = checked ? Number(checked.value) : 0;
         rateWord.textContent = value ? `${value}/5 · ${words[value - 1] || ''}` : '';
       });
@@ -253,20 +172,22 @@
       status.textContent = message || '';
       status.classList.toggle('is-error', Boolean(isError));
     };
-    // The button stays clickable while sending: if Shopify's check showed a puzzle
-    // and the shopper closed it, pressing Send again re-opens the check.
     const setSending = (on) => {
       sending = on;
       form.setAttribute('aria-busy', String(on));
-      if (submit) submit.textContent = on ? (submit.dataset.sendingLabel || submitLabel) : submitLabel;
+      if (submit) {
+        submit.disabled = on;
+        submit.textContent = on ? (submit.dataset.sendingLabel || submitLabel) : submitLabel;
+      }
     };
-    const showDone = (author) => {
-      const first = (author || '').trim().split(/\s+/)[0] || '';
+    const showDone = (name, preview) => {
+      const first = (name || '').trim().split(/\s+/)[0] || '';
       if (doneTitle) {
         doneTitle.textContent = (doneTitle.dataset.template || '')
           .replace('[name]', first)
           .replace(/,\s*([!.])/, '$1');
       }
+      if (previewNote) previewNote.hidden = !preview;
       if (fields) fields.hidden = true;
       if (done) {
         done.hidden = false;
@@ -276,102 +197,48 @@
       form.dispatchEvent(new CustomEvent('rw:sent', { bubbles: true }));
       form.reset();
       if (rateWord) rateWord.textContent = '';
-      session.remove(RETURN_KEY);
     };
 
     form.addEventListener('submit', (event) => {
-      // Our handler runs first (capture) and drives the post, so Shopify's own
-      // submit listeners don't also post the page away.
       event.preventDefault();
-      event.stopImmediatePropagation();
-      if (sending) {
-        pending.forEach((job) => job.kick());
-        return;
-      }
+      if (sending) return;
 
       const data = new FormData(form);
-      const rating = Number(data.get('rw-rating') || 0);
-      const title = String(data.get('rw-title') || '').replace(/§/g, '-').replace(/\s+/g, ' ').trim();
-      const text = String(data.get('rw-text') || '').replace(/§/g, '-').trim();
-      const author = String(data.get('comment[author]') || '').trim();
-      const email = String(data.get('comment[email]') || '').trim();
-      if (!rating) {
-        setStatus(form.querySelector('legend') ? form.querySelector('legend').textContent : '', true);
-        const star = form.querySelector('input[name="rw-rating"]');
+      const review = {
+        rating: Number(data.get('rating') || 0),
+        title: String(data.get('title') || '').replace(/\s+/g, ' ').trim(),
+        text: String(data.get('body') || '').trim(),
+        name: String(data.get('name') || '').replace(/\s+/g, ' ').trim(),
+        email: String(data.get('email') || '').trim(),
+      };
+      if (!review.rating) {
+        const legend = form.querySelector('legend');
+        setStatus(legend ? legend.textContent : '', true);
+        const star = form.querySelector('input[name="rating"]');
         if (star) star.focus();
         return;
       }
 
-      form.elements['comment[body]'].value = [`${rating}/5`, form.dataset.rwHandle || '', title, text].join(` ${SEP} `);
       setStatus('');
-      setSending(true);
-      session.set(RETURN_KEY, JSON.stringify({ url: window.location.href, name: author }));
-
-      if (alertForm) {
-        const put = (name, value) => {
-          const field = alertForm.elements[name];
-          if (field) field.value = value;
-        };
-        put('contact[name]', author);
-        put('contact[email]', email);
-        put('contact[Rating]', `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)} ${rating}/5`);
-        put('contact[Review title]', title || '-');
-        put('contact[body]', text);
-        // The merchant's email copy. Sent alongside the review, so any check is answered once.
-        const copy = send(alertForm, alertHook, () => ({ state: 'sent' }));
-        pending.push(copy);
-        copy.done.then(() => { pending = pending.filter((job) => job !== copy); });
+      if (String(data.get('rw_website') || '') !== '') {
+        showDone(review.name, false);
+        return;
+      }
+      if (designMode()) {
+        showDone(review.name, true);
+        return;
       }
 
-      const review = send(form, reviewHook, readReview, { followRedirect: true, onWaiting: () => setStatus(waitText) });
-      pending.push(review);
-      review.done.then((result) => {
-        pending = pending.filter((job) => job !== review);
-        if (result.state === 'posted' || result.state === 'unknown') {
-          setStatus('');
-          setSending(false);
-          showDone(author);
-        } else if (result.state === 'challenge') {
-          // Shopify wouldn't take it in the background. Run its check again for a
-          // fresh token and post as a normal page: the reviews page thanks them, or
-          // Shopify shows its own check first.
-          reviewHook.native = true;
-          form.submit();
+      setSending(true);
+      sendReview(form, review).then((result) => {
+        setSending(false);
+        if (result.ok) {
+          showDone(review.name, false);
         } else {
-          setSending(false);
-          setStatus(result.state === 'error' && result.message ? result.message : errorText, true);
+          setStatus(result.message || errorText, true);
         }
       });
-    }, true);
-
-    // Arrived on the reviews page after a normal page post: show the outcome.
-    const result = form.querySelector('[data-rw-result]');
-    if (result) {
-      panel.hidden = false;
-      openers.forEach((button) => button.setAttribute('aria-expanded', 'true'));
-      const back = result.querySelector('[data-rw-back]');
-      if (back && result.getAttribute('data-rw-result') === 'posted') {
-        try {
-          const saved = JSON.parse(session.get(RETURN_KEY) || 'null');
-          const heading = result.querySelector('[data-rw-done-title]');
-          const first = saved && saved.name ? String(saved.name).trim().split(/\s+/)[0] : '';
-          if (heading && first && heading.dataset.template) {
-            heading.textContent = heading.dataset.template.replace('[name]', first);
-          }
-          const url = saved && saved.url ? new URL(saved.url, window.location.href) : null;
-          if (url && url.origin === window.location.origin && url.pathname !== window.location.pathname) {
-            back.href = url.href;
-            back.hidden = false;
-          }
-        } catch (e) { /* nothing saved */ }
-        session.remove(RETURN_KEY);
-      }
-      result.scrollIntoView({ block: 'center', behavior: 'auto' });
-      result.focus({ preventScroll: true });
-      if (result.getAttribute('data-rw-result') === 'posted') {
-        window.setTimeout(() => form.dispatchEvent(new CustomEvent('rw:sent', { bubbles: true })), 300);
-      }
-    }
+    });
   }
 
   function init(root) {

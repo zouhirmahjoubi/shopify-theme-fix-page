@@ -1,0 +1,145 @@
+{
+ "_note": "Fixture for sections/cv-product-counter.liquid. Product data is a fixture modelled on the store's Tech Fabric case (real title, colour names and $49.99 price from dev/pdp-full-render.mjs); section settings and blocks come from templates/product.convert.json (real stored wording). Photos are theme assets marked as fixture.",
+ "template": {
+  "file": "templates/product.convert.json",
+  "key": "main"
+ },
+ "template_name": "product",
+ "product": {
+  "title": "Tech Fabric Magnetic Phone Case for iPhone",
+  "handle": "tech-fabric-magnetic-phone-case-for-iphone",
+  "vendor": "Casify",
+  "options": [
+   "Color",
+   "Model"
+  ],
+  "media": [
+   {
+    "src": "asset:best-case-detail.png",
+    "alt": "Fixture photo: case detail"
+   },
+   {
+    "src": "asset:best-case-in-hand.png",
+    "alt": "Fixture photo: case in hand"
+   },
+   {
+    "src": "asset:best-case-magnetic.png",
+    "alt": "Fixture photo: magnetic ring"
+   }
+  ],
+  "variants": [
+   {
+    "id": 41001,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41002,
+    "options": [
+     "Russet Brown",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41003,
+    "options": [
+     "Russet Brown",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 0
+   },
+   {
+    "id": 41004,
+    "options": [
+     "Black",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41005,
+    "options": [
+     "Black",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 1
+   },
+   {
+    "id": 41006,
+    "options": [
+     "Black",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "available": false,
+    "media": 1
+   },
+   {
+    "id": 41007,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro Max"
+    ],
+    "price": 4999,
+    "media": 2
+   },
+   {
+    "id": 41008,
+    "options": [
+     "Blue",
+     "iPhone 17 Pro"
+    ],
+    "price": 4999,
+    "media": 2
+   },
+   {
+    "id": 41009,
+    "options": [
+     "Blue",
+     "iPhone 17"
+    ],
+    "price": 4999,
+    "media": 2
+   }
+  ],
+  "metafields": {
+   "reviews": {},
+   "custom": {}
+  }
+ },
+ "harness": {
+  "js": [
+   "theme.js",
+   "cv-motion.js",
+   "cv-product.js",
+   "cv-pack-motion.js",
+   "cv-pdp-story.js",
+   "cv-pdp-slip-motion.js",
+   "cv-pdp-counter.js",
+   "cv-pdp-counter-motion.js",
+   "cart.js",
+   "cv-commerce-motion.js"
+  ],
+  "module_js": [
+   "cv-pdp-sales.js",
+   "cv-pdp-promises.js",
+   "cv-case-features.js"
+  ],
+  "css": [
+   "cv-commerce-motion.css"
+  ]
+ },
+ "settings": {
+  "cv_pack_2_pct": 18,
+  "cv_pack_3_pct": 31
+ }
+}

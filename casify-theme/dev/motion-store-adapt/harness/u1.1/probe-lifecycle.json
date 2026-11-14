@@ -1,0 +1,152 @@
+{
+  "runs": [
+    {
+      "variant": "default",
+      "cycles": 4,
+      "grew": [],
+      "stuck": [
+        "div.cvp-set__item",
+        "div.cvp-set__item"
+      ],
+      "scrollTriggerPerCycle": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "listenerTotalPerCycle": [
+        84,
+        84,
+        84,
+        84
+      ],
+      "atLoad": {
+        "roots": 1,
+        "counterBound": true,
+        "motionBound": true,
+        "motionRan": true,
+        "setBound": true,
+        "pending": false,
+        "scrollTriggers": 5,
+        "setTriggers": 1,
+        "detachedTriggers": 0
+      },
+      "live": {
+        "roots": 1,
+        "counterBound": true,
+        "motionBound": true,
+        "motionRan": true,
+        "setBound": true,
+        "pending": false,
+        "scrollTriggers": 5,
+        "setTriggers": 1,
+        "detachedTriggers": 0
+      },
+      "zoom": {
+        "opened": true,
+        "closed": true,
+        "classCleared": true
+      },
+      "setOpacity": [
+        1,
+        1
+      ],
+      "checks": {
+        "cycles >= 4": true,
+        "no listener or ScrollTrigger growth": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "no ScrollTrigger on a detached element": true,
+        "one counter root": true,
+        "cv-pdp-counter.js re-bound": true,
+        "cv-pdp-counter-motion.js re-bound": true,
+        "motion ran on new root": true,
+        "set re-bound": true,
+        "set ScrollTrigger at most 1": true,
+        "cvc-pending released": true,
+        "zoom opens on new root": true,
+        "zoom closes, class cleared": true,
+        "nothing stuck invisible (set cards wait for scroll)": true,
+        "set cards visible after scrolling to them": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "firstRegistration": [
+        "document:visibilitychange:b 2 -> 3"
+      ],
+      "ok": true
+    },
+    {
+      "variant": "rm",
+      "cycles": 4,
+      "grew": [],
+      "stuck": [],
+      "scrollTriggerPerCycle": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "listenerTotalPerCycle": [
+        81,
+        81,
+        81,
+        81
+      ],
+      "atLoad": {
+        "roots": 1,
+        "counterBound": true,
+        "motionBound": true,
+        "motionRan": false,
+        "setBound": true,
+        "pending": false,
+        "scrollTriggers": 0,
+        "setTriggers": 0,
+        "detachedTriggers": 0
+      },
+      "live": {
+        "roots": 1,
+        "counterBound": true,
+        "motionBound": true,
+        "motionRan": false,
+        "setBound": true,
+        "pending": false,
+        "scrollTriggers": 0,
+        "setTriggers": 0,
+        "detachedTriggers": 0
+      },
+      "zoom": {
+        "opened": true,
+        "closed": true,
+        "classCleared": true
+      },
+      "setOpacity": [
+        1,
+        1
+      ],
+      "checks": {
+        "cycles >= 4": true,
+        "no listener or ScrollTrigger growth": true,
+        "listener total flat (cycle 1 = cycle 4)": true,
+        "ScrollTrigger flat (cycle 1 = cycle 4)": true,
+        "no ScrollTrigger on a detached element": true,
+        "one counter root": true,
+        "cv-pdp-counter.js re-bound": true,
+        "cv-pdp-counter-motion.js re-bound": true,
+        "no motion under rm": true,
+        "set re-bound": true,
+        "set ScrollTrigger at most 1": true,
+        "cvc-pending released": true,
+        "zoom opens on new root": true,
+        "zoom closes, class cleared": true,
+        "nothing stuck invisible (set cards wait for scroll)": true,
+        "set cards visible after scrolling to them": true,
+        "no console or page errors": true
+      },
+      "errors": [],
+      "firstRegistration": [],
+      "ok": true
+    }
+  ],
+  "pass": true
+}

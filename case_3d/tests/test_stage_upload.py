@@ -22,6 +22,11 @@ def test_curl_discards_the_body_where_the_os_can():
     assert cmd[-1] == TARGET['url']
 
 
+def test_curl_skips_the_100_continue_handshake():
+    cmd = stage_upload.curl_cmd(TARGET, 'out/model.glb')
+    assert cmd[cmd.index('-H') + 1] == 'Expect:'
+
+
 def test_targets_reads_the_mutation_response(tmp_path):
     resp = tmp_path / 'resp.json'
     resp.write_text(json.dumps({'data': {'stagedUploadsCreate': {'stagedTargets': [TARGET], 'userErrors': []}}}))

@@ -1,26 +1,25 @@
+{%- comment -%}
+  The product's Judge.me rating from verified buyers only (snippets/cv-jm-verified.liquid).
+  The old "Manual rating" source is no longer shown: a typed rating can't be verified.
+{%- endcomment -%}
 {%- liquid
   assign rating_value = 0
   assign rating_count = 0
   assign has_rating = false
-  if block.settings.source == 'manual'
-    assign rating_value = block.settings.manual_rating | plus: 0
-    if rating_value > 0
+  assign rating_product = block.settings.rating_product | default: product
+-%}
+{%- if block.settings.source != 'manual' and rating_product.handle != blank -%}
+  {%- capture jm_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: rating_product.handle -%}{%- endcapture -%}
+  {%- liquid
+    assign jm_parts = jm_stats | split: '␟'
+    assign rating_count = jm_parts[0] | plus: 0
+    if rating_count > 0
+      assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: rating_count
       assign has_rating = true
     endif
-  else
-    assign rating_product = block.settings.rating_product | default: product
-    assign rating_data = rating_product.metafields.reviews.rating.value
-    if rating_data != blank
-      assign scale_max = rating_data.scale_max | default: 5
-      if scale_max > 0
-        assign rating_value = rating_data.rating | times: 5.0 | divided_by: scale_max | at_least: 0 | at_most: 5
-        assign rating_count = rating_product.metafields.reviews.rating_count.value | default: 0
-        assign has_rating = true
-      endif
-    endif
-  endif
-  assign star_fill = rating_value | times: 20
--%}
+  -%}
+{%- endif -%}
+{%- assign star_fill = rating_value | times: 20 -%}
 
 {%- if has_rating and block.settings.layout == 'inline' -%}
   {%- assign scroll_id = block.settings.scroll_id | strip | remove: '#' -%}
@@ -67,7 +66,9 @@
     {%- endif -%}
   </div>
 {%- elsif request.design_mode -%}
-  <div class="csp-placeholder" {{ block.shopify_attributes }}>Choose a product with review data, or enter a confirmed rating.</div>
+  <div class="csp-placeholder" {{ block.shopify_attributes }}>
+    {%- if block.settings.source == 'manual' -%}Manual ratings are no longer shown. Choose "Verified Judge.me reviews".{%- else -%}Shows the Judge.me rating from verified buyers once this product has one.{%- endif -%}
+  </div>
 {%- endif -%}
 
 {% schema %}
@@ -79,13 +80,13 @@
       "id": "source",
       "label": "Rating source",
       "options": [
-        { "value": "product", "label": "Product review data" },
-        { "value": "manual", "label": "Manual rating" }
+        { "value": "product", "label": "Verified Judge.me reviews" },
+        { "value": "manual", "label": "Manual rating (no longer shown)" }
       ],
       "default": "product"
     },
-    { "type": "product", "id": "rating_product", "label": "Product", "info": "Leave blank to use the current product on product pages." },
-    { "type": "range", "id": "manual_rating", "label": "Confirmed rating", "min": 0, "max": 5, "step": 0.1, "default": 0 },
+    { "type": "product", "id": "rating_product", "label": "Product", "info": "Leave blank to use the current product on product pages. Counts its Judge.me reviews from verified buyers only." },
+    { "type": "range", "id": "manual_rating", "label": "Manual rating (no longer shown)", "min": 0, "max": 5, "step": 0.1, "default": 0 },
     { "type": "text", "id": "label", "label": "Optional source label" },
     { "type": "header", "content": "Layout" },
     {

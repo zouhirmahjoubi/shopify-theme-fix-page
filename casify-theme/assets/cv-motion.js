@@ -753,3 +753,67 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();
+
+/* Endless CSS animations off screen.
+ *
+ * Pulses, sways, shines and marquees declared in CSS keep ticking while their
+ * section is screens away, and every tick costs the main thread a style
+ * update, often a layout and a repaint as well (the guarantee section's SVG
+ * pulse laid itself out on every frame while a shopper sat at the top of the
+ * home page). Each template and footer section is watched: once it is more
+ * than a screen from the viewport its endless CSS animations pause, and they
+ * carry on from the same point as it comes back within a screen.
+ * Only CSS-declared animations that repeat forever are touched, and only the
+ * ones paused here are resumed, so animations owned by scripts (GSAP, Motion,
+ * element.animate) and CSS play-state rules keep their own control. The
+ * header group is left alone: its sign stays on screen while the page scrolls.
+ */
+(function () {
+  'use strict';
+
+  if (!('IntersectionObserver' in window) || !window.CSSAnimation || !Element.prototype.getAnimations) return;
+
+  var MARK = '__cvOffscreenPaused';
+
+  function endless(animation) {
+    if (!(animation instanceof window.CSSAnimation)) return false;
+    try { return animation.effect.getTiming().iterations === Infinity; } catch (e) { return false; }
+  }
+
+  function settle(section, near) {
+    var list = section.getAnimations({ subtree: true });
+    for (var i = 0; i < list.length; i++) {
+      var animation = list[i];
+      if (!endless(animation)) continue;
+      if (near) {
+        if (animation[MARK]) {
+          animation[MARK] = false;
+          if (animation.playState === 'paused') animation.play();
+        }
+      } else if (animation.playState === 'running') {
+        animation[MARK] = true;
+        animation.pause();
+      }
+    }
+  }
+
+  var watcher = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) settle(entries[i].target, entries[i].isIntersecting);
+  }, { rootMargin: '100% 0px' });
+
+  var WATCHED = '#MainContent > .shopify-section, .shopify-section-group-footer-group';
+
+  function start() {
+    var sections = document.querySelectorAll(WATCHED);
+    for (var i = 0; i < sections.length; i++) watcher.observe(sections[i]);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+
+  // Theme editor: a re-rendered section is a new element.
+  document.addEventListener('shopify:section:load', function (e) {
+    var section = e.target && e.target.closest ? e.target.closest('.shopify-section') : null;
+    if (section && section.matches(WATCHED)) watcher.observe(section);
+  });
+})();

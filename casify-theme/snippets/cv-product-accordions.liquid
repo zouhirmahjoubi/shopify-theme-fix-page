@@ -1,31 +1,33 @@
 {% doc %}
-  Renders the product details and shipping accordions for the shop counter.
-
+  Renders the product details, phone list, shipping and damage cover accordions for the shop counter.
   @param {product} product - The product shown by the section.
   @param {number} model_oi - The zero-based index of the device-model option.
   @param {string} [details_label] - The details accordion label.
   @param {string} [brand_label] - The product vendor label.
   @param {string} [shipping_label] - The shipping accordion label.
   @param {string} [shipping_text] - The merchant-authored shipping content.
+  @param {string} [fits_label] - The phone list accordion label; empty hides the row.
+  @param {string} [damage_label] - The damage cover accordion label.
+  @param {string} [damage_text] - The merchant-authored damage cover content; empty hides the row.
 {% enddoc %}
-
 {%- liquid
   assign details_text = details_label
   if details_text == blank
     assign details_text = 'products.product.details' | t
   endif
-
   assign brand_text = brand_label
   if brand_text == blank
     assign brand_text = 'products.product.brand' | t
   endif
-
   assign shipping_heading = shipping_label
   if shipping_heading == blank
     assign shipping_heading = 'products.product.shipping_returns' | t
   endif
+  assign phone_models = ''
+  if model_oi >= 0
+    assign phone_models = product.options_with_values[model_oi].values
+  endif
 -%}
-
 <div class="cvc__accs">
   <details class="cvc__acc">
     <summary class="cvc__acc-q">
@@ -57,7 +59,21 @@
       {%- endif -%}
     </div>
   </details>
-
+  {%- if fits_label != blank and phone_models.size > 0 -%}
+    <details class="cvc__acc">
+      <summary class="cvc__acc-q">
+        <span>{{ fits_label | escape }} <small class="cvc__acc-count">{{ phone_models.size }}</small></span>
+        <span class="cvc__acc-mark" aria-hidden="true"></span>
+      </summary>
+      <div class="cvc__acc-a">
+        <ul class="cvc__fits" role="list">
+          {%- for model in phone_models -%}
+            <li>{{ model | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </details>
+  {%- endif -%}
   {%- if shipping_text != blank -%}
     <details class="cvc__acc">
       <summary class="cvc__acc-q">
@@ -65,6 +81,15 @@
         <span class="cvc__acc-mark" aria-hidden="true"></span>
       </summary>
       <div class="cvc__acc-a">{{ shipping_text }}</div>
+    </details>
+  {%- endif -%}
+  {%- if damage_text != blank -%}
+    <details class="cvc__acc">
+      <summary class="cvc__acc-q">
+        <span>{{ damage_label | default: 'Damage cover' | escape }}</span>
+        <span class="cvc__acc-mark" aria-hidden="true"></span>
+      </summary>
+      <div class="cvc__acc-a">{{ damage_text }}</div>
     </details>
   {%- endif -%}
 </div>

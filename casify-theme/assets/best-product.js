@@ -107,7 +107,7 @@
     }
     function packTotal(price, qty, pct) {
       var line = price * qty;
-      return line - Math.round(line * (pct || 0) / 100);
+      return line - Math.floor(line * (pct || 0) / 100); // Shopify rounds the discount down to the cent
     }
 
     function labelAdd(btn, text) {

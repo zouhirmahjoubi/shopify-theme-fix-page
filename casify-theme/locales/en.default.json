@@ -73,9 +73,9 @@
       "tagged": "tagged \"{{ tags }}\"",
       "page": "Page {{ page }}",
       "home_title": "{{ shop }} | Phone cases for iPhone and Samsung",
-      "home_description": "{{ shop }}: phone cases for iPhone and Samsung, chosen for your exact model. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
-      "product_description": "{{ title }} from {{ shop }}. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days.",
-      "listing_description": "{{ title }} at {{ shop }}, phone cases for iPhone and Samsung. Free shipping on every order, 30-day returns and dispatch in 1 to 3 business days."
+      "home_description": "{{ shop }}: printed phone cases for iPhone, Samsung and Pixel, made for your exact model. Free shipping on every order.",
+      "product_description": "{{ title }} from {{ shop }}. Printed to order, with free shipping on every order.",
+      "listing_description": "{{ title }} at {{ shop }}, printed phone cases for iPhone, Samsung and Pixel. Free shipping on every order."
     },
     "breadcrumbs": {
       "home": "Home"
@@ -127,20 +127,20 @@
       "app_heading": "Read every customer note"
     },
     "review_badges": {
-      "aria_label": "Store rating: {{ rating }} out of 5 from {{ count }} reviews on Trustpilot and Google",
+      "aria_label": "Store rating: {{ rating }} out of 5 from {{ count }} verified Judge.me reviews",
       "store_rating": "Store rating",
       "trustpilot": "Trustpilot",
       "google": "Google",
       "score": "{{ rating }} / 5",
       "reviews": "{{ count }} reviews",
-      "group_label": "Store ratings on Google and Trustpilot",
+      "group_label": "Store rating from verified buyers",
       "google_label": "Rated {{ rating }} out of 5 from {{ count }} reviews on Google",
       "google_label_no_count": "Rated {{ rating }} out of 5 on Google",
       "trustpilot_label": "Rated {{ rating }} out of 5 from {{ count }} reviews on Trustpilot",
       "trustpilot_label_no_count": "Rated {{ rating }} out of 5 on Trustpilot",
-      "combined": "Google and Trustpilot",
-      "combined_label": "Store rating: {{ rating }} out of 5 from {{ count }} reviews on Google and Trustpilot combined",
-      "combined_label_no_count": "Store rating: {{ rating }} out of 5 from Google and Trustpilot reviews combined"
+      "combined": "Judge.me",
+      "combined_label": "Store rating: {{ rating }} out of 5 from {{ count }} verified Judge.me reviews",
+      "combined_label_no_count": "Store rating: {{ rating }} out of 5 from verified Judge.me reviews"
     },
     "price_offer": { "now": "Now", "compare_at": "Compare at", "off": "off", "you_save": "You save" },
     "gallery": {
@@ -162,7 +162,7 @@
       "count": "{{ count }} reviews",
       "aria_label": "Rated {{ rating }} out of 5 on Google",
       "new_window": "(opens in a new window)",
-      "editor_hint": "Enter your Google rating in this block to show the badge."
+      "editor_hint": "Shows the live store rating from Judge.me verified reviews once there is one."
     },
     "sales_note": { "editor_hint": "Sales note: hidden from shoppers until this product's count ({{ key }}) or the block's Number is at least {{ min }}." },
     "product_summary": {
@@ -230,8 +230,8 @@
       "raised_camera_edge": "Raised camera edge",
       "woven_texture": "Woven texture",
       "free_shipping": "Free shipping",
-      "returns": "30-day returns",
-      "ships": "Ships in 1 to 3 business days",
+      "returns": "Free replacement if damaged",
+      "ships": "Printed to order in the USA",
       "secure_checkout": "Secure checkout",
       "everyday": "Made for your everyday",
       "real_details": "Real details, real style",
@@ -264,7 +264,7 @@
       "faq_heading": "Frequently asked questions",
       "endcap_heading_html": "Ready for a new case<br>for your phone?",
       "choose_yours": "Choose yours",
-      "endcap_assurance": "Free shipping · 30-day returns",
+      "endcap_assurance": "Free shipping · Free replacement if damaged",
       "faq_q1": "Is this case compatible with MagSafe?",
       "faq_a1": "Choose a model and check the product details for magnetic accessory compatibility.",
       "faq_q2": "Will it protect my phone if I drop it?",
@@ -272,9 +272,9 @@
       "faq_q3": "What is the case made of?",
       "faq_a3": "Check the product details for the exact materials of your selected style.",
       "faq_q4": "How long does shipping take?",
-      "faq_a4": "Orders dispatch in 1 to 3 business days. Delivery time depends on your destination.",
+      "faq_a4": "Each case is printed after you order, which takes up to 10 business days. Delivery time then depends on your destination.",
       "faq_q5": "What is your return policy?",
-      "faq_a5": "You can return an eligible order within 30 days. See the store’s return policy for details."
+      "faq_a5": "If your case arrives damaged, misprinted or wrong, write to us within 30 days and we send a new one or refund you. See the store's return policy for details."
     }
   },
   "collections": {
@@ -387,17 +387,17 @@
       "editor_hint": "Add an offer heading in the section settings. Shoppers only see this section once it has one."
     },
     "trustpilot_reviews": {
-      "heading": "Rated on Trustpilot",
+      "heading": "Rated by verified buyers",
       "score": "{{ score }} / 5",
       "rating": "{{ rating }} out of 5 stars",
-      "total": "{{ count }} reviews on Trustpilot",
-      "on_trustpilot": "on Trustpilot",
+      "total": "{{ count }} verified reviews",
+      "on_trustpilot": "from verified buyers",
       "new_window": "(opens in a new window)",
-      "carousel_label": "Trustpilot reviews; use arrow keys to browse",
+      "carousel_label": "Customer reviews; use arrow keys to browse",
       "previous_review": "Previous review",
       "next_review": "Next review",
       "position": "Review {{ current }} of {{ total }}",
-      "editor_hint": "Add a review block with the reviewer name and review text from your Trustpilot profile.",
+      "editor_hint": "Judge.me reviews from verified buyers show here automatically.",
       "editor_draft": "Add a reviewer name and review text to show this review on the storefront."
     },
     "feature_tabs": { "play": "Play video", "pause": "Pause video", "editor_hint": "Add a tab with a label to show this section." },
@@ -434,7 +434,7 @@
       "intro": "Check the fit, see the details, then choose one case or build a pack. Here is what to know before you decide.",
       "choose_model": "Choose my model",
       "read_guide": "What to look for",
-      "assurance": "Free shipping · 30-day returns · Dispatch in 1 to 3 business days",
+      "assurance": "Free shipping · Printed to order · Free replacement if damaged",
       "rating": "{{ rating }} / {{ maximum }} from {{ count }} reviews",
       "from": "From",
       "pick_product": "Choose a featured product in this section's settings to show its photos, price and shopping link.",

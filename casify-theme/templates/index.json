@@ -1383,12 +1383,12 @@
         "review-3"
       ],
       "settings": {
-        "heading": "Rated on Trustpilot",
+        "heading": "Rated by verified buyers",
         "accent_text": "Straight from our shoppers",
         "intro": "",
         "profile_url": "",
         "trustscore": 0,
-        "link_label": "Read all reviews on Trustpilot",
+        "link_label": "Read all reviews",
         "surface": "white",
         "layout": "carousel"
       }
