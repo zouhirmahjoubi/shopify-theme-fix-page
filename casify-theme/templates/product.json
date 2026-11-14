@@ -126,7 +126,9 @@
             "pick_model_text": "Pick your phone model first, so the case fits.",
             "cta_label": "Add to bag",
             "cta_pack_label": "Add [qty] cases",
-            "show_clips": true
+            "show_clips": true,
+            "shop_heading_all": "Our cases in hand",
+            "shop_lede": "Magnetic cases on iPhone 18 Pro Max, glossy finish."
           }
         },
         "video-review-1": {
