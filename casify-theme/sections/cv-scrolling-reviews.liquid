@@ -4,11 +4,17 @@
   A rebuild of the "Scrolling Reviews" snippet: rows of short customer quotes
   running across the page in opposite directions, like ribbon candy on a
   conveyor. Each quote is a die-cut paper ticket with a monogram (or photo)
-  in a brass ring, star rating and name.
+  in a brass ring, star rating and name (snippets/cv-scrolling-review-card.liquid).
 
-  Content is merchant-entered only: the preset ships empty review blocks so
-  nothing invented reaches the storefront. Empty blocks render a placeholder
-  in the theme editor and nothing on the live store.
+  The tickets are Judge.me reviews from verified buyers only
+  (snippets/cv-jm-verified.liquid): imported, typed-in and unverified reviews
+  never show. A review of another case names that case on its ticket. Old
+  "Review" blocks stay in the schema so saved templates still load, but they
+  are not shown. With no verified review the section renders nothing on the
+  live store and a hint in the theme editor.
+
+  "Random order" (on by default) shuffles the tickets on every page view
+  (cv-scrolling-reviews.js); the theme editor keeps Judge.me's newest-first order.
 
   Without JavaScript (or with reduced motion) each row is a plain,
   horizontally scrollable list. With JS, cv-scrolling-reviews.js clones the
@@ -21,23 +27,61 @@
 {%- liquid
   assign st = section.settings
   assign rows = st.rows | plus: 0
-  assign filled = 0
-  for block in section.blocks
-    if block.settings.quote != blank
-      assign filled = filled | plus: 1
+  assign here = product.handle | default: ''
+-%}
+{%- capture cvsr_jm -%}{%- render 'cv-jm-verified', mode: 'rows', scope: 'all', limit: 25 -%}{%- endcapture -%}
+
+{%- comment -%}
+  Every ticket is rendered once, then dealt across the rows. "TONE" is filled
+  in per row below so each row runs through the three avatar colours.
+  Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift.
+  A review of a case the shop sent as a gift carries "Gifted case", not "Verified buyer".
+{%- endcomment -%}
+{%- capture cvsr_cards -%}
+  {%- assign cvsr_reviews = cvsr_jm | split: '␞' -%}
+  {%- for rec in cvsr_reviews -%}
+    {%- liquid
+      assign f = rec | split: '␟'
+      if f.size < 9
+        continue
+      endif
+      assign q = f[2] | default: f[1] | truncatewords: 40, '…'
+      assign case_name = ''
+      if f[7] == 'product' and f[6] != here
+        assign case_name = f[5]
+      endif
+      assign is_gift = false
+      if f[8] == 'gift'
+        assign is_gift = true
+      endif
+    -%}
+    {%- render 'cv-scrolling-review-card', quote: q, name: f[3], rating: f[0], case_name: case_name, tone: 'TONE', gifted: is_gift -%}
+    <!--cvsr-cut-->
+  {%- endfor -%}
+  {%- if request.design_mode and cvsr_reviews.size == 0 -%}
+    {%- render 'cv-scrolling-review-card', hint: 'Judge.me reviews from verified buyers appear here. None yet.' -%}
+    <!--cvsr-cut-->
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign cvsr_items = cvsr_cards | split: '<!--cvsr-cut-->'
+  assign total = 0
+  for item in cvsr_items
+    assign item_s = item | strip
+    if item_s != blank
+      assign total = total | plus: 1
     endif
   endfor
-  assign render_any = false
-  if filled > 0 or request.design_mode
-    assign render_any = true
-  endif
+  assign row_count = rows | at_most: total | at_least: 1
 -%}
 
-{%- if render_any -%}
+{%- if total > 0 or request.design_mode -%}
 <section
   class="cvsr cvsr--tone-{{ st.tone }}"
   data-cvsr
   data-cvsr-speed="{{ st.speed }}"
+  {%- if st.shuffle and request.design_mode == false %} data-cvsr-shuffle{% endif %}
   style="--cvsr-pt: {{ st.padding_top }}px; --cvsr-pb: {{ st.padding_bottom }}px;"
   aria-labelledby="cvsr-title-{{ section.id }}"
 >
@@ -58,57 +102,28 @@
   </div>
 
   <div class="cvsr__rows">
-    {%- for r in (1..rows) -%}
+    {%- for row in (1..row_count) -%}
       {%- assign row_index = forloop.index0 -%}
-      <div class="cvsr__row" data-cvsr-row data-cvsr-dir="{% if forloop.index0 == 1 %}1{% else %}-1{% endif %}">
+      <div class="cvsr__row" data-cvsr-row data-cvsr-dir="{% if row_index == 1 %}1{% else %}-1{% endif %}">
         <ul class="cvsr__track" role="list" data-cvsr-track>
-          {%- for block in section.blocks -%}
+          {%- assign dealt = 0 -%}
+          {%- assign place = 0 -%}
+          {%- for item in cvsr_items -%}
             {%- liquid
-              assign b = block.settings
-              assign slot = forloop.index0 | modulo: rows
+              assign item_s = item | strip
+              if item_s == blank
+                continue
+              endif
+              assign slot = dealt | modulo: row_count
+              assign dealt = dealt | plus: 1
               if slot != row_index
                 continue
               endif
-              if b.quote == blank and request.design_mode == false
-                continue
-              endif
-              assign initials = ''
-              assign name_parts = b.name | strip | split: ' '
-              for part in name_parts limit: 2
-                assign letter = part | slice: 0, 1
-                assign initials = initials | append: letter
-              endfor
-              assign ring_tone = forloop.index0 | modulo: 3
+              assign tone_n = place | plus: row_index | modulo: 3
+              assign tone_class = 'cvsr-card__avatar--' | append: tone_n
+              assign place = place | plus: 1
             -%}
-            <li class="cvsr-card{% if b.quote == blank %} cvsr-card--empty{% endif %}" data-cvsr-card {{ block.shopify_attributes }}>
-              {%- if b.quote == blank -%}
-                <span class="cvsr-card__hint">Add a real customer quote to this review block</span>
-              {%- else -%}
-                <span class="cvsr-card__avatar cvsr-card__avatar--{{ ring_tone }}" aria-hidden="true">
-                  {%- if b.photo != blank -%}
-                    {{ b.photo | image_url: width: 96, height: 96, crop: 'center' | image_tag: loading: 'lazy', alt: '', width: 48, height: 48 }}
-                  {%- else -%}
-                    {{ initials | upcase | default: '★' }}
-                  {%- endif -%}
-                </span>
-                <figure class="cvsr-card__body">
-                  <blockquote class="cvsr-card__quote"><p>{{ b.quote | escape }}</p></blockquote>
-                  <figcaption class="cvsr-card__meta">
-                    {%- if b.rating > 0 -%}
-                      {%- assign fill = b.rating | times: 20 -%}
-                      {% render 'cv-stars', fill: fill, class: 'cvsr-card__stars' %}
-                      <span class="cvsr__sr">Rated {{ b.rating }} out of 5.</span>
-                    {%- endif -%}
-                    {%- if b.name != blank -%}
-                      <span class="cvsr-card__name">{{ b.name | escape }}</span>
-                    {%- endif -%}
-                    {%- if b.verified -%}
-                      <span class="cvsr-card__tag">Verified buyer</span>
-                    {%- endif -%}
-                  </figcaption>
-                </figure>
-              {%- endif -%}
-            </li>
+            {{ item_s | replace: 'cvsr-card__avatar--TONE', tone_class }}
           {%- endfor -%}
         </ul>
       </div>
@@ -133,7 +148,7 @@
     { "type": "richtext", "id": "subheading", "label": "Sub-heading" },
     {
       "type": "select", "id": "rows", "label": "Rows", "default": "2",
-      "info": "Reviews are dealt across the rows in order. Rows run in opposite directions.",
+      "info": "Reviews are dealt across the rows. Rows run in opposite directions.",
       "options": [ { "value": "1", "label": "One" }, { "value": "2", "label": "Two" }, { "value": "3", "label": "Three" } ]
     },
     {
@@ -148,6 +163,15 @@
         { "value": "cocoa", "label": "Cocoa" }
       ]
     },
+    { "type": "header", "content": "Reviews" },
+    {
+      "type": "paragraph",
+      "content": "Shows Judge.me reviews from verified buyers only, newest 25. Imported and unverified reviews never show here."
+    },
+    {
+      "type": "checkbox", "id": "shuffle", "label": "Random order", "default": true,
+      "info": "Shuffles the reviews on every visit. The theme editor keeps Judge.me's order."
+    },
     { "type": "header", "content": "Section padding" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 56 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 56 }
@@ -155,23 +179,20 @@
   "blocks": [
     {
       "type": "review",
-      "name": "Review",
+      "name": "Old review (not shown)",
       "settings": [
-        { "type": "textarea", "id": "quote", "label": "Quote", "info": "Use a real customer's words. Short quotes read best while moving." },
-        { "type": "text", "id": "name", "label": "Customer name", "info": "E.g. first name and last initial." },
-        { "type": "range", "id": "rating", "label": "Star rating", "min": 0, "max": 5, "step": 1, "default": 5, "info": "0 hides the stars." },
-        { "type": "image_picker", "id": "photo", "label": "Customer photo", "info": "Optional. Without one, the customer's initials are shown." },
-        { "type": "checkbox", "id": "verified", "label": "Show \"Verified buyer\"", "info": "Only tick this for a confirmed order.", "default": false }
+        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews from verified buyers. You can delete this block." },
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Customer name" },
+        { "type": "range", "id": "rating", "label": "Star rating", "min": 0, "max": 5, "step": 1, "default": 5 },
+        { "type": "image_picker", "id": "photo", "label": "Customer photo" },
+        { "type": "checkbox", "id": "verified", "label": "Verified buyer", "default": false }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Scrolling reviews",
-      "blocks": [
-        { "type": "review" }, { "type": "review" }, { "type": "review" },
-        { "type": "review" }, { "type": "review" }, { "type": "review" }
-      ]
+      "name": "Scrolling reviews"
     }
   ]
 }

@@ -1,0 +1,156 @@
+{% doc %}
+  Judge.me reviews from verified buyers, and nothing else. Every review list and
+  every star in the theme reads its reviews through this snippet.
+
+  Judge.me keeps its newest reviews in the shop metafield judgeme.reviews_grid
+  (json): all_reviews, product_reviews and store_reviews, up to 25 each, newest
+  first. A review passes only when Judge.me marks it verified_buyer: the
+  reviewer's email matched an order. Imported reviews, reviews typed in
+  elsewhere and unverified web reviews never pass, whatever Judge.me publishes in
+  its own widgets. If Judge.me changes that data, nothing passes and every
+  section shows its empty state.
+
+  Gifted cases. A case sent free goes out on a $0 order, so Judge.me marks its
+  review verified too. That review is "gifted" when the shop's public reply on
+  it contains "sent this case as a gift" (the fixed reply posted on every gifted
+  review), or when Judge.me puts a transparency badge about a reward or an
+  incentive on it. A gifted review is listed with the label "Gifted case" in
+  place of "Verified buyer", and it never counts as a buyer: it is left out of
+  'map' and of the first two numbers of 'stats'.
+
+  Callers capture the output:
+    mode 'rows'  - verified reviews, newest first. Records end in "␞", fields
+                   are split by "␟":
+                   rating ␟ title ␟ text ␟ name ␟ date (ISO) ␟ case name ␟ product handle ␟ kind ␟ gift ␟ x
+                   kind is "product" or "store"; case name is the design name
+                   ("Let It Snow Patchwork Sticker"), blank for store reviews;
+                   gift is "gift" for a gifted case, blank for a buyer.
+    mode 'stats' - "count␟sum␟gift count␟gift sum␟x" over the same reviews:
+                   buyers first, then gifted cases.
+    mode 'map'   - "|handle:rating" for every verified product review by a
+                   buyer, for product cards: count = (map | split: "|handle:").size - 1.
+
+  Counts cover what Judge.me keeps in that metafield: the newest 25 product
+  reviews and the newest 25 store reviews.
+
+  @param {string} mode - 'rows', 'stats' or 'map'.
+  @param {string} [scope] - 'all' (default), 'store', 'product' or 'others' (everything but this product's reviews).
+  @param {string} [handle] - Handle of the product on the page, for 'product' and 'others'.
+  @param {number} [limit] - Most rows to return. Default 25.
+
+  @example
+  {%- capture jm -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle -%}{%- endcapture -%}
+{% enddoc %}
+{%- liquid
+  assign grid = shop.metafields.judgeme.reviews_grid.value
+  assign jm_scope = scope | default: 'all'
+  assign jm_limit = limit | default: 25 | plus: 0
+
+  comment
+    Which of Judge.me's lists to read. Totals over everything need both the
+    product and the store list; a list of reviews reads the mixed "all" list,
+    which is already newest first.
+  endcomment
+  assign lists = 'all_reviews'
+  if mode == 'map' or jm_scope == 'product'
+    assign lists = 'product_reviews'
+  elsif jm_scope == 'store'
+    assign lists = 'store_reviews'
+  elsif mode == 'stats'
+    assign lists = 'product_reviews,store_reviews'
+  endif
+  assign lists = lists | split: ','
+
+  assign n = 0
+  assign total = 0
+  assign gift_n = 0
+  assign gift_total = 0
+  assign shown = 0
+  assign out = ''
+  for list_key in lists
+    assign pool = grid[list_key].reviews
+    for r in pool
+      if r.verified_buyer != true
+        continue
+      endif
+
+      assign r_rating = r.rating | plus: 0 | at_least: 0 | at_most: 5
+      assign r_kind = 'product'
+      if r.is_shop_review == true
+        assign r_kind = 'store'
+      endif
+      assign r_handle = ''
+      if r_kind == 'product' and r.product_url contains '/products/'
+        assign r_handle = r.product_url | split: '?' | first | split: '#' | first | split: '/products/' | last | split: '/' | first
+      endif
+
+      if jm_scope == 'product' and r_handle != handle
+        continue
+      endif
+      if jm_scope == 'others' and r_kind == 'product' and r_handle == handle
+        continue
+      endif
+
+      comment
+        A gifted case: the shop's own reply says so, or Judge.me marks the review as rewarded.
+      endcomment
+      assign r_gift = ''
+      assign r_reply = r.reply_content | strip_html | downcase
+      if r_reply contains 'sent this case as a gift'
+        assign r_gift = 'gift'
+      endif
+      for badge in r.transparency_badges
+        assign badge_name = badge | downcase
+        if badge_name contains 'reward' or badge_name contains 'incentiv'
+          assign r_gift = 'gift'
+        endif
+      endfor
+
+      if mode == 'map'
+        if r_gift == blank and r_handle != blank and r_rating > 0
+          assign out = out | append: '|' | append: r_handle | append: ':' | append: r_rating
+        endif
+        continue
+      endif
+
+      if r_gift == blank
+        assign n = n | plus: 1
+        assign total = total | plus: r_rating
+      else
+        assign gift_n = gift_n | plus: 1
+        assign gift_total = gift_total | plus: r_rating
+      endif
+
+      if mode == 'rows'
+        assign shown = shown | plus: 1
+        assign case_name = ''
+        if r_kind == 'product'
+          comment
+            The home rail's short name (snippets/cv-showcase-card.liquid): the design, up to "Phone Case".
+          endcomment
+          assign case_name = r.product_title | split: ' | ' | first | split: ' Phone Case' | first | strip
+          assign name_tail = case_name | slice: -10, 10
+          if name_tail == ' Christmas'
+            assign name_cut = case_name.size | minus: 10
+            assign case_name = case_name | slice: 0, name_cut
+          endif
+        endif
+        assign r_title = r.title | strip | remove: '␟' | remove: '␞'
+        assign r_text = r.body | strip | remove: '␟' | remove: '␞'
+        assign r_name = r.reviewer_name | strip | remove: '␟' | remove: '␞'
+        assign case_name = case_name | remove: '␟' | remove: '␞'
+        assign out = out | append: r_rating | append: '␟' | append: r_title | append: '␟' | append: r_text | append: '␟' | append: r_name | append: '␟' | append: r.created_at | append: '␟' | append: case_name | append: '␟' | append: r_handle | append: '␟' | append: r_kind | append: '␟' | append: r_gift | append: '␟x␞'
+        if shown >= jm_limit
+          break
+        endif
+      endif
+    endfor
+  endfor
+
+  if mode == 'stats'
+    assign out = n | append: '␟' | append: total | append: '␟' | append: gift_n | append: '␟' | append: gift_total | append: '␟x'
+  elsif mode == 'map' and out != blank
+    assign out = out | append: '|'
+  endif
+-%}
+{{- out -}}

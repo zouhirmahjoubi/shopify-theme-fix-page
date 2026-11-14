@@ -73,8 +73,10 @@
 }
 .cvsr__row::-webkit-scrollbar { display: none; }
 .cvsr__row.is-looping { overflow: hidden; }
+/* align-items: center, not stretch: a one-line ticket next to a three-line one
+   (stars, name and case) would otherwise be padded 30px+ past its own content. */
 .cvsr__track {
-  display: flex; gap: var(--cvsr-gap); width: max-content;
+  display: flex; align-items: center; gap: var(--cvsr-gap); width: max-content;
   margin: 0; padding: 12px 24px 18px; list-style: none;
 }
 .cvsr__row.is-looping .cvsr__track { padding-left: 0; padding-right: 0; will-change: transform; }
@@ -104,7 +106,9 @@
 .cvsr-card__avatar--2 { background: var(--cocoa-500); }
 .cvsr-card__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.cvsr-card__body { margin: 0; min-width: 0; display: grid; gap: 4px; }
+/* minmax(0, 1fr): an auto column can't shrink below the one-line case name, so the
+   ticket's max width would not reach the text and the name would spill out. */
+.cvsr-card__body { margin: 0; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
 .cvsr-card__quote { margin: 0; }
 .cvsr-card__quote p {
   margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.3;
@@ -123,6 +127,18 @@
   font-family: var(--font-label); font-size: 10.5px; font-weight: 700; letter-spacing: .06em;
   /* Deepened teal: --teal-600 on --teal-100 is only 4.0:1; this is 5.5:1. */
   color: #426563; background: var(--teal-100);
+}
+/* A gifted case is not a purchase: its tag leaves the "verified" teal for cocoa on gold (9.1:1). */
+.cvsr-card__tag--gift { color: var(--cocoa-600); background: var(--gold-200); }
+/* The case an approved review is about, when it isn't the product on the page.
+   Own line under the stars and name; a long design name ends in an ellipsis at
+   the ticket's max width instead of making the ticket taller. The size is a
+   literal like every other size in this file: the theme has no size tokens. */
+.cvsr-card__case {
+  flex-basis: 100%; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: 500 12.5px/1.35 var(--font-body); /* ds-allow-hardcode */
+  color: var(--cocoa-500);
 }
 
 /* Stars (same rules as snippets/cv-stars.liquid's product-page styles). */

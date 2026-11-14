@@ -2,78 +2,44 @@
   Summary under the product title ("summary" block in sections/cv-product-counter.liquid):
   stars · rating · (count reviews), then price · compare-at · Save, then a one-line pitch.
 
-  Every number is live: the rating comes from the product's own review metafields, else
-  from this product's approved reviews in the Review widget (sections/review-widget.liquid),
-  else the section's store rating (the combined Google and Trustpilot figure). With none, "Be the first to review" links to the
-  widget and opens its form. The prices come from the selected variant — cv-product.js
-  keeps them in step when the shopper changes variant. The Google and Trustpilot
-  tickets (snippets/cv-store-ratings.liquid) sit directly under the price.
+  Every number is live: the rating comes only from this product's Judge.me reviews by
+  verified buyers (snippets/cv-jm-verified.liquid). Imported, typed-in and unverified
+  reviews never count, and no store rating stands in for the product's own. Reviews of
+  cases the shop sent as gifts stay out of a buyer's rating; while no buyer has reviewed
+  the product, their rating shows and the count says "gifted cases". With none at all,
+  the "no reviews" label links to the reviews section. The prices come from the selected
+  variant — cv-product.js keeps them in step when the shopper changes variant. The Google
+  and Trustpilot tickets (snippets/cv-store-ratings.liquid) sit directly under the price.
 
   @param {object} block - The summary block.
   @param {object} product - The product being shown.
   @param {object} variant - The selected variant.
   @param {object} settings - The section's settings (store rating, reviews anchor).
 {% enddoc %}
+{%- capture jm_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'product', handle: product.handle -%}{%- endcapture -%}
 {%- liquid
-  assign source = block.settings.rating_source | default: 'auto'
-
   assign rating_value = 0
   assign rating_count = ''
   assign rating_is_store = false
-
-  assign p_rating = product.metafields.reviews.rating.value
-  assign p_count = product.metafields.reviews.rating_count.value | default: 0
-  if source != 'store' and p_rating != blank and p_count > 0
-    assign p_max = p_rating.scale_max | default: 5
-    assign rating_value = p_rating.rating | times: 5.0 | divided_by: p_max
-    assign rating_count = p_count
-  endif
+  assign rating_is_gift = false
 
   comment
-    Reviews sent through the Review widget: approved comments on its blog post, written
-    "5/5 § product-handle § Title § Text". Only this product's own reviews count; the
-    widget's typed-in review blocks are not read here.
+    Stats (cv-jm-verified): buyers' count and sum, then gifted cases' count and sum.
   endcomment
-  assign rw_key = block.settings.reviews_article | default: 'customer-reviews/reviews' | strip | remove_first: '/blogs/' | remove_first: 'blogs/'
-  assign rw_article = nil
-  if rw_key contains '/'
-    assign rw_article = articles[rw_key]
-  endif
-  if rating_value == 0 and source != 'store' and rw_article.id != blank
-    assign rw_sum = 0
-    assign rw_n = 0
-    for c in rw_article.comments
-      assign rw_parts = c.content | strip_html | strip | split: '§'
-      if rw_parts.size >= 4
-        assign rw_handle = rw_parts[1] | strip
-        assign rw_r = rw_parts[0] | split: '/' | first | strip | plus: 0
-        if rw_handle == product.handle and rw_r >= 1 and rw_r <= 5
-          assign rw_sum = rw_sum | plus: rw_r
-          assign rw_n = rw_n | plus: 1
-        endif
-      endif
-    endfor
-    if rw_n > 0
-      assign rating_value = rw_sum | times: 1.0 | divided_by: rw_n
-      assign rating_count = rw_n
-    endif
+  assign jm_parts = jm_stats | split: '␟'
+  assign jm_n = jm_parts[0] | plus: 0
+  assign jm_gift_n = jm_parts[2] | plus: 0
+  if jm_n > 0
+    assign rating_value = jm_parts[1] | plus: 0 | times: 1.0 | divided_by: jm_n
+    assign rating_count = jm_n
+  elsif jm_gift_n > 0
+    assign rating_value = jm_parts[3] | plus: 0 | times: 1.0 | divided_by: jm_gift_n
+    assign rating_count = jm_gift_n
+    assign rating_is_gift = true
   endif
   assign can_write = false
-  if rw_article.comments_enabled? and block.settings.empty_label != blank
+  if block.settings.empty_label != blank
     assign can_write = true
-  endif
-
-  comment
-    Gate G2: the store rating stands in only while the section's "show_store_rating" is on, and then it
-    carries a visible "Store rating" label (PRODUCT.md 2026-09-18), never passing as the product's own.
-  endcomment
-  if rating_value == 0 and source != 'product' and settings.show_store_rating
-    assign store_rating = settings.external_review_rating | strip | replace: ',', '.' | plus: 0
-    if store_rating > 0
-      assign rating_value = store_rating | at_most: 5
-      assign rating_count = settings.external_review_count | strip
-      assign rating_is_store = true
-    endif
   endif
   assign rating_shown = rating_value | round: 1
   assign star_fill = rating_value | times: 20
@@ -138,20 +104,22 @@
       {%- elsif rating_is_store -%}
         <span class="cvc-sum__count" aria-hidden="true">({{ 'products.review_badges.combined' | t }})</span>
       {%- elsif rating_count != blank -%}
-        <span class="cvc-sum__count" aria-hidden="true">({{ rating_count }} {% if rating_count == 1 %}review{% else %}{{ 'products.product_summary.reviews' | t }}{% endif %})</span>
+        <span class="cvc-sum__count" aria-hidden="true">({{ rating_count }} {% if rating_count == 1 %}review{% else %}{{ 'products.product_summary.reviews' | t }}{% endif %}{% if rating_is_gift %}, gifted {% if rating_count == 1 %}case{% else %}cases{% endif %}{% endif %})</span>
       {%- endif -%}
       <span class="cvc__visually-hidden">
         {%- if rating_is_store and rating_count != blank -%}
           {{ 'products.review_badges.combined_label' | t: rating: rating_shown, count: rating_count }}
         {%- elsif rating_is_store -%}
           {{ 'products.review_badges.combined_label_no_count' | t: rating: rating_shown }}
+        {%- elsif rating_is_gift -%}
+          Rated {{ rating_shown }} out of 5 from {{ rating_count }} {% if rating_count == 1 %}review of a gifted case{% else %}reviews of gifted cases{% endif %}
         {%- else -%}
           {{ 'products.product_summary.rating_label' | t: rating: rating_shown, count: rating_count }}
         {%- endif -%}
       </span>
     </a>
   {%- elsif can_write -%}
-    <a class="cvc-sum__rating" href="#{{ anchor | escape }}" data-rw-write>
+    <a class="cvc-sum__rating" href="#{{ anchor | escape }}">
       <span class="cvc-sum__stars" aria-hidden="true">{%- render 'cv-stars', fill: 0 -%}</span>
       <span class="cvc-sum__count">{{ block.settings.empty_label | escape }}</span>
     </a>

@@ -1,26 +1,33 @@
 {%- comment -%}
-  Review carousel: a swipeable row of reviews the merchant picks and types in.
+  Review carousel: a swipeable row of Judge.me reviews from verified buyers.
   CSS scroll-snap for touch, arrows and dots, optional autoplay (pauses on hover,
   focus, touch, a hidden tab, and for prefers-reduced-motion).
 
-  Shows nothing until a review has both a name and text, so the section never
-  fills itself with sample reviews. Reviews customers send through the review
-  widget's form appear in the review widget once approved; copy a favourite here
-  to feature it.
+  Reviews come only through snippets/cv-jm-verified.liquid, newest first:
+  imported, typed-in and unverified reviews never show. With none the section
+  renders nothing. The old "Review" blocks stay in the schema so saved templates
+  still load, but they are not shown.
 
   Motion (assets/review-motion.js): cards deal in, turn on a shallow drum as the
   row scrolls, and a three.js ring of sweets orbits the row, turning with it.
 {%- endcomment -%}
 
+{%- capture rc_jm -%}{%- render 'cv-jm-verified', mode: 'rows', scope: 'all', limit: 12 -%}{%- endcapture -%}
 {%- liquid
   assign sid = section.id
   assign st = section.settings
+  comment
+    Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift.
+  endcomment
+  assign rc_rows = rc_jm | split: '␞'
   assign review_count = 0
-  for block in section.blocks
-    if block.settings.author != blank and block.settings.text != blank
+  for rec in rc_rows
+    assign f = rec | split: '␟'
+    if f.size >= 9
       assign review_count = review_count | plus: 1
     endif
   endfor
+  assign product_base = routes.root_url | remove_last: '/' | append: '/products/'
 -%}
 
 {%- if review_count > 0 -%}
@@ -138,9 +145,6 @@
         <div>
           {%- if st.heading != blank -%}<h2 class="rc-title">{{ st.heading | escape }}</h2>{%- endif -%}
           {%- if st.subheading != blank -%}<p class="rc-sub">{{ st.subheading | escape }}</p>{%- endif -%}
-          {%- if st.badge != blank -%}
-            <p class="rc-badge">{%- render 'cv-stars', fill: 100 -%}<span>{{ st.badge | escape }}</span></p>
-          {%- endif -%}
         </div>
         <div class="rc-nav" data-rc-nav>
           <button type="button" class="rc-arrow" data-rc-prev aria-label="Previous reviews">
@@ -156,37 +160,50 @@
       <div class="rc-three" data-rc-three aria-hidden="true"></div>
       <div class="rc-track" data-rc-track tabindex="0" role="region" aria-label="{{ st.heading | default: 'Reviews' | escape }}: use the arrow keys to scroll">
         {%- assign slide_index = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.settings.author == blank or block.settings.text == blank -%}{%- continue -%}{%- endif -%}
-          {%- assign slide_index = slide_index | plus: 1 -%}
-          {%- assign fill = block.settings.rating | times: 20 -%}
-          <article class="rc-slide" role="group" aria-roledescription="slide" aria-label="{{ slide_index }} of {{ review_count }}" {{ block.shopify_attributes }}>
-            <span class="rc-stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">{%- render 'cv-stars', fill: fill -%}</span>
+        {%- for rec in rc_rows -%}
+          {%- liquid
+            assign f = rec | split: '␟'
+            if f.size < 9
+              continue
+            endif
+            assign slide_index = slide_index | plus: 1
+            assign r = f[0] | plus: 0
+            assign fill = r | times: 20
+            assign r_date = f[4] | date: '%B %Y'
+            comment
+              A case the shop sent as a gift (cv-jm-verified): never called bought or a buyer's.
+            endcomment
+            assign is_gift = false
+            if f[8] == 'gift'
+              assign is_gift = true
+            endif
+            assign p_image = nil
+            if f[6] != blank
+              assign p_image = all_products[f[6]].featured_image
+            endif
+          -%}
+          <article class="rc-slide" role="group" aria-roledescription="slide" aria-label="{{ slide_index }} of {{ review_count }}">
+            {%- if r > 0 -%}
+              <span class="rc-stars" role="img" aria-label="{{ r }} out of 5 stars">{%- render 'cv-stars', fill: fill -%}</span>
+            {%- endif -%}
 
             <blockquote>
-              {%- if block.settings.title != blank -%}<strong>{{ block.settings.title | escape }}</strong>{%- endif -%}
-              {{ block.settings.text | escape | newline_to_br }}
+              {%- if f[1] != blank -%}<strong>{{ f[1] | escape }}</strong>{%- endif -%}
+              {{ f[2] | escape | newline_to_br }}
             </blockquote>
 
-            {%- assign p = block.settings.product -%}
-            {%- if p != blank -%}
-              <a class="rc-product" href="{{ p.url }}">
-                {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
-                <span>{{ st.product_label | default: 'Bought:' | escape }} {{ p.title | escape }}</span>
+            {%- if f[7] == 'product' and f[5] != blank and f[6] != blank -%}
+              <a class="rc-product" href="{{ product_base }}{{ f[6] }}">
+                {%- if p_image -%}{{ p_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+                <span>{% if is_gift %}Gifted:{% else %}{{ st.product_label | default: 'Bought:' | escape }}{% endif %} {{ f[5] | escape }} case</span>
               </a>
             {%- endif -%}
 
             <div class="rc-author">
-              <span class="rc-avatar" aria-hidden="true">
-                {%- if block.settings.avatar != blank -%}
-                  {{ block.settings.avatar | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
-                {%- else -%}
-                  {{ block.settings.author | slice: 0 | upcase | escape }}
-                {%- endif -%}
-              </span>
+              <span class="rc-avatar" aria-hidden="true">{{ f[3] | slice: 0 | upcase | default: '★' | escape }}</span>
               <div>
-                <strong>{{ block.settings.author | escape }}</strong>
-                {%- if block.settings.meta != blank -%}<small>{{ block.settings.meta | escape }}</small>{%- endif -%}
+                <strong>{{ f[3] | escape }}</strong>
+                <small>{% if is_gift %}Gifted case{% else %}Verified buyer{% endif %}{% if r_date != blank %} · {{ r_date }}{% endif %}</small>
               </div>
             </div>
           </article>
@@ -287,10 +304,9 @@
   "class": "section-review-carousel",
   "settings": [
     { "type": "header", "content": "Content" },
-    { "type": "paragraph", "content": "Hidden until a review block has a name and text." },
+    { "type": "paragraph", "content": "Shows Judge.me reviews from verified buyers only, newest 12. Imported and unverified reviews never show here. Hidden until there is one." },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Loved by our customers" },
     { "type": "text", "id": "subheading", "label": "Subheading", "default": "Don't just take our word for it." },
-    { "type": "text", "id": "badge", "label": "Rating badge text", "info": "Optional. Only a rating you can show, e.g. \"Rated 4.8/5 on Google from 1,000+ reviews\". Keep it the same as the ratings under the price." },
     { "type": "text", "id": "product_label", "label": "Product label", "default": "Bought:" },
     { "type": "header", "content": "Carousel" },
     { "type": "range", "id": "per_view", "label": "Reviews visible (desktop)", "min": 1, "max": 4, "step": 1, "default": 3 },
@@ -317,9 +333,9 @@
   "blocks": [
     {
       "type": "review",
-      "name": "Review",
+      "name": "Old review (not shown)",
       "settings": [
-        { "type": "paragraph", "content": "Type the review exactly as the customer wrote it." },
+        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews from verified buyers. You can delete this block." },
         { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
         { "type": "text", "id": "title", "label": "Title" },
         { "type": "textarea", "id": "text", "label": "Review" },

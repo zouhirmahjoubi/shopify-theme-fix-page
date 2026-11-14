@@ -1,68 +1,46 @@
 {{ 'cv-social-proof.css' | asset_url | stylesheet_tag }}
 
 {%- comment -%}
-  Casify — "The proof", built from published Shopify review data only.
-
-  The aggregate is a weighted average of the standard reviews.rating and
-  reviews.rating_count metafields on active products. Written reviews are
-  supplied only by merchant-added app blocks.
-
-  Until products have their own reviews, the board can show the store rating
-  the merchant supplies from Trustpilot and Google (the same figure as the
-  product page's buy box, sections/cv-product-counter.liquid). It is always
-  labelled as a store rating with its sources, never mixed into product review
-  data, never marked "verified", and not emitted as structured data. With no
-  store rating either, the open-record empty state shows instead of seeded
-  testimonials, press names, distributions, or implied verification.
+  Casify — "The proof", built from Judge.me reviews by verified buyers only
+  (snippets/cv-jm-verified.liquid): the score, the count and the customer
+  ledger. Imported, typed-in and unverified reviews never count, whatever
+  Judge.me publishes in its own widgets, and the section takes no app blocks.
+  There is no typed store rating. With no verified review, the open-record
+  empty state shows instead of seeded testimonials, press names,
+  distributions or implied verification. A review of a case the shop sent as
+  a gift sits in the ledger as "Gifted case" and is never part of the score.
 {%- endcomment -%}
 
+{%- capture proof_stats -%}{%- render 'cv-jm-verified', mode: 'stats', scope: 'all' -%}{%- endcapture -%}
+{%- capture proof_jm -%}{%- render 'cv-jm-verified', mode: 'rows', scope: 'all', limit: 4 -%}{%- endcapture -%}
 {%- liquid
-  assign total_count = 0
-  assign weighted_sum = 0
-  assign rated_products = 0
+  assign stat_parts = proof_stats | split: '␟'
+  assign total_count = stat_parts[0] | plus: 0
   assign rating_scale = 5
-
-  for item in collections.all.products
-    assign item_count = item.metafields.reviews.rating_count.value | default: 0
-    assign item_rating = item.metafields.reviews.rating.value
-    if item_count > 0 and item_rating != blank
-      assign rated_products = rated_products | plus: 1
-      assign rating_scale = item_rating.scale_max | default: 5
-      assign item_weighted = item_rating.rating | times: item_count
-      assign weighted_sum = weighted_sum | plus: item_weighted
-      assign total_count = total_count | plus: item_count
-    endif
-  endfor
-
   assign has_rating = false
   assign average_rating = 0
   assign star_fill = 0
   if total_count > 0
     assign has_rating = true
-    assign average_rating = weighted_sum | divided_by: total_count | round: 1
-    assign star_fill = average_rating | times: 100.0 | divided_by: rating_scale | round: 1
+    assign average_rating = stat_parts[1] | plus: 0 | times: 1.0 | divided_by: total_count | round: 1
+    assign star_fill = average_rating | times: 20.0 | round: 1
   endif
-
-  assign store_rating = section.settings.store_rating | strip
-  assign store_count = section.settings.store_rating_count | strip
-  assign has_store = false
-  assign store_fill = 0
-  if has_rating == false and section.settings.show_store_rating and store_rating != blank and store_count != blank
-    assign has_store = true
-    assign store_fill = store_rating | plus: 0 | times: 20 | at_most: 100
-  endif
-
   assign proof_state = 'open'
   if has_rating
     assign proof_state = 'rated'
-  elsif has_store
-    assign proof_state = 'store'
   endif
-
-  assign app_blocks = 0
-  for block in section.blocks
-    if block.type == '@app'
-      assign app_blocks = app_blocks | plus: 1
+  comment
+    Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift.
+    The score is the buyers' alone. Reviews of gifted cases sit in the ledger with
+    their label and never set or move the score.
+  endcomment
+  assign gift_count = stat_parts[2] | plus: 0
+  assign notes = proof_jm | split: '␞'
+  assign note_count = 0
+  for rec in notes
+    assign f = rec | split: '␟'
+    if f.size >= 9
+      assign note_count = note_count | plus: 1
     endif
   endfor
 -%}
@@ -79,14 +57,14 @@
   <div class="cvp-proof__shell">
     <header class="cvp-proof__header">
       <h2 class="cvp-proof__heading" data-cv-proof-heading>{{ section.settings.heading | default: 'The proof, as it arrives' | escape }}</h2>
-      <p class="cvp-proof__intro">{{ section.settings.intro | default: 'A live record of published customer feedback. Nothing on this board is pre-filled or manually scored.' | escape }}</p>
+      <p class="cvp-proof__intro">{{ section.settings.intro_text | default: 'Reviews from verified buyers, as they arrive. Nothing here is typed in or scored by us.' | escape }}</p>
     </header>
 
     <div class="cvp-proof__board" data-cv-proof-board>
       <div class="cvp-proof__summary" data-cv-proof-summary>
         <div class="cvp-proof__status">
           <span class="cvp-proof__status-dot" aria-hidden="true"></span>
-          <span>{% if has_rating %}Live customer record{% elsif has_store %}{{ 'products.review_badges.store_rating' | t }}{% else %}Record open{% endif %}</span>
+          <span>{% if has_rating %}Live customer record{% else %}Record open{% endif %}</span>
         </div>
 
         {%- if has_rating -%}
@@ -98,37 +76,8 @@
             {%- render 'cv-stars', fill: star_fill, class: 'cvp-proof__stars-row' -%}
           </div>
           <p class="cvp-proof__count">
-            {{ total_count }} published {% if total_count == 1 %}review{% else %}reviews{% endif %}
-            {%- if rated_products > 1 %} across {{ rated_products }} products{% endif -%}
+            {{ total_count }} verified {% if total_count == 1 %}review{% else %}reviews{% endif %}{% if gift_count > 0 %} (gifted cases not counted){% endif %}
           </p>
-        {%- elsif has_store -%}
-          <div class="cvp-proof__rating" role="img" aria-label="{{ 'products.review_badges.aria_label' | t: rating: store_rating, count: store_count | escape }}">
-            <span class="cvp-proof__score" data-cv-proof-score data-score="{{ store_rating | escape }}" aria-hidden="true">{{ store_rating | escape }}</span>
-            <span class="cvp-proof__scale" aria-hidden="true">/ 5</span>
-          </div>
-          <div class="cvp-proof__stars" aria-hidden="true">
-            {%- render 'cv-stars', fill: store_fill, class: 'cvp-proof__stars-row' -%}
-          </div>
-          <p class="cvp-proof__count" aria-hidden="true">{{ 'products.review_badges.reviews' | t: count: store_count }} &middot; {{ 'products.review_badges.store_rating' | t | downcase }}</p>
-          <ul class="cvp-proof__sources" aria-label="Rating sources">
-            <li>
-              {%- if section.settings.trustpilot_url != blank -%}<a class="cvp-proof__source-chip" href="{{ section.settings.trustpilot_url }}" target="_blank" rel="noopener">{%- else -%}<span class="cvp-proof__source-chip">{%- endif -%}
-                <svg class="cvp-proof__source-icon cvp-proof__source-icon--trustpilot" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 2.3 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 16.87l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z"/></svg>
-                <span>{{ 'products.review_badges.trustpilot' | t }}</span>
-              {%- if section.settings.trustpilot_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
-            </li>
-            <li>
-              {%- if section.settings.google_url != blank -%}<a class="cvp-proof__source-chip" href="{{ section.settings.google_url }}" target="_blank" rel="noopener">{%- else -%}<span class="cvp-proof__source-chip">{%- endif -%}
-                <svg class="cvp-proof__source-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path fill="#4285f4" d="M21.56 12.25c0-.79-.07-1.54-.2-2.25H12v4.26h5.35a4.58 4.58 0 0 1-1.99 3v2.77h3.23c1.9-1.75 2.97-4.33 2.97-7.78Z"/>
-                  <path fill="#34a853" d="M12 22c2.7 0 4.96-.9 6.59-2.43l-3.23-2.77c-.9.6-2.05.96-3.36.96-2.6 0-4.81-1.76-5.6-4.13H3.06v2.85A9.96 9.96 0 0 0 12 22Z"/>
-                  <path fill="#fbbc05" d="M6.4 13.63A6 6 0 0 1 6.09 12c0-.57.11-1.12.31-1.63V7.52H3.06A9.96 9.96 0 0 0 2 12c0 1.61.38 3.14 1.06 4.48l3.34-2.85Z"/>
-                  <path fill="#ea4335" d="M12 6.24c1.47 0 2.79.5 3.83 1.5l2.83-2.83A9.5 9.5 0 0 0 12 2a9.96 9.96 0 0 0-8.94 5.52l3.34 2.85C7.19 8 9.4 6.24 12 6.24Z"/>
-                </svg>
-                <span>{{ 'products.review_badges.google' | t }}</span>
-              {%- if section.settings.google_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
-            </li>
-          </ul>
         {%- else -%}
           <div class="cvp-proof__empty-mark" aria-hidden="true">
             <svg viewBox="0 0 120 120" role="presentation">
@@ -137,37 +86,32 @@
               <path class="cvp-proof__svg-check" data-cv-proof-svg d="m70 95 8 8 18-22" />
             </svg>
           </div>
+          {%- comment -%} Only gifted cases reviewed so far: still no score, and the text says why. {%- endcomment -%}
+          {%- if gift_count > 0 %}
+          <h3 class="cvp-proof__empty-title">No buyer reviews yet</h3>
+          <p class="cvp-proof__empty-copy">The first buyer sets the score. Reviews of gifted cases are labelled and left out of it.</p>
+          {%- else %}
           <h3 class="cvp-proof__empty-title">{{ section.settings.empty_heading | default: 'No published reviews yet' | escape }}</h3>
-          <p class="cvp-proof__empty-copy">{{ section.settings.empty_text | default: 'The first customer review will set the score — not us.' | escape }}</p>
+          <p class="cvp-proof__empty-copy">{{ section.settings.empty_text | default: 'The first customer review will set the score, not us.' | escape }}</p>
+          {%- endif -%}
           {%- if section.settings.write_url != blank -%}
             <a class="cvp-proof__action" href="{{ section.settings.write_url }}">{{ section.settings.write_label | default: 'Write the first review' | escape }}</a>
           {%- endif -%}
         {%- endif -%}
 
         <dl class="cvp-proof__source" data-cv-proof-lines>
-          {%- if has_store -%}
-            <div>
-              <dt>Score source</dt>
-              <dd>Store reviews on Trustpilot and Google</dd>
-            </div>
-            <div>
-              <dt>Product reviews</dt>
-              <dd>Shown here as customers publish them</dd>
-            </div>
-          {%- else -%}
-            <div>
-              <dt>Score source</dt>
-              <dd>Published customer ratings</dd>
-            </div>
-            <div>
-              <dt>Updates</dt>
-              <dd>With every new review</dd>
-            </div>
-            <div>
-              <dt>Editorial edits</dt>
-              <dd>None</dd>
-            </div>
-          {%- endif -%}
+          <div>
+            <dt>Score source</dt>
+            <dd>Verified buyers</dd>
+          </div>
+          <div>
+            <dt>Updates</dt>
+            <dd>With every new review</dd>
+          </div>
+          <div>
+            <dt>Editorial edits</dt>
+            <dd>None</dd>
+          </div>
         </dl>
       </div>
 
@@ -186,10 +130,27 @@
         </div>
 
         <div class="cvp-proof__app" data-cv-proof-app>
-          {%- if app_blocks > 0 -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
-            {%- endfor -%}
+          {%- if note_count > 0 -%}
+            <ul class="cvp-proof__notes" role="list">
+              {%- for rec in notes -%}
+                {%- liquid
+                  assign f = rec | split: '␟'
+                  if f.size < 9
+                    continue
+                  endif
+                  assign n_rating = f[0] | plus: 0
+                  assign n_fill = n_rating | times: 20
+                  assign n_text = f[2] | default: f[1] | truncatewords: 30, '…'
+                -%}
+                <li>
+                  {%- if n_rating > 0 -%}
+                    <span class="cvp-proof__note-stars" role="img" aria-label="{{ n_rating }} out of 5 stars">{%- render 'cv-stars', fill: n_fill -%}</span>
+                  {%- endif -%}
+                  <blockquote><p>{{ n_text | escape }}</p></blockquote>
+                  <p class="cvp-proof__note-by">{{ f[3] | escape }} · {% if f[8] == 'gift' %}Gifted case{% else %}Verified buyer{% endif %}{% if f[7] == 'product' and f[5] != blank %} · {{ f[5] | escape }} case{% endif %}</p>
+                </li>
+              {%- endfor -%}
+            </ul>
           {%- else -%}
             <div class="cvp-proof__waiting">
               <span class="cvp-proof__waiting-line"></span>
@@ -212,13 +173,11 @@
         <h3>{{ section.settings.thank_you_heading | default: 'Thank you.' | escape }}</h3>
         <p>{{ section.settings.thank_you_text | default: 'For helping us build the record one honest review at a time.' | escape }}</p>
       </div>
-      {%- comment -%} The "verified" stamp describes Shopify review data only; a merchant-entered store rating never gets it. {%- endcomment -%}
-      {%- unless has_store -%}
+      {%- comment -%} The stamp names the source: Judge.me reviews from verified buyers. {%- endcomment -%}
         <div class="cvp-proof__verified" data-cv-proof-stamp>
           <img src="{{ 'proof-stamp.webp' | asset_url }}" width="640" height="640" alt="" loading="lazy" decoding="async">
-          <p><strong>{{ section.settings.badge_heading | default: 'Source checked' | escape }}</strong><span>{{ section.settings.badge_text | default: 'Live Shopify review data' | escape }}</span></p>
+          <p><strong>{{ section.settings.badge_heading | default: 'Source checked' | escape }}</strong><span>{{ section.settings.badge_source | default: 'Verified Judge.me reviews' | escape }}</span></p>
         </div>
-      {%- endunless -%}
     </div>
   </div>
 </section>
@@ -228,17 +187,12 @@
   "name": "Convert — Social proof",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "The proof, as it arrives" },
-    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "A live record of published customer feedback. Nothing on this board is pre-filled or manually scored." },
+    { "type": "paragraph", "content": "The score, count and customer ledger come from Judge.me reviews by verified buyers only. Imported and unverified reviews never count." },
+    { "type": "textarea", "id": "intro_text", "label": "Introduction", "default": "Reviews from verified buyers, as they arrive. Nothing here is typed in or scored by us." },
     { "type": "checkbox", "id": "enable_3d", "label": "Enable subtle 3D ledger motion", "default": true },
-    { "type": "header", "content": "Store rating", "info": "Shown until products have their own reviews. Merchant-supplied: keep it equal to your real Trustpilot and Google rating and to the store rating on the product page." },
-    { "type": "checkbox", "id": "show_store_rating", "label": "Show store rating", "default": true },
-    { "type": "text", "id": "store_rating", "label": "Store rating (out of 5)", "default": "4.9" },
-    { "type": "text", "id": "store_rating_count", "label": "Store review count", "default": "952" },
-    { "type": "url", "id": "trustpilot_url", "label": "Trustpilot profile link", "info": "Optional. Makes the Trustpilot badge a link." },
-    { "type": "url", "id": "google_url", "label": "Google reviews link", "info": "Optional. Makes the Google badge a link." },
-    { "type": "header", "content": "Before the first review", "info": "Shown when no product has a published rating yet." },
+    { "type": "header", "content": "Before the first review", "info": "Shown until the first verified review." },
     { "type": "text", "id": "empty_heading", "label": "Heading", "default": "No published reviews yet" },
-    { "type": "textarea", "id": "empty_text", "label": "Text", "default": "The first customer review will set the score — not us." },
+    { "type": "textarea", "id": "empty_text", "label": "Text", "default": "The first customer review will set the score, not us." },
     { "type": "url", "id": "write_url", "label": "Review link", "info": "Optional. Use only when this URL opens a real review form." },
     { "type": "text", "id": "write_label", "label": "Review link label", "default": "Write the first review" },
     { "type": "header", "content": "Customer ledger" },
@@ -248,12 +202,8 @@
     { "type": "text", "id": "thank_you_heading", "label": "Heading", "default": "Thank you." },
     { "type": "textarea", "id": "thank_you_text", "label": "Text", "default": "For helping us build the record one honest review at a time." },
     { "type": "text", "id": "badge_heading", "label": "Badge heading", "default": "Source checked" },
-    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Live Shopify review data" }
+    { "type": "text", "id": "badge_source", "label": "Badge text", "default": "Verified Judge.me reviews" }
   ],
-  "blocks": [
-    { "type": "@app" }
-  ],
-  "max_blocks": 30,
   "presets": [
     {
       "name": "Convert — Social proof"

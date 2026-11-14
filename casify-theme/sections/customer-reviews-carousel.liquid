@@ -1,33 +1,49 @@
 {{ 'casify-customer-reviews.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'casify-customer-reviews.js' | asset_url }}" defer></script>
 
+{%- comment -%}
+  Customer reviews: Judge.me reviews from verified buyers only, newest first
+  (snippets/cv-jm-verified.liquid). Imported, typed-in and unverified reviews
+  never show, and the section takes no app blocks, so Judge.me's own widgets
+  (which show every published review) can't be dropped in here. The old
+  "Review" blocks stay in the schema so saved templates still load, but they
+  are not shown. With no verified review the section renders nothing.
+{%- endcomment -%}
+{%- capture ccr_jm -%}{%- render 'cv-jm-verified', mode: 'rows', scope: 'all', limit: 12 -%}{%- endcapture -%}
 {%- liquid
+  comment
+    Review fields (cv-jm-verified): rating, title, text, name, date, case name, handle, kind, gift.
+    The summary ("from N rated reviews shown here") averages the buyers' cards shown.
+    A review of a gifted case is shown with its label and left out of that average.
+  endcomment
+  assign ccr_rows = ccr_jm | split: '␞'
   assign review_count = 0
+  assign gift_review_count = 0
   assign rated_review_count = 0
   assign rating_sum = 0
-  assign app_block_count = 0
-  assign draft_count = 0
-  for block in section.blocks
-    if block.type == 'review' and block.settings.review_text != blank
+  for rec in ccr_rows
+    assign f = rec | split: '␟'
+    if f.size >= 9
       assign review_count = review_count | plus: 1
-      assign block_rating = block.settings.rating | plus: 0
-      if block_rating > 0
-        assign rated_review_count = rated_review_count | plus: 1
-        assign rating_sum = rating_sum | plus: block_rating
+      if f[8] == 'gift'
+        assign gift_review_count = gift_review_count | plus: 1
+        continue
       endif
-    elsif block.type == 'review'
-      assign draft_count = draft_count | plus: 1
-    elsif block.type == '@app'
-      assign app_block_count = app_block_count | plus: 1
+      assign f_rating = f[0] | plus: 0
+      if f_rating > 0
+        assign rated_review_count = rated_review_count | plus: 1
+        assign rating_sum = rating_sum | plus: f_rating
+      endif
     endif
   endfor
   if rated_review_count > 0
     assign rating_average = rating_sum | times: 1.0 | divided_by: rated_review_count | round: 1
   endif
+  assign product_base = routes.root_url | remove_last: '/' | append: '/products/'
   assign fallback_heading = 'sections.customer_reviews.heading' | t
 -%}
 
-{%- if review_count > 0 or app_block_count > 0 or request.design_mode -%}
+{%- if review_count > 0 or request.design_mode -%}
 <section
   class="ccr ccr--{{ section.settings.surface }}"
   id="casify-reviews-{{ section.id }}"
@@ -47,6 +63,9 @@
             {{ 'sections.customer_reviews.summary_other' | t: count: rated_review_count }}
           {%- endif -%}
         </span>
+        {%- if gift_review_count > 0 %}
+        <span class="ccr__summary-context">(gifted cases not counted)</span>
+        {%- endif %}
       </div>
     {%- endif -%}
     <header class="ccr__header">
@@ -69,64 +88,57 @@
         role="list"
         {% if review_count > 1 %}tabindex="0" aria-label="{{ 'sections.customer_reviews.carousel_label' | t | escape }}"{% endif %}
       >
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'review' and block.settings.review_text != blank -%}
-            {%- liquid
-              assign rating = block.settings.rating | plus: 0
-              assign featured_product = block.settings.featured_product
-              assign photo_alt = block.settings.image_alt | default: block.settings.reviewer_name
-            -%}
-            <article class="ccr__card" role="listitem" data-ccr-card {{ block.shopify_attributes }}>
-              {%- if block.settings.review_image != blank -%}
-                <div class="ccr__media">
-                  {{ block.settings.review_image | image_url: width: 840 | image_tag: widths: '360, 540, 720, 840', sizes: '(max-width: 640px) 86vw, 360px', loading: 'lazy', alt: photo_alt, class: 'ccr__photo' }}
-                </div>
-              {%- else -%}
-                <div class="ccr__media ccr__media--type" aria-hidden="true">
-                  <span class="ccr__quote-mark">“</span>
-                  <span class="ccr__media-label">{{ 'sections.customer_reviews.customer_note' | t }}</span>
+        {%- for rec in ccr_rows -%}
+          {%- liquid
+            assign f = rec | split: '␟'
+            if f.size < 9
+              continue
+            endif
+            assign rating = f[0] | plus: 0
+            assign r_date = f[4] | date: '%B %Y'
+            assign featured_product = nil
+            if f[7] == 'product' and f[6] != blank
+              assign featured_product = all_products[f[6]]
+            endif
+          -%}
+          <article class="ccr__card" role="listitem" data-ccr-card>
+            <div class="ccr__media ccr__media--type" aria-hidden="true">
+              <span class="ccr__quote-mark">“</span>
+              <span class="ccr__media-label">{{ 'sections.customer_reviews.customer_note' | t }}</span>
+            </div>
+
+            <div class="ccr__card-body">
+              {%- if rating > 0 -%}
+                {%- assign rating_fill = rating | times: 20 -%}
+                <div class="ccr__stars" role="img" aria-label="{{ 'sections.customer_reviews.rating' | t: rating: rating | escape }}">
+                  {%- render 'cv-stars', fill: rating_fill -%}
                 </div>
               {%- endif -%}
 
-              <div class="ccr__card-body">
-                {%- if rating > 0 -%}
-                  {%- assign rating_fill = rating | times: 20 -%}
-                  <div class="ccr__stars" role="img" aria-label="{{ 'sections.customer_reviews.rating' | t: rating: rating | escape }}">
-                    {%- render 'cv-stars', fill: rating_fill -%}
-                  </div>
-                {%- endif -%}
+              <blockquote class="ccr__quote">
+                <p>{%- if f[1] != blank -%}<strong>{{ f[1] | escape }}</strong> {% endif -%}{{ f[2] | escape | newline_to_br }}</p>
+              </blockquote>
 
-                <blockquote class="ccr__quote">
-                  <p>{{ block.settings.review_text | escape | newline_to_br }}</p>
-                </blockquote>
-
-                {%- if block.settings.reviewer_name != blank or block.settings.reviewer_detail != blank -%}
-                  <div class="ccr__reviewer">
-                    {%- if block.settings.reviewer_name != blank -%}
-                      <cite>{{ block.settings.reviewer_name | escape }}</cite>
-                    {%- endif -%}
-                    {%- if block.settings.reviewer_detail != blank -%}
-                      <span>{{ block.settings.reviewer_detail | escape }}</span>
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-
-                {%- if featured_product != blank -%}
-                  <a class="ccr__product" href="{{ featured_product.url | escape }}">
-                    {%- if featured_product.featured_image != blank -%}
-                      {{ featured_product.featured_image | image_url: width: 112, height: 112, crop: 'center' | image_tag: width: 56, height: 56, loading: 'lazy', alt: featured_product.title, class: 'ccr__product-photo' }}
-                    {%- endif -%}
-                    <span class="ccr__product-copy">
-                      <small>{{ 'sections.customer_reviews.featured_product' | t }}</small>
-                      <strong>{{ featured_product.title | escape }}</strong>
-                      <span>{{ featured_product.price | money }}</span>
-                    </span>
-                    <svg class="ccr__product-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M4 10h11m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </a>
-                {%- endif -%}
+              <div class="ccr__reviewer">
+                {%- if f[3] != blank -%}<cite>{{ f[3] | escape }}</cite>{%- endif -%}
+                <span>{% if f[8] == 'gift' %}Gifted case{% else %}Verified buyer{% endif %}{% if r_date != blank %} · {{ r_date }}{% endif %}</span>
               </div>
-            </article>
-          {%- endif -%}
+
+              {%- if featured_product.url != blank -%}
+                <a class="ccr__product" href="{{ featured_product.url | escape }}">
+                  {%- if featured_product.featured_image != blank -%}
+                    {{ featured_product.featured_image | image_url: width: 112, height: 112, crop: 'center' | image_tag: width: 56, height: 56, loading: 'lazy', alt: featured_product.title, class: 'ccr__product-photo' }}
+                  {%- endif -%}
+                  <span class="ccr__product-copy">
+                    <small>{{ 'sections.customer_reviews.featured_product' | t }}</small>
+                    <strong>{{ f[5] | default: featured_product.title | escape }}{% if f[5] != blank %} case{% endif %}</strong>
+                    <span>{{ featured_product.price | money }}</span>
+                  </span>
+                  <svg class="ccr__product-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M4 10h11m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              {%- endif -%}
+            </div>
+          </article>
         {%- endfor -%}
       </div>
 
@@ -141,34 +153,11 @@
           </button>
         </div>
       {%- endif -%}
-    {%- elsif app_block_count == 0 -%}
+    {%- elsif request.design_mode -%}
       <div class="ccr__empty">
         <span class="ccr__empty-symbol" aria-hidden="true">“ ”</span>
         <p>{{ section.settings.empty_heading | escape }}</p>
-        {%- if request.design_mode -%}
-          <small>{{ 'sections.customer_reviews.editor_hint' | t }}</small>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
-    {%- if request.design_mode and draft_count > 0 -%}
-      <div class="ccr__drafts">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'review' and block.settings.review_text == blank -%}
-            <div class="ccr__draft" {{ block.shopify_attributes }}>{{ 'sections.customer_reviews.editor_draft' | t }}</div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
-
-    {%- if app_block_count > 0 -%}
-      <div class="ccr__apps">
-        {%- if section.settings.app_heading != blank -%}
-          <h3>{{ section.settings.app_heading | escape }}</h3>
-        {%- endif -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
-        {%- endfor -%}
+        <small>Judge.me reviews from verified buyers show here. Imported and unverified reviews never do.</small>
       </div>
     {%- endif -%}
   </div>
@@ -195,14 +184,15 @@
       ],
       "default": "cream"
     },
-    { "type": "text", "id": "empty_heading", "label": "Empty state text", "default": "There are no reviews to display yet." },
-    { "type": "text", "id": "app_heading", "label": "Review app heading", "default": "More customer feedback" }
+    { "type": "text", "id": "empty_heading", "label": "Empty state text (theme editor only)", "default": "There are no reviews to display yet." },
+    { "type": "paragraph", "content": "Shows Judge.me reviews from verified buyers only, newest 12. Imported and unverified reviews never show here. Hidden on the store until there is one." }
   ],
   "blocks": [
     {
       "type": "review",
-      "name": "Review",
+      "name": "Old review (not shown)",
       "settings": [
+        { "type": "paragraph", "content": "Typed-in reviews are no longer shown. This section reads Judge.me reviews from verified buyers. You can delete this block." },
         { "type": "textarea", "id": "review_text", "label": "Customer review" },
         { "type": "text", "id": "reviewer_name", "label": "Customer name" },
         { "type": "text", "id": "reviewer_detail", "label": "Optional customer detail" },
@@ -224,8 +214,7 @@
         { "type": "text", "id": "image_alt", "label": "Image description" },
         { "type": "product", "id": "featured_product", "label": "Optional featured product" }
       ]
-    },
-    { "type": "@app" }
+    }
   ],
   "max_blocks": 20,
   "presets": [{ "name": "Customer reviews" }]

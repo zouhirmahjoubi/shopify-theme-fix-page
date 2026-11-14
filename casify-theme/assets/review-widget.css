@@ -87,7 +87,7 @@
 .rw-summary__avg { font-family: var(--font-display); font-size: 56px; font-weight: 900; line-height: .9; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
 .rw-summary__stars { font-size: 22px; line-height: 0; }
 .rw-summary__count { font-family: var(--font-label); font-size: 12px; line-height: 1.3; color: var(--rw-muted); }
-.rw-summary__cta { position: relative; z-index: 1; }
+.rw-summary__cta { position: relative; z-index: 1; display: grid; justify-items: center; gap: 12px; text-align: center; } /* ds-allow-hardcode: theme.css has no spacing tokens; matches this file's gaps */
 
 .rw-bars { display: grid; gap: 7px; width: 100%; max-width: 420px; margin: 0; padding: 0; list-style: none; }
 .rw-bar { display: grid; grid-template-columns: 30px minmax(0, 1fr) 30px; align-items: center; gap: 10px; font-family: var(--font-label); font-size: 13px; }
@@ -165,6 +165,12 @@
 .rw-rate__word { min-height: 1.2em; font-family: var(--font-label); font-size: 14px; color: var(--rw-body); }
 
 .rw-form__note { margin: 0; font-family: var(--font-body); font-size: 13px; line-height: 1.55; color: var(--rw-muted); }
+/* ds-allow-hardcode:start  theme.css has no spacing or radius tokens; same focus ring as .rw-btn */
+.rw-empty__text, .rw-form__intro, .rw-form__note, .rw-done__text { text-wrap: balance; }
+.rw-form__note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.rw-form__note a:hover { color: var(--rw-text); }
+.rw-form__note a:focus-visible { outline: 3px solid var(--rw-focus); outline-offset: 2px; border-radius: 2px; }
+/* ds-allow-hardcode:end */
 .rw-form__actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .rw-status { margin: 0; font-family: var(--font-body); font-size: 14px; line-height: 1.5; }
 .rw-status:empty { display: none; }
@@ -221,6 +227,8 @@
 .rw-card__who { display: grid; gap: 2px; min-width: 0; font-size: 14px; }
 .rw-card__who strong { font-family: var(--font-body); font-weight: 700; color: var(--rw-text); overflow-wrap: anywhere; }
 .rw-card__verified { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-label); font-size: 11.5px; font-weight: 700; color: var(--rw-ok); }
+/* A gifted case is not a purchase: its label drops the "verified" teal. */
+.rw-card__verified--gift { color: var(--rw-muted); }
 .rw-card__product { font-family: var(--font-label); font-size: 11.5px; color: var(--rw-muted); text-decoration: none; }
 a.rw-card__product { text-decoration: underline dashed; text-underline-offset: 3px; }
 a.rw-card__product:hover { color: var(--rw-accent); }

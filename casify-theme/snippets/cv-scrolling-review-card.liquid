@@ -1,0 +1,56 @@
+{% doc %}
+  One review ticket in "Scrolling reviews" (sections/cv-scrolling-reviews.liquid).
+  The section passes one verified Judge.me review (snippets/cv-jm-verified.liquid),
+  so every ticket carries "Verified buyer", or "Gifted case" when the shop sent
+  the case free. Every text value is escaped here.
+
+  @param {string} [quote] - The review text, already shortened.
+  @param {boolean} [gifted] - The case was a gift from the shop: the ticket says "Gifted case".
+  @param {string} [name] - The reviewer's name as Judge.me shows it.
+  @param {number} [rating] - Stars from 0 to 5; 0 hides them.
+  @param {string} [case_name] - The case the review is about, when it isn't the product on the page.
+  @param {string} [tone] - Avatar colour slot (0, 1 or 2) or the section's placeholder for it.
+  @param {string} [hint] - Editor-only ticket text when there is no review to show.
+{% enddoc %}
+{%- liquid
+  assign who = name | strip
+  assign r = rating | default: 0 | plus: 0 | at_least: 0 | at_most: 5
+  assign initials = ''
+  assign name_parts = who | split: ' '
+  for part in name_parts limit: 2
+    assign letter = part | slice: 0
+    assign initials = initials | append: letter
+  endfor
+-%}
+{%- if hint != blank -%}
+<li class="cvsr-card cvsr-card--empty" data-cvsr-card>
+  <span class="cvsr-card__hint">{{ hint | escape }}</span>
+</li>
+{%- elsif quote != blank -%}
+<li class="cvsr-card" data-cvsr-card>
+  <span class="cvsr-card__avatar cvsr-card__avatar--{{ tone | default: 0 }}" aria-hidden="true">
+    {{- initials | upcase | default: '★' | escape -}}
+  </span>
+  <figure class="cvsr-card__body">
+    <blockquote class="cvsr-card__quote"><p>{{ quote | escape }}</p></blockquote>
+    <figcaption class="cvsr-card__meta">
+      {%- if r > 0 -%}
+        {%- assign fill = r | times: 20 -%}
+        {% render 'cv-stars', fill: fill, class: 'cvsr-card__stars' %}
+        <span class="cvsr__sr">Rated {{ r }} out of 5.</span>
+      {%- endif -%}
+      {%- if who != blank -%}
+        <span class="cvsr-card__name">{{ who | escape }}</span>
+      {%- endif -%}
+      {%- if gifted -%}
+        <span class="cvsr-card__tag cvsr-card__tag--gift">Gifted case</span>
+      {%- else -%}
+        <span class="cvsr-card__tag">Verified buyer</span>
+      {%- endif -%}
+      {%- if case_name != blank -%}
+        <span class="cvsr-card__case">{{ case_name | escape }} case</span>
+      {%- endif -%}
+    </figcaption>
+  </figure>
+</li>
+{%- endif -%}

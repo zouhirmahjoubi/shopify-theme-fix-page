@@ -10,6 +10,7 @@
   @param {string} [date] - Date text.
   @param {boolean} [verified] - Show the "Verified buyer" badge.
   @param {string} [verified_label] - Badge text.
+  @param {boolean} [gifted] - The case was a gift from the shop: shows "Gifted case" in place of the verified badge.
   @param {object} [image] - Optional photo.
   @param {string} [product_title] - Set when the review is about another product.
   @param {string} [product_url] - Link for that product.
@@ -49,7 +50,13 @@
     {%- endif -%}
     <span class="rw-card__who">
       <strong>{{ who | escape }}</strong>
-      {%- if verified -%}
+      {%- if gifted -%}
+        {%- comment -%} The wording is fixed: it tells shoppers the reviewer did not pay for the case. {%- endcomment -%}
+        <span class="rw-card__verified rw-card__verified--gift">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 21V7"/><path d="M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7Z"/><path d="M12 7h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7Z"/></svg>
+          Gifted case
+        </span>
+      {%- elsif verified -%}
         <span class="rw-card__verified">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>
           {{ verified_label | default: 'Verified buyer' | escape }}
