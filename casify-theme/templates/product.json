@@ -142,6 +142,62 @@
             "phone": "iPhone 17 Pro",
             "colour": ""
           }
+        },
+        "shop-clip-snow-day-penguin": {
+          "type": "shop_clip",
+          "settings": {
+            "mp4_asset": "cv-clip-snow-day-penguin.mp4",
+            "poster_asset": "cv-clip-snow-day-penguin.jpg",
+            "alt": "Snow Day Penguin case on an iPhone 18 Pro Max, held in a hand",
+            "phone": "iPhone 18 Pro Max · Glossy",
+            "ai_made": true,
+            "silent": true,
+            "design": "Snow Day",
+            "design_handle": "snow-day-penguin-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+            "product_handle": ""
+          }
+        },
+        "shop-clip-beary-christmas": {
+          "type": "shop_clip",
+          "settings": {
+            "mp4_asset": "cv-clip-beary-christmas.mp4",
+            "poster_asset": "cv-clip-beary-christmas.jpg",
+            "alt": "Beary Christmas polar bear case on an iPhone 18 Pro Max, held in a hand",
+            "phone": "iPhone 18 Pro Max · Glossy",
+            "ai_made": true,
+            "silent": true,
+            "design": "Beary Christmas",
+            "design_handle": "beary-christmas-polar-bear-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+            "product_handle": ""
+          }
+        },
+        "shop-clip-kissing-mistletoe": {
+          "type": "shop_clip",
+          "settings": {
+            "mp4_asset": "cv-clip-kissing-mistletoe.mp4",
+            "poster_asset": "cv-clip-kissing-mistletoe.jpg",
+            "alt": "Kissing Mistletoe case on an iPhone 18 Pro Max, held in a hand",
+            "phone": "iPhone 18 Pro Max · Glossy",
+            "ai_made": true,
+            "silent": true,
+            "design": "Mistletoe",
+            "design_handle": "mistletoe-christmas-phone-case-for-iphone-samsung-magnetic-impact-resistant-case",
+            "product_handle": ""
+          }
+        },
+        "shop-clip-bah-humbug": {
+          "type": "shop_clip",
+          "settings": {
+            "mp4_asset": "cv-clip-bah-humbug.mp4",
+            "poster_asset": "cv-clip-bah-humbug.jpg",
+            "alt": "Bah Humbug grumpy cat case on an iPhone 18 Pro Max, held in a hand",
+            "phone": "iPhone 18 Pro Max · Glossy",
+            "ai_made": true,
+            "silent": true,
+            "design": "Bah Humbug",
+            "design_handle": "bah-humbug-christmas-phone-case-grumpy-persian-cat-in-santa-hat-on-green-polka-dots-magsafe-compatible-tough-case",
+            "product_handle": ""
+          }
         }
       },
       "block_order": [
