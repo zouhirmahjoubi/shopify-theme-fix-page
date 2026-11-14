@@ -125,7 +125,8 @@
             "model_placeholder": "",
             "pick_model_text": "Pick your phone model first, so the case fits.",
             "cta_label": "Add to bag",
-            "cta_pack_label": "Add [qty] cases"
+            "cta_pack_label": "Add [qty] cases",
+            "show_clips": true
           }
         },
         "video-review-1": {
