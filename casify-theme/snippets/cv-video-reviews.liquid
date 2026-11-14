@@ -229,6 +229,9 @@
     assign hint_text = vr.shop_hint | default: 'Tap a clip to see it larger'
   else
     assign vr_heading = vr.heading | default: 'Filmed by the people who bought it'
+    if other_shown > 0
+      assign vr_heading = vr.shop_heading_all | default: 'Our cases in hand'
+    endif
     if vr == blank
       if mode == 'inline'
         assign vr_lede = ''
@@ -236,7 +239,7 @@
         assign vr_lede = 'Short clips from customers with this case on their own phone. Tap one for sound and the full review.'
       endif
     else
-      assign vr_lede = vr.lede
+      assign vr_lede = vr.shop_lede | default: vr.lede
     endif
     assign rail_label = vr.rail_label | default: 'Customer video reviews'
     assign hint_text = vr.hint | default: 'Tap a clip for sound and the full review'
